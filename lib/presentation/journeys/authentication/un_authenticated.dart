@@ -10,9 +10,8 @@ class UnAuthenticated extends StatelessWidget {
   Widget build(BuildContext context) {
     MediaQueryData screenData = MediaQuery.of(context);
     double screenWidth = screenData.size.width;
-    double screenHeight = screenData.size.height;
     return Scaffold(
-      body: SafeArea(
+      body: SafeArea  (
         child: Column(
           children: [
             AspectRatio(
@@ -39,21 +38,19 @@ class UnAuthenticated extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    child: Container(
-                      height: screenHeight * .2,
-                      width: screenWidth * .6,
-                      padding: const EdgeInsets.all(24),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Image.asset(AppAssest.logo),
-                          const Text(
-                              'Connecting cheerful givers to the people and organisations they care about...')
-                        ],
-                      ),
+                  Container(
+                    width: screenWidth * .6,
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Image.asset(AppAssest.logo),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        const Text(
+                            'Connecting cheerful givers to the people and organisations they care about...')
+                      ],
                     ),
                   )
                 ],
