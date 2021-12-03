@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/business_logic/registration_steps/cubit/registration_steps_cubit.dart';
 import 'package:idonatio/common/words.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
-import 'package:idonatio/presentation/widgets/level_2_heading.dart';
+import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import 'register_form.dart';
 
