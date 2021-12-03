@@ -109,6 +109,7 @@ class AppThemeData {
       outlinedButtonTheme: appOutlinedButtonThemeData(),
       elevatedButtonTheme: appElevatedButtonThemeData(),
       buttonTheme: const ButtonThemeData(),
+      primaryTextTheme: appTextTheme(),
     );
   }
 

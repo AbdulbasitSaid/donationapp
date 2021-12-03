@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/business_logic/registration_steps/cubit/registration_steps_cubit.dart';
 import 'package:idonatio/common/route_list.dart';
+import 'package:idonatio/common/words.dart';
+import 'package:idonatio/presentation/widgets/linked_span_button.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
@@ -39,7 +41,7 @@ class _RegisterFormState extends State<RegisterForm> {
       children: [
         const Text('1/2'),
         Text(
-          'what should we call you?',
+          TranslationConstants.whatShouldWeCallYou,
           style: Theme.of(context)
               .textTheme
               .headline3!
@@ -134,7 +136,7 @@ class _RegisterFormState extends State<RegisterForm> {
       children: [
         const Text('2/2'),
         Text(
-          'Your contact and login details',
+          TranslationConstants.yourConactAndLoginDetails,
           style: Theme.of(context)
               .textTheme
               .headline3!
@@ -149,8 +151,8 @@ class _RegisterFormState extends State<RegisterForm> {
         TextFormField(
           keyboardType: TextInputType.phone,
           decoration: const InputDecoration(
-            hintText: 'Mobile (optional)',
-            labelText: 'Mobile (optional)',
+            hintText: TranslationConstants.mobileOptional,
+            labelText: TranslationConstants.mobileOptional,
             prefixIcon: Icon(Icons.phone_outlined),
           ),
         ),
@@ -160,8 +162,8 @@ class _RegisterFormState extends State<RegisterForm> {
         TextFormField(
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
-            hintText: 'Email address',
-            labelText: 'Email address',
+            hintText: TranslationConstants.emailAddress,
+            labelText: TranslationConstants.emailAddress,
             prefixIcon: Icon(Icons.mail_outline),
           ),
         ),
@@ -172,20 +174,32 @@ class _RegisterFormState extends State<RegisterForm> {
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
           decoration: const InputDecoration(
-            hintText: 'Password',
-            labelText: 'Password',
+            hintText: TranslationConstants.password,
+            labelText: TranslationConstants.password,
             prefixIcon: Icon(Icons.lock_outline),
             suffixIcon: Icon(Icons.remove_red_eye_sharp),
           ),
         ),
         Row(
           children: [
-            Checkbox(value: false, onChanged: (fasle) {}),
-            const Flexible(
-              child: Text(
-                'I have read, understood and accept iDonatio’s Terms of Service and Privacy Policy.',
-                softWrap: true,
-                overflow: TextOverflow.clip,
+            Checkbox(value: true, onChanged: (fasle) {}),
+            Flexible(
+              child: RichText(
+                text: TextSpan(
+                  text: TranslationConstants.iHaveReadAndUnderstood,
+                  style: Theme.of(context).textTheme.bodyText1,
+                  children: [
+                    linkedSpanButton(
+                        onTap: () {},
+                        text: TranslationConstants.termsOfService),
+                    TextSpan(
+                      text: TranslationConstants.and,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    linkedSpanButton(
+                        onTap: () {}, text: TranslationConstants.privacyPolicy),
+                  ],
+                ),
               ),
             )
           ],
