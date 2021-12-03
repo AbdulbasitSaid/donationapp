@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:idonatio/common/route_list.dart';
 import 'package:idonatio/presentation/journeys/onboarding/onboarding_screen.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/input_fields/base_text_field.dart';
@@ -104,7 +105,8 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
                   ),
                   ElevatedNextIconButton(
                     text: 'Continue',
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushNamed(
+                        context, RouteList.paymentMethodScreen),
                   ),
                 ],
               ),

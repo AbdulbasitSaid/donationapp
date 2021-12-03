@@ -53,7 +53,7 @@ class OnboardingScreen extends StatelessWidget {
               ElevatedNextIconButton(
                 text: 'Setup Preferences',
                 onPressed: () =>
-                    Navigator.pushNamed(context, RouteList.enableGiftAidForm),
+                    Navigator.pushNamed(context, RouteList.enableGiftAidScreen),
               ),
               Padding(
                 padding: const EdgeInsets.all(16),

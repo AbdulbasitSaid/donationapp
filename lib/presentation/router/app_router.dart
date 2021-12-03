@@ -5,9 +5,11 @@ import 'package:idonatio/presentation/journeys/email_verification/email_varifica
 import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/journeys/login/login_screen.dart';
 import 'package:idonatio/presentation/journeys/login/varify_login.dart';
+import 'package:idonatio/presentation/journeys/onboarding/data_preference_screen.dart';
 import 'package:idonatio/presentation/journeys/onboarding/home_address_screen.dart';
 import 'package:idonatio/presentation/journeys/onboarding/enable_gift_aid_screen.dart';
 import 'package:idonatio/presentation/journeys/onboarding/onboarding_screen.dart';
+import 'package:idonatio/presentation/journeys/onboarding/payment_method_screen.dart';
 import 'package:idonatio/presentation/journeys/registration/registration_screen.dart';
 
 class AppRouter {
@@ -28,10 +30,15 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case RouteList.onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingScreen());
-      case RouteList.enableGiftAidForm:
+      case RouteList.enableGiftAidScreen:
         return MaterialPageRoute(builder: (_) => const EnableGiftAidForm());
+      case RouteList.paymentMethodScreen:
+        return MaterialPageRoute(builder: (_) => const PaymentMethodScreen());
       case RouteList.homeAddressScreen:
         return MaterialPageRoute(builder: (_) => const HomeAddressScreen());
+      case RouteList.onboardDataPreferenceScreen:
+        return MaterialPageRoute(
+            builder: (_) => const OnboardingDataPreferencesScreen());
       default:
         {
           return MaterialPageRoute(builder: (_) => const UnAuthenticated());
