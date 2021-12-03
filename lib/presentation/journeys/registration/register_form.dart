@@ -49,22 +49,31 @@ class _RegisterFormState extends State<RegisterForm> {
           height: 16,
         ),
         const Text('Title'),
-        DropdownButtonFormField(
-          value: titleValue,
-          isExpanded: false,
-          isDense: true,
-          onChanged: (String? newTitle) {
-            setState(() {
-              titleValue = newTitle!;
-            });
-          },
-          items: <String>['Mr', 'Mrs', 'Alhaji', 'Doctor']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+        Row(
+          children: [
+            Flexible(
+              child: DropdownButtonFormField(
+                value: titleValue,
+                isExpanded: false,
+                isDense: true,
+                onChanged: (String? newTitle) {
+                  setState(() {
+                    titleValue = newTitle!;
+                  });
+                },
+                items: <String>['Mr', 'Mrs', 'Alhaji', 'Doctor']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * .6,
+            )
+          ],
         ),
         const SizedBox(
           height: 16,

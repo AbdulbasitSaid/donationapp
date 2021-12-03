@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:idonatio/common/route_list.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
+import 'package:idonatio/presentation/widgets/app_logo.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -9,23 +10,16 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Sign in'),
+      ),
       body: SingleChildScrollView(
         child: AppBackgroundWidget(
           childWidget: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              AspectRatio(
-                aspectRatio: 4 / 1,
-                child: Text(
-                  'Sign in',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline2!
-                      .copyWith(fontWeight: FontWeight.w600),
-                ),
-              ),
+              const AppLogo(),
               const SizedBox(
                 height: 16,
               ),
