@@ -97,6 +97,11 @@ class AppThemeData {
       appBarTheme: const AppBarTheme(
         elevation: 0,
         backgroundColor: Color.fromRGBO(219, 229, 255, .6),
+        titleTextStyle: TextStyle(
+          color: AppColor.text90Primary,
+          fontWeight: FontWeight.w600,
+          fontSize: 20,
+        ),
         iconTheme: IconThemeData(
           color: Color(0xff425A70),
         ),
