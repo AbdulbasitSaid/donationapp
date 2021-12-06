@@ -46,32 +46,27 @@ class EmailVerificationScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
-                    Flexible(
-                        child: TextField(
-                      keyboardType: TextInputType.number,
-                      // maxLength: 1,
-                      // maxLines: 1,
-                    )),
-                    Flexible(
-                        child: TextField(
-                      keyboardType: TextInputType.number,
-                    )),
-                    Flexible(
-                        child: TextField(
-                      keyboardType: TextInputType.number,
-                    )),
-                    Flexible(
-                        child: TextField(
-                      keyboardType: TextInputType.number,
-                    )),
-                    Flexible(
-                        child: TextField(
-                      keyboardType: TextInputType.number,
-                    )),
-                    Flexible(
-                        child: TextField(
-                      keyboardType: TextInputType.number,
-                    )),
+                    OTPItem(),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    OTPItem(),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    OTPItem(),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    OTPItem(),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    OTPItem(),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    OTPItem(),
                   ],
                 ),
                 const SizedBox(
@@ -111,5 +106,20 @@ class EmailVerificationScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class OTPItem extends StatelessWidget {
+  const OTPItem({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Flexible(
+        child: TextField(
+      keyboardType: TextInputType.number,
+      maxLength: 1,
+    ));
   }
 }

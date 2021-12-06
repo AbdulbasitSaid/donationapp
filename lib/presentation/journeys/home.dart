@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,40 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: AppBackgroundWidget(
         childWidget: Center(
-          child: _homeScreens.elementAt(_selectedIndex),
+          child: PageView(
+            children: _homeScreens,
+          ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColor.basePrimary,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              backgroundColor: Colors.pink,
-              icon: Icon(
-                Icons.add,
-              ),
-              label: 'New'),
-          BottomNavigationBarItem(
-              backgroundColor: Colors.blue,
-              icon: Icon(
-                Icons.favorite_border,
-              ),
-              label: 'History'),
-          BottomNavigationBarItem(
-              backgroundColor: Colors.yellow,
-              icon: Icon(
-                Icons.history,
-              ),
-              label: 'Donees'),
-          BottomNavigationBarItem(
-              backgroundColor: Colors.purple,
-              icon: Icon(
-                Icons.manage_accounts_outlined,
-              ),
-              label: 'Account'),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
+     
     );
   }
 }

@@ -52,6 +52,7 @@ class VerifyLoginScreen extends StatelessWidget {
                       // maxLength: 1,
                       // maxLines: 1,
                     )),
+                     SizedBox(width: 8,),
                     Flexible(
                         child: TextField(
                       keyboardType: TextInputType.number,
