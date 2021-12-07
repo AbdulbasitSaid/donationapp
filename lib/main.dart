@@ -23,7 +23,7 @@ class IdonatioApp extends StatelessWidget {
       title: 'Idonation',
       theme: AppThemeData.appTheme(),
       onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: RouteList.unAuthenticated,
+      initialRoute: RouteList.home,
     );
   }
 }
