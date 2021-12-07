@@ -37,4 +37,10 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       return const Left(AppError(AppErrorType.api));
     }
   }
+
+  @override
+  Future<Either<AppError, void>> logoutUser() {
+    // TODO: implement logoutUser
+    throw UnimplementedError();
+  }
 }

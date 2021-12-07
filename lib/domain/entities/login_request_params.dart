@@ -21,6 +21,7 @@ class LoginRequestParams {
     required this.model,
     required this.ipAddress,
     required this.screenResolution,
+    required String userName,
   });
 
   final String email;
@@ -44,6 +45,7 @@ class LoginRequestParams {
         model: json["model"],
         ipAddress: json["ip_address"],
         screenResolution: json["screen_resolution"],
+        userName: '',
       );
 
   Map<String, dynamic> toJson() => {

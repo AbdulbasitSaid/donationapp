@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idonatio/business_logic/registration_steps/cubit/registration_steps_cubit.dart';
 import 'package:idonatio/common/route_list.dart';
 import 'package:idonatio/common/words.dart';
+import 'package:idonatio/presentation/bloc/registration_steps/cubit/registration_steps_cubit.dart';
 import 'package:idonatio/presentation/widgets/input_fields/base_text_field.dart';
 import 'package:idonatio/presentation/widgets/linked_span_button.dart';
 
