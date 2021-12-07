@@ -9,18 +9,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
   static const List<Widget> _homeScreens = <Widget>[
     Text('Make a donation'),
     Text('04 – Donation History'),
     Text('05 – Saved donees'),
     Text('03 – Manage Account'),
   ];
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-     
     );
   }
 }
