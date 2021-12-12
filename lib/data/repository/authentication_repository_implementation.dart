@@ -13,7 +13,6 @@ class AuthenticationRepository {
   final AuthenticationRemoteDataSource _authenticationRemoteDataSourceImpl;
   final AuthenticationLocalDataSource _authenticationLocalDataSourceImpl;
 
-  @override
   Future<Either<AppError, void>> logout() {
     // TODO: implement logout
     throw UnimplementedError();
@@ -39,7 +38,6 @@ class AuthenticationRepository {
     }
   }
 
-  @override
   Future<Either<AppError, void>> logoutUser() {
     // TODO: implement logoutUser
     throw UnimplementedError();

@@ -25,9 +25,4 @@ class SimpleBlocObserver extends BlocObserver {
 
     super.onCreate(bloc);
   }
-
-  @override
-  void onClose(BlocBase bloc) {
-    super.onClose(bloc);
-  }
 }

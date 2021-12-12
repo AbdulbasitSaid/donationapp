@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:idonatio/data/data_sources/authentication_remote_datasource.dart';
-import 'package:idonatio/data/repository/authentication_repository_implementation.dart';
 import 'package:idonatio/di/get_it.dart' as get_it;
-import 'package:idonatio/domain/entities/login_request_params.dart';
 import 'package:idonatio/presentation/bloc/simple_bloc_observer.dart';
 
 import 'data/data_sources/authentication_local_datasource.dart';

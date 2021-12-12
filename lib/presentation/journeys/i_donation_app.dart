@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
-import 'package:idonatio/common/route_list.dart';
 import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
-import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_theme_data.dart';
 
 class IdonatioApp extends StatefulWidget {
@@ -40,6 +37,7 @@ class _IdonatioAppState extends State<IdonatioApp> {
         BlocProvider<LoginCubit>(
           create: (context) => LoginCubit(getItInstance(), getItInstance()),
         ),
+        
       ],
       child: MaterialApp(
         title: 'Idonation',

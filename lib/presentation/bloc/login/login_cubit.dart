@@ -1,12 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/data_sources/authentication_remote_datasource.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/login_request_params.dart';
 import 'package:idonatio/domain/usecases/login_user.dart';
-import 'package:idonatio/enums.dart';
-import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 
 part 'login_state.dart';

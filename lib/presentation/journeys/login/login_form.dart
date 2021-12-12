@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
+import 'package:idonatio/enums.dart';
+import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
-import 'package:idonatio/presentation/journeys/home.dart';
+import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -42,13 +43,13 @@ class _LoginFormState extends State<LoginForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('Enter your login details to continue.'),
-          BlocBuilder<LoadingCubit, LoadingState>(builder: (context, state) {
-            if (state is ShowloadingState) {
-              return const CircularProgressIndicator();
-            } else {
-              return Container();
-            }
-          }),
+          // BlocBuilder<LoadingCubit, LoadingState>(builder: (context, state) {
+          //   if (state is ShowloadingState) {
+          //     return const CircularProgressIndicator();
+          //   } else {
+          //     return Container();
+          //   }
+          // }),
           BlocConsumer<LoginCubit, LoginState>(
             buildWhen: (previous, current) => current is LoginFailed,
             builder: (context, state) {
@@ -63,8 +64,13 @@ class _LoginFormState extends State<LoginForm> {
             },
             listenWhen: (previous, current) => current is LoginSuccess,
             listener: (context, state) {
-              Navigator.pushAndRemoveUntil(context,
-                  AppRouter.routeToPage(const HomeScreen()), (route) => false);
+              context
+                  .read<AuthBloc>()
+                  .add(const ChangeAuth(AuthStatus.authenticated));
+              Navigator.push(
+                context,
+                AppRouter.routeToPage(const AuthGaurd()),
+              );
             },
           ),
           const SizedBox(

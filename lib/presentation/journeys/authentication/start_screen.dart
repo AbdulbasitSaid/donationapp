@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:idonatio/common/assest.dart';
 import 'package:idonatio/common/route_list.dart';
 import 'package:idonatio/common/words.dart';
+import 'package:idonatio/presentation/journeys/login/login_screen.dart';
 import 'package:idonatio/presentation/journeys/registration/registration_screen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 
@@ -73,7 +75,8 @@ class StartScreen extends StatelessWidget {
                 height: 16,
               ),
               OutlinedButton(
-                onPressed: () => Navigator.pushNamed(context, RouteList.login),
+                onPressed: () => Navigator.push(
+                    context, AppRouter.routeToPage(const LoginScreen())),
                 child: Text(TranslationConstants.signin.toUpperCase()),
               )
             ],
