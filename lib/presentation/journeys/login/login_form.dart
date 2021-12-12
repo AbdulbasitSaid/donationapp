@@ -45,6 +45,8 @@ class _LoginFormState extends State<LoginForm> {
           BlocBuilder<LoadingCubit, LoadingState>(builder: (context, state) {
             if (state is ShowloadingState) {
               return const CircularProgressIndicator();
+            } else {
+              return Container();
             }
           }),
           BlocConsumer<LoginCubit, LoginState>(
