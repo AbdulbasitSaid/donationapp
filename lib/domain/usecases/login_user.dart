@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
+import 'package:idonatio/data/repository/authentication_repository_implementation.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/login_request_params.dart';
-import 'package:idonatio/domain/repository/authentication_repository.dart';
-import 'package:idonatio/domain/usecases/usecases.dart';
+import 'package:idonatio/domain/usecases/usecase.dart';
 
 class LoginUser extends UseCase<bool, LoginRequestParams> {
   final AuthenticationRepository _authenticationRepository;

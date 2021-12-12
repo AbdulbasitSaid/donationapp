@@ -9,6 +9,9 @@ import 'register_form.dart';
 
 class RegistrationScreen extends StatelessWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const RegistrationScreen());
+  }
 
   @override
   Widget build(BuildContext context) {

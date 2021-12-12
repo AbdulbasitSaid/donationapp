@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 import 'package:idonatio/common/route_list.dart';
 import 'package:idonatio/di/get_it.dart';
+import 'package:idonatio/enums.dart';
+import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
+import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_theme_data.dart';
 
@@ -14,17 +18,13 @@ class IdonatioApp extends StatefulWidget {
 }
 
 class _IdonatioAppState extends State<IdonatioApp> {
-  late LoginCubit _loginCubit;
-
   @override
   void initState() {
-    _loginCubit = getItInstance<LoginCubit>();
     super.initState();
   }
 
   @override
   void dispose() {
-    _loginCubit.close();
     super.dispose();
   }
 
@@ -32,15 +32,19 @@ class _IdonatioAppState extends State<IdonatioApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LoginCubit>.value(
-          value: _loginCubit,
-        )
+        BlocProvider<AuthBloc>(
+          create: (context) =>
+              AuthBloc(authenticationLocalDataSource: getItInstance())
+                ..add(const ChangeAuth(AuthStatus.appStarted)),
+        ),
+        BlocProvider<LoginCubit>(
+          create: (context) => LoginCubit(getItInstance(), getItInstance()),
+        ),
       ],
       child: MaterialApp(
         title: 'Idonation',
         theme: AppThemeData.appTheme(),
-        onGenerateRoute: AppRouter.onGenerateRoute,
-        initialRoute: RouteList.login,
+        home: const AuthGaurd(),
       ),
     );
   }

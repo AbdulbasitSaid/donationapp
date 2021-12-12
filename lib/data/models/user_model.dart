@@ -1,35 +1,26 @@
 // To parse this JSON data, do
 //
-//     final user = userFromJson(jsonString);
+//     final userModel = userModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
-UserModel userFromJson(String str) => UserModel.fromJson(json.decode(str));
+UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
-String userToJson(UserModel data) => json.encode(data.toJson());
+String userModelToJson(UserModel data) => json.encode(data.toJson());
 
 class UserModel {
   UserModel({
-    required this.status,
-    required this.message,
-    required this.userData,
+    required this.data,
   });
 
-  final String status;
-  final String message;
-  final UserData userData;
+  final UserData data;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        status: json["status"],
-        message: json["message"],
-        userData: UserData.fromJson(json["userData"]),
+        data: UserData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "status": status,
-        "message": message,
-        "userData": userData.toJson(),
+        "data": data.toJson(),
       };
 }
 
@@ -38,52 +29,53 @@ class UserData {
     required this.token,
     required this.tokenType,
     required this.expiresIn,
+    required this.isDeviceSaved,
     required this.user,
   });
 
   final String token;
   final String tokenType;
   final int expiresIn;
-  final UserClass user;
+  final bool isDeviceSaved;
+  final User user;
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         token: json["token"],
         tokenType: json["token_type"],
         expiresIn: json["expires_in"],
-        user: UserClass.fromJson(json["user"]),
+        isDeviceSaved: json["is_device_saved"],
+        user: User.fromJson(json["user"]),
       );
 
   Map<String, dynamic> toJson() => {
         "token": token,
         "token_type": tokenType,
         "expires_in": expiresIn,
+        "is_device_saved": isDeviceSaved,
         "user": user.toJson(),
       };
 }
 
-class UserClass {
-  UserClass({
+class User {
+  User({
     required this.id,
     required this.email,
     required this.isActive,
     required this.emailVerifiedAt,
-    required this.passwordResetToken,
     required this.donor,
   });
 
   final String id;
   final String email;
   final bool isActive;
-  final DateTime? emailVerifiedAt;
-  final dynamic passwordResetToken;
+  final dynamic emailVerifiedAt;
   final Donor donor;
 
-  factory UserClass.fromJson(Map<String, dynamic> json) => UserClass(
+  factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         email: json["email"],
         isActive: json["is_active"],
-        emailVerifiedAt: DateTime.parse(json["email_verified_at"]),
-        passwordResetToken: json["password_reset_token"],
+        emailVerifiedAt: json["email_verified_at"],
         donor: Donor.fromJson(json["donor"]),
       );
 
@@ -91,8 +83,7 @@ class UserClass {
         "id": id,
         "email": email,
         "is_active": isActive,
-        "email_verified_at": emailVerifiedAt!=null? emailVerifiedAt!.toIso8601String():null,
-        "password_reset_token": passwordResetToken,
+        "email_verified_at": emailVerifiedAt,
         "donor": donor.toJson(),
       };
 }
@@ -103,9 +94,10 @@ class Donor {
     required this.userId,
     required this.firstName,
     required this.lastName,
+    required this.isOnboarded,
     required this.title,
     required this.phoneNumber,
-    @required this.phoneVerifiedAt,
+    required this.phoneVerifiedAt,
     required this.phoneReceiveSecurityAlert,
     required this.giftAidEnabled,
     required this.address,
@@ -121,17 +113,18 @@ class Donor {
   final String userId;
   final String firstName;
   final String lastName;
+  final bool isOnboarded;
   final String title;
   final String phoneNumber;
   final dynamic phoneVerifiedAt;
   final bool phoneReceiveSecurityAlert;
   final bool giftAidEnabled;
-  final String address;
-  final String city;
-  final String county;
-  final String postalCode;
-  final String countryId;
-  final String paymentMethod;
+  final dynamic address;
+  final dynamic city;
+  final dynamic county;
+  final dynamic postalCode;
+  final dynamic countryId;
+  final dynamic paymentMethod;
   final bool sendMarketingMail;
 
   factory Donor.fromJson(Map<String, dynamic> json) => Donor(
@@ -139,6 +132,7 @@ class Donor {
         userId: json["user_id"],
         firstName: json["first_name"],
         lastName: json["last_name"],
+        isOnboarded: json["is_onboarded"],
         title: json["title"],
         phoneNumber: json["phone_number"],
         phoneVerifiedAt: json["phone_verified_at"],
@@ -158,6 +152,7 @@ class Donor {
         "user_id": userId,
         "first_name": firstName,
         "last_name": lastName,
+        "is_onboarded": isOnboarded,
         "title": title,
         "phone_number": phoneNumber,
         "phone_verified_at": phoneVerifiedAt,

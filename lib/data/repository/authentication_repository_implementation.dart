@@ -1,18 +1,17 @@
 import 'dart:io';
 
 import 'package:idonatio/data/core/unauthorized_exception.dart';
-import 'package:idonatio/data/data_sources/repository/authentication_local_datasource.dart';
+import 'package:idonatio/data/data_sources/authentication_local_datasource.dart';
+import 'package:idonatio/data/data_sources/authentication_remote_datasource.dart';
+import 'package:idonatio/data/models/local_user_object.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:dartz/dartz.dart';
-import 'package:idonatio/domain/repository/authentication_repository.dart';
 
-import 'authentication_remote_datasource.dart';
-
-class AuthenticationRepositoryImpl extends AuthenticationRepository {
-  AuthenticationRepositoryImpl(this._authenticationRemoteDataSourceImpl,
+class AuthenticationRepository {
+  AuthenticationRepository(this._authenticationRemoteDataSourceImpl,
       this._authenticationLocalDataSourceImpl);
-  final AuthenticationRemoteDataSourceImpl _authenticationRemoteDataSourceImpl;
-  final AuthenticationLocalDataSourceImpl _authenticationLocalDataSourceImpl;
+  final AuthenticationRemoteDataSource _authenticationRemoteDataSourceImpl;
+  final AuthenticationLocalDataSource _authenticationLocalDataSourceImpl;
 
   @override
   Future<Either<AppError, void>> logout() {
@@ -20,14 +19,16 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
     throw UnimplementedError();
   }
 
-  @override
-  Future<Either<AppError, bool>> loginUser(
-      Map<String, dynamic> params) async {
+  Future<Either<AppError, bool>> loginUser(Map<String, dynamic> params) async {
     try {
       final response =
           await _authenticationRemoteDataSourceImpl.loginWithEmail(params);
-      final userToken = response.userData;
-      await _authenticationLocalDataSourceImpl.saveUserData(userToken);
+      final userData = response;
+      print(userData.toString());
+      await _authenticationLocalDataSourceImpl.saveUserData(LocalUserObject(
+          token: userData.data.token,
+          isBoarded: userData.data.user.donor.isOnboarded,
+          isEmailVerified: userData.data.user.emailVerifiedAt));
       return const Right(true);
     } on SocketException {
       return const Left(AppError(AppErrorType.network));
