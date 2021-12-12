@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idonatio/business_logic/registration_steps/cubit/registration_steps_cubit.dart';
 import 'package:idonatio/common/route_list.dart';
 import 'package:idonatio/common/words.dart';
+import 'package:idonatio/presentation/bloc/registration_steps/cubit/registration_steps_cubit.dart';
+import 'package:idonatio/presentation/widgets/input_fields/base_text_field.dart';
 import 'package:idonatio/presentation/widgets/linked_span_button.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -80,11 +81,8 @@ class _RegisterFormState extends State<RegisterForm> {
         const SizedBox(
           height: 16,
         ),
-        TextFormField(
-          decoration: const InputDecoration(
-            hintText: 'First Name',
-            labelText: 'First Name',
-          ),
+        const BaseTextField(
+          hintText: 'First Name',
         ),
         const SizedBox(
           height: 16,
