@@ -20,16 +20,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               user.token != null ? UnAuthenticated() : UnSignedAuthenticated());
         case AuthStatus.authenticated:
           LocalUserObject user = await authenticationLocalDataSource.getUser();
-          return emit(user.isEmailVerified != null
-              ? Authenticated()
-              : EmailNotVerified());
+          if (user.isEmailVerified != null &&
+              user.isBoarded != null &&
+              user.isBoarded != false) {
+            return emit(Authenticated());
+          } else if (user.isEmailVerified != null && user.isBoarded == false) {
+            return emit(NotBoarded(userObject: user));
+          } else {
+            return emit(EmailNotVerified());
+          }
 
         case AuthStatus.verifiedEmail:
           LocalUserObject user = await authenticationLocalDataSource.getUser();
-
-          return emit(user.isBoarded != null && user.isBoarded == true
-              ? Authenticated()
-              : NotBoarded());
+          if (user.isEmailVerified != null && user.isBoarded != false) {
+            return emit(Authenticated());
+          } else if (user.isBoarded == false) {
+            return emit(NotBoarded(userObject: user));
+          } else {
+            return emit(UnAuthenticated());
+          }
+        case AuthStatus.notboarded:
+          LocalUserObject user = await authenticationLocalDataSource.getUser();
+          return emit(NotBoarded(userObject: user));
         default:
           break;
       }

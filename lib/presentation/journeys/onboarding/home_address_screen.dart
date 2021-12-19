@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:idonatio/common/route_list.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:idonatio/presentation/journeys/onboarding/cubit/onboarding_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/onboarding_screen.dart';
+import 'package:idonatio/presentation/journeys/onboarding/payment_method_screen.dart';
+import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
-import 'package:idonatio/presentation/widgets/input_fields/base_text_field.dart';
 import 'package:idonatio/presentation/widgets/labels/base_label_text.dart';
 import 'package:idonatio/presentation/widgets/labels/label_10_medium.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
@@ -17,6 +20,26 @@ class HomeAddressScreen extends StatefulWidget {
 
 class _HomeAddressScreenState extends State<HomeAddressScreen> {
   String countryValue = 'United Kingdom';
+  late TextEditingController address;
+  late TextEditingController town;
+  late TextEditingController postCode;
+  @override
+  void initState() {
+    address = TextEditingController();
+    town = TextEditingController();
+    postCode = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    address.dispose();
+    town.dispose();
+    postCode.dispose();
+    super.dispose();
+  }
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +49,7 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
         child: AppBackgroundWidget(
           childWidget: SingleChildScrollView(
             child: Form(
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -51,6 +75,12 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
                   ),
                   TextFormField(
                     keyboardType: TextInputType.streetAddress,
+                    controller: address,
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: 'address is required'),
+                      MinLengthValidator(8,
+                          errorText: 'Please enter a valid  address')
+                    ]),
                     decoration: const InputDecoration(
                       hintText: 'Address',
                       labelText: 'Address',
@@ -60,7 +90,12 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
                     height: 24,
                   ),
                   TextFormField(
-                    keyboardType: TextInputType.streetAddress,
+                    keyboardType: TextInputType.text,
+                    controller: town,
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: 'address is required'),
+                      MinLengthValidator(3, errorText: 'min of 3 characters')
+                    ]),
                     decoration: const InputDecoration(
                       hintText: 'Town / City',
                       labelText: 'Town / City',
@@ -84,8 +119,7 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
                           items: <String>[
                             'United Kingdom',
                             'Nigeria',
-                            'Germany',
-                            'Brazil',
+                            'United States of America',
                           ].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -97,16 +131,55 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
                       const SizedBox(
                         width: 16,
                       ),
-                      const Flexible(child: BaseTextField(hintText: 'Postcode'))
+                      Flexible(
+                        child: TextFormField(
+                          keyboardType: TextInputType.text,
+                          controller: postCode,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Postcode is required'),
+                            MinLengthValidator(3,
+                                errorText: 'min of 6 characters')
+                          ]),
+                          decoration: const InputDecoration(
+                            hintText: 'Postcode(83738)',
+                            labelText: 'Postcode',
+                          ),
+                        ),
+                      )
                     ],
                   ),
                   const SizedBox(
                     height: 48,
                   ),
-                  ElevatedNextIconButton(
-                    text: 'Continue',
-                    onPressed: () => Navigator.pushNamed(
-                        context, RouteList.paymentMethodScreen),
+                  BlocListener<OnboardingCubit, OnboardingState>(
+                    listener: (context, state) {
+                      if (state is OnboardingSuccess) {
+                        final snackBar = SnackBar(
+                          content: const Text('Success!'),
+                          action: SnackBarAction(
+                            label: 'Ok',
+                            onPressed: () {
+                              // Some code to undo the change.
+                            },
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Navigator.push(context,
+                            AppRouter.routeToPage(const PaymentMethodScreen()));
+                      }
+                    },
+                    child: ElevatedNextIconButton(
+                        text: 'Continue',
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            context.read<OnboardingCubit>().onBoardUser({
+                              'address': address.text,
+                              'city': town.text,
+                              'postal_code': postCode.text,
+                            });
+                          }
+                        }),
                   ),
                 ],
               ),

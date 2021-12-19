@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.idonatio.idonatio">
+    <uses-permission android:name="android.permission.INTERNET" />
+
    <application
         android:label="idonatio"
         android:icon="@mipmap/ic_launcher">

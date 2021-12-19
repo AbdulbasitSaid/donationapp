@@ -23,7 +23,11 @@ class UnSignedAuthenticated extends AuthState {}
 
 class Boarded extends AuthState {}
 
-class NotBoarded extends AuthState {}
+class NotBoarded extends AuthState {
+  final LocalUserObject userObject;
+
+  const NotBoarded({required this.userObject});
+}
 
 class EmailVerified extends AuthState {}
 

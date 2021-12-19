@@ -3,8 +3,10 @@ import 'package:http/http.dart';
 import 'package:idonatio/data/core/api_client.dart';
 import 'package:idonatio/data/data_sources/authentication_local_datasource.dart';
 import 'package:idonatio/data/data_sources/authentication_remote_datasource.dart';
-import 'package:idonatio/data/repository/authentication_repository_implementation.dart';
+import 'package:idonatio/data/repository/authentication_repository.dart';
 import 'package:idonatio/domain/usecases/login_user.dart';
+import 'package:idonatio/domain/usecases/register_user.dart';
+import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 
@@ -25,6 +27,8 @@ Future init() async {
   getItInstance.registerLazySingleton<LoadingCubit>(() => LoadingCubit());
   getItInstance
       .registerLazySingleton<LoginUser>(() => LoginUser(getItInstance()));
-  getItInstance.registerLazySingleton<LoginCubit>(
-      () => LoginCubit(getItInstance(), getItInstance()));
+  getItInstance
+      .registerLazySingleton<LoginCubit>(() => LoginCubit(getItInstance()));
+  getItInstance.registerLazySingleton<AuthBloc>(
+      () => AuthBloc(authenticationLocalDataSource: getItInstance()));
 }

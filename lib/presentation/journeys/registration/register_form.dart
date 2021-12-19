@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idonatio/common/route_list.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/common/words.dart';
+import 'package:idonatio/data/core/validator.dart';
+import 'package:idonatio/domain/entities/register_request_params.dart';
+import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
 import 'package:idonatio/presentation/bloc/registration_steps/cubit/registration_steps_cubit.dart';
-import 'package:idonatio/presentation/widgets/input_fields/base_text_field.dart';
 import 'package:idonatio/presentation/widgets/linked_span_button.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -17,10 +19,42 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   String titleValue = 'Mr';
+  late TextEditingController _firsNametTextController,
+      _lastNameTextController,
+      _mobileNumberTextController,
+      _emailTextController,
+      _passwordEditingController;
+
+  bool hidePassword = true;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool _checkboxValue = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _firsNametTextController = TextEditingController();
+    _lastNameTextController = TextEditingController();
+    _mobileNumberTextController = TextEditingController();
+    _emailTextController = TextEditingController();
+    _passwordEditingController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _firsNametTextController.dispose();
+    _lastNameTextController.dispose();
+    _mobileNumberTextController.dispose();
+    _emailTextController.dispose();
+    _passwordEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: BlocBuilder<RegistrationStepsCubit, RegistrationStepsState>(
         builder: (context, state) {
           switch (state.stage) {
@@ -81,13 +115,32 @@ class _RegisterFormState extends State<RegisterForm> {
         const SizedBox(
           height: 16,
         ),
-        const BaseTextField(
-          hintText: 'First Name',
+        TextFormField(
+          controller: _firsNametTextController,
+          onChanged: (value) {
+            Validator.validateField(formKey: _formKey);
+          },
+          validator: MultiValidator([
+            RequiredValidator(errorText: 'First Name is required'),
+            MinLengthValidator(3, errorText: 'Lenght should be greater than 3')
+          ]),
+          decoration: const InputDecoration(
+            hintText: 'First Name',
+            labelText: 'First Name',
+          ),
         ),
         const SizedBox(
           height: 16,
         ),
         TextFormField(
+          onChanged: (value) {
+            Validator.validateField(formKey: _formKey);
+          },
+          controller: _lastNameTextController,
+          validator: MultiValidator([
+            RequiredValidator(errorText: 'Last Name is required'),
+            MinLengthValidator(3, errorText: 'Lenght should be greater than 3')
+          ]),
           decoration: const InputDecoration(
             hintText: 'Last Name',
             labelText: 'Last Name',
@@ -106,8 +159,10 @@ class _RegisterFormState extends State<RegisterForm> {
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: ElevatedButton(
                   onPressed: () {
-                    BlocProvider.of<RegistrationStepsCubit>(context)
-                        .nextStage();
+                    if (_formKey.currentState!.validate()) {
+                      BlocProvider.of<RegistrationStepsCubit>(context)
+                          .nextStage();
+                    }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -147,6 +202,7 @@ class _RegisterFormState extends State<RegisterForm> {
           height: 16,
         ),
         TextFormField(
+          controller: _mobileNumberTextController,
           keyboardType: TextInputType.phone,
           decoration: const InputDecoration(
             hintText: TranslationConstants.mobileOptional,
@@ -158,7 +214,13 @@ class _RegisterFormState extends State<RegisterForm> {
           height: 16,
         ),
         TextFormField(
+          controller: _emailTextController,
           keyboardType: TextInputType.emailAddress,
+          onChanged: (value) => Validator.validateField(formKey: _formKey),
+          validator: MultiValidator([
+            RequiredValidator(errorText: 'Email is required'),
+            EmailValidator(errorText: 'Please provide a valide email.')
+          ]),
           decoration: const InputDecoration(
             hintText: TranslationConstants.emailAddress,
             labelText: TranslationConstants.emailAddress,
@@ -169,41 +231,87 @@ class _RegisterFormState extends State<RegisterForm> {
           height: 16,
         ),
         TextFormField(
+          controller: _passwordEditingController,
           keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
-          decoration: const InputDecoration(
+          obscureText: hidePassword,
+          onChanged: (value) => Validator.validateField(formKey: _formKey),
+          validator: MultiValidator([
+            RequiredValidator(errorText: 'Password is required'),
+            MinLengthValidator(8,
+                errorText: 'Password should be a mininum of 8 characters')
+          ]),
+          decoration: InputDecoration(
             hintText: TranslationConstants.password,
             labelText: TranslationConstants.password,
-            prefixIcon: Icon(Icons.lock_outline),
-            suffixIcon: Icon(Icons.remove_red_eye_sharp),
+            prefixIcon: const Icon(Icons.lock_outline),
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.remove_red_eye_sharp),
+              onPressed: () {
+                setState(() {
+                  hidePassword = !hidePassword;
+                });
+              },
+            ),
           ),
         ),
-        Row(
-          children: [
-            Checkbox(value: true, onChanged: (fasle) {}),
-            Flexible(
-              child: RichText(
-                text: TextSpan(
-                  text: TranslationConstants.iHaveReadAndUnderstood,
-                  style: Theme.of(context).textTheme.bodyText1,
-                  children: [
-                    linkedSpanButton(
-                        onTap: () {},
-                        text: TranslationConstants.termsOfService),
-                    TextSpan(
-                      text: TranslationConstants.and,
-                      style: Theme.of(context).textTheme.bodyText1,
+        const SizedBox(
+          height: 16,
+        ),
+        FormField<bool>(
+          builder: (state) {
+            return Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Checkbox(
+                        value: _checkboxValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _checkboxValue = value!;
+                            state.didChange(value);
+                          });
+                        }),
+                    Flexible(
+                      child: RichText(
+                        text: TextSpan(
+                          text: TranslationConstants.iHaveReadAndUnderstood,
+                          style: Theme.of(context).textTheme.bodyText1,
+                          children: [
+                            linkedSpanButton(
+                                onTap: () {},
+                                text: TranslationConstants.termsOfService),
+                            TextSpan(
+                              text: TranslationConstants.and,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            linkedSpanButton(
+                                onTap: () {},
+                                text: TranslationConstants.privacyPolicy),
+                          ],
+                        ),
+                      ),
                     ),
-                    linkedSpanButton(
-                        onTap: () {}, text: TranslationConstants.privacyPolicy),
                   ],
                 ),
-              ),
-            )
-          ],
+                Text(
+                  state.errorText ?? '',
+                  style: TextStyle(
+                    color: Theme.of(context).errorColor,
+                  ),
+                )
+              ],
+            );
+          },
+          validator: (value) {
+            if (!_checkboxValue) {
+              return 'You need to accept Terms of Service';
+            } else {
+              return null;
+            }
+          },
         ),
         AspectRatio(
-          aspectRatio: 3 / 2,
+          aspectRatio: 3 / 1,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -211,8 +319,26 @@ class _RegisterFormState extends State<RegisterForm> {
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: ElevatedButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, RouteList.verifyEmail),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      context.read<RegisterCubit>().initiateRegistration(
+                          RegisterUserRequestParameter(
+                                  title: titleValue,
+                                  firstName: _firsNametTextController.text,
+                                  lastName: _lastNameTextController.text,
+                                  email: _emailTextController.text,
+                                  password: _passwordEditingController.text,
+                                  phoneNumber: _mobileNumberTextController.text,
+                                  platform: 'mobile',
+                                  deviceUid: '272892-08287-398903903',
+                                  os: 'ios',
+                                  osVersion: '10',
+                                  model: 'samsung s21',
+                                  ipAddress: '198.0.2.3',
+                                  screenResolution: '1080p')
+                              .toJson());
+                    }
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

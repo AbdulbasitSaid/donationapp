@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:idonatio/common/words.dart';
+import 'package:idonatio/data/core/validator.dart';
 import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
+import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 
 import 'package:idonatio/presentation/themes/app_color.dart';
+import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -19,6 +23,8 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   late TextEditingController _emailAddressController, _passwordController;
   bool enalbleSignIn = false;
+  bool hidePassword = true;
+
   @override
   void initState() {
     _emailAddressController = TextEditingController();
@@ -43,22 +49,19 @@ class _LoginFormState extends State<LoginForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('Enter your login details to continue.'),
-          // BlocBuilder<LoadingCubit, LoadingState>(builder: (context, state) {
-          //   if (state is ShowloadingState) {
-          //     return const CircularProgressIndicator();
-          //   } else {
-          //     return Container();
-          //   }
-          // }),
+          const SizedBox(
+            height: 8,
+          ),
           BlocConsumer<LoginCubit, LoginState>(
-            buildWhen: (previous, current) => current is LoginFailed,
             builder: (context, state) {
-              if (state is LoginFailed) {
-                return ListTile(
-                  leading: const Icon(Icons.cancel_outlined),
-                  title: const Text('Incorrect email / password combination'),
-                  subtitle: Text(state.errorMessage),
+              if (state is LoginLoading) {
+                return const AlertDialog(
+                  content: Center(child: CircularProgressIndicator()),
                 );
+              }
+              if (state is LoginFailed) {
+                return AppErrorDialogWidget(
+                    title: 'login failed', message: state.errorMessage);
               }
               return const SizedBox.shrink();
             },
@@ -96,16 +99,27 @@ class _LoginFormState extends State<LoginForm> {
             height: 16,
           ),
           TextFormField(
-            keyboardType: TextInputType.visiblePassword,
             controller: _passwordController,
-            obscureText: true,
-            validator: RequiredValidator(errorText: 'Password is required'),
-            onChanged: (value) => _formKey.currentState!.validate(),
-            decoration: const InputDecoration(
-              hintText: 'Password',
-              labelText: 'Password',
-              prefixIcon: Icon(Icons.lock_outline),
-              suffixIcon: Icon(Icons.remove_red_eye_sharp),
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: hidePassword,
+            onChanged: (value) => Validator.validateField(formKey: _formKey),
+            validator: MultiValidator([
+              RequiredValidator(errorText: 'Password is required'),
+              MinLengthValidator(8,
+                  errorText: 'Password should be a mininum of 8 characters')
+            ]),
+            decoration: InputDecoration(
+              hintText: TranslationConstants.password,
+              labelText: TranslationConstants.password,
+              prefixIcon: const Icon(Icons.lock_outline),
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.remove_red_eye_sharp),
+                onPressed: () {
+                  setState(() {
+                    hidePassword = !hidePassword;
+                  });
+                },
+              ),
             ),
           ),
           const SizedBox(
@@ -162,6 +176,15 @@ class _LoginFormState extends State<LoginForm> {
                 child: const Text('Sign in'),
               ),
             ],
+          ),
+          BlocBuilder<LoginCubit, LoginState>(
+            builder: (context, state) {
+              if (state is LoadingState) {
+                return const Text('loadding');
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
           ),
         ],
       ),

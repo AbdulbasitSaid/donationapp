@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:idonatio/common/route_list.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/presentation/journeys/home.dart';
+import 'package:idonatio/presentation/journeys/onboarding/cubit/onboarding_cubit.dart';
+import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/label_10_medium.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
@@ -106,10 +109,21 @@ class _OnboardingDataPreferencesScreenState
                 const SizedBox(
                   height: 42,
                 ),
-                ElevatedButton(
-                    onPressed: () =>
-                        Navigator.pushNamed(context, RouteList.home),
-                    child: Text('Complete setup'.toUpperCase()))
+                BlocListener<OnboardingCubit, OnboardingState>(
+                  listener: (context, state) {
+                    if (state is OnboardingSuccess) {
+                      Navigator.push(
+                          context, AppRouter.routeToPage(const HomeScreen()));
+                    }
+                  },
+                  child: ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<OnboardingCubit>()
+                            .onBoardUser({'send_marketing_mail': isMarketing});
+                      },
+                      child: Text('Complete setup'.toUpperCase())),
+                )
               ],
             ),
           ),

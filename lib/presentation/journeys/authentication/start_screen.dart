@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:idonatio/common/assest.dart';
-import 'package:idonatio/common/route_list.dart';
 import 'package:idonatio/common/words.dart';
 import 'package:idonatio/presentation/journeys/login/login_screen.dart';
 import 'package:idonatio/presentation/journeys/registration/registration_screen.dart';
@@ -86,3 +85,8 @@ class StartScreen extends StatelessWidget {
     );
   }
 }
+// 
+//This is just a random comment?
+// 
+// 
+// /

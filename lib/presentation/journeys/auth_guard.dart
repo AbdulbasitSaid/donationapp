@@ -8,8 +8,7 @@ import 'package:idonatio/presentation/journeys/login/login_screen.dart';
 import 'package:idonatio/presentation/journeys/onboarding/onboarding_screen.dart';
 
 class AuthGaurd extends StatelessWidget {
-  const AuthGaurd({Key? key}) : super(key: key);
-
+  const AuthGaurd({Key? key, }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
@@ -21,7 +20,9 @@ class AuthGaurd extends StatelessWidget {
         } else if (state is EmailNotVerified) {
           return const EmailVerificationScreen();
         } else if (state is NotBoarded) {
-          return const OnboardingScreen();
+          return OnboardingScreen(
+            localUserObject: state.userObject,
+          );
         } else {
           return const StartScreen();
         }

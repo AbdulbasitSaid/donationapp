@@ -1,95 +1,43 @@
 // To parse this JSON data, do
 //
-//     final userModel = userModelFromJson(jsonString);
+//     final onboardingResponse = onboardingResponseFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
-UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+OnboardingResponse onboardingResponseFromJson(String str) =>
+    OnboardingResponse.fromJson(json.decode(str));
 
-String userModelToJson(UserModel data) => json.encode(data.toJson());
+String onboardingResponseToJson(OnboardingResponse data) =>
+    json.encode(data.toJson());
 
-class UserModel {
-  UserModel({
+class OnboardingResponse {
+  OnboardingResponse({
+    required this.status,
+    required this.message,
     required this.data,
   });
 
-  final UserData data;
+  final String status;
+  final String message;
+  final Data data;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        data: UserData.fromJson(json["data"]),
+  factory OnboardingResponse.fromJson(Map<String, dynamic> json) =>
+      OnboardingResponse(
+        status: json["status"],
+        message: json["message"],
+        data: Data.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
         "data": data.toJson(),
       };
 }
 
-class UserData {
-  UserData({
-    required this.token,
-    required this.tokenType,
-    required this.expiresIn,
-    required this.isDeviceSaved,
-    required this.user,
-  });
-
-  final String token;
-  final String tokenType;
-  final int expiresIn;
-  final bool isDeviceSaved;
-  final User user;
-
-  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
-        token: json["token"],
-        tokenType: json["token_type"],
-        expiresIn: json["expires_in"],
-        isDeviceSaved: json["is_device_saved"],
-        user: User.fromJson(json["user"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "token": token,
-        "token_type": tokenType,
-        "expires_in": expiresIn,
-        "is_device_saved": isDeviceSaved,
-        "user": user.toJson(),
-      };
-}
-
-class User {
-  User({
-    required this.id,
-    required this.email,
-    required this.isActive,
-    required this.emailVerifiedAt,
-    required this.donor,
-  });
-
-  final String id;
-  final String email;
-  final bool isActive;
-  final dynamic emailVerifiedAt;
-  final Donor donor;
-
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        email: json["email"],
-        isActive: json["is_active"],
-        emailVerifiedAt: json["email_verified_at"],
-        donor: Donor.fromJson(json["donor"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "email": email,
-        "is_active": isActive,
-        "email_verified_at": emailVerifiedAt,
-        "donor": donor.toJson(),
-      };
-}
-
-class Donor {
-  Donor({
+class Data {
+  Data({
     required this.id,
     required this.userId,
     required this.firstName,
@@ -117,17 +65,17 @@ class Donor {
   final String title;
   final String? phoneNumber;
   final dynamic phoneVerifiedAt;
-  final bool phoneReceiveSecurityAlert;
-  final bool giftAidEnabled;
-  final dynamic address;
-  final dynamic city;
-  final dynamic county;
-  final dynamic postalCode;
-  final dynamic countryId;
-  final dynamic paymentMethod;
-  final bool sendMarketingMail;
+  final bool? phoneReceiveSecurityAlert;
+  final bool? giftAidEnabled;
+  final String? address;
+  final String? city;
+  final String? county;
+  final String? postalCode;
+  final String? countryId;
+  final String? paymentMethod;
+  final bool? sendMarketingMail;
 
-  factory Donor.fromJson(Map<String, dynamic> json) => Donor(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         userId: json["user_id"],
         firstName: json["first_name"],

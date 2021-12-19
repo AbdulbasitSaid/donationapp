@@ -20,11 +20,25 @@ class ApiClient {
         'Authorization': 'Bearer $token',
       },
     );
-
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception(response.reasonPhrase);
+    switch (response.statusCode) {
+      case 200:
+        return json.decode(response.body);
+      case 201:
+        return json.decode(response.body);
+      case 400:
+        throw BadRequest();
+      case 401:
+        throw UnauthorisedException();
+      case 403:
+        throw Forbidden();
+      case 404:
+        throw NotFound();
+      case 422:
+        throw UnprocessableEntity();
+      case 500:
+        throw InternalServerError();
+      default:
+        throw Exception(response.reasonPhrase);
     }
   }
 
@@ -38,13 +52,59 @@ class ApiClient {
         'Authorization': 'Bearer $token',
       },
     );
+    print(response.body);
+    switch (response.statusCode) {
+      case 200:
+        return json.decode(response.body);
+      case 201:
+        return json.decode(response.body);
+      case 400:
+        throw BadRequest();
+      case 401:
+        throw UnauthorisedException();
+      case 403:
+        throw Forbidden();
+      case 404:
+        throw NotFound();
+      case 422:
+        throw UnprocessableEntity();
+      case 500:
+        throw InternalServerError();
+      default:
+        throw Exception(response.reasonPhrase);
+    }
+  }
 
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else if (response.statusCode == 401) {
-      throw UnauthorisedException();
-    } else {
-      throw Exception(response.reasonPhrase);
+  dynamic patch(String path,
+      {Map<dynamic, dynamic>? params, String? token}) async {
+    final response = await _client.patch(
+      getPath(path, null),
+      body: jsonEncode(params),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    print(response.body);
+    switch (response.statusCode) {
+      case 200:
+        return json.decode(response.body);
+      case 201:
+        return json.decode(response.body);
+      case 400:
+        throw BadRequest();
+      case 401:
+        throw UnauthorisedException();
+      case 403:
+        throw Forbidden();
+      case 404:
+        throw NotFound();
+      case 422:
+        throw UnprocessableEntity();
+      case 500:
+        throw InternalServerError();
+      default:
+        throw Exception(response.reasonPhrase);
     }
   }
 
@@ -58,23 +118,33 @@ class ApiClient {
           (value) => Response.fromStream(value),
         );
 
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else if (response.statusCode == 401) {
-      throw UnauthorisedException();
-    } else {
-      throw Exception(response.reasonPhrase);
+    switch (response.statusCode) {
+      case 200:
+        return json.decode(response.body);
+      case 201:
+        return json.decode(response.body);
+      case 400:
+        throw BadRequest();
+      case 401:
+        throw UnauthorisedException();
+      case 403:
+        throw Forbidden();
+      case 404:
+        throw NotFound();
+      case 422:
+        throw UnprocessableEntity();
+      case 500:
+        throw InternalServerError();
+      default:
+        throw Exception(response.reasonPhrase);
     }
   }
 
   Uri getPath(String path, Map<dynamic, dynamic>? params) {
-    var paramsString = '';
     if (params?.isNotEmpty ?? false) {
-      params?.forEach((key, value) {
-        paramsString += '&$key=$value';
-      });
+      params?.forEach((key, value) {});
     }
 
-    return Uri.parse('${ApiConstants.baseURl}$path?$paramsString');
+    return Uri.parse('${ApiConstants.baseUrl}/$path');
   }
 }

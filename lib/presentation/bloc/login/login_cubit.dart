@@ -1,22 +1,20 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:idonatio/common/words.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/login_request_params.dart';
 import 'package:idonatio/domain/usecases/login_user.dart';
-import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit(
-    this.loadingCubit,
     this.loginUser,
   ) : super(LoginInitial());
-  final LoadingCubit loadingCubit;
   final LoginUser loginUser;
   void initiateLogin(String email, String password) async {
-    loadingCubit.show();
+    emit(LoginLoading());
     final Either<AppError, bool> eitherResponse = await loginUser(
       LoginRequestParams(
         email: email,
@@ -41,13 +39,12 @@ class LoginCubit extends Cubit<LoginState> {
         return LoginSuccess();
       },
     ));
-    loadingCubit.hide();
   }
 
   String getErrorMessage(AppErrorType appErrorType) {
     switch (appErrorType) {
       case AppErrorType.network:
-        return 'ranslationConstants.noNetwork';
+        return TranslationConstants.noNetwork;
       case AppErrorType.api:
       case AppErrorType.database:
         return 'Check that you have entered a correct and registered email address and password.';

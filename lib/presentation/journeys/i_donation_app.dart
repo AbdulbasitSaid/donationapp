@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/data/data_sources/authentication_local_datasource.dart';
+import 'package:idonatio/data/repository/authentication_repository.dart';
 import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
+import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
-import 'package:idonatio/presentation/journeys/auth_guard.dart';
+import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
+import 'package:idonatio/presentation/bloc/registration_steps/cubit/registration_steps_cubit.dart';
+import 'package:idonatio/presentation/journeys/email_verification/cubit/verification_cubit.dart';
+import 'package:idonatio/presentation/journeys/email_verification/email_varification_screen.dart';
+import 'package:idonatio/presentation/journeys/reset_password/bloc/resetpassword_bloc.dart';
+import 'package:idonatio/presentation/journeys/reset_password/new_password.dart';
+import 'package:idonatio/presentation/journeys/reset_password/reset_password.dart';
+import 'package:idonatio/presentation/journeys/reset_password/verification_code_screen.dart';
 import 'package:idonatio/presentation/themes/app_theme_data.dart';
+
+import 'auth_guard.dart';
+import 'onboarding/cubit/onboarding_cubit.dart';
 
 class IdonatioApp extends StatefulWidget {
   const IdonatioApp({Key? key}) : super(key: key);
@@ -35,14 +48,49 @@ class _IdonatioAppState extends State<IdonatioApp> {
                 ..add(const ChangeAuth(AuthStatus.appStarted)),
         ),
         BlocProvider<LoginCubit>(
-          create: (context) => LoginCubit(getItInstance(), getItInstance()),
+          create: (context) => LoginCubit(
+            getItInstance(),
+          ),
         ),
-        
+        BlocProvider<RegisterCubit>(
+          create: (context) => RegisterCubit(getItInstance(), getItInstance()),
+        ),
+        BlocProvider<LoadingCubit>(
+          create: (context) => LoadingCubit(),
+        ),
+        BlocProvider<VerificationCubit>(
+          create: (context) =>
+              VerificationCubit(getItInstance(), getItInstance()),
+        ),
+        BlocProvider<OnboardingCubit>(
+          create: (context) => OnboardingCubit(getItInstance()),
+        ),
+        BlocProvider<RegisterCubit>(
+          create: (context) => RegisterCubit(getItInstance(), getItInstance()),
+        ),
+        BlocProvider<RegistrationStepsCubit>(
+          create: (context) => RegistrationStepsCubit(),
+        ),
+        BlocProvider<ResetpasswordBloc>(
+          create: (context) => ResetpasswordBloc(getItInstance()),
+        ),
       ],
-      child: MaterialApp(
-        title: 'Idonation',
-        theme: AppThemeData.appTheme(),
-        home: const AuthGaurd(),
+      child: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(
+            create: (context) => AuthenticationLocalDataSource(),
+          ),
+          RepositoryProvider(
+            create: (context) =>
+                AuthenticationRepository(getItInstance(), getItInstance()),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'Idonation',
+          theme: AppThemeData.appTheme(),
+          home: const AuthGaurd(),
+          // home: const ResetPasswordEmailScreen(),
+        ),
       ),
     );
   }

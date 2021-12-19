@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/common/words.dart';
+import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
+import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
 import 'package:idonatio/presentation/bloc/registration_steps/cubit/registration_steps_cubit.dart';
+import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
+import '../../../enums.dart';
+import '../auth_guard.dart';
 import 'register_form.dart';
 
 class RegistrationScreen extends StatelessWidget {
@@ -17,9 +22,9 @@ class RegistrationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: AppBackgroundWidget(
-          childWidget: Column(
+      body: AppBackgroundWidget(
+        childWidget: SingleChildScrollView(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -29,10 +34,32 @@ class RegistrationScreen extends StatelessWidget {
                   text: TranslationConstants.register,
                 ),
               ),
-              BlocProvider<RegistrationStepsCubit>(
-                create: (context) => RegistrationStepsCubit(),
-                child: const RegisterForm(),
-              )
+              BlocConsumer<RegisterCubit, RegisterState>(
+                buildWhen: (previous, current) => current is RegisterFailed,
+                builder: (context, state) {
+                  if (state is RegisterFailed) {
+                    return Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.cancel_outlined),
+                        title: const Text('Registration failed'),
+                        subtitle: Text(state.errorMessage),
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+                listenWhen: (previous, current) => current is RegisterSuccess,
+                listener: (context, state) {
+                  context
+                      .read<AuthBloc>()
+                      .add(const ChangeAuth(AuthStatus.authenticated));
+                  Navigator.push(
+                    context,
+                    AppRouter.routeToPage(const AuthGaurd()),
+                  );
+                },
+              ),
+              const RegisterForm()
             ],
           ),
         ),

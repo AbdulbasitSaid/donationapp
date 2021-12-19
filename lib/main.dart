@@ -16,23 +16,12 @@ void main() async {
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]));
   unawaited(get_it.init());
   await Hive.initFlutter();
-  // AuthenticationLocalDataSource().saveUserData(LocalUserObject(
-  //     token: 'my toking is dope', isBoarded: true, isEmailVerified: true));
-  var token = await AuthenticationLocalDataSource().getUser();
-  print(token.token);
-
+  var token =
+      await AuthenticationLocalDataSource().getSaveResetPasswordAndToken();
+  print(token.passwordResetToken);
   // AuthenticationRepository(get_it.getItInstance(), get_it.getItInstance())
-  //     .loginUser(LoginRequestParams(
-  //   email: 'pap@gmail.com',
-  //   password: 'password',
-  //   platform: 'mobile',
-  //   deviceUid: '272892-08287-398903903',
-  //   os: 'ios',
-  //   osVersion: '190',
-  //   model: 'samsung s281',
-  //   ipAddress: '198.0.2.3',
-  //   screenResolution: '1080p',
-  // ).toJson());
+  //     .verifyEmail(OtpRequestParameter(otp: '123456').toJson());
+  await AuthenticationLocalDataSource().deleteUserData();
   BlocOverrides.runZoned(
     () => runApp(
       const IdonatioApp(),
