@@ -16,6 +16,9 @@ class AppThemeData {
         color: AppColor.text90Primary,
       );
 
+  static TextStyle? get headLineSemiBold => _mediumLevel1Header!.copyWith(
+        fontWeight: FontWeight.w600,
+      );
 //
   static TextStyle? get _mediumLevel2Header => _inter.headline2?.copyWith(
         fontWeight: FontWeight.w500,
@@ -31,9 +34,25 @@ class AppThemeData {
         color: AppColor.text90Primary,
         fontSize: 20,
       );
+  static TextStyle? get _mediumLevel4Headline => _inter.headline4?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: AppColor.text90Primary,
+        fontSize: 18,
+      );
 
+  static TextStyle? get _mediumLevel6Header => _inter.headline6?.copyWith(
+        fontWeight: FontWeight.w600,
+        fontStyle: FontStyle.normal,
+        fontSize: 14,
+        color: AppColor.text90Primary,
+      );
   static TextStyle? get _buttonText => _inter.button?.copyWith(
         color: Colors.white,
+      );
+  static TextStyle? get _uiTextBase => _inter.bodyText1?.copyWith(
+        color: AppColor.text70Primary,
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
       );
 
   static get child => null;
@@ -45,6 +64,13 @@ class AppThemeData {
         headline1: _mediumLevel1Header,
         headline2: _mediumLevel2Header,
         headline3: _mediumLevel3Header,
+        headline4: _mediumLevel4Headline,
+        headline6: _mediumLevel6Header,
+        bodyText1: _uiTextBase,
+        bodyText2: _uiTextBase!.copyWith(
+          fontWeight: FontWeight.w400,
+          fontSize: 14,
+        ),
         button: _buttonText,
       );
 
@@ -54,6 +80,7 @@ class AppThemeData {
     return ThemeData(
       primaryColor: AppColor.basePrimary,
       primaryColorLight: AppColor.basePrimary,
+      primaryColorDark: AppColor.darkPrimary,
       brightness: Brightness.light,
       secondaryHeaderColor: AppColor.darkSecondaryAmber,
       focusColor: AppColor.basePrimary,
