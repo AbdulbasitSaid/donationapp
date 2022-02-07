@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
@@ -52,6 +53,7 @@ class ApiClient {
         'Authorization': 'Bearer $token',
       },
     );
+    log(response.body);
     switch (response.statusCode) {
       case 200:
         return json.decode(response.body);

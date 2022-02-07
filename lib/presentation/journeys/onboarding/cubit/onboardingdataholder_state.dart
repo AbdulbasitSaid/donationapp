@@ -20,5 +20,5 @@ class OnboardingdataUpdated extends OnboardingdataholderState {
   }
 
   @override
-  List<Object> get props => [onboardingEntity.toJson()];
+  List<Object> get props => [onboardingEntity];
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
-import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/reset_password/reset_password.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -35,8 +36,8 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   void dispose() {
-    _emailAddressController.clear();
-    _passwordController.clear();
+    _emailAddressController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -47,7 +48,6 @@ class _LoginFormState extends State<LoginForm> {
     return Form(
       key: _formKey,
       child: BlocConsumer<LoginCubit, LoginState>(
-        // listenWhen: (previous, current) => current is LoginLoading,
         listener: (context, state) {
           if (state is LoginLoading) {
             showDialog(
@@ -58,8 +58,10 @@ class _LoginFormState extends State<LoginForm> {
                   );
                 });
           } else if (state is LoginSuccess) {
-            Navigator.of(context, rootNavigator: true).pop();
-            context.read<AuthBloc>().add(const ChangeAuth(AuthStatus.authenticated));
+            context
+                .read<UserCubit>()
+                .setUserState(getItInstance(), AuthStatus.authenticated);
+
             Navigator.push(context, AppRouter.routeToPage(const AuthGaurd()));
           } else {
             Navigator.of(context, rootNavigator: true).pop();

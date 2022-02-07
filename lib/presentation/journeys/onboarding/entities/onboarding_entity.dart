@@ -21,17 +21,19 @@ class OnboardingEntity extends Equatable {
     this.postalCode = '',
     this.countryId = '',
     this.paymentMethod,
+    this.stripeCustomerId,
     this.sendMarketingMail = false,
     this.isOnboarded = false,
     this.donateAnonymously = false,
   });
 
-  final bool giftAidEnabled;
+  final  bool giftAidEnabled;
   final String address;
   final String city;
   final String county;
   final String postalCode;
   final String countryId;
+  final String? stripeCustomerId;
   final String? paymentMethod;
   final bool sendMarketingMail;
   final bool isOnboarded;
@@ -39,17 +41,17 @@ class OnboardingEntity extends Equatable {
 
   factory OnboardingEntity.fromJson(Map<String, dynamic> json) =>
       OnboardingEntity(
-        giftAidEnabled: json["gift_aid_enabled"],
-        address: json["address"],
-        city: json["city"],
-        county: json["county"],
-        postalCode: json["postal_code"],
-        countryId: json["country_id"],
-        paymentMethod: json["payment_method"],
-        sendMarketingMail: json["send_marketing_mail"],
-        isOnboarded: json["is_onboarded"],
-        donateAnonymously: json['donate_anonymously'],
-      );
+          giftAidEnabled: json["gift_aid_enabled"],
+          address: json["address"],
+          city: json["city"],
+          county: json["county"],
+          postalCode: json["postal_code"],
+          countryId: json["country_id"],
+          paymentMethod: json["payment_method"],
+          sendMarketingMail: json["send_marketing_mail"],
+          isOnboarded: json["is_onboarded"],
+          donateAnonymously: json['donate_anonymously'],
+          stripeCustomerId: json['stripe_customer_id']);
 
   Map<String, dynamic> toJson() => {
         "gift_aid_enabled": giftAidEnabled,
@@ -61,6 +63,7 @@ class OnboardingEntity extends Equatable {
         "payment_method": paymentMethod,
         "send_marketing_mail": sendMarketingMail,
         "is_onboarded": isOnboarded,
+        "stripe_customer_id": stripeCustomerId,
         'donate_anonymously': donateAnonymously,
       };
 
@@ -76,5 +79,6 @@ class OnboardingEntity extends Equatable {
         {'send marketing mail ': sendMarketingMail},
         {'is onboarding ': isOnboarded},
         {'donate anonymously ?': donateAnonymously},
+        {'stripe customer id': stripeCustomerId}
       ];
 }

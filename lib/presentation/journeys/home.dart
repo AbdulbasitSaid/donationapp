@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/journeys/new_donation/make_donation.dart';
-import 'package:idonatio/presentation/widgets/app_background_widget.dart';
+
+import 'profile/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,11 +11,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const List<Widget> _homeScreens = <Widget>[
-    MakeDonationScreen(),
-    Text('04 – Donation History'),
-    Text('05 – Saved donees'),
-    Text('03 – Manage Account'),
+  static final List<Widget> _homeScreens = <Widget>[
+    const MakeDonationScreen(),
+    const Text('04 – Donation History'),
+    const Text('05 – Saved donees'),
+    const ProfileScreen(),
   ];
   int pageIndex = 0;
   PageController pageController = PageController();
@@ -23,12 +24,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
-          ],
-        ),
+        // appBar: AppBar(
+        //   automaticallyImplyLeading: false,
+        //   actions: [
+        //     IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
+        //   ],
+        // ),
         body: Center(
           child: PageView(
             children: _homeScreens,

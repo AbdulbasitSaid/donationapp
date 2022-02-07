@@ -3,9 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/common/words.dart';
 import 'package:idonatio/data/core/validator.dart';
+import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/domain/entities/register_request_params.dart';
+import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
 import 'package:idonatio/presentation/bloc/registration_steps/cubit/registration_steps_cubit.dart';
+import 'package:idonatio/presentation/journeys/auth_guard.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
+import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/linked_span_button.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -318,36 +323,59 @@ class _RegisterFormState extends State<RegisterForm> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.symmetric(horizontal: 18),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      context.read<RegisterCubit>().initiateRegistration(
-                          RegisterUserRequestParameter(
-                                  title: titleValue,
-                                  firstName: _firsNametTextController.text,
-                                  lastName: _lastNameTextController.text,
-                                  email: _emailTextController.text,
-                                  password: _passwordEditingController.text,
-                                  phoneNumber: _mobileNumberTextController.text,
-                                  platform: 'mobile',
-                                  deviceUid: '272892-08287-398903903',
-                                  os: 'ios',
-                                  osVersion: '10',
-                                  model: 'samsung s21',
-                                  ipAddress: '198.0.2.3',
-                                  screenResolution: '1080p')
-                              .toJson());
+                child: BlocConsumer<RegisterCubit, RegisterState>(
+                  listener: (context, state) {
+                    if (state is RegisterSuccess) {
+                      context.read<UserCubit>().setUserState(
+                          getItInstance(), AuthStatus.authenticated);
+                      Navigator.push(
+                          context, AppRouter.routeToPage(const AuthGaurd()));
                     }
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Register'.toUpperCase(),
-                      ),
-                    ],
-                  ),
+                  builder: (context, state) {
+                    if (state is RegisterLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            context.read<RegisterCubit>().initiateRegistration(
+                                RegisterUserRequestParameter(
+                                        title: titleValue,
+                                        firstName:
+                                            _firsNametTextController.text,
+                                        lastName: _lastNameTextController.text,
+                                        email: _emailTextController.text,
+                                        password:
+                                            _passwordEditingController.text,
+                                        phoneNumber:
+                                            _mobileNumberTextController.text,
+                                        platform: 'mobile',
+                                        deviceUid: '272892-08287-398903903',
+                                        os: 'ios',
+                                        osVersion: '10',
+                                        model: 'samsung s21',
+                                        ipAddress: '198.0.2.3',
+                                        screenResolution: '1080p')
+                                    .toJson());
+                            context.read<UserCubit>().setUserState(
+                                getItInstance(), AuthStatus.authenticated);
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Register'.toUpperCase(),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
                 ),
               ),
             ],
