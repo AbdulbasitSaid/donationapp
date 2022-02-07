@@ -1,36 +1,21 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/retry.dart';
-import 'package:idonatio/data/models/donee_models/donee_response_model.dart';
-import 'package:idonatio/di/get_it.dart';
-import 'package:idonatio/domain/entities/app_error.dart';
-import 'package:idonatio/enums.dart';
-import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_process_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/enable_gift_aid_for_new_donation.dart';
-import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
-import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
-import 'package:idonatio/presentation/widgets/dialogs/select_donation_type_dailog.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
-import 'package:idonatio/presentation/widgets/labels/base_label_text.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
-import 'package:intl/intl.dart';
 
 import 'entities/donation_item_entity.dart';
 import 'entities/donation_process_entity.dart';
-import 'entities/donation_type_entity.dart';
 
 class DonationDetialsScreen extends StatefulWidget {
   const DonationDetialsScreen({Key? key}) : super(key: key);
