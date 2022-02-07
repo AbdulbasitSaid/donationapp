@@ -1,14 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
-import 'package:idonatio/data/repository/authentication_repository.dart';
+import 'package:idonatio/data/repository/user_repository.dart';
 
 part 'verify_state.dart';
 
 class VerifyCubit extends Cubit<VerificationState> {
   VerifyCubit({required this.authenticationRepository})
       : super(VerificationInitial());
-  final AuthenticationRepository authenticationRepository;
+  final UserRepository authenticationRepository;
 
   void veryEmail(String otp) async {
     emit(VerificationLoading());

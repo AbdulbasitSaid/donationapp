@@ -12,4 +12,8 @@ class RegistrationStepsCubit extends Cubit<RegistrationStepsState> {
   void previousStage() {
     emit(RegistrationStepsState(stage: state.stage - 1));
   }
+
+  void resetStage() {
+    emit(const RegistrationStepsState(stage: 1));
+  }
 }

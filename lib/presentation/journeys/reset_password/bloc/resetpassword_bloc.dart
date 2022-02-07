@@ -4,14 +4,14 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/common/words.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
-import 'package:idonatio/data/repository/authentication_repository.dart';
+import 'package:idonatio/data/repository/user_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 
 part 'resetpassword_event.dart';
 part 'resetpassword_state.dart';
 
 class ResetpasswordBloc extends Bloc<ResetpasswordEvent, ResetpasswordState> {
-  final AuthenticationRepository _authenticationRepository;
+  final UserRepository _authenticationRepository;
   ResetpasswordBloc(this._authenticationRepository)
       : super(ResetpasswordInitial()) {
     on<ValidateEmail>(_onValidateEmail);

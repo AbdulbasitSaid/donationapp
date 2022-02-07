@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:idonatio/data/models/local_user_object.dart';
+import 'package:idonatio/data/models/user_models/local_user_model.dart';
 import 'package:idonatio/presentation/journeys/onboarding/gift_aid_screen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/label_10_medium.dart';
 import 'package:idonatio/presentation/widgets/labels/level_1_headline.dart';
-
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({Key? key, required this.localUserObject})

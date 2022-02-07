@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/common/words.dart';
-import 'package:idonatio/data/repository/authentication_repository.dart';
+import 'package:idonatio/data/repository/user_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/login_request_params.dart';
 
@@ -10,7 +10,7 @@ part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this._authenticationRepository) : super(LoginInitial());
-  final AuthenticationRepository _authenticationRepository;
+  final UserRepository _authenticationRepository;
   void initializeLogin() {
     emit(LoginInitial());
   }

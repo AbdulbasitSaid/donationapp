@@ -61,18 +61,20 @@ class AppThemeData {
 
 // textTheme
   static TextTheme appTextTheme() => TextTheme(
-        headline1: _mediumLevel1Header,
-        headline2: _mediumLevel2Header,
-        headline3: _mediumLevel3Header,
-        headline4: _mediumLevel4Headline,
-        headline6: _mediumLevel6Header,
-        bodyText1: _uiTextBase,
-        bodyText2: _uiTextBase!.copyWith(
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
-        ),
-        button: _buttonText,
-      );
+      headline1: _mediumLevel1Header,
+      headline2: _mediumLevel2Header,
+      headline3: _mediumLevel3Header,
+      headline4: _mediumLevel4Headline,
+      headline6: _mediumLevel6Header,
+      subtitle1:
+          _uiTextBase!.copyWith(fontSize: 16, fontWeight: FontWeight.w400),
+      bodyText1: _uiTextBase,
+      bodyText2: _uiTextBase!.copyWith(
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
+      ),
+      button: _buttonText,
+      caption: _uiTextBase!.copyWith(fontSize: 12));
 
 // end textTheme
 
@@ -89,6 +91,8 @@ class AppThemeData {
       disabledColor: AppColor.lightPrimary,
       hoverColor: AppColor.basePrimary,
       textTheme: appTextTheme(),
+      textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(primary: AppColor.basePrimary)),
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: AppColor.basePrimary,
         selectionHandleColor: AppColor.basePrimary,

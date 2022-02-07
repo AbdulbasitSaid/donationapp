@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
+import 'package:idonatio/di/get_it.dart';
+import 'package:idonatio/enums.dart';
+import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/email_verification/cubit/verification_cubit.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
+import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
-
-import '../../../enums.dart';
 
 class EmailVerificationScreen extends StatelessWidget {
   const EmailVerificationScreen({Key? key}) : super(key: key);
@@ -150,24 +152,30 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
             height: 32,
           ),
           BlocConsumer<VerificationCubit, VerificationState>(
+            listenWhen: (previous, current) => current is VerificationSuccess,
             listener: (context, state) {
-              if (state is VerificationSuccess) {
-                context
-                    .read<AuthBloc>()
-                    .add(const ChangeAuth(AuthStatus.verifiedEmail));
-              }
+              context
+                  .read<UserCubit>()
+                  .setUserState(getItInstance(), AuthStatus.authenticated);
+              Navigator.push(context, AppRouter.routeToPage(const AuthGaurd()));
             },
             builder: (context, state) {
-              return ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    context
-                        .read<VerificationCubit>()
-                        .verifyOtp(_otpController.text);
-                  }
-                },
-                child: const Text('Verify Email'),
-              );
+              if (state is VerificationLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      context
+                          .read<VerificationCubit>()
+                          .verifyOtp(_otpController.text);
+                    }
+                  },
+                  child: const Text('Verify Email'),
+                );
+              }
             },
           ),
         ],

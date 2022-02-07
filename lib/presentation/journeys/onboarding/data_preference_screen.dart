@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idonatio/enums.dart';
-import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboarding_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboardingdataholder_cubit.dart';
@@ -35,9 +33,6 @@ class _OnboardingDataPreferencesScreenState
             child: BlocConsumer<OnboardingCubit, OnboardingState>(
               listener: (context, state) {
                 if (state is OnboardingSuccess) {
-                  context
-                      .read<AuthBloc>()
-                      .add(const ChangeAuth(AuthStatus.authenticated));
                   Navigator.push(
                       context, AppRouter.routeToPage(const AuthGaurd()));
                 }

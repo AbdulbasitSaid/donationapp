@@ -8,17 +8,12 @@ class AppLoader extends StatelessWidget {
   final String loadingMessage;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * .6,
-      child: AlertDialog(
-        title: Row(
-          children: [
-            const CircularProgressIndicator(),
-            const SizedBox(
-              width: 16,
-            ),
-            Flexible(child: Text(loadingMessage)),
-          ],
+    return const Scaffold(
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          // child: Image.asset(AppAssest.logo),
+          child: CircularProgressIndicator(),
         ),
       ),
     );
