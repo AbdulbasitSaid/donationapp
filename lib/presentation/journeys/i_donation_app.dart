@@ -15,7 +15,6 @@ import 'package:idonatio/presentation/journeys/new_donation/cubit/select_payment
 import 'package:idonatio/presentation/journeys/onboarding/cubit/create_setup_intent_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/getcountreis_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboardingdataholder_cubit.dart';
-import 'package:idonatio/presentation/journeys/profile/cubit/logout_cubit.dart';
 import 'package:idonatio/presentation/journeys/reset_password/bloc/resetpassword_bloc.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
@@ -24,6 +23,7 @@ import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/themes/app_theme_data.dart';
 
 import 'auth_guard.dart';
+import 'manage_account/cubit/logout_cubit.dart';
 import 'new_donation/cubit/get_payment_methods_cubit.dart';
 import 'new_donation/cubit/makedonation_cubit.dart';
 import 'onboarding/cubit/onboarding_cubit.dart';

@@ -1,7 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:idonatio/presentation/journeys/new_donation/make_donation.dart';
+import 'dart:developer';
 
-import 'profile/profile_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/presentation/journeys/new_donation/make_donation.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
+
+import '../../di/get_it.dart';
+import '../../enums.dart';
+import '../bloc/login/login_cubit.dart';
+import '../router/app_router.dart';
+import 'auth_guard.dart';
+import 'manage_account/cubit/logout_cubit.dart';
+import 'manage_account/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,9 +23,33 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   static final List<Widget> _homeScreens = <Widget>[
     const MakeDonationScreen(),
-    const Text('04 – Donation History'),
+    Center(
+      child: BlocConsumer<LogoutCubit, LogoutState>(
+        listener: (context, state) {
+          if (state is LogoutSuccessful) {
+            context
+                .read<UserCubit>()
+                .setUserState(getItInstance(), AuthStatus.unauthenticated);
+            Navigator.pushAndRemoveUntil(context,
+                AppRouter.routeToPage(const AuthGaurd()), (route) => false);
+          }
+        },
+        builder: (context, state) {
+          if (state is LogoutLoading) {
+            return const CircularProgressIndicator();
+          } else {
+            return ElevatedButton(
+                onPressed: () {
+                  log('hey');
+                  context.read<LogoutCubit>().logoutUser();
+                },
+                child: const Text('Loggout'));
+          }
+        },
+      ),
+    ),
     const Text('05 – Saved donees'),
-    const ProfileScreen(),
+    const ManageAccountScreen(),
   ];
   int pageIndex = 0;
   PageController pageController = PageController();
