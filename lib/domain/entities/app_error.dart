@@ -14,7 +14,9 @@ enum AppErrorType {
   database,
   unauthorized,
   badRequest,
+  forbidden,
   unProcessableEntity,
   unExpected,
+  notFound,
   serveError,
 }
