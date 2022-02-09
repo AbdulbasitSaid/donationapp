@@ -11,7 +11,7 @@ import '../bloc/login/login_cubit.dart';
 import '../router/app_router.dart';
 import 'auth_guard.dart';
 import 'manage_account/cubit/logout_cubit.dart';
-import 'manage_account/profile_screen.dart';
+import 'manage_account/manage_account_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -58,12 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        // appBar: AppBar(
-        //   automaticallyImplyLeading: false,
-        //   actions: [
-        //     IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
-        //   ],
-        // ),
+    
         body: Center(
           child: PageView(
             children: _homeScreens,
