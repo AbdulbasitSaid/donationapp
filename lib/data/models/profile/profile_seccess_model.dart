@@ -73,7 +73,7 @@ class User {
   String id;
   String email;
   bool isActive;
-  DateTime emailVerifiedAt;
+  DateTime? emailVerifiedAt;
   Donor donor;
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
@@ -92,7 +92,7 @@ class User {
         "id": id,
         "email": email,
         "is_active": isActive,
-        "email_verified_at": emailVerifiedAt.toIso8601String(),
+        "email_verified_at": emailVerifiedAt?.toIso8601String(),
         "donor": donor.toJson(),
       };
 }
