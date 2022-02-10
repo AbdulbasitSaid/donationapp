@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:idonatio/data/models/user_models/donor_model.dart';
+import 'package:idonatio/data/models/user_models/user_data_model.dart';
+import 'package:idonatio/data/models/user_models/user_model.dart';
 
 import 'package:idonatio/di/get_it.dart' as get_it;
 import 'package:idonatio/presentation/bloc/simple_bloc_observer.dart';
@@ -20,12 +23,24 @@ void main() async {
   unawaited(
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]));
   unawaited(get_it.init());
-  await Hive.initFlutter();
-
+  HiveInitiator.initialize();
   BlocOverrides.runZoned(
     () => runApp(
       const IdonatioApp(),
     ),
     blocObserver: SimpleBlocObserver(),
   );
+}
+
+class HiveInitiator {
+  HiveInitiator._();
+  static void initialize() async {
+    await Hive.initFlutter();
+    Hive.registerAdapter(DonorModelAdapter());
+    await Hive.openBox('donor');
+    Hive.registerAdapter(UserModelAdapter());
+    await Hive.openBox('user');
+    Hive.registerAdapter(UserDataAdapter());
+    await Hive.openBox('user_data');
+  }
 }
