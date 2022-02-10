@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import '../profile/profile_seccess_model.dart';
+import 'package:idonatio/data/models/user_models/user_data_model.dart';
 
 UserResponseModel userResponseModelFromJson(String str) =>
     UserResponseModel.fromJson(json.decode(str));
@@ -13,15 +13,14 @@ String userResponseModelToJson(UserResponseModel data) =>
     json.encode(data.toJson());
 
 class UserResponseModel {
+  final String status;
+  final String message;
+  final UserData data;
   UserResponseModel({
     required this.status,
     required this.message,
     required this.data,
   });
-
-  final String status;
-  final String message;
-  final UserData data;
 
   factory UserResponseModel.fromJson(Map<String, dynamic> json) =>
       UserResponseModel(
@@ -35,40 +34,17 @@ class UserResponseModel {
         "message": message,
         "data": data.toJson(),
       };
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is UserResponseModel &&
+        other.status == status &&
+        other.message == message &&
+        other.data == data;
+  }
+
+  @override
+  int get hashCode => status.hashCode ^ message.hashCode ^ data.hashCode;
 }
-
-class UserData {
-  UserData({
-    required this.token,
-    required this.tokenType,
-    required this.expiresIn,
-    required this.isDeviceSaved,
-    required this.user,
-    required this.stripeCustomerId,
-  });
-
-  final String token;
-  final String tokenType;
-  final int expiresIn;
-  final bool isDeviceSaved;
-  final User user;
-  final String? stripeCustomerId;
-  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
-        token: json["token"],
-        tokenType: json["token_type"],
-        expiresIn: json["expires_in"],
-        isDeviceSaved: json["is_device_saved"],
-        user: User.fromJson(json["user"]),
-        stripeCustomerId: json['stripe_customer_id'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "token": token,
-        "token_type": tokenType,
-        "expires_in": expiresIn,
-        "is_device_saved": isDeviceSaved,
-        "stripe_customer_id": stripeCustomerId,
-        "user": user.toJson(),
-      };
-}
-
