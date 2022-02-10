@@ -1,12 +1,21 @@
-import '../profile/profile_seccess_model.dart';
+import 'package:hive/hive.dart';
 
-class User {
+import 'package:idonatio/data/models/user_models/donor_model.dart';
+part 'user_model.g.dart';
+@HiveType(typeId: 1)
+class UserModel extends HiveObject {
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final String email;
+  @HiveField(2)
   final bool isActive;
+  @HiveField(3)
   final DateTime? emailVerifiedAt;
-  final Donor donor;
-  User({
+  @HiveField(4)
+  final DonorModel donor;
+  //
+  UserModel({
     required this.id,
     required this.email,
     required this.isActive,
@@ -14,14 +23,14 @@ class User {
     required this.donor,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
         email: json["email"],
         isActive: json["is_active"],
         emailVerifiedAt: json["email_verified_at"] == null
             ? null
             : DateTime.parse(json["email_verified_at"]),
-        donor: Donor.fromJson(json["donor"]),
+        donor: DonorModel.fromJson(json["donor"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -36,7 +45,7 @@ class User {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is User &&
+    return other is UserModel &&
         other.id == id &&
         other.email == email &&
         other.isActive == isActive &&
@@ -51,5 +60,10 @@ class User {
         isActive.hashCode ^
         emailVerifiedAt.hashCode ^
         donor.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'UserModel(id: $id, email: $email, isActive: $isActive, emailVerifiedAt: $emailVerifiedAt, donor: $donor)';
   }
 }

@@ -1,22 +1,44 @@
-class Donor {
+import 'package:hive/hive.dart';
+
+part 'donor_model.g.dart';
+
+@HiveType(typeId: 0)
+class DonorModel extends HiveObject {
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final String userId;
+  @HiveField(2)
   final String firstName;
+  @HiveField(3)
   final String lastName;
+  @HiveField(4)
   final bool isOnboarded;
+  @HiveField(5)
   final String title;
+  @HiveField(6)
   final String? phoneNumber;
+  @HiveField(7)
   final dynamic phoneVerifiedAt;
+  @HiveField(8)
   final bool phoneReceiveSecurityAlert;
+  @HiveField(9)
   final bool giftAidEnabled;
+  @HiveField(10)
   final dynamic address;
+  @HiveField(11)
   final dynamic city;
+  @HiveField(12)
   final dynamic countryId;
+  @HiveField(13)
   final dynamic postalCode;
+  @HiveField(14)
   final dynamic paymentMethod;
+  @HiveField(15)
   final String? stripeCustomerId;
+  @HiveField(16)
   final bool sendMarketingMail;
-  Donor({
+  DonorModel({
     required this.id,
     required this.userId,
     required this.firstName,
@@ -36,7 +58,7 @@ class Donor {
     required this.stripeCustomerId,
   });
 
-  factory Donor.fromJson(Map<String, dynamic> json) => Donor(
+  factory DonorModel.fromJson(Map<String, dynamic> json) => DonorModel(
       id: json["id"],
       userId: json["user_id"],
       firstName: json["first_name"],
@@ -79,7 +101,7 @@ class Donor {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Donor &&
+    return other is DonorModel &&
         other.id == id &&
         other.userId == userId &&
         other.firstName == firstName &&
@@ -118,5 +140,10 @@ class Donor {
         paymentMethod.hashCode ^
         stripeCustomerId.hashCode ^
         sendMarketingMail.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'DonorModel(id: $id, userId: $userId, firstName: $firstName, lastName: $lastName, isOnboarded: $isOnboarded, title: $title, phoneNumber: $phoneNumber, phoneVerifiedAt: $phoneVerifiedAt, phoneReceiveSecurityAlert: $phoneReceiveSecurityAlert, giftAidEnabled: $giftAidEnabled, address: $address, city: $city, countryId: $countryId, postalCode: $postalCode, paymentMethod: $paymentMethod, stripeCustomerId: $stripeCustomerId, sendMarketingMail: $sendMarketingMail)';
   }
 }

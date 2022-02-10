@@ -1,13 +1,22 @@
+import 'package:hive/hive.dart';
+import 'package:idonatio/data/models/user_models/user_model.dart';
+part 'user_data_model.g.dart';
 
-import '../profile/profile_seccess_model.dart';
-
-class UserData {
+@HiveType(typeId: 2)
+class UserData extends HiveObject {
+  @HiveField(0)
   final String token;
+  @HiveField(1)
   final String tokenType;
+  @HiveField(2)
   final int expiresIn;
+  @HiveField(3)
   final bool isDeviceSaved;
-  final User user;
+  @HiveField(4)
+  final UserModel user;
+  @HiveField(5)
   final String? stripeCustomerId;
+  //
   UserData({
     required this.token,
     required this.tokenType,
@@ -22,7 +31,7 @@ class UserData {
         tokenType: json["token_type"],
         expiresIn: json["expires_in"],
         isDeviceSaved: json["is_device_saved"],
-        user: User.fromJson(json["user"]),
+        user: UserModel.fromJson(json["user"]),
         stripeCustomerId: json['stripe_customer_id'],
       );
 
@@ -38,23 +47,28 @@ class UserData {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is UserData &&
-      other.token == token &&
-      other.tokenType == tokenType &&
-      other.expiresIn == expiresIn &&
-      other.isDeviceSaved == isDeviceSaved &&
-      other.user == user &&
-      other.stripeCustomerId == stripeCustomerId;
+        other.token == token &&
+        other.tokenType == tokenType &&
+        other.expiresIn == expiresIn &&
+        other.isDeviceSaved == isDeviceSaved &&
+        other.user == user &&
+        other.stripeCustomerId == stripeCustomerId;
   }
 
   @override
   int get hashCode {
     return token.hashCode ^
-      tokenType.hashCode ^
-      expiresIn.hashCode ^
-      isDeviceSaved.hashCode ^
-      user.hashCode ^
-      stripeCustomerId.hashCode;
+        tokenType.hashCode ^
+        expiresIn.hashCode ^
+        isDeviceSaved.hashCode ^
+        user.hashCode ^
+        stripeCustomerId.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'UserData(token: $token, tokenType: $tokenType, expiresIn: $expiresIn, isDeviceSaved: $isDeviceSaved, user: $user, stripeCustomerId: $stripeCustomerId)';
   }
 }
