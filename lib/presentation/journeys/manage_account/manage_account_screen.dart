@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/logout_cubit.dart';
+import 'package:idonatio/presentation/journeys/manage_account/my_profile_screen.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
@@ -42,22 +43,31 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Level6Headline(text: 'Account information'),
               ),
               Container(
-                decoration: defaultContainerDecoration(),
+                decoration: whiteContainerBackGround(),
                 padding: const EdgeInsets.all(16),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'My profile',
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      'Manage your login, contact and other preferences.',
-                      style: Theme.of(context).textTheme.caption,
+                    GestureDetector(
+                      onTap: () => Navigator.push(context,
+                          AppRouter.routeToPage(const MyProfileScreen())),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'My profile',
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            'Manage your login, contact and other preferences.',
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                        ],
+                      ),
                     ),
                     const Divider(),
                     Text(
@@ -82,7 +92,7 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Level6Headline(text: 'Get help'),
               ),
               Container(
-                decoration: defaultContainerDecoration(),
+                decoration: whiteContainerBackGround(),
                 padding: const EdgeInsets.all(16),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
@@ -122,7 +132,7 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Level6Headline(text: 'Legal information'),
               ),
               Container(
-                decoration: defaultContainerDecoration(),
+                decoration: whiteContainerBackGround(),
                 padding: const EdgeInsets.all(16),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
@@ -153,7 +163,7 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Level6Headline(text: 'Other actions'),
               ),
               Container(
-                decoration: defaultContainerDecoration(),
+                decoration: whiteContainerBackGround(),
                 padding: const EdgeInsets.all(16),
                 width: MediaQuery.of(context).size.width,
                 child: Column(

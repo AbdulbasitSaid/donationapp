@@ -168,7 +168,7 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                             state.recentDoneesResponseModel.data.isNotEmpty) {
                           return Container(
                             padding: const EdgeInsets.all(16),
-                            decoration: defaultContainerDecoration(),
+                            decoration: whiteContainerBackGround(),
                             child: Column(children: [
                               ...state.recentDoneesResponseModel.data
                                   .map((e) => DoneeListTile(

@@ -35,7 +35,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                 state.savedDoneesResponseModel.data.isNotEmpty) {
               return Container(
                 width: MediaQuery.of(context).size.width,
-                decoration: defaultContainerDecoration(),
+                decoration: whiteContainerBackGround(),
                 padding: const EdgeInsets.all(16),
                 child: Column(children: [
                   ...state.savedDoneesResponseModel.data.map(
