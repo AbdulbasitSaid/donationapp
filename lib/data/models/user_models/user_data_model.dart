@@ -9,7 +9,7 @@ class UserData extends HiveObject {
   @HiveField(0)
   final String token;
   @HiveField(1)
-  final String tokenType;
+  final String? tokenType;
   @HiveField(2)
   final int expiresIn;
   @HiveField(3)

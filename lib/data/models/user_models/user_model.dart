@@ -25,7 +25,7 @@ class UserModel extends HiveObject {
     required this.donor,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+  factory UserModel.fromJson(Map<dynamic, dynamic> json) => UserModel(
         id: json["id"],
         email: json["email"],
         isActive: json["is_active"],

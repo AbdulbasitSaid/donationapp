@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
+import 'package:idonatio/presentation/journeys/manage_account/edit_address_screen.dart';
+import 'package:idonatio/presentation/journeys/manage_account/edit_name_screen.dart';
+import 'package:idonatio/presentation/journeys/manage_account/edit_phone_number_screen.dart';
 import 'package:idonatio/presentation/reusables.dart';
+import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../onboarding/cubit/getcountreis_cubit.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
@@ -12,6 +19,7 @@ class MyProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -26,14 +34,6 @@ class MyProfileScreen extends StatelessWidget {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 32, horizontal: 16),
-                    child: GestureDetector(
-                      child: const Icon(Icons.arrow_back),
-                      onTap: () => Navigator.pop(context),
-                    ),
-                  ),
                   const Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: 16,
@@ -61,7 +61,10 @@ class MyProfileScreen extends StatelessWidget {
                               '${donor?.title} ${donor?.firstName} ${donor?.lastName}'),
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context,
+                                  AppRouter.routeToPage(EditNameScreen()));
+                            },
                             icon: const Icon(
                               Icons.edit,
                               color: AppColor.basePrimary,
@@ -95,7 +98,12 @@ class MyProfileScreen extends StatelessWidget {
                                   children: [
                                     Text('${donor?.phoneNumber}'),
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              AppRouter.routeToPage(
+                                                  const EditPhoneNumberScreen()));
+                                        },
                                         icon: const Icon(
                                           Icons.edit,
                                           color: AppColor.basePrimary,
@@ -114,7 +122,12 @@ class MyProfileScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    AppRouter.routeToPage(
+                                        const EditAddressScreen()));
+                              },
                               icon: const Icon(Icons.place_outlined)),
                           Flexible(
                             child: Column(
@@ -125,7 +138,15 @@ class MyProfileScreen extends StatelessWidget {
                                   children: [
                                     Text('${donor?.address}'),
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          context
+                                              .read<GetcountreisCubit>()
+                                              .getCountries();
+                                          Navigator.push(
+                                              context,
+                                              AppRouter.routeToPage(
+                                                  const EditAddressScreen()));
+                                        },
                                         icon: const Icon(
                                           Icons.edit,
                                           color: AppColor.basePrimary,

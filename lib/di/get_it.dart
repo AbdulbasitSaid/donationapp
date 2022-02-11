@@ -2,12 +2,14 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:idonatio/data/core/api_client.dart';
 import 'package:idonatio/data/data_sources/donee_remote_datasource.dart';
+import 'package:idonatio/data/data_sources/profile_remote_datasource.dart';
 import 'package:idonatio/data/data_sources/recent_donee_datasource.dart';
 import 'package:idonatio/data/data_sources/saved_donees_datasource.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/data_sources/user_remote_datasource.dart';
 import 'package:idonatio/data/data_sources/country_remote_datasource.dart';
 import 'package:idonatio/data/repository/donee_repository.dart';
+import 'package:idonatio/data/repository/profile_repository.dart';
 import 'package:idonatio/data/repository/recent_doness_repository.dart';
 import 'package:idonatio/data/repository/saved_donees_repository.dart';
 import 'package:idonatio/data/repository/user_repository.dart';
@@ -51,6 +53,11 @@ Future init() async {
       () => RecentDoneesRepository(getItInstance(), getItInstance()));
   getItInstance.registerLazySingleton<SavedDoneeDataSource>(
       () => SavedDoneeDataSource(getItInstance()));
+  getItInstance.registerLazySingleton<ProfileRemoteDataSource>(
+      () => ProfileRemoteDataSource(getItInstance()));
+  getItInstance.registerLazySingleton<ProfileRepository>(
+      () => ProfileRepository(getItInstance(), getItInstance()));
+
   getItInstance.registerLazySingleton<SavedDoneesRepository>(
       () => SavedDoneesRepository(getItInstance(), getItInstance()));
 }
