@@ -25,13 +25,13 @@ class UserCubit extends Cubit<UserState> {
     log(user.toString());
     switch (authStatus) {
       case AuthStatus.appStarted:
-        _checkUserToken(user!);
+        _checkUserToken(user);
         break;
       case AuthStatus.unauthenticated:
         emit(UnSaved());
         break;
       case AuthStatus.authenticated:
-        _checkEmailVerification(user!);
+        _checkEmailVerification(user);
         break;
       default:
         break;

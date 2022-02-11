@@ -7,7 +7,6 @@ import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 
 import '../../di/get_it.dart';
 import '../../enums.dart';
-import '../bloc/login/login_cubit.dart';
 import '../router/app_router.dart';
 import 'auth_guard.dart';
 import 'manage_account/cubit/logout_cubit.dart';

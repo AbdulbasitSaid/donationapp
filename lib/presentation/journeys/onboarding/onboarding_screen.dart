@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:idonatio/data/models/user_models/local_user_model.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/presentation/journeys/onboarding/gift_aid_screen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';

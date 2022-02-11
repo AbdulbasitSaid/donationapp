@@ -7,7 +7,6 @@ import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 
 import '../../../di/get_it.dart';
 import '../../../enums.dart';
-import '../../bloc/login/login_cubit.dart';
 import '../../reusables.dart';
 import '../../router/app_router.dart';
 import '../auth_guard.dart';

@@ -1,11 +1,6 @@
-import 'dart:async';
 
-import 'package:dartz/dartz.dart';
-import 'package:idonatio/data/core/unauthorized_exception.dart';
 import 'package:idonatio/data/data_sources/profile_remote_datasource.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
-import 'package:idonatio/domain/entities/app_error.dart';
-import 'package:idonatio/presentation/router/app_router.dart';
 
 class ProfileRepository {
   final ProfileRemoteDataSource profileRemoteDataSource;

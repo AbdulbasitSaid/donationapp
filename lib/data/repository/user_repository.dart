@@ -7,9 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/data_sources/user_remote_datasource.dart';
-import 'package:idonatio/data/models/user_models/local_user_model.dart';
-import 'package:idonatio/data/models/user_models/user_data_model.dart';
-import 'package:idonatio/data/models/user_models/user_model.dart';
+import 'package:idonatio/data/models/payment_success_model.dart';
 import 'package:idonatio/data/models/user_models/user_response_model.dart';
 
 import 'package:idonatio/domain/entities/app_error.dart';
@@ -54,18 +52,13 @@ class UserRepository {
   Future<Either<AppError, UserResponseModel>> registerUser(
       Map<String, dynamic> params) async {
     try {
-      UserResponseModel response =
-          await _userRemoteDataSource.registerUser(params);
-      final userData = response;
-      // await _userLocalDataSource.saveUserData(LocalUserObject(
-      //   token: userData.data.token,
-      //   isBoarded: userData.data.user.donor.isOnboarded,
-      //   stripeCustomerId: userData.data.stripeCustomerId,
-      //   isEmailVerified: userData.data.user.emailVerifiedAt?.toIso8601String(),
-      //   lastName: userData.data.user.donor.lastName,
-      //   firstName: userData.data.user.donor.firstName,
-      //   userEmail: userData.data.user.email,
-      // ));
+      final response = await _userRemoteDataSource.registerUser(params);
+      final userData = response.data;
+      final user = response.data.user;
+      final donor = response.data.user.donor;
+      await _userLocalDataSource
+          .saveUserData(userData.copyWith(user: user.copyWith(donor: donor)));
+
       return Right(response);
     } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
@@ -84,7 +77,7 @@ class UserRepository {
     try {
       final user = await _userLocalDataSource.getUser();
       final response =
-          await _userRemoteDataSource.verifyEmail(params, user!.token);
+          await _userRemoteDataSource.verifyEmail(params, user.token);
       await _userLocalDataSource.updateUserData(user.copyWith(
           user: user.user.copyWith(emailVerifiedAt: DateTime.now())));
       return Right(response);
@@ -105,8 +98,8 @@ class UserRepository {
     try {
       final user = await UserLocalDataSource().getUser();
       final response =
-          await _userRemoteDataSource.onBoarding(params, token: user?.token);
-      await _userLocalDataSource.updateUserData(user!.copyWith(
+          await _userRemoteDataSource.onBoarding(params, token: user.token);
+      await _userLocalDataSource.updateUserData(user.copyWith(
           user: user.user.copyWith(
               donor: user.user.donor.copyWith(
         isOnboarded: true,
@@ -151,7 +144,7 @@ class UserRepository {
       final localUser = await _userLocalDataSource.getUser();
       final response =
           await _userRemoteDataSource.sendOtp({"email": email, "otp": otp});
-      await _userLocalDataSource.updateUserData(localUser!.copyWith(
+      await _userLocalDataSource.updateUserData(localUser.copyWith(
         user: localUser.user.copyWith(
           email: response.data.email,
         ),

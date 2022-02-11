@@ -1,9 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/data_sources/profile_remote_datasource.dart';
 import 'package:idonatio/data/repository/profile_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
-import 'package:idonatio/presentation/reusables.dart';
 
 part 'update_profile_state.dart';
 
