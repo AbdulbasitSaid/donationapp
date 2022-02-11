@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
+
 import 'package:idonatio/data/models/user_models/user_model.dart';
+
 part 'user_data_model.g.dart';
 
 @HiveType(typeId: 2)
@@ -70,5 +72,23 @@ class UserData extends HiveObject {
   @override
   String toString() {
     return 'UserData(token: $token, tokenType: $tokenType, expiresIn: $expiresIn, isDeviceSaved: $isDeviceSaved, user: $user, stripeCustomerId: $stripeCustomerId)';
+  }
+
+  UserData copyWith({
+    String? token,
+    String? tokenType,
+    int? expiresIn,
+    bool? isDeviceSaved,
+    UserModel? user,
+    String? stripeCustomerId,
+  }) {
+    return UserData(
+      token: token ?? this.token,
+      tokenType: tokenType ?? this.tokenType,
+      expiresIn: expiresIn ?? this.expiresIn,
+      isDeviceSaved: isDeviceSaved ?? this.isDeviceSaved,
+      user: user ?? this.user,
+      stripeCustomerId: stripeCustomerId ?? this.stripeCustomerId,
+    );
   }
 }

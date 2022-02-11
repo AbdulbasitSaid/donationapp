@@ -2,42 +2,43 @@ import 'package:hive/hive.dart';
 
 part 'donor_model.g.dart';
 
-@HiveType(typeId: 0)
-class DonorModel extends HiveObject {
-  @HiveField(0)
+// @HiveType(typeId: 0)
+class DonorModel {
+  // @HiveField(0)
   final String id;
-  @HiveField(1)
+  // @HiveField(1)
   final String userId;
-  @HiveField(2)
+  // @HiveField(2)
   final String firstName;
-  @HiveField(3)
+  // @HiveField(3)
   final String lastName;
-  @HiveField(4)
+  // @HiveField(4)
   final bool isOnboarded;
-  @HiveField(5)
+  // @HiveField(5)
   final String title;
-  @HiveField(6)
+  // @HiveField(6)
   final String? phoneNumber;
-  @HiveField(7)
+  // @HiveField(7)
   final dynamic phoneVerifiedAt;
-  @HiveField(8)
+  // @HiveField(8)
   final bool phoneReceiveSecurityAlert;
-  @HiveField(9)
+  // @HiveField(9)
   final bool giftAidEnabled;
-  @HiveField(10)
+  // @HiveField(10)
   final dynamic address;
-  @HiveField(11)
+  // @HiveField(11)
   final dynamic city;
-  @HiveField(12)
+  // @HiveField(12)
   final dynamic countryId;
-  @HiveField(13)
+  // @HiveField(13)
   final dynamic postalCode;
-  @HiveField(14)
+  // @HiveField(14)
   final dynamic paymentMethod;
-  @HiveField(15)
+  // @HiveField(15)
   final String? stripeCustomerId;
-  @HiveField(16)
+  // @HiveField(16)
   final bool sendMarketingMail;
+
   DonorModel({
     required this.id,
     required this.userId,
@@ -145,5 +146,46 @@ class DonorModel extends HiveObject {
   @override
   String toString() {
     return 'DonorModel(id: $id, userId: $userId, firstName: $firstName, lastName: $lastName, isOnboarded: $isOnboarded, title: $title, phoneNumber: $phoneNumber, phoneVerifiedAt: $phoneVerifiedAt, phoneReceiveSecurityAlert: $phoneReceiveSecurityAlert, giftAidEnabled: $giftAidEnabled, address: $address, city: $city, countryId: $countryId, postalCode: $postalCode, paymentMethod: $paymentMethod, stripeCustomerId: $stripeCustomerId, sendMarketingMail: $sendMarketingMail)';
+  }
+
+  DonorModel copyWith({
+    String? id,
+    String? userId,
+    String? firstName,
+    String? lastName,
+    bool? isOnboarded,
+    String? title,
+    String? phoneNumber,
+    dynamic? phoneVerifiedAt,
+    bool? phoneReceiveSecurityAlert,
+    bool? giftAidEnabled,
+    dynamic? address,
+    dynamic? city,
+    dynamic? countryId,
+    dynamic? postalCode,
+    dynamic? paymentMethod,
+    String? stripeCustomerId,
+    bool? sendMarketingMail,
+  }) {
+    return DonorModel(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      isOnboarded: isOnboarded ?? this.isOnboarded,
+      title: title ?? this.title,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      phoneVerifiedAt: phoneVerifiedAt ?? this.phoneVerifiedAt,
+      phoneReceiveSecurityAlert:
+          phoneReceiveSecurityAlert ?? this.phoneReceiveSecurityAlert,
+      giftAidEnabled: giftAidEnabled ?? this.giftAidEnabled,
+      address: address ?? this.address,
+      city: city ?? this.city,
+      countryId: countryId ?? this.countryId,
+      postalCode: postalCode ?? this.postalCode,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      stripeCustomerId: stripeCustomerId ?? this.stripeCustomerId,
+      sendMarketingMail: sendMarketingMail ?? this.sendMarketingMail,
+    );
   }
 }

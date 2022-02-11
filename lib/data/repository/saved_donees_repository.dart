@@ -15,7 +15,7 @@ class SavedDoneesRepository {
   Future<Either<AppError, SavedDoneesResponseModel>> getSavedDonee() async {
     try {
       final user = await _localDataSource.getUser();
-      final result = await _savedDoneeDataSource.getSavedDonees(user.token!);
+      final result = await _savedDoneeDataSource.getSavedDonees(user!.token);
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));

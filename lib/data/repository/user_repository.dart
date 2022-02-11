@@ -8,6 +8,8 @@ import 'package:idonatio/data/core/unauthorized_exception.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/data_sources/user_remote_datasource.dart';
 import 'package:idonatio/data/models/user_models/local_user_model.dart';
+import 'package:idonatio/data/models/user_models/user_data_model.dart';
+import 'package:idonatio/data/models/user_models/user_model.dart';
 import 'package:idonatio/data/models/user_models/user_response_model.dart';
 
 import 'package:idonatio/domain/entities/app_error.dart';
@@ -22,16 +24,20 @@ class UserRepository {
   Future<Either<AppError, bool>> loginUser(Map<String, dynamic> params) async {
     try {
       final response = await _userRemoteDataSource.loginWithEmail(params);
-      final userData = response;
-      await _userLocalDataSource.saveUserData(LocalUserObject(
-          token: userData.data.token,
-          isBoarded: userData.data.user.donor.isOnboarded,
-          stripeCustomerId: userData.data.stripeCustomerId,
-          userEmail: userData.data.user.email,
-          isEmailVerified:
-              userData.data.user.emailVerifiedAt?.toIso8601String(),
-          lastName: userData.data.user.donor.lastName,
-          firstName: userData.data.user.donor.firstName));
+      final data = response.data;
+      final user = response.data.user;
+      final donor = response.data.user.donor;
+      await _userLocalDataSource
+          .saveUserData(data.copyWith(user: user.copyWith(donor: donor)));
+      // await _userLocalDataSource.saveUserData(LocalUserObject(
+      //     token: userData.data.token,
+      //     isBoarded: userData.data.user.donor.isOnboarded,
+      //     stripeCustomerId: userData.data.stripeCustomerId,
+      //     userEmail: userData.data.user.email,
+      //     isEmailVerified:
+      //         userData.data.user.emailVerifiedAt?.toIso8601String(),
+      //     lastName: userData.data.user.donor.lastName,
+      //     firstName: userData.data.user.donor.firstName));
       return const Right(true);
     } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
@@ -51,15 +57,15 @@ class UserRepository {
       UserResponseModel response =
           await _userRemoteDataSource.registerUser(params);
       final userData = response;
-      await _userLocalDataSource.saveUserData(LocalUserObject(
-        token: userData.data.token,
-        isBoarded: userData.data.user.donor.isOnboarded,
-        stripeCustomerId: userData.data.stripeCustomerId,
-        isEmailVerified: userData.data.user.emailVerifiedAt?.toIso8601String(),
-        lastName: userData.data.user.donor.lastName,
-        firstName: userData.data.user.donor.firstName,
-        userEmail: userData.data.user.email,
-      ));
+      // await _userLocalDataSource.saveUserData(LocalUserObject(
+      //   token: userData.data.token,
+      //   isBoarded: userData.data.user.donor.isOnboarded,
+      //   stripeCustomerId: userData.data.stripeCustomerId,
+      //   isEmailVerified: userData.data.user.emailVerifiedAt?.toIso8601String(),
+      //   lastName: userData.data.user.donor.lastName,
+      //   firstName: userData.data.user.donor.firstName,
+      //   userEmail: userData.data.user.email,
+      // ));
       return Right(response);
     } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
@@ -76,10 +82,11 @@ class UserRepository {
   Future<Either<AppError, dynamic>> verifyEmail(
       Map<String, dynamic> params) async {
     try {
-      final user = await UserLocalDataSource().getUser();
+      final user = await _userLocalDataSource.getUser();
       final response =
-          await _userRemoteDataSource.verifyEmail(params, user.token);
-      await _userLocalDataSource.setEmailVarified();
+          await _userRemoteDataSource.verifyEmail(params, user!.token);
+      await _userLocalDataSource.updateUserData(user.copyWith(
+          user: user.user.copyWith(emailVerifiedAt: DateTime.now())));
       return Right(response);
     } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
@@ -98,18 +105,15 @@ class UserRepository {
     try {
       final user = await UserLocalDataSource().getUser();
       final response =
-          await _userRemoteDataSource.onBoarding(params, token: user.token);
-      await _userLocalDataSource.saveUserData(
-        LocalUserObject(
-          token: user.token,
-          isBoarded: true,
-          firstName: response.data.firstName,
-          lastName: response.data.lastName,
-          isEmailVerified: user.isEmailVerified,
-          stripeCustomerId: user.stripeCustomerId,
-          userEmail: user.userEmail,
-        ),
-      );
+          await _userRemoteDataSource.onBoarding(params, token: user?.token);
+      await _userLocalDataSource.updateUserData(user!.copyWith(
+          user: user.user.copyWith(
+              donor: user.user.donor.copyWith(
+        isOnboarded: true,
+        firstName: response.data.firstName,
+        lastName: response.data.lastName,
+      ))));
+
       return Right(response);
     } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
@@ -144,11 +148,17 @@ class UserRepository {
   Future<Either<AppError, ResetPasswordOtpSuccessEntity>> sendOtpForgotPassword(
       String otp, String email) async {
     try {
+      final localUser = await _userLocalDataSource.getUser();
       final response =
           await _userRemoteDataSource.sendOtp({"email": email, "otp": otp});
-      await _userLocalDataSource.saveResetPasswordAndToken(
+      await _userLocalDataSource.updateUserData(localUser!.copyWith(
+        user: localUser.user.copyWith(
           email: response.data.email,
-          passwordResetToken: response.data.passwordResetToken);
+        ),
+      ));
+      // await _userLocalDataSource.saveResetPasswordAndToken(
+      //     email: response.data.email,
+      //     passwordResetToken: response.data.passwordResetToken);
       return Right(response);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));

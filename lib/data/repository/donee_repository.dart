@@ -18,7 +18,7 @@ class DoneeRepository {
     try {
       final user = await _userLocalDataSource.getUser();
       final result =
-          await _doneeRemoteDataSource.getDoneeByCode(user.token!, doneeCode);
+          await _doneeRemoteDataSource.getDoneeByCode(user!.token, doneeCode);
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));

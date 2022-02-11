@@ -15,7 +15,7 @@ class RecentDoneesRepository {
   Future<Either<AppError, RecentDoneesResponseModel>> getRecentDonees() async {
     try {
       final user = await _userLocalDataSource.getUser();
-      final result = await _recentDoneesDataSource.getRecentDonees(user.token!);
+      final result = await _recentDoneesDataSource.getRecentDonees(user!.token);
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));

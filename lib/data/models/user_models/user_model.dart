@@ -1,7 +1,9 @@
 import 'package:hive/hive.dart';
 
 import 'package:idonatio/data/models/user_models/donor_model.dart';
+
 part 'user_model.g.dart';
+
 @HiveType(typeId: 1)
 class UserModel extends HiveObject {
   @HiveField(0)
@@ -65,5 +67,21 @@ class UserModel extends HiveObject {
   @override
   String toString() {
     return 'UserModel(id: $id, email: $email, isActive: $isActive, emailVerifiedAt: $emailVerifiedAt, donor: $donor)';
+  }
+
+  UserModel copyWith({
+    String? id,
+    String? email,
+    bool? isActive,
+    DateTime? emailVerifiedAt,
+    DonorModel? donor,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      isActive: isActive ?? this.isActive,
+      emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
+      donor: donor ?? this.donor,
+    );
   }
 }

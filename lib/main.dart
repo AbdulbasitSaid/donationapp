@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/models/user_models/donor_model.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/data/models/user_models/user_model.dart';
@@ -23,7 +24,39 @@ void main() async {
   unawaited(
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]));
   unawaited(get_it.init());
-  HiveInitiator.initialize();
+
+  await HiveInitiator.initialize();
+  // UserLocalDataSource().saveUserData(
+  //   UserData(
+  //       token: 'tokenzzor',
+  //       tokenType: '',
+  //       expiresIn: 5,
+  //       isDeviceSaved: false,
+  //       user: UserModel(
+  //           donor: DonorModel(
+  //               address: 'ddd',
+  //               city: 'null',
+  //               countryId: 'null',
+  //               firstName: '',
+  //               giftAidEnabled: false,
+  //               id: 'dddd',
+  //               isOnboarded: false,
+  //               lastName: '',
+  //               paymentMethod: null,
+  //               phoneNumber: '',
+  //               phoneReceiveSecurityAlert: true,
+  //               phoneVerifiedAt: null,
+  //               postalCode: null,
+  //               sendMarketingMail: false,
+  //               stripeCustomerId: '',
+  //               title: '',
+  //               userId: ''),
+  //           email: '',
+  //           emailVerifiedAt: null,
+  //           id: '',
+  //           isActive: true),
+  //       stripeCustomerId: 'stripeCustomerId'),
+  // );
   BlocOverrides.runZoned(
     () => runApp(
       const IdonatioApp(),
@@ -34,13 +67,10 @@ void main() async {
 
 class HiveInitiator {
   HiveInitiator._();
-  static void initialize() async {
+  static Future initialize() async {
     await Hive.initFlutter();
     Hive.registerAdapter(DonorModelAdapter());
-    await Hive.openBox('donor');
     Hive.registerAdapter(UserModelAdapter());
-    await Hive.openBox('user');
     Hive.registerAdapter(UserDataAdapter());
-    await Hive.openBox('user_data');
   }
 }
