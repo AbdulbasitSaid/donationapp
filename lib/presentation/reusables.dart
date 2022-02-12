@@ -25,12 +25,23 @@ String getCurrencySymbol(String code, BuildContext context) {
 
 String getErrorMessage(AppErrorType appErrorType) {
   switch (appErrorType) {
+    case AppErrorType.unProcessableEntity:
+      return 'The request is unprocessable, often due to invalid parameters.';
+    case AppErrorType.badRequest:
+      return 'The request was unacceptable, often due the parameter provided by the client.';
     case AppErrorType.network:
-      return TranslationConstants.noNetwork;
-    case AppErrorType.api:
-    case AppErrorType.database:
-      return 'Check that you have entered a correct and registered email address and password.';
+      return 'Please check your internet';
+    case AppErrorType.unauthorized:
+      return 'No bearer token provided or an invalid bearer token was provided.';
+    case AppErrorType.forbidden:
+      return 'Authentication failed. This may occur when a wrong email or password is provided during login.';
+    case AppErrorType.notFound:
+      return 'The requested resource doesn\'t exist.';
+    case AppErrorType.serveError:
+      return 'Server error. Hopefully this will occur in rear cases.';
+    case AppErrorType.unExpected:
+      return 'Unexpected error.';
     default:
-      return 'Check that you have entered a correct and registered email address and password.';
+      return 'Opps something went wrong';
   }
 }

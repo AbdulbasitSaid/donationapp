@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-
 class PaymentMethodsModel {
   PaymentMethodsModel({
     required this.status,
@@ -50,8 +49,8 @@ class PaymentMethodDatum {
   final String brand;
   final String country;
   final int expMonth;
-  final int expYear;
   final String cardLastFourDigits;
+  final int expYear;
 
   factory PaymentMethodDatum.fromJson(String str) =>
       PaymentMethodDatum.fromMap(json.decode(str));

@@ -65,6 +65,17 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
         (l) => UpdateProfileFailed(
             appErrorType: l.appErrorType,
             errorMessage: getErrorMessage(l.appErrorType)),
-        (r) => const UpdateProfileSuccessfull('Address updated succefully.')));
+        (r) =>
+            const UpdateProfileSuccessfull('Address updated successfully.')));
+  }
+
+  void editEmail({required String email}) async {
+    emit(UpdateProfileLoading());
+    final result = await _profileRepository.updateUser({'email': email});
+    emit(result.fold(
+        (l) => UpdateProfileFailed(
+            appErrorType: l.appErrorType,
+            errorMessage: getErrorMessage(l.appErrorType)),
+        (r) => const UpdateProfileSuccessfull('Email updated successfully.')));
   }
 }
