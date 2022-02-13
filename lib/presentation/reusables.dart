@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:intl/intl.dart';
 
-import '../common/words.dart';
 import '../domain/entities/app_error.dart';
 
 BoxDecoration whiteContainerBackGround() {

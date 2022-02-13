@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_address_screen.dart';
+import 'package:idonatio/presentation/journeys/manage_account/edit_email_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_name_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_phone_number_screen.dart';
 import 'package:idonatio/presentation/reusables.dart';
@@ -177,7 +178,14 @@ class MyProfileScreen extends StatelessWidget {
                                   children: [
                                     Text('${user?.email}'),
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              AppRouter.routeToPage(
+                                                  EditEmailScreen(
+                                                initialEmail: '${user?.email}',
+                                              )));
+                                        },
                                         icon: const Icon(
                                           Icons.edit,
                                           color: AppColor.basePrimary,
