@@ -27,25 +27,22 @@ class UserRepository {
       final donor = response.data.user.donor;
       await _userLocalDataSource
           .saveUserData(data.copyWith(user: user.copyWith(donor: donor)));
-      // await _userLocalDataSource.saveUserData(LocalUserObject(
-      //     token: userData.data.token,
-      //     isBoarded: userData.data.user.donor.isOnboarded,
-      //     stripeCustomerId: userData.data.stripeCustomerId,
-      //     userEmail: userData.data.user.email,
-      //     isEmailVerified:
-      //         userData.data.user.emailVerifiedAt?.toIso8601String(),
-      //     lastName: userData.data.user.donor.lastName,
-      //     firstName: userData.data.user.donor.firstName));
+
       return const Right(true);
-    } on SocketException {
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
-    } on UnprocessableEntity {
-      return const Left(
-          AppError(appErrorType: AppErrorType.unProcessableEntity));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
     } on Exception {
-      return const Left(AppError(appErrorType: AppErrorType.api));
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
   }
 
@@ -60,15 +57,20 @@ class UserRepository {
           .saveUserData(userData.copyWith(user: user.copyWith(donor: donor)));
 
       return Right(response);
-    } on SocketException {
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
-    } on UnprocessableEntity {
-      return const Left(
-          AppError(appErrorType: AppErrorType.unProcessableEntity));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
     } on Exception {
-      return const Left(AppError(appErrorType: AppErrorType.api));
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
   }
 
@@ -81,15 +83,20 @@ class UserRepository {
       await _userLocalDataSource.updateUserData(user.copyWith(
           user: user.user.copyWith(emailVerifiedAt: DateTime.now())));
       return Right(response);
-    } on SocketException {
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
-    } on UnprocessableEntity {
-      return const Left(
-          AppError(appErrorType: AppErrorType.unProcessableEntity));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
     } on Exception {
-      return const Left(AppError(appErrorType: AppErrorType.api));
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
   }
 
@@ -108,15 +115,20 @@ class UserRepository {
       ))));
 
       return Right(response);
-    } on SocketException {
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
-    } on UnprocessableEntity {
-      return const Left(
-          AppError(appErrorType: AppErrorType.unProcessableEntity));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
     } on Exception {
-      return const Left(AppError(appErrorType: AppErrorType.api));
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
   }
 
@@ -149,15 +161,20 @@ class UserRepository {
           email: response.data.email,
         ),
       ));
-      // await _userLocalDataSource.saveResetPasswordAndToken(
-      //     email: response.data.email,
-      //     passwordResetToken: response.data.passwordResetToken);
+
       return Right(response);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on UnprocessableEntity {
-      return const Left(
-          AppError(appErrorType: AppErrorType.unProcessableEntity));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
     } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
@@ -177,9 +194,16 @@ class UserRepository {
       return const Right("Password reset successfully");
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on UnprocessableEntity {
-      return const Left(
-          AppError(appErrorType: AppErrorType.unProcessableEntity));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
     } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
