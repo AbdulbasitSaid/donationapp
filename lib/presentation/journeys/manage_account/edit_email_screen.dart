@@ -6,11 +6,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
+import 'package:idonatio/presentation/journeys/manage_account/verify_edited_email_screen.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
-import '../../../data/core/validator.dart';
 import '../../reusables.dart';
 import 'cubit/update_profile_cubit.dart';
 
@@ -106,7 +106,11 @@ class _EditEmailScreenState extends State<EditEmailScreen> {
                     listener: (context, state) {
                       if (state is UpdateProfileSuccessfull) {
                         Fluttertoast.showToast(msg: state.successMessage);
-                        // Navigator.push(context,AppRouter());
+
+                        Navigator.push(
+                            context,
+                            AppRouter.routeToPage(
+                                const VerifyEdittedEmailScreen()));
                       }
                     },
                     builder: (context, state) {
