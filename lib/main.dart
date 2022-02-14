@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:idonatio/data/models/user_models/donor_model.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/data/models/user_models/user_model.dart';
+import 'package:idonatio/data/repository/change_password_repository.dart';
 
 import 'package:idonatio/di/get_it.dart' as get_it;
 import 'package:idonatio/presentation/bloc/simple_bloc_observer.dart';
