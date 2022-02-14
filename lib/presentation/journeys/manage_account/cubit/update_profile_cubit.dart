@@ -78,4 +78,27 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
             errorMessage: getErrorMessage(l.appErrorType)),
         (r) => const UpdateProfileSuccessfull('Email updated successfully.')));
   }
+
+  void editGiftAidOption({required bool giftAidOption}) async {
+    emit(UpdateProfileLoading());
+    final result = await _profileRepository
+        .updateUser({'gift_aid_enabled': giftAidOption});
+    emit(result.fold(
+        (l) => UpdateProfileFailed(
+            appErrorType: l.appErrorType,
+            errorMessage: getErrorMessage(l.appErrorType)),
+        (r) => const UpdateProfileSuccessfull('updated successfully.')));
+  }
+
+  void editSendMarketingEmailOption(
+      {required bool editSendMarketingEmailOption}) async {
+    emit(UpdateProfileLoading());
+    final result = await _profileRepository
+        .updateUser({'send_marketing_mail': editSendMarketingEmailOption});
+    emit(result.fold(
+        (l) => UpdateProfileFailed(
+            appErrorType: l.appErrorType,
+            errorMessage: getErrorMessage(l.appErrorType)),
+        (r) => const UpdateProfileSuccessfull(' updated successfully.')));
+  }
 }

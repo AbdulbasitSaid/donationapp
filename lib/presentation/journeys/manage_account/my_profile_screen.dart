@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
+import 'package:idonatio/presentation/journeys/manage_account/change_password_screen.dart';
+import 'package:idonatio/presentation/journeys/manage_account/cubit/update_profile_cubit.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_address_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_email_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_name_screen.dart';
@@ -218,14 +220,19 @@ class MyProfileScreen extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.lock_outline)),
+                            const IconButton(
+                                onPressed: null,
+                                icon: Icon(Icons.lock_outline)),
                             const Text('*********'),
                           ],
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  AppRouter.routeToPage(
+                                      const ChangePasswordScreen()));
+                            },
                             icon: const Icon(
                               Icons.edit,
                               color: AppColor.basePrimary,
@@ -269,9 +276,23 @@ class MyProfileScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Switch(
-                              value: donor!.giftAidEnabled,
-                              onChanged: (onChanged) {})
+                          BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
+                            builder: (context, state) {
+                              if (state is UpdateProfileLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return Switch(
+                                  value: donor?.giftAidEnabled ?? false,
+                                  onChanged: (onChanged) {
+                                    context
+                                        .read<UpdateProfileCubit>()
+                                        .editGiftAidOption(
+                                            giftAidOption: onChanged);
+                                  });
+                            },
+                          )
                         ],
                       ),
                       const Divider(),
@@ -296,9 +317,24 @@ class MyProfileScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Switch(
-                              value: donor.sendMarketingMail,
-                              onChanged: (onChanged) {})
+                          BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
+                            builder: (context, state) {
+                              if (state is UpdateProfileLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return Switch(
+                                  value: donor?.sendMarketingMail ?? false,
+                                  onChanged: (onChanged) {
+                                    context
+                                        .read<UpdateProfileCubit>()
+                                        .editSendMarketingEmailOption(
+                                            editSendMarketingEmailOption:
+                                                onChanged);
+                                  });
+                            },
+                          )
                         ],
                       ),
                       const Divider(),
@@ -329,7 +365,7 @@ class MyProfileScreen extends StatelessWidget {
                             ),
                           ),
                           Switch(
-                              value: donor.sendMarketingMail,
+                              value: donor?.sendMarketingMail ?? false,
                               onChanged: (onChanged) {})
                         ],
                       ),
