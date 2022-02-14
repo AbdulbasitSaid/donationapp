@@ -25,37 +25,7 @@ void main() async {
   unawaited(get_it.init());
 
   await HiveInitiator.initialize();
-  // UserLocalDataSource().saveUserData(
-  //   UserData(
-  //       token: 'tokenzzor',
-  //       tokenType: '',
-  //       expiresIn: 5,
-  //       isDeviceSaved: false,
-  //       user: UserModel(
-  //           donor: DonorModel(
-  //               address: 'ddd',
-  //               city: 'null',
-  //               countryId: 'null',
-  //               firstName: '',
-  //               giftAidEnabled: false,
-  //               id: 'dddd',
-  //               isOnboarded: false,
-  //               lastName: '',
-  //               paymentMethod: null,
-  //               phoneNumber: '',
-  //               phoneReceiveSecurityAlert: true,
-  //               phoneVerifiedAt: null,
-  //               postalCode: null,
-  //               sendMarketingMail: false,
-  //               stripeCustomerId: '',
-  //               title: '',
-  //               userId: ''),
-  //           email: '',
-  //           emailVerifiedAt: null,
-  //           id: '',
-  //           isActive: true),
-  //       stripeCustomerId: 'stripeCustomerId'),
-  // );
+
   BlocOverrides.runZoned(
     () => runApp(
       const IdonatioApp(),
