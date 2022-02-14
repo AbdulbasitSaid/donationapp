@@ -23,7 +23,9 @@ class ProfileRepository {
       final result =
           await profileRemoteDataSource.updateProfile(user.token, params);
       await userLocalDataSource.updateUserData(user.copyWith(
-          user: user.user.copyWith(donor: result.data.user.donor)));
+        user: user.user.copyWith(
+            donor: result.data.user.donor, email: result.data.user.email),
+      ));
       return Right(result);
     } on UnprocessableEntity {
       return const Left(
