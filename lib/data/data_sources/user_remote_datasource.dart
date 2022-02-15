@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:http/http.dart';
 import 'package:idonatio/data/core/api_client.dart';
 import 'package:idonatio/data/models/base_success_model.dart';
@@ -65,7 +67,8 @@ class UserRemoteDataSource {
   }
 
   Future<SuccessModel> closeAccount(String token) async {
-    final responce = await _client.post('auth/logout', token: token);
+    final responce = await _client.patch('auth/close-account', token: token);
+    log(responce.toString());
     return SuccessModel.fromJson(responce);
   }
 }

@@ -14,4 +14,8 @@ class CloseAccountCubit extends Cubit<CloseAccountState> {
     emit(result.fold((l) => CloseAccountFailed(getErrorMessage(l.appErrorType)),
         (r) => const CloseAccountSuccess('Account closed')));
   }
+
+  void clear() {
+    emit(CloseAccountInitial());
+  }
 }

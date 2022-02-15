@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/presentation/journeys/manage_account/contact_support_screen.dart';
+import 'package:idonatio/presentation/journeys/manage_account/cubit/cubit/close_account_cubit.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/logout_cubit.dart';
 import 'package:idonatio/presentation/journeys/manage_account/my_profile_screen.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
+import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 
@@ -324,8 +327,22 @@ class _DeleteAccountWidgetState extends State<DeleteAccountWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-                'You are about to close your iDonatio donor account. This action will permanently delete your donor profile. You will need to create a new account to make any future donations using the iDonatio app. '),
+            BlocBuilder<CloseAccountCubit, CloseAccountState>(
+              builder: (context, state) {
+                if (state is CloseAccountLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is CloseAccountFailed) {
+                  return AppErrorDialogWidget(
+                      title: 'Closing account failed',
+                      message: state.errorMessage);
+                }
+                return const Text(
+                    'You are about to close your iDonatio donor account. This action will permanently delete your donor profile. You will need to create a new account to make any future donations using the iDonatio app. ');
+              },
+            ),
             const SizedBox(
               height: 8,
             ),
@@ -349,9 +366,41 @@ class _DeleteAccountWidgetState extends State<DeleteAccountWidget> {
         ),
       ),
       actions: [
-        TextButton(
-            onPressed: deleteText == "DELETE" ? () {} : null,
-            child: const Text('Close Account')),
+        BlocConsumer<CloseAccountCubit, CloseAccountState>(
+          listener: (context, state) {
+            if (state is CloseAccountSuccess) {
+              context
+                  .read<UserCubit>()
+                  .setUserState(getItInstance(), AuthStatus.unauthenticated);
+              Navigator.push(context, AppRouter.routeToPage(const AuthGaurd()));
+              Fluttertoast.showToast(msg: state.successMessage);
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: const Text('Account closed'),
+                        content: const Text(
+                            'Your iDonatio donor account is now closed and your profile has been deleted. To make a donation using the app, sign in with a different account or register to create a new account.'),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                context.read<CloseAccountCubit>().clear();
+                                Navigator.pop(context);
+                              },
+                              child: Text('ok'.toUpperCase()))
+                        ],
+                      ));
+            }
+          },
+          builder: (context, state) {
+            return TextButton(
+                onPressed: deleteText == "DELETE"
+                    ? () {
+                        context.read<CloseAccountCubit>().closeAccount();
+                      }
+                    : null,
+                child: const Text('Close Account'));
+          },
+        ),
         TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel')),
