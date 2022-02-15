@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/data_sources/user_remote_datasource.dart';
+import 'package:idonatio/data/models/base_success_model.dart';
 import 'package:idonatio/data/models/payment_success_model.dart';
 import 'package:idonatio/data/models/user_models/user_response_model.dart';
 
@@ -146,8 +147,27 @@ class UserRepository {
     }
   }
 
-  Future<void> logoutUser() async {
-    await _userLocalDataSource.deleteUserData();
+  Future<Either<AppError, SuccessModel>> logoutUser() async {
+    try {
+      final user = await _userLocalDataSource.getUser();
+      final result = await _userRemoteDataSource.logout(token: user.token);
+      await _userLocalDataSource.deleteUserData();
+      return Right(result);
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on Exception {
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
+    }
   }
 
   Future<Either<AppError, ResetPasswordOtpSuccessEntity>> sendOtpForgotPassword(

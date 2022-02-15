@@ -1,4 +1,6 @@
+import 'package:http/http.dart';
 import 'package:idonatio/data/core/api_client.dart';
+import 'package:idonatio/data/models/base_success_model.dart';
 import 'package:idonatio/data/models/user_models/user_response_model.dart';
 import 'package:idonatio/domain/entities/onboarding_response.dart';
 import 'package:idonatio/presentation/journeys/reset_password/enitities/reset_password_otp_success_entity.dart';
@@ -55,5 +57,10 @@ class UserRemoteDataSource {
   Future<dynamic> changePassword({required Map<String, dynamic> params}) async {
     final response = await _client.patch('auth/password/reset', params: params);
     return response;
+  }
+
+  Future<SuccessModel> logout({required String token}) async {
+    final response = await _client.post('auth/logout', token: token);
+    return SuccessModel.fromJson(response);
   }
 }
