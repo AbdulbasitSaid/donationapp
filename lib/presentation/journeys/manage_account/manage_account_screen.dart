@@ -236,9 +236,15 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Close account',
-                      style: Theme.of(context).textTheme.subtitle1,
+                    GestureDetector(
+                      onTap: () => showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (builder) => const DeleteAccountWidget()),
+                      child: Text(
+                        'Close account',
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
                     ),
                     const Divider(),
                     BlocConsumer<LogoutCubit, LogoutState>(
@@ -281,6 +287,75 @@ class ManageAccountScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DeleteAccountWidget extends StatefulWidget {
+  const DeleteAccountWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<DeleteAccountWidget> createState() => _DeleteAccountWidgetState();
+}
+
+class _DeleteAccountWidgetState extends State<DeleteAccountWidget> {
+  late TextEditingController _typeDeleteEditingController;
+  String deleteText = '';
+  @override
+  void initState() {
+    _typeDeleteEditingController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _typeDeleteEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Close your donor account?'),
+      content: SizedBox(
+        height: MediaQuery.of(context).size.height * .3,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+                'You are about to close your iDonatio donor account. This action will permanently delete your donor profile. You will need to create a new account to make any future donations using the iDonatio app. '),
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              'Type DELETE below to confirm.',
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  fontWeight: FontWeight.w500, color: AppColor.text80Primary),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            TextFormField(
+              controller: _typeDeleteEditingController,
+              onChanged: (value) {
+                setState(() {
+                  deleteText = value;
+                });
+              },
+            )
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+            onPressed: deleteText == "DELETE" ? () {} : null,
+            child: const Text('Close Account')),
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel')),
+      ],
     );
   }
 }
