@@ -63,4 +63,9 @@ class UserRemoteDataSource {
     final response = await _client.post('auth/logout', token: token);
     return SuccessModel.fromJson(response);
   }
+
+  Future<SuccessModel> closeAccount(String token) async {
+    final responce = await _client.post('auth/logout', token: token);
+    return SuccessModel.fromJson(responce);
+  }
 }
