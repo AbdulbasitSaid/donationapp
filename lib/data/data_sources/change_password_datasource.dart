@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:idonatio/data/core/api_client.dart';
 
+import '../models/base_success_model.dart';
+
 class ChangePasswordDataSource {
   final ApiClient _apiClient;
 
@@ -14,29 +16,4 @@ class ChangePasswordDataSource {
     log(result.toString());
     return SuccessModel.fromJson(result);
   }
-}
-
-class SuccessModel {
-  SuccessModel({
-    required this.status,
-    required this.message,
-  });
-
-  String status;
-  String message;
-
-  factory SuccessModel.fromRawJson(String str) =>
-      SuccessModel.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory SuccessModel.fromJson(Map<String, dynamic> json) => SuccessModel(
-        status: json["status"],
-        message: json["message"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "status": status,
-        "message": message,
-      };
 }

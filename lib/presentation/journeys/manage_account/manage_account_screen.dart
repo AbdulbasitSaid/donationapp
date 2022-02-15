@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/presentation/journeys/manage_account/contact_support_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/logout_cubit.dart';
 import 'package:idonatio/presentation/journeys/manage_account/my_profile_screen.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -110,16 +111,25 @@ class ManageAccountScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.caption,
                     ),
                     const Divider(),
-                    Text(
-                      'Contact support',
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      'Reach out to the iDonatio support team.',
-                      style: Theme.of(context).textTheme.caption,
+                    GestureDetector(
+                      onTap: () => Navigator.push(context,
+                          AppRouter.routeToPage(const ContactSupportScreen())),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Contact support',
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            'Reach out to the iDonatio support team.',
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
