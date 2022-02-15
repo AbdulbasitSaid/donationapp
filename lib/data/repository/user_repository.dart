@@ -170,6 +170,29 @@ class UserRepository {
     }
   }
 
+  Future<Either<AppError, SuccessModel>> closeAccount() async {
+    try {
+      final user = await _userLocalDataSource.getUser();
+      final result = await _userRemoteDataSource.closeAccount(user.token);
+      await _userLocalDataSource.deleteUserData();
+      return Right(result);
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on Exception {
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
+    }
+  }
+
   Future<Either<AppError, ResetPasswordOtpSuccessEntity>> sendOtpForgotPassword(
       String otp, String email) async {
     try {
