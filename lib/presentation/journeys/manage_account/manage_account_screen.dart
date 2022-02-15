@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:idonatio/presentation/journeys/manage_account/contact_support_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/logout_cubit.dart';
 import 'package:idonatio/presentation/journeys/manage_account/my_profile_screen.dart';
@@ -12,6 +13,7 @@ import '../../../enums.dart';
 import '../../reusables.dart';
 import '../../router/app_router.dart';
 import '../auth_guard.dart';
+import '../onboarding/cubit/create_setup_intent_cubit.dart';
 import '../user/cubit/user_cubit.dart';
 
 class ManageAccountScreen extends StatelessWidget {
@@ -71,16 +73,71 @@ class ManageAccountScreen extends StatelessWidget {
                       ),
                     ),
                     const Divider(),
-                    Text(
-                      'Payment method',
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      'Add, edit or remove a payment method.',
-                      style: Theme.of(context).textTheme.caption,
+                    BlocConsumer<CreateSetupIntentCubit,
+                        CreateSetupIntentState>(
+                      listener: (context, state) async {
+                        if (state is CreateSetupIntentSuccessful) {
+                          await Stripe.instance.initPaymentSheet(
+                              paymentSheetParameters:
+                                  SetupPaymentSheetParameters(
+                            merchantDisplayName: 'Idonatio',
+                            setupIntentClientSecret:
+                                state.setUpIntentEnitityData.data.setupIntent,
+                            customerId: state
+                                .setUpIntentEnitityData.data.stripeCustomerId,
+                            customerEphemeralKeySecret:
+                                state.setUpIntentEnitityData.data.ephemeralKey,
+                          ));
+                          try {
+                            await Stripe.instance.presentPaymentSheet();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(' succesfully completed'),
+                              ),
+                            );
+                          } on Exception catch (e) {
+                            if (e is StripeException) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Error from Stripe: ${e.error.localizedMessage}'),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Unforeseen error: $e'),
+                                ),
+                              );
+                            }
+                          }
+                        }
+                      },
+                      builder: (context, state) {
+                        return GestureDetector(
+                          onTap: () {
+                            context
+                                .read<CreateSetupIntentCubit>()
+                                .createSetupIntent();
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Payment method',
+                                style: Theme.of(context).textTheme.subtitle1,
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                'Add, edit or remove a payment method.',
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
