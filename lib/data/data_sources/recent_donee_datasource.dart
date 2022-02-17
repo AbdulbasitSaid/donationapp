@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:idonatio/data/core/api_client.dart';
-import 'package:idonatio/data/models/donee_models/recent_donees_model.dart';
+
+import '../models/donation_models/recent_donees_model.dart';
 
 class RecentDoneesDataSource {
   final ApiClient _apiClient;

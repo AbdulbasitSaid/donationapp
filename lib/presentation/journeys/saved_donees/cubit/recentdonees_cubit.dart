@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/models/donee_models/recent_donees_model.dart';
 import 'package:idonatio/data/repository/recent_doness_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
+
+import '../../../../data/models/donation_models/recent_donees_model.dart';
 
 part 'recentdonees_state.dart';
 

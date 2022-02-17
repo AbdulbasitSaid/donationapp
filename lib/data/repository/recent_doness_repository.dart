@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:idonatio/data/data_sources/recent_donee_datasource.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
-import 'package:idonatio/data/models/donee_models/recent_donees_model.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 
 import '../core/unauthorized_exception.dart';
+import '../models/donation_models/recent_donees_model.dart';
 
 class RecentDoneesRepository {
   final RecentDoneesDataSource _recentDoneesDataSource;
