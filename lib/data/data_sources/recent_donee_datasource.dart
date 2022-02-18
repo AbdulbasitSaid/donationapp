@@ -13,6 +13,6 @@ class RecentDoneesDataSource {
     final response =
         await _apiClient.get('donors/donations/recent-donees', token: token);
     log(response.toString());
-    return RecentDoneesResponseModel.fromMap(response);
+    return RecentDoneesResponseModel.fromJson(response);
   }
 }

@@ -1,5 +1,6 @@
 
-import 'package:idonatio/data/models/payment_success_model.dart';
+
+import 'donee_model.dart';
 
 
 class SavedDoneesResponseModel {

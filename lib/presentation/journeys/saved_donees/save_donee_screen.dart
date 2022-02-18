@@ -40,13 +40,13 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                 child: Column(children: [
                   ...state.savedDoneesResponseModel.data!.map(
                     (e) => DoneeListTile(
-                      key: Key(e.id),
+                      key: Key('${e.id}'),
                       address: e.organization == null
                           ? e.addressLine1
                           : e.organization?.addressLine1,
-                      doneeCode: e.doneeCode,
+                      doneeCode: '${e.doneeCode}',
                       name: e.organization == null
-                          ? e.firstName + ' ' + e.lastName
+                          ? '${e.firstName} ${e.lastName}'
                           : e.organization?.name,
                     ),
                   ),
