@@ -13,4 +13,7 @@ class TranslationConstants {
   static const String termsOfService = ' Terms of Service ';
   static const String and = 'and ';
   static const String privacyPolicy = 'Privacy Policy.';
+  static const String noNetwork = 'No Network! ';
+  static const String somethingWentWrong = 'Opps some thing went wrong! ';
+  static const String wrongUsernamePassword = 'Wrong user name or password. ';
 }
