@@ -18,7 +18,7 @@ class DonorModel {
   final String title;
   @HiveField(6)
   final String? phoneNumber;
-  // @HiveField(7)
+  @HiveField(7)
   final dynamic phoneVerifiedAt;
   @HiveField(8)
   final bool phoneReceiveSecurityAlert;
