@@ -16,22 +16,32 @@ class EmailField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const BaseLabelText(text: 'Email address'),
+        const BaseLabelText(
+          text: 'Email address',
+        ),
         const SizedBox(
           height: 8,
         ),
-        TextFormField(
-          controller: emailController,
-          onEditingComplete: () {
-            formKey.currentState!.validate();
+        Focus(
+          onFocusChange: (value) {
+            if (!value) {
+              formKey.currentState!.validate();
+            }
           },
-          validator: MultiValidator([
-            RequiredValidator(errorText: 'Email is required'),
-            EmailValidator(errorText: 'Please Enter a valid email Address'),
-          ]),
-          decoration: const InputDecoration(
-            hintText: 'Email address',
-            prefixIcon: Icon(Icons.person_outline_outlined),
+          child: TextFormField(
+            controller: emailController,
+            keyboardType: TextInputType.emailAddress,
+            onEditingComplete: () {
+              formKey.currentState!.validate();
+            },
+            validator: MultiValidator([
+              RequiredValidator(errorText: 'Email is required'),
+              EmailValidator(errorText: 'Please Enter a valid email Address'),
+            ]),
+            decoration: const InputDecoration(
+              hintText: 'Email address',
+              prefixIcon: Icon(Icons.person_outline_outlined),
+            ),
           ),
         ),
       ],

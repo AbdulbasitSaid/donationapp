@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 ResetPasswordOtpSuccessEntity resetPasswordOtpSuccessEntityFromJson(
@@ -45,13 +44,13 @@ class ResetPasswordOtpSuccessEntity extends Equatable {
 }
 
 class ResetPasswordOtpSuccessEntityDataData extends Equatable {
-  ResetPasswordOtpSuccessEntityDataData({
+  const ResetPasswordOtpSuccessEntityDataData({
     required this.email,
     required this.passwordResetToken,
   });
 
-  final String email;
-  final String passwordResetToken;
+  final String? email;
+  final String? passwordResetToken;
 
   factory ResetPasswordOtpSuccessEntityDataData.fromJson(
           Map<String, dynamic> json) =>

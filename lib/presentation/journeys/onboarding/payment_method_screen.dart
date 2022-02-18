@@ -1,16 +1,18 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_field_validator/form_field_validator.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:idonatio/common/assest.dart';
 import 'package:idonatio/common/enums/payment_options.dart';
+import 'package:idonatio/data/core/unauthorized_exception.dart';
+import 'package:idonatio/di/get_it.dart';
+import 'package:idonatio/enums.dart';
+import 'package:idonatio/presentation/journeys/auth_guard.dart';
+import 'package:idonatio/presentation/journeys/onboarding/cubit/create_setup_intent_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboarding_cubit.dart';
-import 'package:idonatio/presentation/journeys/onboarding/data_preference_screen.dart';
-import 'package:idonatio/presentation/journeys/onboarding/onboarding_screen.dart';
+import 'package:idonatio/presentation/journeys/onboarding/cubit/onboardingdataholder_cubit.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
-import 'package:idonatio/presentation/widgets/labels/base_label_text.dart';
 import 'package:idonatio/presentation/widgets/labels/label_10_medium.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
@@ -42,9 +44,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          TextButton(onPressed: () {}, child: Text('Skip'.toUpperCase()))
-        ],
+        actions: const [],
       ),
       body: SafeArea(
         child: AppBackgroundWidget(
@@ -67,177 +67,122 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                   const SizedBox(
                     height: 32,
                   ),
-                  Platform.isIOS
-                      ? ListTile(
-                          title: SizedBox(
-                            height: 30,
-                            child: Row(
-                              children: const [
-                                Image(
-                                  image: AssetImage(AppAssest.applePayIcon),
-                                ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                BaseLabelText(text: 'Apple Pay'),
-                              ],
-                            ),
-                          ),
-                          leading: Radio<PaymentOptions>(
-                            value: PaymentOptions.googlePay,
-                            groupValue: paymentOptions,
-                            onChanged: (PaymentOptions? value) {
-                              setState(() {
-                                paymentOptions = value;
-                              });
-                            },
-                          ),
-                        )
-                      : ListTile(
-                          title: SizedBox(
-                            height: 30,
-                            child: Row(
-                              children: const [
-                                Image(
-                                  image: AssetImage(AppAssest.googlPayIcon),
-                                ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                BaseLabelText(text: 'Google Pay'),
-                              ],
-                            ),
-                          ),
-                          leading: Radio<PaymentOptions>(
-                            value: PaymentOptions.googlePay,
-                            groupValue: paymentOptions,
-                            onChanged: (PaymentOptions? value) {
-                              setState(() {
-                                paymentOptions = value;
-                              });
-                            },
-                          ),
-                        ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  ListTile(
-                    title: Row(
-                      children: const [
-                        BaseLabelText(text: 'Credit / Debit Card'),
-                      ],
-                    ),
-                    leading: Radio<PaymentOptions>(
-                      value: PaymentOptions.creditCard,
-                      groupValue: paymentOptions,
-                      onChanged: (PaymentOptions? value) {
-                        setState(() {
-                          paymentOptions = value;
-                        });
-                      },
-                    ),
-                  ),
-                  paymentOptions == PaymentOptions.creditCard
-                      ? Column(
-                          children: [
-                            TextFormField(
-                              keyboardType: TextInputType.number,
-                              controller: cardNumber,
-                              validator:
-                                  RequiredValidator(errorText: 'Card Number '),
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.payment,
-                                ),
-                                hintText: 'Card number',
-                                labelText: 'Card number',
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 24,
-                            ),
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    validator: RequiredValidator(
-                                        errorText: 'required'),
-                                    controller: expryDate,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Expiry',
-                                      labelText: 'Expiry',
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Flexible(
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    validator: RequiredValidator(
-                                        errorText: 'required'),
-                                    controller: cvc,
-                                    decoration: const InputDecoration(
-                                      hintText: 'CVC',
-                                      labelText: 'CVC',
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Flexible(
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    validator: RequiredValidator(
-                                        errorText: 'required'),
-                                    controller: postCode,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Postcode',
-                                      labelText: 'Postcode',
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      : Container(),
-                  const SizedBox(
-                    height: 48,
-                  ),
-                  BlocListener<OnboardingCubit, OnboardingState>(
-                    listener: (context, state) {
-                      if (state is OnboardingSuccess) {
-                        Navigator.push(
-                            context,
-                            AppRouter.routeToPage(
-                                const OnboardingDataPreferencesScreen()));
-                      }
-                    },
-                    child: ElevatedNextIconButton(
-                        text: 'Continue'.toUpperCase(),
-                        onPressed: () {
-                          context.read<OnboardingCubit>().onBoardUser({
-                            'payment_method':
-                                paymentOptions == PaymentOptions.applePay
-                                    ? ''
-                                    : paymentOptions == PaymentOptions.googlePay
-                                        ? 'google'
-                                        : 'card'
-                          });
-                        }),
-                  ),
                   const SizedBox(
                     height: 32,
                   ),
-                  Container(
-                    height: 50,
-                    padding: const EdgeInsets.all(8),
-                    child: const Image(
-                      image: AssetImage(AppAssest.poweredByStripe),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BlocConsumer<CreateSetupIntentCubit,
+                          CreateSetupIntentState>(
+                        listener: (context, state) async {
+                          if (state is CreateSetupIntentSuccessful) {
+                            await Stripe.instance.initPaymentSheet(
+                                paymentSheetParameters:
+                                    SetupPaymentSheetParameters(
+                              merchantDisplayName: 'Idonatio',
+                              setupIntentClientSecret:
+                                  state.setUpIntentEnitityData.data.setupIntent,
+                              customerId: state
+                                  .setUpIntentEnitityData.data.stripeCustomerId,
+                              customerEphemeralKeySecret: state
+                                  .setUpIntentEnitityData.data.ephemeralKey,
+                            ));
+                            try {
+                              await Stripe.instance.presentPaymentSheet();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(' succesfully completed'),
+                                ),
+                              );
+                              final onboardingState = context
+                                  .read<OnboardingdataholderCubit>()
+                                  .state;
+                              if (onboardingState is OnboardingdataUpdated) {
+                                try {
+                                  context.read<OnboardingCubit>().onBoardUser({
+                                    "gift_aid_enabled": onboardingState
+                                        .onboardingEntity.giftAidEnabled,
+                                    "address": onboardingState
+                                        .onboardingEntity.address,
+                                    "city":
+                                        onboardingState.onboardingEntity.city,
+                                    "county":
+                                        onboardingState.onboardingEntity.county,
+                                    "postal_code": onboardingState
+                                        .onboardingEntity.postalCode,
+                                    "country_id": onboardingState
+                                        .onboardingEntity.countryId,
+                                    "payment_method": "card",
+                                    "send_marketing_mail": onboardingState
+                                        .onboardingEntity.sendMarketingMail,
+                                    "is_onboarded": true,
+                                    "donate_anonymously": onboardingState
+                                        .onboardingEntity.donateAnonymously,
+                                    "stripe_customer_id": state
+                                        .setUpIntentEnitityData
+                                        .data
+                                        .stripeCustomerId
+                                  });
+                                  context.read<UserCubit>().setUserState(
+                                      getItInstance(),
+                                      AuthStatus.authenticated);
+                                } on UnprocessableEntity {
+                                  throw UnprocessableEntity();
+                                } on Forbidden {
+                                  throw Forbidden();
+                                } on Exception {
+                                  throw Exception();
+                                }
+                              }
+                            } on Exception catch (e) {
+                              if (e is StripeException) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Error from Stripe: ${e.error.localizedMessage}'),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Unforeseen error: $e'),
+                                  ),
+                                );
+                              }
+                            }
+                          }
+                        },
+                        builder: (context, state) {
+                          return ElevatedButton(
+                              onPressed: () async {
+                                await context
+                                    .read<CreateSetupIntentCubit>()
+                                    .createSetupIntent();
+                              },
+                              child: const Text('Add a Payment method'));
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  BlocListener<OnboardingCubit, OnboardingState>(
+                    listener: (context, state) {
+                      if (state is OnboardingSuccess) {
+                        context.read<UserCubit>().setUserState(
+                            getItInstance(), AuthStatus.authenticated);
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            AppRouter.routeToPage(const AuthGaurd()),
+                            (route) => false);
+                      }
+                    },
+                    child: Container(
+                      height: 50,
+                      padding: const EdgeInsets.all(8),
+                      child: const Image(
+                        image: AssetImage(AppAssest.poweredByStripe),
+                      ),
                     ),
                   )
                 ],

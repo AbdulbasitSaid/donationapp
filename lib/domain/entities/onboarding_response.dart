@@ -2,7 +2,6 @@
 //
 //     final onboardingResponse = onboardingResponseFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 OnboardingResponse onboardingResponseFromJson(String str) =>

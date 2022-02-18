@@ -133,6 +133,7 @@ class _NewPasswordFormState extends State<NewPasswordForm> {
                   if (value == null || value.isEmpty) {
                     return "Confirm password is required";
                   }
+                  return null;
                 },
                 decoration: InputDecoration(
                   hintText: 'Confirm password',

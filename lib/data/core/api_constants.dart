@@ -1,4 +1,3 @@
 class ApiConstants {
-  ApiConstants._();
-  static const baseUrl = 'https://idonatio-api.herokuapp.com/api/v1';
+  static const String baseUrl = 'https://idonatio-api.herokuapp.com/api/v1';
 }

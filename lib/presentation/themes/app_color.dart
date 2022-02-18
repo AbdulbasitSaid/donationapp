@@ -1,4 +1,3 @@
-
 import 'package:flutter/painting.dart';
 
 class AppColor {
@@ -18,6 +17,7 @@ class AppColor {
   static const Color border40Primary = Color(0xffE4E7EB);
   static const Color border50Primary = Color(0xffC4CBD4);
   static const Color text70Primary = Color(0xff66788A);
+  static const Color text80Primary = Color(0xff425A70);
   static const Color baseText80Primary = Color(0xff425A70);
   static const Color text90Primary = Color(0xff234361);
 

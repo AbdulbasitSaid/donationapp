@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:idonatio/data/core/validator.dart';
 import 'package:idonatio/presentation/journeys/reset_password/bloc/resetpassword_bloc.dart';
 import 'package:idonatio/presentation/journeys/reset_password/verification_code_screen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
@@ -56,11 +54,9 @@ class _ResetPasswordEmailformState extends State<ResetPasswordEmailform> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ResetpasswordBloc, ResetpasswordState>(
-      // listenWhen: (previous, current) => current is ResetpasswordLoadding,
       listener: (context, state) {
         if (state is ResetpasswordLoadding) {
-          // WidgetsBinding.instance!.addPostFrameCallback(
-          //     (context) => const AppLoader(loadingMessage: 'Loading..'));
+       
           showDialog(
               context: context,
               builder: (context) {

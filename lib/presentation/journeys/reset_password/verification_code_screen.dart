@@ -82,7 +82,6 @@ class _ResetPasswordVerificationCodeFormState
         if (state is ResetpasswordSuccess) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(state.successMessage)));
-          print(state.successMessage);
           Navigator.push(
               context, AppRouter.routeToPage(const NewPasswordScreen()));
         }
@@ -103,12 +102,12 @@ class _ResetPasswordVerificationCodeFormState
           child: Column(
             children: [
               state is ResetpasswordFailed
-                  ? Container(
-                      margin: const EdgeInsets.only(bottom: 32),
-                      child: AppErrorDialogWidget(
-                          title: state.errorTitle, message: state.errorMessage),
-                    )
+                  ? AppErrorDialogWidget(
+                      title: state.errorTitle, message: state.errorMessage)
                   : const SizedBox.shrink(),
+              const SizedBox(
+                height: 16,
+              ),
               TextFormField(
                 keyboardType: TextInputType.number,
                 controller: _otpController,

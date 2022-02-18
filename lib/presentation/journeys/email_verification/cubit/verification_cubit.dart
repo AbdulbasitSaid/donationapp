@@ -1,48 +1,48 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idonatio/data/core/unauthorized_exception.dart';
-import 'package:idonatio/data/repository/authentication_repository.dart';
-import 'package:idonatio/enums.dart';
-import 'package:idonatio/presentation/bloc/auth/auth_bloc.dart';
+import 'package:idonatio/data/repository/user_repository.dart';
+import 'package:idonatio/domain/entities/app_error.dart';
 
 part 'verification_state.dart';
 
 class VerificationCubit extends Cubit<VerificationState> {
   VerificationCubit(
     this._authenticationRepository,
-    this.authBloc,
   ) : super(VerificationInitial());
-  final AuthenticationRepository _authenticationRepository;
+  final UserRepository _authenticationRepository;
   late final StreamSubscription authBlocSub;
-  final AuthBloc authBloc;
   void verifyOtp(String otp) async {
     emit(VerificationLoading());
-    try {
-      await _authenticationRepository.verifyEmail({'otp': otp});
-      authBlocSub = authBloc.stream.listen((state) {
-        if (state is VerificationSuccess) {
-          authBloc.add(const ChangeAuth(AuthStatus.verifiedEmail));
-        }
-      });
 
-      emit(const VerificationSuccess(successMessage: 'Verified successfully.'));
-    } on BadRequest {
-      emit(const VerificationFailure(
-          errorMessage: 'OTP has expired. Try requesting for OTP again.'));
-    } on Forbidden {
-      emit(const VerificationFailure(errorMessage: 'Invalid OTP.'));
-    } on Exception {
-      emit(const VerificationFailure(
-          errorMessage: 'Ops Something went wrong.!'));
-    }
+    final Either<AppError, dynamic> either =
+        await _authenticationRepository.verifyEmail({'otp': otp});
+    emit(either.fold((l) {
+      String errorMessage = getErrors(l.appErrorType);
+      return VerificationFailure(errorMessage: errorMessage);
+    },
+        (r) => const VerificationSuccess(
+            successMessage: 'Verified successfully.!')));
   }
 
   @override
   Future<void> close() {
-    // TODO: implement close
     return super.close();
+  }
+
+  String getErrors(AppErrorType appErrorType) {
+    switch (appErrorType) {
+      case AppErrorType.unProcessableEntity:
+        return 'The otp field is required.';
+      case AppErrorType.badRequest:
+        return "Invalid OTP.";
+      case AppErrorType.unauthorized:
+        return 'Process not authorised';
+      default:
+        return "Ops Something went wrong!";
+    }
   }
 }

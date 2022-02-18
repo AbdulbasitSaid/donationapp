@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:idonatio/presentation/journeys/onboarding/cubit/onboarding_cubit.dart';
+import 'package:idonatio/presentation/journeys/onboarding/cubit/getcountreis_cubit.dart';
+import 'package:idonatio/presentation/journeys/onboarding/cubit/onboardingdataholder_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/onboarding_screen.dart';
 import 'package:idonatio/presentation/journeys/onboarding/payment_method_screen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
@@ -11,6 +12,8 @@ import 'package:idonatio/presentation/widgets/labels/label_10_medium.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 
+import 'entities/onboarding_entity.dart';
+
 class HomeAddressScreen extends StatefulWidget {
   const HomeAddressScreen({Key? key}) : super(key: key);
 
@@ -19,10 +22,13 @@ class HomeAddressScreen extends StatefulWidget {
 }
 
 class _HomeAddressScreenState extends State<HomeAddressScreen> {
-  String countryValue = 'United Kingdom';
+  String? countyValue = 'county 1';
   late TextEditingController address;
   late TextEditingController town;
   late TextEditingController postCode;
+  bool formIsValid = false;
+
+  String? countryId;
   @override
   void initState() {
     address = TextEditingController();
@@ -48,141 +54,192 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
       body: SafeArea(
         child: AppBackgroundWidget(
           childWidget: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Label10Medium(text: '2/4'),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  const Level2Headline(text: 'Home address'),
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  const Level4Headline(
-                      text:
-                          'Please provide your home address to enable GiftAid on your donations'),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  const BaseLabelText(
-                      text:
-                          'Your home address will be used by the charities you donate to for claiming any eligible GiftAid. It is also needed to identify you as a current UK taxpayer. '),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.streetAddress,
-                    controller: address,
-                    validator: MultiValidator([
-                      RequiredValidator(errorText: 'address is required'),
-                      MinLengthValidator(8,
-                          errorText: 'Please enter a valid  address')
-                    ]),
-                    decoration: const InputDecoration(
-                      hintText: 'Address',
-                      labelText: 'Address',
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    controller: town,
-                    validator: MultiValidator([
-                      RequiredValidator(errorText: 'address is required'),
-                      MinLengthValidator(3, errorText: 'min of 3 characters')
-                    ]),
-                    decoration: const InputDecoration(
-                      hintText: 'Town / City',
-                      labelText: 'Town / City',
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Row(
+            child: BlocConsumer<OnboardingdataholderCubit,
+                OnboardingdataholderState>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                return Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Flexible(
-                        child: DropdownButtonFormField(
-                          value: countryValue,
-                          isExpanded: true,
-                          isDense: true,
-                          onChanged: (String? newTitle) {
-                            setState(() {
-                              countryValue = newTitle!;
-                            });
-                          },
-                          items: <String>[
-                            'United Kingdom',
-                            'Nigeria',
-                            'United States of America',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
+                      const Label10Medium(text: '2/4'),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      const Level2Headline(text: 'Home address'),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      const Level4Headline(
+                          text:
+                              'Please provide your home address to enable GiftAid on your donations'),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const BaseLabelText(
+                          text:
+                              'Your home address will be used by the charities you donate to for claiming any eligible GiftAid. It is also needed to identify you as a current UK taxpayer. '),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.streetAddress,
+                        controller: address,
+                        validator: MultiValidator([
+                          RequiredValidator(errorText: 'address is required'),
+                          MinLengthValidator(8,
+                              errorText: 'Please enter a valid  address')
+                        ]),
+                        decoration: const InputDecoration(
+                          hintText: 'Address',
+                          labelText: 'Address',
                         ),
                       ),
                       const SizedBox(
-                        width: 16,
+                        height: 24,
                       ),
-                      Flexible(
-                        child: TextFormField(
-                          keyboardType: TextInputType.text,
-                          controller: postCode,
-                          validator: MultiValidator([
-                            RequiredValidator(
-                                errorText: 'Postcode is required'),
-                            MinLengthValidator(3,
-                                errorText: 'min of 6 characters')
-                          ]),
-                          decoration: const InputDecoration(
-                            hintText: 'Postcode(83738)',
-                            labelText: 'Postcode',
-                          ),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        controller: town,
+                        validator: MultiValidator([
+                          RequiredValidator(errorText: 'address is required'),
+                          MinLengthValidator(3,
+                              errorText: 'min of 3 characters')
+                        ]),
+                        decoration: const InputDecoration(
+                          hintText: 'Town / City',
+                          labelText: 'Town / City',
                         ),
-                      )
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: DropdownButtonFormField(
+                              value: countyValue,
+                              isExpanded: true,
+                              isDense: true,
+                              onChanged: (String? newTitle) {
+                                setState(() {
+                                  countyValue = newTitle!;
+                                });
+                              },
+                              items: <String>[
+                                'county 1',
+                                'county 2',
+                                'county 3',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              keyboardType: TextInputType.text,
+                              onChanged: (value) {
+                                if (_formKey.currentState!.validate()) {
+                                  setState(() {
+                                    formIsValid = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    formIsValid = false;
+                                  });
+                                }
+                              },
+                              controller: postCode,
+                              validator: MultiValidator([
+                                RequiredValidator(
+                                    errorText: 'Postcode is required'),
+                                MinLengthValidator(3,
+                                    errorText: 'min of 6 characters')
+                              ]),
+                              decoration: const InputDecoration(
+                                hintText: 'Postcode(83738)',
+                                labelText: 'Postcode',
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      BlocBuilder<GetcountreisCubit, GetcountreisState>(
+                        builder: (context, state) {
+                          if (state is GetcountreisSuccessfull) {
+                            final countries =
+                                state.countries.countryData.toList();
+                            return DropdownButtonFormField(
+                              hint: const Text('Select Country'),
+                              items: countries
+                                  .map((e) => DropdownMenuItem<String>(
+                                        child: Text(e.name),
+                                        value: e.id,
+                                      ))
+                                  .toList(),
+                              onChanged: (String? value) {
+                                setState(() {
+                                  countryId = value;
+                                });
+                              },
+                            );
+                          } else if (state is GetcountreisLoading) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            return TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                    'Pleas tap to get list on countries'));
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 48,
+                      ),
+                      ElevatedNextIconButton(
+                          text: 'Continue',
+                          onPressed: formIsValid &&
+                                  countryId != null &&
+                                  countyValue != null
+                              ? () {
+                                  if (state is OnboardingdataUpdated) {
+                                    context
+                                        .read<OnboardingdataholderCubit>()
+                                        .updateOnboardingData(
+                                          OnboardingEntity(
+                                              giftAidEnabled: state
+                                                  .onboardingEntity
+                                                  .giftAidEnabled,
+                                              address: address.text,
+                                              city: town.text,
+                                              county: countyValue!,
+                                              countryId: countryId!,
+                                              postalCode: postCode.text,
+                                              isOnboarded: true),
+                                        );
+                                    Navigator.push(
+                                        context,
+                                        AppRouter.routeToPage(
+                                            const PaymentMethodScreen()));
+                                  }
+                                }
+                              : null),
                     ],
                   ),
-                  const SizedBox(
-                    height: 48,
-                  ),
-                  BlocListener<OnboardingCubit, OnboardingState>(
-                    listener: (context, state) {
-                      if (state is OnboardingSuccess) {
-                        final snackBar = SnackBar(
-                          content: const Text('Success!'),
-                          action: SnackBarAction(
-                            label: 'Ok',
-                            onPressed: () {
-                              // Some code to undo the change.
-                            },
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        Navigator.push(context,
-                            AppRouter.routeToPage(const PaymentMethodScreen()));
-                      }
-                    },
-                    child: ElevatedNextIconButton(
-                        text: 'Continue',
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<OnboardingCubit>().onBoardUser({
-                              'address': address.text,
-                              'city': town.text,
-                              'postal_code': postCode.text,
-                            });
-                          }
-                        }),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ),

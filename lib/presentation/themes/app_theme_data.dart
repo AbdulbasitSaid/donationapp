@@ -39,6 +39,13 @@ class AppThemeData {
         color: AppColor.text90Primary,
         fontSize: 18,
       );
+
+  static TextStyle? get _mediumLevel6Header => _inter.headline6?.copyWith(
+        fontWeight: FontWeight.w600,
+        fontStyle: FontStyle.normal,
+        fontSize: 14,
+        color: AppColor.text90Primary,
+      );
   static TextStyle? get _buttonText => _inter.button?.copyWith(
         color: Colors.white,
       );
@@ -54,17 +61,20 @@ class AppThemeData {
 
 // textTheme
   static TextTheme appTextTheme() => TextTheme(
-        headline1: _mediumLevel1Header,
-        headline2: _mediumLevel2Header,
-        headline3: _mediumLevel3Header,
-        headline4: _mediumLevel4Headline,
-        bodyText1: _uiTextBase,
-        bodyText2: _uiTextBase!.copyWith(
-          fontWeight: FontWeight.w500,
-          fontSize: 18,
-        ),
-        button: _buttonText,
-      );
+      headline1: _mediumLevel1Header,
+      headline2: _mediumLevel2Header,
+      headline3: _mediumLevel3Header,
+      headline4: _mediumLevel4Headline,
+      headline6: _mediumLevel6Header,
+      subtitle1:
+          _uiTextBase!.copyWith(fontSize: 16, fontWeight: FontWeight.w400),
+      bodyText1: _uiTextBase,
+      bodyText2: _uiTextBase!.copyWith(
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
+      ),
+      button: _buttonText,
+      caption: _uiTextBase!.copyWith(fontSize: 12));
 
 // end textTheme
 
@@ -72,6 +82,7 @@ class AppThemeData {
     return ThemeData(
       primaryColor: AppColor.basePrimary,
       primaryColorLight: AppColor.basePrimary,
+      primaryColorDark: AppColor.darkPrimary,
       brightness: Brightness.light,
       secondaryHeaderColor: AppColor.darkSecondaryAmber,
       focusColor: AppColor.basePrimary,
@@ -80,6 +91,8 @@ class AppThemeData {
       disabledColor: AppColor.lightPrimary,
       hoverColor: AppColor.basePrimary,
       textTheme: appTextTheme(),
+      textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(primary: AppColor.basePrimary)),
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: AppColor.basePrimary,
         selectionHandleColor: AppColor.basePrimary,

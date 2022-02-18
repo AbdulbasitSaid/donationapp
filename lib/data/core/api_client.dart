@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
@@ -8,7 +9,7 @@ import 'api_constants.dart';
 class ApiClient {
   final Client _client;
 
-  ApiClient(this._client);
+  ApiClient({Client? client}) : _client = client ?? Client();
 
   dynamic get(String path,
       {Map<dynamic, dynamic>? params, String? token}) async {
@@ -52,7 +53,7 @@ class ApiClient {
         'Authorization': 'Bearer $token',
       },
     );
-    print(response.body);
+    log(response.body);
     switch (response.statusCode) {
       case 200:
         return json.decode(response.body);
@@ -85,7 +86,6 @@ class ApiClient {
         'Authorization': 'Bearer $token',
       },
     );
-    print(response.body);
     switch (response.statusCode) {
       case 200:
         return json.decode(response.body);
@@ -148,3 +148,23 @@ class ApiClient {
     return Uri.parse('${ApiConstants.baseUrl}/$path');
   }
 }
+
+
+  //  on UnprocessableEntity {
+  //     return const Left(
+  //         AppError(appErrorType: AppErrorType.unProcessableEntity));
+  //   } on BadRequest {
+  //     return const Left(AppError(appErrorType: AppErrorType.badRequest));
+  //   } on NetworkError {
+  //     return const Left(AppError(appErrorType: AppErrorType.network));
+  //   } on UnauthorisedException {
+  //     return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+  //   } on Forbidden {
+  //     return const Left(AppError(appErrorType: AppErrorType.forbidden));
+  //   } on NotFound {
+  //     return const Left(AppError(appErrorType: AppErrorType.notFound));
+  //   } on InternalServerError {
+  //     return const Left(AppError(appErrorType: AppErrorType.serveError));
+  //   } on Exception {
+  //     return const Left(AppError(appErrorType: AppErrorType.unExpected));
+  //   }

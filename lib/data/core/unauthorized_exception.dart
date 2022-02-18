@@ -9,3 +9,5 @@ class NotFound implements Exception {}
 class UnprocessableEntity implements Exception {}
 
 class InternalServerError implements Exception {}
+
+class NetworkError implements Exception {}
