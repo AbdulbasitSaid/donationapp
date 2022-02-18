@@ -7,7 +7,6 @@ import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 
 import '../../../di/get_it.dart';
 import '../../../enums.dart';
-import '../../bloc/login/login_cubit.dart';
 import '../../reusables.dart';
 import '../../router/app_router.dart';
 import '../auth_guard.dart';
@@ -43,7 +42,7 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Level6Headline(text: 'Account information'),
               ),
               Container(
-                decoration: defaultContainerDecoration(),
+                decoration: whiteContainerBackGround(),
                 padding: const EdgeInsets.all(16),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
@@ -83,7 +82,7 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Level6Headline(text: 'Get help'),
               ),
               Container(
-                decoration: defaultContainerDecoration(),
+                decoration: whiteContainerBackGround(),
                 padding: const EdgeInsets.all(16),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
@@ -123,7 +122,7 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Level6Headline(text: 'Legal information'),
               ),
               Container(
-                decoration: defaultContainerDecoration(),
+                decoration: whiteContainerBackGround(),
                 padding: const EdgeInsets.all(16),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
@@ -154,7 +153,7 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Level6Headline(text: 'Other actions'),
               ),
               Container(
-                decoration: defaultContainerDecoration(),
+                decoration: whiteContainerBackGround(),
                 padding: const EdgeInsets.all(16),
                 width: MediaQuery.of(context).size.width,
                 child: Column(

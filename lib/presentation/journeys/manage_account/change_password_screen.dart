@@ -4,19 +4,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/change_password_cubit.dart';
-import 'package:idonatio/presentation/journeys/manage_account/verify_edited_email_screen.dart';
-import 'package:idonatio/presentation/journeys/onboarding/home_address_screen.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 
-import '../../../common/words.dart';
 import '../../reusables.dart';
 import '../../router/app_router.dart';
 import '../../themes/app_color.dart';
 import '../../widgets/dialogs/app_error_dailog.dart';
-import '../../widgets/input_fields/password_widget.dart';
 import '../reset_password/reset_password.dart';
-import 'cubit/update_profile_cubit.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({Key? key}) : super(key: key);
