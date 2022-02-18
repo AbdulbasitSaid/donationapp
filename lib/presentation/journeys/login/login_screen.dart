@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/journeys/login/login_form.dart';
-import 'package:idonatio/presentation/journeys/profile/cubit/logout_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_1_headline.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../manage_account/cubit/logout_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);

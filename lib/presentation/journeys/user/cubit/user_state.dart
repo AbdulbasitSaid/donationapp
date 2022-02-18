@@ -18,7 +18,7 @@ class Authenticated extends UserState {}
 class EmailNotVerified extends UserState {}
 
 class NotBoarded extends UserState {
-  final LocalUserObject localUserObject;
+  final UserData localUserObject;
 
   const NotBoarded({required this.localUserObject});
 }

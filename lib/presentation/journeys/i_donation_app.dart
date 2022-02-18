@@ -8,6 +8,10 @@ import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
 import 'package:idonatio/presentation/bloc/registration_steps/cubit/registration_steps_cubit.dart';
 import 'package:idonatio/presentation/journeys/email_verification/cubit/verification_cubit.dart';
+import 'package:idonatio/presentation/journeys/manage_account/cubit/change_password_cubit.dart';
+import 'package:idonatio/presentation/journeys/manage_account/cubit/contact_support_cubit.dart';
+import 'package:idonatio/presentation/journeys/manage_account/cubit/cubit/close_account_cubit.dart';
+import 'package:idonatio/presentation/journeys/manage_account/cubit/update_profile_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_process_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
@@ -15,7 +19,6 @@ import 'package:idonatio/presentation/journeys/new_donation/cubit/select_payment
 import 'package:idonatio/presentation/journeys/onboarding/cubit/create_setup_intent_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/getcountreis_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboardingdataholder_cubit.dart';
-import 'package:idonatio/presentation/journeys/profile/cubit/logout_cubit.dart';
 import 'package:idonatio/presentation/journeys/reset_password/bloc/resetpassword_bloc.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
@@ -24,6 +27,7 @@ import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/themes/app_theme_data.dart';
 
 import 'auth_guard.dart';
+import 'manage_account/cubit/logout_cubit.dart';
 import 'new_donation/cubit/get_payment_methods_cubit.dart';
 import 'new_donation/cubit/makedonation_cubit.dart';
 import 'onboarding/cubit/onboarding_cubit.dart';
@@ -118,6 +122,18 @@ class _IdonatioAppState extends State<IdonatioApp> {
           ),
           BlocProvider(
             create: (context) => GetSavedDoneesCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => UpdateProfileCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => ChangePasswordCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => ContactSupportCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => CloseAccountCubit(getItInstance()),
           ),
         ],
         child: MultiRepositoryProvider(

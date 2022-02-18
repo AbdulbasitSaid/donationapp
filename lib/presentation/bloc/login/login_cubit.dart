@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/common/words.dart';
 import 'package:idonatio/data/repository/user_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/login_request_params.dart';
+
+import '../../reusables.dart';
 
 part 'login_state.dart';
 
@@ -43,15 +44,5 @@ class LoginCubit extends Cubit<LoginState> {
     ));
   }
 
-  String getErrorMessage(AppErrorType appErrorType) {
-    switch (appErrorType) {
-      case AppErrorType.network:
-        return TranslationConstants.noNetwork;
-      case AppErrorType.api:
-      case AppErrorType.database:
-        return 'Check that you have entered a correct and registered email address and password.';
-      default:
-        return 'Check that you have entered a correct and registered email address and password.';
-    }
-  }
+
 }

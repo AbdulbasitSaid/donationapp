@@ -32,21 +32,21 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
             child: BlocBuilder<GetSavedDoneesCubit, GetSavedDoneesState>(
           builder: (context, state) {
             if (state is GetSavedDoneesSuccess &&
-                state.savedDoneesResponseModel.data.isNotEmpty) {
+                state.savedDoneesResponseModel.data!.isNotEmpty) {
               return Container(
                 width: MediaQuery.of(context).size.width,
-                decoration: defaultContainerDecoration(),
+                decoration: whiteContainerBackGround(),
                 padding: const EdgeInsets.all(16),
                 child: Column(children: [
-                  ...state.savedDoneesResponseModel.data.map(
+                  ...state.savedDoneesResponseModel.data!.map(
                     (e) => DoneeListTile(
-                      key: Key(e.id),
+                      key: Key('${e.id}'),
                       address: e.organization == null
                           ? e.addressLine1
                           : e.organization?.addressLine1,
-                      doneeCode: e.doneeCode,
+                      doneeCode: '${e.doneeCode}',
                       name: e.organization == null
-                          ? e.firstName + ' ' + e.lastName
+                          ? '${e.firstName} ${e.lastName}'
                           : e.organization?.name,
                     ),
                   ),

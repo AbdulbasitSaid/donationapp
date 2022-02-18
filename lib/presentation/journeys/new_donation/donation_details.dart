@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
@@ -334,10 +333,10 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   BlocBuilder<DonationCartCubit, List<DonationItemEntity>>(
-                    builder: (context, state) {
-                      double total = state.isEmpty
+                    builder: (context, cartState) {
+                      double total = cartState.isEmpty
                           ? 0
-                          : state
+                          : cartState
                               .map((e) => e.amount)
                               .toList()
                               .reduce((a, b) => a + b);
@@ -355,30 +354,36 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                         : () {
                                             context
                                                 .read<DonationProcessCubit>()
-                                                .updateDonationProccess(
-                                                    state.copyWith(
-                                                  stripeConnectedAccountId:
-                                                      doneeState
-                                                          .doneeResponseData
-                                                          .stripeConnectedAccountId,
-                                                  saveDonee: true,
-                                                  doneeId: doneeState
-                                                      .doneeResponseData.id,
-                                                  currency: (doneeState
-                                                              .doneeResponseData
-                                                              .organization
-                                                              ?.id ==
-                                                          null)
-                                                      ? doneeState
-                                                          .doneeResponseData
-                                                          .country
-                                                          .currencyCode
-                                                      : doneeState
-                                                          .doneeResponseData
-                                                          .organization!
-                                                          .country!
-                                                          .currencyCode,
-                                                ));
+                                                .updateDonationProccess(state.copyWith(
+                                                    stripeConnectedAccountId:
+                                                        doneeState
+                                                            .doneeResponseData
+                                                            .stripeConnectedAccountId,
+                                                    saveDonee: true,
+                                                    doneeId: doneeState
+                                                        .doneeResponseData.id,
+                                                    currency: (doneeState
+                                                                .doneeResponseData
+                                                                .organization
+                                                                ?.id ==
+                                                            null)
+                                                        ? doneeState
+                                                            .doneeResponseData
+                                                            .country
+                                                            .currencyCode
+                                                        : doneeState
+                                                            .doneeResponseData
+                                                            .organization!
+                                                            .country!
+                                                            .currencyCode,
+                                                    amount: total,
+                                                    donationDetails: [
+                                                      ...cartState.map((e) =>
+                                                          DonationProcessDetail(
+                                                              donationTypeId:
+                                                                  e.id,
+                                                              amount: e.amount))
+                                                    ]));
                                             Navigator.push(
                                                 context,
                                                 AppRouter.routeToPage(
