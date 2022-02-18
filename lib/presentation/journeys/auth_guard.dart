@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:idonatio/presentation/journeys/email_verification/email_varification_screen.dart';
 import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/journeys/login/login_screen.dart';
