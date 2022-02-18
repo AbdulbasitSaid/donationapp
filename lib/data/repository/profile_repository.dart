@@ -1,8 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:idonatio/data/data_sources/profile_remote_datasource.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
-import 'package:idonatio/data/models/user_models/user_data_model.dart';
-import 'package:idonatio/data/models/user_models/user_model.dart';
 
 import '../../domain/entities/app_error.dart';
 import '../core/unauthorized_exception.dart';

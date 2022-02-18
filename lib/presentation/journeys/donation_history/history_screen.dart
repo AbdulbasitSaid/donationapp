@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 

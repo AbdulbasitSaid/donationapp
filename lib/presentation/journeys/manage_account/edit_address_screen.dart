@@ -2,17 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/update_profile_cubit.dart';
-import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
-import '../../../data/models/user_models/user_data_model.dart';
 import '../../reusables.dart';
-import '../../widgets/labels/base_label_text.dart';
-import '../../widgets/labels/label_10_medium.dart';
 import '../../widgets/labels/level_4_headline.dart';
 import '../onboarding/cubit/getcountreis_cubit.dart';
-import '../onboarding/onboarding_screen.dart';
 
 class EditAddressScreen extends StatefulWidget {
   const EditAddressScreen({Key? key}) : super(key: key);

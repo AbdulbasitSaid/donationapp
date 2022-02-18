@@ -1,16 +1,8 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/donation_history/history_screen.dart';
 import 'package:idonatio/presentation/journeys/new_donation/make_donation.dart';
-import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 
-import '../../di/get_it.dart';
-import '../../enums.dart';
-import '../router/app_router.dart';
-import 'auth_guard.dart';
-import 'manage_account/cubit/logout_cubit.dart';
 import 'manage_account/manage_account_screen.dart';
 
 class HomeScreen extends StatefulWidget {

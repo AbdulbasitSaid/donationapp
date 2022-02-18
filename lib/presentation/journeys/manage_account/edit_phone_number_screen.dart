@@ -63,9 +63,6 @@ class _EditPhoneNumberScreenState extends State<EditPhoneNumberScreen> {
             ValueListenableBuilder(
                 valueListenable: Hive.box<UserData>('user_box').listenable(),
                 builder: (context, Box<UserData> box, widget) {
-                  final userData = box.get('user_data');
-                  final user = userData?.user;
-                  final donor = user?.donor;
                   // _phoneNumberController.text = donor?.phoneNumber ?? '';
                   return Padding(
                     padding: const EdgeInsets.all(16.0),

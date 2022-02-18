@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:http/http.dart';
 import 'package:idonatio/data/core/api_client.dart';
 import 'package:idonatio/data/models/base_success_model.dart';
 import 'package:idonatio/data/models/user_models/user_response_model.dart';

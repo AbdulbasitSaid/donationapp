@@ -5,7 +5,6 @@ import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_proce
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/enable_gift_aid_for_new_donation.dart';
-import 'package:idonatio/presentation/journeys/new_donation/entities/make_donation_entity.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';

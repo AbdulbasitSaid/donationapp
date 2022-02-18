@@ -66,7 +66,7 @@ class MyProfileScreen extends StatelessWidget {
                         IconButton(
                             onPressed: () {
                               Navigator.push(context,
-                                  AppRouter.routeToPage(EditNameScreen()));
+                                  AppRouter.routeToPage(const EditNameScreen()));
                             },
                             icon: const Icon(
                               Icons.edit,
@@ -219,11 +219,11 @@ class MyProfileScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
-                          children: [
-                            const IconButton(
+                          children: const [
+                            IconButton(
                                 onPressed: null,
                                 icon: Icon(Icons.lock_outline)),
-                            const Text('*********'),
+                            Text('*********'),
                           ],
                         ),
                         IconButton(
