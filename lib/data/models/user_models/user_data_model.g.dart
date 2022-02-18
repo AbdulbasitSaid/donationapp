@@ -18,7 +18,7 @@ class UserDataAdapter extends TypeAdapter<UserData> {
     };
     return UserData(
       token: fields[0] as String,
-      tokenType: fields[1] as String,
+      tokenType: fields[1] as String?,
       expiresIn: fields[2] as int,
       isDeviceSaved: fields[3] as bool,
       user: fields[4] as UserModel,

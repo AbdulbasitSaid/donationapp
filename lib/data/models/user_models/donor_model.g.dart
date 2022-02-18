@@ -24,7 +24,6 @@ class DonorModelAdapter extends TypeAdapter<DonorModel> {
       isOnboarded: fields[4] as bool,
       title: fields[5] as String,
       phoneNumber: fields[6] as String?,
-      phoneVerifiedAt: fields[7] as dynamic,
       phoneReceiveSecurityAlert: fields[8] as bool,
       giftAidEnabled: fields[9] as bool,
       address: fields[10] as dynamic,
@@ -40,7 +39,7 @@ class DonorModelAdapter extends TypeAdapter<DonorModel> {
   @override
   void write(BinaryWriter writer, DonorModel obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(16)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -55,8 +54,6 @@ class DonorModelAdapter extends TypeAdapter<DonorModel> {
       ..write(obj.title)
       ..writeByte(6)
       ..write(obj.phoneNumber)
-      ..writeByte(7)
-      ..write(obj.phoneVerifiedAt)
       ..writeByte(8)
       ..write(obj.phoneReceiveSecurityAlert)
       ..writeByte(9)
