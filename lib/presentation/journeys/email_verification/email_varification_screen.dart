@@ -99,32 +99,6 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
               prefixIcon: Icon(Icons.code),
             ),
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: const [
-          //     OTPItem(),
-          //     SizedBox(
-          //       width: 8,
-          //     ),
-          //     OTPItem(),
-          //     SizedBox(
-          //       width: 8,
-          //     ),
-          //     OTPItem(),
-          //     SizedBox(
-          //       width: 8,
-          //     ),
-          //     OTPItem(),
-          //     SizedBox(
-          //       width: 8,
-          //     ),
-          //     OTPItem(),
-          //     SizedBox(
-          //       width: 8,
-          //     ),
-          //     OTPItem(),
-          //   ],
-          // ),
           const SizedBox(
             height: 32,
           ),

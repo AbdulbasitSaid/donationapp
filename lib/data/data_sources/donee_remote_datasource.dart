@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:idonatio/data/core/api_client.dart';
-import 'package:idonatio/data/models/donee_models/donee_response_model.dart';
+
+import '../models/donation_models/donee_response_model.dart';
 
 class DoneeRemoteDataSource {
   final ApiClient _apiClient;

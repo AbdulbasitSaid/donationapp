@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/models/donee_models/donee_response_model.dart';
 import 'package:idonatio/data/repository/donee_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
+
+import '../../../../data/models/donation_models/donee_response_model.dart';
 
 part 'getdoneebycode_state.dart';
 

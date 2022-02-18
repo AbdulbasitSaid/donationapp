@@ -32,172 +32,189 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
     return SafeArea(
       child: Container(
         decoration: const BoxDecoration(gradient: AppColor.appBackground),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Level2Headline(text: 'Make a donation'),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  BaseLabelText(
-                      text:
-                          'Add or select a donee you’ll like to make a donation to.'),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Level6Headline(
-                    text: 'New donee',
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.push(context,
-                            AppRouter.routeToPage(const AddDoneeByIdScreen())),
-                        child: ListTile(
-                          iconColor: Theme.of(context).primaryColor,
-                          dense: true,
-                          leading: const Icon(Icons.add_circle_outline_rounded),
-                          title: Text(
-                            'Add by ID',
-                            style:
-                                Theme.of(context).textTheme.bodyText2!.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColor.text80Primary,
-                                    ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () => Navigator.push(context,
-                            AppRouter.routeToPage(const ScanForDoneeScreen())),
-                        child: ListTile(
-                          iconColor: Theme.of(context).primaryColor,
-                          dense: true,
-                          leading: const Icon(Icons.qr_code_2),
-                          title: Text(
-                            'Scan QR Code',
-                            style:
-                                Theme.of(context).textTheme.bodyText2!.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColor.text80Primary,
-                                    ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            // recent saved donees
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Level6Headline(
-                        text: 'Recent',
-                      ),
-                      GestureDetector(
-                        onTap: (() => Navigator.push(context,
-                            AppRouter.routeToPage(const SavedDoneeScreen()))),
-                        child: Text(
-                          "Saved Donees".toUpperCase(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(color: Theme.of(context).primaryColor),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                // empty list
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'Get started by adding a donee above.',
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: const [
+                    Level2Headline(text: 'Make a donation'),
+                    SizedBox(
+                      height: 16,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    BlocConsumer<GetRecentdoneesCubit, RecentdoneesState>(
-                      listener: (context, state) {
-                        if (state is RecentdoneesFailed) {}
-                      },
-                      builder: (context, state) {
-                        if (state is RecentdoneesSuccessful &&
-                            state.recentDoneesResponseModel.data.isNotEmpty) {
-                          return Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: defaultContainerDecoration(),
-                            child: Column(children: [
-                              ...state.recentDoneesResponseModel.data
-                                  .map((e) => DoneeListTile(
-                                        key: Key(e.id),
-                                        address: e.organization == null
-                                            ? e.addressLine1
-                                            : e.organization?.addressLine1,
-                                        doneeCode: e.doneeCode,
-                                        name: e.organization == null
-                                            ? e.firstName + ' ' + e.lastName
-                                            : e.organization!.name,
-                                      )),
-                            ]),
-                          );
-                        }
-                        return Text(
-                          'A list of your recent donees will appear here once you make a donation or add a donee to your list.',
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(),
-                        );
-                      },
-                    ),
+                    BaseLabelText(
+                        text:
+                            'Add or select a donee you’ll like to make a donation to.'),
                   ],
                 ),
-                // end empty list
-              ],
-            ),
-            // end recent saved donees
-          ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Level6Headline(
+                      text: 'New donee',
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                              context,
+                              AppRouter.routeToPage(
+                                  const AddDoneeByIdScreen())),
+                          child: ListTile(
+                            iconColor: Theme.of(context).primaryColor,
+                            dense: true,
+                            leading:
+                                const Icon(Icons.add_circle_outline_rounded),
+                            title: Text(
+                              'Add by ID',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColor.text80Primary,
+                                  ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                              context,
+                              AppRouter.routeToPage(
+                                  const ScanForDoneeScreen())),
+                          child: ListTile(
+                            iconColor: Theme.of(context).primaryColor,
+                            dense: true,
+                            leading: const Icon(Icons.qr_code_2),
+                            title: Text(
+                              'Scan QR Code',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColor.text80Primary,
+                                  ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              // recent saved donees
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Level6Headline(
+                          text: 'Recent',
+                        ),
+                        GestureDetector(
+                          onTap: (() => Navigator.push(context,
+                              AppRouter.routeToPage(const SavedDoneeScreen()))),
+                          child: Text(
+                            "Saved Donees".toUpperCase(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(
+                                    color: Theme.of(context).primaryColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  // empty list
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          'Get started by adding a donee above.',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      BlocConsumer<GetRecentdoneesCubit, RecentdoneesState>(
+                        listener: (context, state) {
+                          if (state is RecentdoneesFailed) {}
+                        },
+                        builder: (context, state) {
+                          if (state is RecentdoneesSuccessful &&
+                              state
+                                  .recentDoneesResponseModel.data!.isNotEmpty) {
+                            return Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: whiteContainerBackGround(),
+                              child: Column(children: [
+                                ...?state.recentDoneesResponseModel.data
+                                    ?.map((e) => DoneeListTile(
+                                          key: Key(e.id!),
+                                          address: e.organization == null
+                                              ? e.addressLine1
+                                              : e.organization?.addressLine1,
+                                          doneeCode: e.doneeCode!,
+                                          name: e.organization == null
+                                              ? e.firstName! + ' ' + e.lastName!
+                                              : e.organization!.name,
+                                        )),
+                              ]),
+                            );
+                          }
+                          return Text(
+                            'A list of your recent donees will appear here once you make a donation or add a donee to your list.',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  // end empty list
+                ],
+              ),
+              // end recent saved donees
+            ],
+          ),
         ),
       ),
     );

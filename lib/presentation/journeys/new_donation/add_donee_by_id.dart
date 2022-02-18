@@ -32,7 +32,7 @@ class _AddDoneeByIdScreenState extends State<AddDoneeByIdScreen> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  bool _enableButton = false;
+  bool  _enableButton = false;
 
   @override
   Widget build(BuildContext context) {

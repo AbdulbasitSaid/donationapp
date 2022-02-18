@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/models/donee_models/saved_donees_model.dart';
 import 'package:idonatio/data/repository/saved_donees_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
+
+import '../../../../data/models/donation_models/saved_donees_model.dart';
 
 part 'get_saved_donees_state.dart';
 
