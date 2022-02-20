@@ -43,7 +43,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                       key: Key('${e.id}'),
                       address: e.organization == null
                           ? e.addressLine1
-                          : e.organization?.addressLine1,
+                          : e.organization?.addressLine_1,
                       doneeCode: '${e.doneeCode}',
                       name: e.organization == null
                           ? '${e.firstName} ${e.lastName}'

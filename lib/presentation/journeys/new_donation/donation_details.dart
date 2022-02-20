@@ -589,9 +589,9 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
                         setState(() {
                           context.read<DonationCartCubit>().addToCart(
                                 DonationItemEntity(
-                                    description: e.description,
+                                    description: e.donationType.description,
                                     id: e.id,
-                                    type: e.type),
+                                    type: e.donationType.type),
                               );
                         });
                       },
@@ -611,9 +611,10 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
                                   setState(() {
                                     context.read<DonationCartCubit>().addToCart(
                                           DonationItemEntity(
-                                              description: e.description,
+                                              description:
+                                                  e.donationType.description,
                                               id: e.id,
-                                              type: e.type),
+                                              type: e.donationType.description),
                                         );
                                   });
                                 }),
@@ -624,8 +625,8 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
                                 child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Level4Headline(text: e.type),
-                                Text(e.description),
+                                Level4Headline(text: e.donationType.type),
+                                Text(e.donationType.type),
                               ],
                             ))
                           ],

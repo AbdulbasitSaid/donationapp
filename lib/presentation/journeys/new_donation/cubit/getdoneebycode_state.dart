@@ -12,7 +12,7 @@ class GetdoneebycodeInitial extends GetdoneebycodeState {}
 class GetdoneebycodeLoading extends GetdoneebycodeState {}
 
 class GetdoneebycodeSuccess extends GetdoneebycodeState {
-  final DoneeResponseData doneeResponseData;
+  final Data doneeResponseData;
 
   const GetdoneebycodeSuccess(this.doneeResponseData);
 }

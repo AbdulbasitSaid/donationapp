@@ -3,6 +3,7 @@ import 'package:http/http.dart';
 import 'package:idonatio/data/core/api_client.dart';
 import 'package:idonatio/data/data_sources/change_password_datasource.dart';
 import 'package:idonatio/data/data_sources/contact_support_datasource.dart';
+import 'package:idonatio/data/data_sources/donation_datasource.dart';
 import 'package:idonatio/data/data_sources/donee_remote_datasource.dart';
 import 'package:idonatio/data/data_sources/profile_remote_datasource.dart';
 import 'package:idonatio/data/data_sources/recent_donee_datasource.dart';
@@ -12,6 +13,7 @@ import 'package:idonatio/data/data_sources/user_remote_datasource.dart';
 import 'package:idonatio/data/data_sources/country_remote_datasource.dart';
 import 'package:idonatio/data/repository/change_password_repository.dart';
 import 'package:idonatio/data/repository/contact_support_repository.dart';
+import 'package:idonatio/data/repository/donations_repository.dart';
 import 'package:idonatio/data/repository/donee_repository.dart';
 import 'package:idonatio/data/repository/profile_repository.dart';
 import 'package:idonatio/data/repository/recent_doness_repository.dart';
@@ -74,4 +76,8 @@ Future init() async {
           ));
   getItInstance.registerLazySingleton<ContactSupportRepository>(
       () => ContactSupportRepository(getItInstance(), getItInstance()));
+  getItInstance.registerLazySingleton<DonationDataSources>(
+      () => DonationDataSources(getItInstance()));
+  getItInstance.registerLazySingleton<DonationRepository>(
+      () => DonationRepository(getItInstance(), getItInstance()));
 }

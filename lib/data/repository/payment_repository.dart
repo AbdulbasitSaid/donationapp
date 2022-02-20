@@ -19,6 +19,7 @@ class PaymentRepository {
       final user = await UserLocalDataSource().getUser();
       final response =
           await _apiClient.post('donors/payment-methods', token: user.token);
+      log(response.toString());
       return Right(SetUpIntentModel.fromMap(response));
     } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
@@ -52,7 +53,7 @@ class PaymentRepository {
       final response = await _apiClient.post('donors/donations',
           token: user.token, params: params);
       log(response.toString());
-      return Right(PaymentSuccessModel.fromMap(response));
+      return Right(PaymentSuccessModel.fromJson(response));
     } on UnprocessableEntity {
       return const Left(
           AppError(appErrorType: AppErrorType.unProcessableEntity));
@@ -61,4 +62,3 @@ class PaymentRepository {
     }
   }
 }
-

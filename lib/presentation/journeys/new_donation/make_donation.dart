@@ -23,7 +23,6 @@ class MakeDonationScreen extends StatefulWidget {
 class _MakeDonationScreenState extends State<MakeDonationScreen> {
   @override
   void initState() {
-    context.read<GetRecentdoneesCubit>().getRecentDonees();
     super.initState();
   }
 
@@ -163,7 +162,7 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: const EdgeInsets.all(16.0),
                         child: Text(
                           'Get started by adding a donee above.',
                           style: Theme.of(context).textTheme.bodyText2,
@@ -189,7 +188,7 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                                           key: Key(e.id!),
                                           address: e.organization == null
                                               ? e.addressLine1
-                                              : e.organization?.addressLine1,
+                                              : e.organization?.addressLine_1,
                                           doneeCode: e.doneeCode!,
                                           name: e.organization == null
                                               ? e.firstName! + ' ' + e.lastName!
