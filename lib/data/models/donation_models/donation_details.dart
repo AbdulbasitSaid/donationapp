@@ -6,15 +6,15 @@ part 'donation_details.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class DonationDetails {
   late String id;
-  late String donationId;
-  late String donationTypeId;
-  late int amount;
-  late DonationType donationType;
+  late String? donationId;
+  late String? donationTypeId;
+  late double? amount;
+  late DonationTypeModel? donationType;
   DonationDetails({
     required this.id,
     required this.donationId,
     required this.donationTypeId,
-    required this.amount, 
+    required this.amount,
     required this.donationType,
   });
 

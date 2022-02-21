@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
+import 'package:idonatio/presentation/journeys/donation_history/donation_history_details.dart';
+import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
@@ -47,11 +49,13 @@ A history of donations you’ve made through this app. Select a donation to view
                     final thisMonthDonations = state.donationHistoryModel.data
                         .where((element) =>
                             element.createdAt.month == DateTime.now().month)
-                        .toList();
+                        .toList()
+                        .where((element) => element.donationDetails.isNotEmpty);
                     final earlierDonations = state.donationHistoryModel.data
                         .where((element) =>
                             element.createdAt.month != DateTime.now().month)
-                        .toList();
+                        .toList()
+                        .where((element) => element.donationDetails.isNotEmpty);
 
                     return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +158,7 @@ A history of donations you’ve made through this app. Select a donation to view
 }
 
 class DonationHistoryListCardItem extends StatelessWidget {
-  final Data donationData;
+  final DonationHistoryData donationData;
   const DonationHistoryListCardItem({
     Key? key,
     required this.donationData,
@@ -162,46 +166,56 @@ class DonationHistoryListCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const DoneeAvatarPlaceHolder(),
-              const SizedBox(
-                width: 16,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                      //TODO set up for organisations
-                      "${donationData.donee.firstName}  ${donationData.donee.lastName}"),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    donationData.donationDetails.length > 1
-                        ? 'Multiple donation types'
-                        : donationData.donationDetails.first.donationType.type,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              Text(
-                '£${donationData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value + element) / 100}',
-              ),
-            ],
-          )
-        ],
+    return TextButton(
+      style: TextButton.styleFrom(primary: AppColor.text80Primary),
+      onPressed: () {
+        Navigator.push(
+            context,
+            AppRouter.routeToPage(DonationHistoryDetialsScreen(
+              donationHistoryData: donationData,
+            )));
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const DoneeAvatarPlaceHolder(),
+                const SizedBox(
+                  width: 16,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        //TODO set up for organisations
+                        "${donationData.donee.firstName}  ${donationData.donee.lastName}"),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      donationData.donationDetails.length > 1
+                          ? 'Multiple donation types'
+                          : '${donationData.donationDetails.first.donationType?.type}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Text(
+                  '£${donationData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)! / 100}',
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -2,10 +2,11 @@
 //
 //     final donationProcessEntity = donationProcessEntityFromMap(jsonString);
 
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'donation_process_entity.g.dart';
 
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class DonationProcessEntity {
   final String doneeId;
   final bool paidTransactionFee;
@@ -47,60 +48,9 @@ class DonationProcessEntity {
     required this.idonatoiFee,
     required this.stripeFee,
   });
-
-  factory DonationProcessEntity.fromJson(String str) =>
-      DonationProcessEntity.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory DonationProcessEntity.fromMap(Map<String, dynamic> json) =>
-      DonationProcessEntity(
-        doneeId: json["donee_id"],
-        paidTransactionFee: json["paid_transaction_fee"],
-        donationMethod: json["donation_method"],
-        donationLocation: json["donation_location"],
-        isAnonymous: json["is_anonymous"],
-        applyGiftAidToDonation: json["apply_gift_aid_to_donation"],
-        giftAidEnabled: json["gift_aid_enabled"],
-        currency: json["currency"],
-        cardLastFourDigits: json["card_last_four_digits"],
-        cardType: json["card_type"],
-        expiryMonth: json["expiry_month"],
-        expiryYear: json["expiry_year"],
-        saveDonee: json["save_donee"],
-        donationDetails: List<DonationProcessDetail>.from(
-            json["donation_details"]
-                .map((x) => DonationProcessDetail.fromMap(x))),
-        amount: json["amount"],
-        stripeConnectedAccountId: json["stripe_connected_account_id"],
-        stripePaymentMethodId: json["stripe_payment_method_id"],
-        idonatoiFee: json["idonatio_transaction_fee"],
-        stripeFee: json["stripe_transaction_fee"],
-      );
-
-  Map<String, dynamic> toMap() => {
-        "donee_id": doneeId,
-        "paid_transaction_fee": paidTransactionFee,
-        "donation_method": donationMethod,
-        "donation_location": donationLocation,
-        "is_anonymous": isAnonymous,
-        "apply_gift_aid_to_donation": applyGiftAidToDonation,
-        "gift_aid_enabled": giftAidEnabled,
-        "currency": currency,
-        "card_last_four_digits": cardLastFourDigits,
-        "card_type": cardType,
-        "expiry_month": expiryMonth,
-        "expiry_year": expiryYear,
-        "save_donee": saveDonee,
-        "idonatio_transaction_fee": idonatoiFee,
-        "stripe_transaction_fee": stripeFee,
-        "donation_details":
-            List<dynamic>.from(donationDetails.map((x) => x.toMap())),
-        "amount": amount,
-        "stripe_connected_account_id": stripeConnectedAccountId,
-        "stripe_payment_method_id": stripePaymentMethodId,
-      };
-
+  factory DonationProcessEntity.fromJson(json) =>
+      _$DonationProcessEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$DonationProcessEntityToJson(this);
   @override
   String toString() {
     return 'DonationProcessEntity(doneeId: $doneeId, paidTransactionFee: $paidTransactionFee, donationMethod: $donationMethod, donationLocation: $donationLocation, isAnonymous: $isAnonymous, applyGiftAidToDonation: $applyGiftAidToDonation, giftAidEnabled: $giftAidEnabled, currency: $currency, cardLastFourDigits: $cardLastFourDigits, cardType: $cardType, expiryMonth: $expiryMonth, expiryYear: $expiryYear, saveDonee: $saveDonee, idonatoiFee: $idonatoiFee, stripeFee: $stripeFee, donationDetails: $donationDetails, amount: $amount, stripeConnectedAccountId: $stripeConnectedAccountId, stripePaymentMethodId: $stripePaymentMethodId)';
@@ -203,6 +153,7 @@ class DonationProcessEntity {
   }
 }
 
+@JsonSerializable(fieldRename: FieldRename.snake)
 class DonationProcessDetail {
   DonationProcessDetail({
     required this.donationTypeId,
@@ -211,23 +162,9 @@ class DonationProcessDetail {
 
   final String donationTypeId;
   final double amount;
-
-  factory DonationProcessDetail.fromJson(String str) =>
-      DonationProcessDetail.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory DonationProcessDetail.fromMap(Map<String, dynamic> json) =>
-      DonationProcessDetail(
-        donationTypeId: json["donation_type_id"],
-        amount: json["amount"],
-      );
-
-  Map<String, dynamic> toMap() => {
-        "donation_type_id": donationTypeId,
-        "amount": amount,
-      };
-
+  factory DonationProcessDetail.fromJson(json) =>
+      _$DonationProcessDetailFromJson(json);
+  Map<String, dynamic> toJson() => _$DonationProcessDetailToJson(this);
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -239,4 +176,8 @@ class DonationProcessDetail {
 
   @override
   int get hashCode => donationTypeId.hashCode ^ amount.hashCode;
+
+  @override
+  String toString() =>
+      'DonationProcessDetail(donationTypeId: $donationTypeId, amount: $amount)';
 }

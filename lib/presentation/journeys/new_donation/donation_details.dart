@@ -73,7 +73,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                       );
                     } else {
                       return DetailCardForIndividualWidget(
-                        id: state.doneeResponseData.id,
+                        id: state.doneeResponseData.doneeCode,
                         name:
                             '${state.doneeResponseData.firstName} ${state.doneeResponseData.lastName}',
                         address: state.doneeResponseData.addressLine_1,
@@ -583,15 +583,17 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
           // var cartState = ;
 
           return Column(
-            children: donationTypes
+            children: donationTypes!
                 .map((e) => GestureDetector(
                       onTap: () {
                         setState(() {
                           context.read<DonationCartCubit>().addToCart(
                                 DonationItemEntity(
-                                    description: e.donationType.description,
+                                    description: e.description,
                                     id: e.id,
-                                    type: e.donationType.type),
+                                    type: e.type == null
+                                        ? '${e.type}'
+                                        : '${e.name}'),
                               );
                         });
                       },
@@ -611,10 +613,9 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
                                   setState(() {
                                     context.read<DonationCartCubit>().addToCart(
                                           DonationItemEntity(
-                                              description:
-                                                  e.donationType.description,
+                                              description: e.description,
                                               id: e.id,
-                                              type: e.donationType.description),
+                                              type: e.description),
                                         );
                                   });
                                 }),
@@ -625,8 +626,11 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
                                 child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Level4Headline(text: e.donationType.type),
-                                Text(e.donationType.type),
+                                Level4Headline(
+                                    text: e.type == null
+                                        ? '${e.name}'
+                                        : '${e.type}'),
+                                Text(e.description),
                               ],
                             ))
                           ],

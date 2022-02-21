@@ -8,7 +8,7 @@ part 'donation_history_model.g.dart';
 class DonationHistoryModel {
   String status;
   String message;
-  List<Data> data;
+  List<DonationHistoryData> data;
 
   DonationHistoryModel({
     required this.status,
@@ -23,7 +23,7 @@ class DonationHistoryModel {
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class Data {
+class DonationHistoryData {
   String id;
   String donorId;
   String doneeId;
@@ -46,7 +46,7 @@ class Data {
   List<DonationDetails> donationDetails;
   Donee donee;
 
-  Data(
+  DonationHistoryData(
       {required this.id,
       required this.donorId,
       required this.doneeId,
@@ -69,6 +69,6 @@ class Data {
       required this.donationDetails,
       required this.donee});
 
-  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
-  Map<String, dynamic> toJson() => _$DataToJson(this);
+  factory DonationHistoryData.fromJson(Map<String, dynamic> json) => _$DonationHistoryDataFromJson(json);
+  Map<String, dynamic> toJson() => _$DonationHistoryDataToJson(this);
 }

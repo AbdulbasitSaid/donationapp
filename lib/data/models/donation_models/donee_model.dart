@@ -1,6 +1,8 @@
 import 'package:idonatio/data/models/donation_models/country_model.dart';
 import 'package:idonatio/data/models/donation_models/organization_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'donation_type_model.dart';
 part 'donee_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
@@ -16,15 +18,15 @@ class Donee {
   String? countryId;
   String? type;
   String? jobTitle;
-  String? addressLine1;
-  String? addressLine2;
+  String? addressLine_1;
+  String? addressLine_2;
   String? city;
   String? postalCode;
   String? phoneNumber;
   String? verifiedAt;
   Country? country;
   Organization? organization;
-
+  DonationTypeModel? donationTypeModel;
   Donee(
       {this.id,
       this.doneeCode,
@@ -37,8 +39,8 @@ class Donee {
       this.countryId,
       this.type,
       this.jobTitle,
-      this.addressLine1,
-      this.addressLine2,
+      this.addressLine_1,
+      this.addressLine_2,
       this.city,
       this.postalCode,
       this.phoneNumber,

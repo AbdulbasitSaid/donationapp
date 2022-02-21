@@ -52,16 +52,16 @@ class Data {
   int stripeTransactionFee;
   String donationMethod;
   dynamic disputeStatus;
-  String donationLocation;
+  String? donationLocation;
   String currency;
   bool isAnonymous;
   bool applyGiftAidToDonation;
   bool isPlateDonation;
   String cardLastFourDigits;
   String cardType;
-  int expiryMonth;
-  int expiryYear;
-  String stripePaymentMethodId;
+  String expiryMonth;
+  String expiryYear;
+  String? stripePaymentMethodId;
   DateTime createdAt;
   Donee donee;
 
@@ -83,8 +83,8 @@ class Donee {
     required this.countryId,
     required this.type,
     required this.jobTitle,
-    required this.addressLine1,
-    required this.addressLine2,
+    required this.addressLine_1,
+    required this.addressLine_2,
     required this.city,
     required this.postalCode,
     required this.phoneNumber,
@@ -103,13 +103,13 @@ class Donee {
   String countryId;
   String type;
   String jobTitle;
-  String addressLine1;
-  String addressLine2;
+  String addressLine_1;
+  String addressLine_2;
   String city;
   String postalCode;
   String phoneNumber;
   DateTime verifiedAt;
-  Organization organization;
+  Organization? organization;
 
   factory Donee.fromJson(json) => _$DoneeFromJson(json);
   Map<String, dynamic> toJson() => _$DoneeToJson(this);

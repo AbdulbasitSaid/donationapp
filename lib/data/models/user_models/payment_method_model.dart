@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 class PaymentMethodsModel {
   PaymentMethodsModel({
     required this.status,
@@ -33,6 +35,10 @@ class PaymentMethodsModel {
         "message": message,
         "data": List<dynamic>.from(data.map((x) => x.toMap())),
       };
+
+  @override
+  String toString() =>
+      'PaymentMethodsModel(status: $status, message: $message, data: $data)';
 }
 
 class PaymentMethodDatum {
@@ -85,8 +91,8 @@ class PaymentMethodDatum {
         other.brand == brand &&
         other.country == country &&
         other.expMonth == expMonth &&
-        other.expYear == expYear &&
-        other.cardLastFourDigits == cardLastFourDigits;
+        other.cardLastFourDigits == cardLastFourDigits &&
+        other.expYear == expYear;
   }
 
   @override
@@ -95,7 +101,7 @@ class PaymentMethodDatum {
         brand.hashCode ^
         country.hashCode ^
         expMonth.hashCode ^
-        expYear.hashCode ^
-        cardLastFourDigits.hashCode;
+        cardLastFourDigits.hashCode ^
+        expYear.hashCode;
   }
 }

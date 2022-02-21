@@ -184,7 +184,13 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(e.type),
+                                            SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .7,
+                                                child: Flexible(
+                                                    child: Text(e.type))),
                                             BlocBuilder<GetdoneebycodeCubit,
                                                 GetdoneebycodeState>(
                                               builder: (context, state) {

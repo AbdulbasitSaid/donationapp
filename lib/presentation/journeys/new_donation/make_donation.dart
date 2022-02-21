@@ -187,7 +187,7 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                                     ?.map((e) => DoneeListTile(
                                           key: Key(e.id!),
                                           address: e.organization == null
-                                              ? e.addressLine1
+                                              ? e.addressLine_1
                                               : e.organization?.addressLine_1,
                                           doneeCode: e.doneeCode!,
                                           name: e.organization == null

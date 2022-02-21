@@ -2,15 +2,16 @@ import 'package:json_annotation/json_annotation.dart';
 part 'donation_type_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class DonationType {
+class DonationTypeModel {
   late String id;
   late String doneeId;
-  late String type;
+  late String? type;
+  late String? name;
   late String description;
   late bool giftAidEligible;
   late bool isActive;
 
-  DonationType(
+  DonationTypeModel(
       {required this.id,
       required this.doneeId,
       required this.type,
@@ -18,7 +19,7 @@ class DonationType {
       required this.giftAidEligible,
       required this.isActive});
 
-  factory DonationType.fromJson(Map<String, dynamic> json) =>
-      _$DonationTypeFromJson(json);
-  Map<String, dynamic> toJson() => _$DonationTypeToJson(this);
+  factory DonationTypeModel.fromJson(Map<String, dynamic> json) =>
+      _$DonationTypeModelFromJson(json);
+  Map<String, dynamic> toJson() => _$DonationTypeModelToJson(this);
 }

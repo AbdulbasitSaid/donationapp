@@ -3,7 +3,10 @@ import 'package:json_annotation/json_annotation.dart';
 import 'country_model.dart';
 part 'organization_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(
+  fieldRename: FieldRename.snake,
+  explicitToJson: true,
+)
 class Organization {
   Organization({
     required this.id,
