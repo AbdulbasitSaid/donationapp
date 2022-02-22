@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'donation_models/organization_model.dart';
 part 'payment_success_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
@@ -13,104 +12,72 @@ class PaymentSuccessModel {
 
   String status;
   String message;
-  Data data;
-  factory PaymentSuccessModel.fromJson(Map<String, dynamic> json) =>
+  PaymentSuccessData data;
+  factory PaymentSuccessModel.fromJson(json) =>
       _$PaymentSuccessModelFromJson(json);
   Map<String, dynamic> toJson() => _$PaymentSuccessModelToJson(this);
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class Data {
-  Data({
-    required this.id,
-    required this.donorId,
+class PaymentSuccessData {
+  PaymentSuccessData({
     required this.doneeId,
-    required this.paidTransactionFee,
-    required this.idonatioTransactionFee,
-    required this.stripeTransactionFee,
     required this.donationMethod,
-    required this.disputeStatus,
     required this.donationLocation,
-    required this.currency,
     required this.isAnonymous,
     required this.applyGiftAidToDonation,
-    required this.isPlateDonation,
+    required this.currency,
     required this.cardLastFourDigits,
     required this.cardType,
     required this.expiryMonth,
     required this.expiryYear,
+    required this.paidTransactionFee,
+    required this.idonatioTransactionFee,
+    required this.stripeTransactionFee,
     required this.stripePaymentMethodId,
+    required this.donorId,
+    required this.id,
     required this.createdAt,
-    required this.donee,
+    required this.donationDetails,
   });
 
-  String id;
-  String donorId;
   String doneeId;
-  bool paidTransactionFee;
-  int idonatioTransactionFee;
-  int stripeTransactionFee;
   String donationMethod;
-  dynamic disputeStatus;
-  String? donationLocation;
-  String currency;
+  String donationLocation;
   bool isAnonymous;
   bool applyGiftAidToDonation;
-  bool isPlateDonation;
+  String currency;
   String cardLastFourDigits;
   String cardType;
-  String expiryMonth;
-  String expiryYear;
-  String? stripePaymentMethodId;
+  int expiryMonth;
+  int expiryYear;
+  bool paidTransactionFee;
+  double idonatioTransactionFee;
+  double stripeTransactionFee;
+  String stripePaymentMethodId;
+  String donorId;
+  String id;
   DateTime createdAt;
-  Donee donee;
+  List<DonationDetail> donationDetails;
 
-  factory Data.fromJson(json) => _$DataFromJson(json);
-  Map<String, dynamic> toJson() => _$DataToJson(this);
+  factory PaymentSuccessData.fromJson(json) =>
+      _$PaymentSuccessDataFromJson(json);
+  Map<String, dynamic> toJson() => _$PaymentSuccessDataToJson(this);
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
-class Donee {
-  Donee({
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class DonationDetail {
+  DonationDetail({
     required this.id,
-    required this.doneeCode,
-    required this.firstName,
-    required this.lastName,
-    required this.stripeConnectedAccountId,
-    required this.dateOfBirth,
-    required this.email,
-    required this.isActive,
-    required this.countryId,
-    required this.type,
-    required this.jobTitle,
-    required this.addressLine_1,
-    required this.addressLine_2,
-    required this.city,
-    required this.postalCode,
-    required this.phoneNumber,
-    required this.verifiedAt,
-    required this.organization,
+    required this.donationId,
+    required this.donationTypeId,
+    required this.amount,
   });
 
   String id;
-  String doneeCode;
-  String firstName;
-  String lastName;
-  String stripeConnectedAccountId;
-  DateTime dateOfBirth;
-  String email;
-  bool isActive;
-  String countryId;
-  String type;
-  String jobTitle;
-  String addressLine_1;
-  String addressLine_2;
-  String city;
-  String postalCode;
-  String phoneNumber;
-  DateTime verifiedAt;
-  Organization? organization;
-
-  factory Donee.fromJson(json) => _$DoneeFromJson(json);
-  Map<String, dynamic> toJson() => _$DoneeToJson(this);
+  String donationId;
+  String donationTypeId;
+  int amount;
+  factory DonationDetail.fromJson(json) => _$DonationDetailFromJson(json);
+  Map<String, dynamic> toJson() => _$DonationDetailToJson(this);
 }

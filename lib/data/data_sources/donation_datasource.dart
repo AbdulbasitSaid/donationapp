@@ -7,8 +7,10 @@ class DonationDataSources {
   final ApiClient _apiClient;
 
   DonationDataSources(this._apiClient);
-  Future<DonationHistoryModel> getDonationHistory(String token) async {
-    final result = await _apiClient.get('donors/donations', token: token);
+  Future<DonationHistoryModel> getDonationHistory(
+      String token, String? params) async {
+    final result =
+        await _apiClient.get('donors/donations?search=$params', token: token);
     log(result.toString());
     return DonationHistoryModel.fromJson(result);
   }

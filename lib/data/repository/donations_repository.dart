@@ -12,10 +12,12 @@ class DonationRepository {
 
   DonationRepository(this._donationDataSources, this._userLocalDataSource);
 
-  Future<Either<AppError, DonationHistoryModel>> getDonationHistory() async {
+  Future<Either<AppError, DonationHistoryModel>> getDonationHistory(
+      {String? params = ''}) async {
     try {
       final user = await _userLocalDataSource.getUser();
-      final result = await _donationDataSources.getDonationHistory(user.token);
+      final result =
+          await _donationDataSources.getDonationHistory(user.token, params);
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));

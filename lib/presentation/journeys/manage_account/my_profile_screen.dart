@@ -64,14 +64,15 @@ class MyProfileScreen extends StatelessWidget {
                               '${donor?.title} ${donor?.firstName} ${donor?.lastName}'),
                         ),
                         IconButton(
-                            onPressed: () {
-                              Navigator.push(context,
-                                  AppRouter.routeToPage(const EditNameScreen()));
-                            },
-                            icon: const Icon(
-                              Icons.edit,
-                              color: AppColor.basePrimary,
-                            ))
+                          onPressed: () {
+                            Navigator.push(context,
+                                AppRouter.routeToPage(const EditNameScreen()));
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            color: AppColor.basePrimary,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -270,9 +271,9 @@ class MyProfileScreen extends StatelessWidget {
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                                 TextButton(
-                                    onPressed: () {},
-                                    child:
-                                        const Text('Learn more about GiftAid'))
+                                  onPressed: () {},
+                                  child: const Text('Learn more about GiftAid'),
+                                ),
                               ],
                             ),
                           ),

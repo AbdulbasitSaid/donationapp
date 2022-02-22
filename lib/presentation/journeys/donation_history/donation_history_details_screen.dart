@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/data/models/donation_models/donation_history_model.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
@@ -16,7 +17,28 @@ class DonationHistoryDetialsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (builder) => Positioned(
+                          left: 16,
+                          top: 32,
+                          child: SimpleDialog(
+                            children: [
+                              TextButton(
+                                onPressed: () {},
+                                child: const Text('hello'),
+                              ),
+                            ],
+                          ),
+                        ));
+              },
+              icon: const Icon(FeatherIcons.moreVertical))
+        ],
+      ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,

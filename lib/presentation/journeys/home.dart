@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   static final List<Widget> _homeScreens = <Widget>[
     const MakeDonationScreen(),
-    const HistoryScreen(),
+    const DonationHistoryScreen(),
     const Text('05 – Saved donees'),
     const ManageAccountScreen(),
   ];

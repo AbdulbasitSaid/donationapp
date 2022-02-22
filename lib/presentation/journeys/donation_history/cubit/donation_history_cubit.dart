@@ -21,4 +21,16 @@ class DonationHistoryCubit extends Cubit<DonationHistoryState> {
         (r) => DonationHistorySuccess(
             donationHistoryModel: r, successMessage: r.message)));
   }
+
+  void searchDonationHistory(String? search) async {
+    emit(DonationHistoryLoading());
+
+    final result = await donationRepository.getDonationHistory(params: search);
+    emit(result.fold(
+        (l) => DonationHistoryFailed(
+            appErrorType: l.appErrorType,
+            errorMessage: getErrorMessage(l.appErrorType)),
+        (r) => DonationHistorySuccess(
+            donationHistoryModel: r, successMessage: r.message)));
+  }
 }
