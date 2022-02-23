@@ -189,8 +189,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                                         .size
                                                         .width *
                                                     .7,
-                                                child: Flexible(
-                                                    child: Text(e.type))),
+                                                child: Text(e.type)),
                                             BlocBuilder<GetdoneebycodeCubit,
                                                 GetdoneebycodeState>(
                                               builder: (context, state) {
@@ -219,9 +218,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Flexible(
-                                        child:
-                                            Text('Included transaction fee')),
+                                    Text('Included transaction fee'),
                                     BlocBuilder<GetdoneebycodeCubit,
                                         GetdoneebycodeState>(
                                       builder: (context, state) {
@@ -248,8 +245,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Flexible(
-                                        child: Text('Anonymous donation?')),
+                                    Text('Anonymous donation?'),
                                     Text(isAnonnymous),
                                   ],
                                 ),
@@ -261,8 +257,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Flexible(
-                                        child: Text('GiftAid enabled?')),
+                                    Text('GiftAid enabled?'),
                                     Text(isGiftAid),
                                   ],
                                 ),
@@ -279,8 +274,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Flexible(
-                                child: Level4Headline(text: 'Total to pay')),
+                            Level4Headline(text: 'Total to pay'),
                             BlocBuilder<DonationCartCubit,
                                 List<DonationItemEntity>>(
                               builder: (context, state) {
@@ -592,10 +586,8 @@ class SelectPaymentCardWidget extends StatelessWidget {
               );
             } else if (state is GetPaymentMethodsLoading) {
               return const Center(
-                  child: Flexible(
-                child: Level4Headline(
-                    text: 'Getting payment methods please wait...'),
-              ));
+                  child: Level4Headline(
+                      text: 'Getting payment methods please wait...'));
             } else {
               return const Center(
                   child: Level2Headline(text: 'Error getting payment methods'));

@@ -18,6 +18,14 @@ class GetSavedDoneesCubit extends Cubit<GetSavedDoneesState> {
         (l) => GetSavedDoneesFailed(getErrorMessage(l.appErrorType)),
         (r) => GetSavedDoneesSuccess(r)));
   }
+  void seachSavedDonee(String? search) async {
+    emit(GetSavedDoneesLoading());
+    final result = await _savedDoneesRepository.getSavedDonee(param:search);
+    emit(result.fold(
+        (l) => GetSavedDoneesFailed(getErrorMessage(l.appErrorType)),
+        (r) => GetSavedDoneesSuccess(r)));
+  }
+
 
   String getErrorMessage(AppErrorType appErrorType) {
     switch (appErrorType) {

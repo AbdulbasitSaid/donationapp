@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
 import 'package:idonatio/presentation/journeys/donation_history/donation_history_details_screen.dart';
-import 'package:idonatio/presentation/journeys/donation_history/search_donation_history_sceen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
+import 'package:intl/intl.dart';
 
 import '../../../data/models/donation_models/donation_history_model.dart';
 import '../../reusables.dart';
@@ -312,9 +312,9 @@ class DonationHistoryListCardItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                        //TODO set up for organisations
-                        "${donationData.donee.firstName}  ${donationData.donee.lastName}"),
+                    Text(donationData.donee.organization == null
+                        ? "${donationData.donee.firstName}  ${donationData.donee.lastName}"
+                        : "${donationData.donee.organization?.name}"),
                     const SizedBox(
                       height: 8,
                     ),
@@ -322,6 +322,13 @@ class DonationHistoryListCardItem extends StatelessWidget {
                       donationData.donationDetails.length > 1
                           ? 'Multiple donation types'
                           : '${donationData.donationDetails.first.donationType?.type}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      ' ${DateFormat.EEEE().format(donationData.createdAt)},${DateFormat.d().format(donationData.createdAt)} ${DateFormat.MMMM().format(donationData.createdAt)}',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/journeys/new_donation/add_donee_by_id.dart';
 import 'package:idonatio/presentation/journeys/new_donation/scan_for_donee.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
-import 'package:idonatio/presentation/journeys/saved_donees/save_donee_screen.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_screen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/base_label_text.dart';

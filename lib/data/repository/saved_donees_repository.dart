@@ -12,10 +12,12 @@ class SavedDoneesRepository {
 
   SavedDoneesRepository(this._savedDoneeDataSource, this._localDataSource);
 
-  Future<Either<AppError, SavedDoneesResponseModel>> getSavedDonee() async {
+  Future<Either<AppError, SavedDoneesResponseModel>> getSavedDonee(
+      {String? param = ''}) async {
     try {
       final user = await _localDataSource.getUser();
-      final result = await _savedDoneeDataSource.getSavedDonees(user.token);
+      final result =
+          await _savedDoneeDataSource.getSavedDonees(user.token, param);
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));

@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/journeys/donation_history/history_screen.dart';
 import 'package:idonatio/presentation/journeys/new_donation/make_donation.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_screen.dart';
 
 import 'manage_account/manage_account_screen.dart';
 
@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static final List<Widget> _homeScreens = <Widget>[
     const MakeDonationScreen(),
     const DonationHistoryScreen(),
-    const Text('05 – Saved donees'),
+    const SavedDoneeScreen(),
     const ManageAccountScreen(),
   ];
   int pageIndex = 0;

@@ -8,6 +8,10 @@ import 'package:idonatio/presentation/journeys/onboarding/onboarding_screen.dart
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/start_screen.dart';
 
+import 'donation_history/cubit/donation_history_cubit.dart';
+import 'saved_donees/cubit/get_saved_donees_cubit.dart';
+import 'saved_donees/cubit/recentdonees_cubit.dart';
+
 class AuthGaurd extends StatelessWidget {
   const AuthGaurd({
     Key? key,
@@ -23,6 +27,9 @@ class AuthGaurd extends StatelessWidget {
         } else if (state is UnAuthenticated) {
           return const LoginScreen();
         } else if (state is Authenticated) {
+          context.read<DonationHistoryCubit>().getDonationHistory();
+          context.read<GetRecentdoneesCubit>().getRecentDonees();
+          context.read<GetSavedDoneesCubit>().getSavedDonee();
           return const HomeScreen();
         } else if (state is EmailNotVerified) {
           return const EmailVerificationScreen();
