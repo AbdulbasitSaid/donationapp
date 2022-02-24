@@ -4,6 +4,8 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/data/models/donation_models/donee_model.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_details.dart';
+import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
 
@@ -322,7 +324,10 @@ class SavedDoneeListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(context,
+            AppRouter.routeToPage(SavedDoneeDetails(donationData: donee)));
+      },
       style: TextButton.styleFrom(primary: AppColor.text80Primary),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
