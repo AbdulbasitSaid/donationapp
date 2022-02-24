@@ -116,7 +116,7 @@ class _DonationHistoryDetialsScreenState
                         const Level4Headline(text: 'Total payment'),
                         Level4Headline(
                           text:
-                              '£${widget.donationHistoryData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)! / 100}',
+                              '£${widget.donationHistoryData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)!}',
                         ),
                       ],
                     ),
@@ -128,7 +128,7 @@ class _DonationHistoryDetialsScreenState
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('${e.donationType?.type}'),
-                            Text('£${e.amount! / 100}'),
+                            Text('£${e.amount!}'),
                           ],
                         ),
                       ),

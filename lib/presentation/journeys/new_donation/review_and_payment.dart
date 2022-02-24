@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/data/models/user_models/payment_method_model.dart';
+import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_process_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
@@ -12,6 +13,8 @@ import 'package:idonatio/presentation/journeys/new_donation/donation_details.dar
 import 'package:idonatio/presentation/journeys/new_donation/entities/donation_item_entity.dart';
 import 'package:idonatio/presentation/journeys/new_donation/entities/donation_process_entity.dart';
 import 'package:idonatio/presentation/journeys/new_donation/entities/make_donation_entity.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -345,6 +348,15 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                             is MakedonationSuccess) {
                                           Fluttertoast.showToast(
                                               msg: 'Donation Success!!');
+                                          context
+                                              .read<GetRecentdoneesCubit>()
+                                              .getRecentDonees();
+                                          context
+                                              .read<GetSavedDoneesCubit>()
+                                              .getSavedDonee();
+                                          context
+                                              .read<DonationHistoryCubit>()
+                                              .getDonationHistory();
                                           Navigator.push(
                                               context,
                                               AppRouter.routeToPage(

@@ -11,7 +11,7 @@ import '../../../data/models/donation_models/donation_history_model.dart';
 import '../../widgets/donee_avatar_place_holder.dart';
 import '../../widgets/labels/level_2_heading.dart';
 
-class DoneeDetailHistory extends StatelessWidget {
+class DoneeDetailHistory extends StatefulWidget {
   const DoneeDetailHistory({Key? key, required this.donationData})
       : super(key: key);
   static Route<String> route({required DonationHistoryData donationData}) {
@@ -22,10 +22,28 @@ class DoneeDetailHistory extends StatelessWidget {
   }
 
   final DonationHistoryData donationData;
+
+  @override
+  State<DoneeDetailHistory> createState() => _DoneeDetailHistoryState();
+}
+
+class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
+  bool dialog = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    dialog = !dialog;
+                  });
+                },
+                icon: const Icon(FeatherIcons.moreVertical))
+          ],
+        ),
         body: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -50,9 +68,9 @@ class DoneeDetailHistory extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Level2Headline(
-                            text: donationData.donee.organization == null
-                                ? '${donationData.donee.firstName} ${donationData.donee.firstName}'
-                                : '${donationData.donee.organization?.name}'),
+                            text: widget.donationData.donee.organization == null
+                                ? '${widget.donationData.donee.firstName} ${widget.donationData.donee.firstName}'
+                                : '${widget.donationData.donee.organization?.name}'),
                       ]),
                 ),
                 const SizedBox(
@@ -73,25 +91,28 @@ class DoneeDetailHistory extends StatelessWidget {
                         const SizedBox(
                           width: 16,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Verified',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall!
-                                  .copyWith(
-                                    color: AppColor.darkSecondaryGreen,
-                                  ),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Verified',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displaySmall!
+                                    .copyWith(
+                                      color: AppColor.darkSecondaryGreen,
+                                    ),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
 
-                            ///Todo get UkCharity number
-                            Text('UK Charity No.${donationData.donee.id}'),
-                          ],
+                              ///Todo get UkCharity number
+                              Text(
+                                  'UK Charity No.${widget.donationData.donee.id}'),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -111,8 +132,9 @@ class DoneeDetailHistory extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('donee id - ${donationData.donee.doneeCode}'
-                                .toUpperCase()),
+                            Text(
+                                'donee id - ${widget.donationData.donee.doneeCode}'
+                                    .toUpperCase()),
                           ],
                         ),
                       ],
@@ -133,7 +155,7 @@ class DoneeDetailHistory extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                '${donationData.donee.addressLine_1} ${donationData.donee.addressLine_2}'),
+                                '${widget.donationData.donee.addressLine_1} ${widget.donationData.donee.addressLine_2}'),
                           ],
                         ),
                       ],
@@ -153,9 +175,9 @@ class DoneeDetailHistory extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(donationData.donee.organization == null
+                            Text(widget.donationData.donee.organization == null
                                 ? 'has no website'
-                                : "${donationData.donee.organization?.website}"),
+                                : "${widget.donationData.donee.organization?.website}"),
                           ],
                         ),
                       ],
@@ -241,7 +263,30 @@ class DoneeDetailHistory extends StatelessWidget {
                   right: 16,
                   top: 50,
                   child: SizedBox(
-                      height: 72, width: 72, child: DoneeAvatarPlaceHolder()))
+                      height: 72, width: 72, child: DoneeAvatarPlaceHolder())),
+              Positioned(
+                  right: 14,
+                  top: 0,
+                  child: Container(
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                            primary: AppColor.text80Primary),
+                        onPressed: () {},
+                        child: const Text('Save donees')),
+                    decoration: whiteContainerBackGround().copyWith(boxShadow: [
+                      const BoxShadow(
+                          color: Color(0x0ff42a70),
+                          offset: Offset(0, 3),
+                          blurRadius: 6,
+                          spreadRadius: -2),
+                      const BoxShadow(
+                          color: Color(0x0ff42a70),
+                          offset: Offset(0, 0),
+                          blurRadius: 1,
+                          spreadRadius: 0),
+                    ]),
+                    padding: const EdgeInsets.all(16),
+                  ))
             ],
           ),
         ),
@@ -253,7 +298,7 @@ class DoneeDetailHistory extends StatelessWidget {
                 AppRouter.routeToPage(const HomeScreen()), (route) => false);
           },
           label: Text('new donation'.toUpperCase()),
-          icon: Icon(
+          icon: const Icon(
             Icons.add,
           ),
         ));

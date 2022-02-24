@@ -328,7 +328,7 @@ class DonationHistoryListCardItem extends StatelessWidget {
                       height: 8,
                     ),
                     Text(
-                      ' ${DateFormat.EEEE().format(donationData.createdAt)},${DateFormat.d().format(donationData.createdAt)} ${DateFormat.MMMM().format(donationData.createdAt)}',
+                      '${DateFormat.EEEE().format(donationData.createdAt)},${DateFormat.d().format(donationData.createdAt)} ${DateFormat.MMMM().format(donationData.createdAt)}',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
@@ -338,7 +338,7 @@ class DonationHistoryListCardItem extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  '£${donationData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)! / 100}',
+                  '£${donationData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)!}',
                 ),
               ],
             )

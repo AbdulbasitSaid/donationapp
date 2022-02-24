@@ -197,12 +197,21 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                               ]),
                             );
                           }
-                          return Text(
-                            'A list of your recent donees will appear here once you make a donation or add a donee to your list.',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(),
+                          if (state is RecentdoneesLoading) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text(
+                              'A list of your recent donees will appear here once you make a donation or add a donee to your list.',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(),
+                            ),
                           );
                         },
                       ),
