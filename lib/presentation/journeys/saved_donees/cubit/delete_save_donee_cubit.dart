@@ -7,7 +7,7 @@ import 'package:idonatio/presentation/reusables.dart';
 
 part 'delete_save_donee_state.dart';
 
-class DeleteSaveDoneeCubit extends Cubit<DeleteSaveDoneeState> {
+class DeleteSaveDoneeCubit extends Cubit<DeleteSaveDoneeState> { 
   DeleteSaveDoneeCubit(this._doneeRepository) : super(DeleteSaveDoneeInitial());
   final DoneeRepository _doneeRepository;
   void deleteSavedDonee(String doneeId) async {

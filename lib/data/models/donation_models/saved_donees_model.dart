@@ -1,7 +1,4 @@
-
-
 import 'donee_model.dart';
-
 
 class SavedDoneesResponseModel {
   String? status;

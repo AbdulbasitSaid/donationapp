@@ -56,4 +56,25 @@ class DoneeRepository {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
   }
+
+  Future<Either<AppError, SuccessModel>> saveDonee(
+    Map<String, dynamic> doneeId,
+  ) async {
+    try {
+      final user = await _userLocalDataSource.getUser();
+      final result =
+          await _doneeRemoteDataSource.saveDonee(user.token, doneeId);
+      return Right(result);
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Exception {
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
+    }
+  }
 }

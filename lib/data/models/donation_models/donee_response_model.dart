@@ -67,6 +67,11 @@ class Data {
   late final Organization? organization;
   late final List<DonationDetails>? donationDetails;
   late final List<DonationTypeModel>? donationTypes;
+  String get fullName {
+    return organization == null
+        ? "$firstName $lastName"
+        : "${organization!.name}";
+  }
 
   factory Data.fromJson(json) => _$DataFromJson(json);
   Map<String, dynamic> toJson() => _$DataToJson(this);

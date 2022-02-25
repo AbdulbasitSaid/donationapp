@@ -24,6 +24,7 @@ class Donee {
   String? postalCode;
   String? phoneNumber;
   String? verifiedAt;
+  DateTime? createdAt;
   Country? country;
   Organization? organization;
   DonationTypeModel? donationTypeModel;
@@ -46,7 +47,8 @@ class Donee {
       this.phoneNumber,
       this.verifiedAt,
       this.country,
-      this.organization});
+      this.organization,
+      this.createdAt});
 
   factory Donee.fromJson(Map<String, dynamic> json) => _$DoneeFromJson(json);
 

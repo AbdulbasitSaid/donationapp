@@ -18,6 +18,14 @@ class DoneeRemoteDataSource {
     return DoneeResponseModel.fromJson(response);
   }
 
+  Future<SuccessModel> saveDonee(
+      String userToken, Map<String, dynamic> doneeID) async {
+    final response = await _apiClient.post('donors/saved-donees',
+        token: userToken, params: doneeID);
+    log(response.toString());
+    return SuccessModel.fromJson(response);
+  }
+
   Future<SuccessModel> deleteSavedDonee(
       String userToken, String doneeId) async {
     final response = await _apiClient

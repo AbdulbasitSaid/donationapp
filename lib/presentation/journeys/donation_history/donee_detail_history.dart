@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/presentation/journeys/home.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/cubit/save_donee_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -264,36 +266,69 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
                   top: 50,
                   child: SizedBox(
                       height: 72, width: 72, child: DoneeAvatarPlaceHolder())),
-              Positioned(
-                  right: 14,
-                  top: 0,
-                  child: Container(
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                            primary: AppColor.text80Primary),
-                        onPressed: () {},
-                        child: const Text('Save donees')),
-                    decoration: whiteContainerBackGround().copyWith(boxShadow: [
-                      const BoxShadow(
-                          color: Color(0x0ff42a70),
-                          offset: Offset(0, 3),
-                          blurRadius: 6,
-                          spreadRadius: -2),
-                      const BoxShadow(
-                          color: Color(0x0ff42a70),
-                          offset: Offset(0, 0),
-                          blurRadius: 1,
-                          spreadRadius: 0),
-                    ]),
-                    padding: const EdgeInsets.all(16),
-                  ))
+              dialog
+                  ? BlocListener<SaveDoneeCubit, SaveDoneeState>(
+                      listener: (context, state) {
+                        if (state is SaveDoneeSuccess) {
+                          Fluttertoast.showToast(
+                              msg: state.successModel.message);
+                        }
+                      },
+                      child: Positioned(
+                          right: 14,
+                          top: 0,
+                          child: Container(
+                            child: TextButton(
+                                style: TextButton.styleFrom(
+                                    primary: AppColor.text80Primary),
+                                onPressed: () {
+                                  setState(() {
+                                    dialog = !dialog;
+                                  });
+                                  context.read<SaveDoneeCubit>().saveDonee({
+                                    'donee_id': widget.donationData.donee.id
+                                  });
+                                },
+                                child: const Text('Save donees')),
+                            decoration:
+                                whiteContainerBackGround().copyWith(boxShadow: [
+                              const BoxShadow(
+                                  color: Color(0x0ff42a70),
+                                  offset: Offset(0, 3),
+                                  blurRadius: 6,
+                                  spreadRadius: -2),
+                              const BoxShadow(
+                                  color: Color(0x0ff42a70),
+                                  offset: Offset(0, 0),
+                                  blurRadius: 1,
+                                  spreadRadius: 0),
+                            ]),
+                            padding: const EdgeInsets.all(16),
+                          )),
+                    )
+                  : SizedBox.fromSize(),
+              BlocConsumer<SaveDoneeCubit, SaveDoneeState>(
+                listener: (context, state) {
+                  if (state is SaveDoneeSuccess) {
+                    Fluttertoast.showToast(msg: state.successModel.message);
+                  }
+                },
+                builder: (context, state) {
+                  if (state is SaveDoneeLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return SizedBox.fromSize();
+                },
+              )
             ],
           ),
         ),
         //todo change color
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            //todo naviga to donation for the save donee
+            //todo navigate to donation for the save donee
             Navigator.pushAndRemoveUntil(context,
                 AppRouter.routeToPage(const HomeScreen()), (route) => false);
           },

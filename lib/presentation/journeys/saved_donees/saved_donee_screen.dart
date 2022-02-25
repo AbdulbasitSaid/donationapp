@@ -4,6 +4,8 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/data/models/donation_models/donee_model.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/save_donee_add_by_id_screen.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/save_donee_add_by_qr_code_screen.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_details.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -22,7 +24,7 @@ class SavedDoneeScreen extends StatefulWidget {
 
 class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
   bool isStartSearch = false;
-
+  bool isScrolling = false;
   @override
   void initState() {
     super.initState();
@@ -32,6 +34,62 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) =>
+                    SimpleDialog(title: const Text('Add donee'), children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                  context,
+                                  AppRouter.routeToPage(
+                                      const SaveDoneeAddDoneeByIdScreen()));
+                            },
+                            child: Row(
+                              children: [
+                                const Icon(Icons.add_circle_outline_rounded),
+                                const SizedBox(
+                                  width: 24,
+                                ),
+                                Text(
+                                  'Add by ID',
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                )
+                              ],
+                            )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                  context,
+                                  AppRouter.routeToPage(
+                                      const SaveDoneeAddByQrCodeScreen()));
+                            },
+                            child: Row(
+                              children: [
+                                const Icon(Icons.qr_code_2),
+                                const SizedBox(
+                                  width: 24,
+                                ),
+                                Text(
+                                  'Scan QR Code',
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                )
+                              ],
+                            )),
+                      ),
+                    ]));
+          },
+          child: const Icon(Icons.add),
+        ),
         body: Container(
           decoration: gradientBoxDecoration(),
           height: MediaQuery.of(context).size.height,
@@ -72,8 +130,8 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                               const SizedBox(
                                 height: 16,
                               ),
-                              BlocConsumer<GetRecentdoneesCubit,
-                                  RecentdoneesState>(
+                              BlocConsumer<GetSavedDoneesCubit,
+                                  GetSavedDoneesState>(
                                 listener: (context, state) {
                                   // TODO: implement listener
                                 },
@@ -83,11 +141,16 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                       child: CircularProgressIndicator(),
                                     );
                                   }
-                                  if (state is RecentdoneesSuccessful &&
-                                      state.recentDoneesResponseModel.data!
-                                          .isNotEmpty &&
-                                      state.recentDoneesResponseModel.data !=
+                                  if (state is GetSavedDoneesSuccess &&
+                                      state.savedDoneesResponseModel.data !=
                                           null) {
+                                    final recentlySaved = state
+                                        .savedDoneesResponseModel.data!
+                                        .where((e) =>
+                                            e.createdAt!.month ==
+                                            DateTime.now().month)
+                                        .take(5)
+                                        .toList();
                                     return Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -102,10 +165,8 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                           decoration:
                                               whiteContainerBackGround(),
                                           child: Column(children: [
-                                            ...state
-                                                .recentDoneesResponseModel.data!
-                                                .map((e) =>
-                                                    SavedDoneeListItemWidget(
+                                            ...recentlySaved.map(
+                                                (e) => SavedDoneeListItemWidget(
                                                       donee: e,
                                                     ))
                                           ]),

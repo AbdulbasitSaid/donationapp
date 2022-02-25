@@ -21,8 +21,10 @@ import 'package:idonatio/presentation/journeys/onboarding/cubit/create_setup_int
 import 'package:idonatio/presentation/journeys/onboarding/cubit/getcountreis_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboardingdataholder_cubit.dart';
 import 'package:idonatio/presentation/journeys/reset_password/bloc/resetpassword_bloc.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/cubit/delete_save_donee_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/cubit/save_donee_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 
 import 'package:idonatio/presentation/themes/app_theme_data.dart';
@@ -138,6 +140,15 @@ class _IdonatioAppState extends State<IdonatioApp> {
           ),
           BlocProvider(
             create: (context) => DonationHistoryCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => DonationHistoryCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => DeleteSaveDoneeCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => SaveDoneeCubit(getItInstance()),
           ),
         ],
         child: MultiRepositoryProvider(

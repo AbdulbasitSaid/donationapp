@@ -8,8 +8,10 @@ class SavedDoneeDataSource {
   SavedDoneeDataSource(this._apiClient);
   Future<SavedDoneesResponseModel> getSavedDonees(
       String token, String? param) async {
-    final result =
-        await _apiClient.get('donors/saved-donees?search=$param', token: token);
+    final result = param == null || param.isEmpty
+        ? await _apiClient.get('donors/saved-donees', token: token)
+        : await _apiClient.get('donors/saved-donees?search=$param',
+            token: token);
     return SavedDoneesResponseModel.fromJson(result);
   }
 }
