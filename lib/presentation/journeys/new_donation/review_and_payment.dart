@@ -221,7 +221,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Included transaction fee'),
+                                    const Text('Included transaction fee'),
                                     BlocBuilder<GetdoneebycodeCubit,
                                         GetdoneebycodeState>(
                                       builder: (context, state) {

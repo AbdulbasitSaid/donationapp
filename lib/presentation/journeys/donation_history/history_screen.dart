@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
+import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_summary_cubit.dart';
 import 'package:idonatio/presentation/journeys/donation_history/donation_history_details_screen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -290,6 +291,9 @@ class DonationHistoryListCardItem extends StatelessWidget {
     return TextButton(
       style: TextButton.styleFrom(primary: AppColor.text80Primary),
       onPressed: () {
+        context
+            .read<DonationHistorySummaryCubit>()
+            .getDonationHistoryDetailSummary(donationData.doneeId);
         Navigator.push(
             context,
             AppRouter.routeToPage(DonationHistoryDetialsScreen(
@@ -312,9 +316,7 @@ class DonationHistoryListCardItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(donationData.donee.organization == null
-                        ? "${donationData.donee.firstName}  ${donationData.donee.lastName}"
-                        : "${donationData.donee.organization?.name}"),
+                    Text(donationData.donee.fullName),
                     const SizedBox(
                       height: 8,
                     ),

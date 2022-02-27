@@ -65,11 +65,7 @@ class _DonationHistoryDetialsScreenState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Level2Headline(
-                            text: widget.donationHistoryData.donee
-                                        .organization ==
-                                    null
-                                ? '${widget.donationHistoryData.donee.firstName} ${widget.donationHistoryData.donee.firstName}'
-                                : '${widget.donationHistoryData.donee.organization?.name}'),
+                            text: widget.donationHistoryData.donee.fullName),
                         const DoneeAvatarPlaceHolder(),
                       ]),
                 ),

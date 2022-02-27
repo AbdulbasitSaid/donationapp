@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_summary_cubit.dart';
 import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/save_donee_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
@@ -10,6 +11,7 @@ import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 
 import '../../../data/models/donation_models/donation_history_model.dart';
+import '../../widgets/donation_summary_widget.dart';
 import '../../widgets/donee_avatar_place_holder.dart';
 import '../../widgets/labels/level_2_heading.dart';
 
@@ -70,9 +72,7 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Level2Headline(
-                            text: widget.donationData.donee.organization == null
-                                ? '${widget.donationData.donee.firstName} ${widget.donationData.donee.firstName}'
-                                : '${widget.donationData.donee.organization?.name}'),
+                            text: widget.donationData.donee.fullName),
                       ]),
                 ),
                 const SizedBox(
@@ -223,43 +223,7 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
                     ],
                   ),
                 ),
-                Container(
-                  decoration: whiteContainerBackGround(),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(children: [
-                    //todo populate donation history from api
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text('Number of donations '),
-                          Text('10 '),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text('Average donation amount '),
-                          Text('£35.00 '),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text('Total donation amount '),
-                          Text('£350.00'),
-                        ],
-                      ),
-                    ),
-                  ]),
-                )
+                const DonationSummaryWidget()
               ]),
               const Positioned(
                   right: 16,

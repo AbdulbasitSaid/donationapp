@@ -49,6 +49,11 @@ class Donee {
       this.country,
       this.organization,
       this.createdAt});
+  String get fullName {
+    return organization == null
+        ? '$firstName $lastName'
+        : '${organization!.name}';
+  }
 
   factory Donee.fromJson(Map<String, dynamic> json) => _$DoneeFromJson(json);
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/data/models/donation_models/donee_model.dart';
+import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_summary_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/save_donee_add_by_id_screen.dart';
@@ -386,6 +387,9 @@ class SavedDoneeListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
+        context
+            .read<DonationHistorySummaryCubit>()
+            .getDonationHistoryDetailSummary(donee.id!);
         Navigator.push(context,
             AppRouter.routeToPage(SavedDoneeDetails(donationData: donee)));
       },
