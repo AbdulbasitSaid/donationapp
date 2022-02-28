@@ -48,12 +48,12 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(
+              Padding(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
                   vertical: 24,
                 ),
-                child: Level2Headline(text: 'Donation details'),
+                child: Level2Headline(text: 'Donation details'.toUpperCase()),
               ),
               const Padding(
                 padding: EdgeInsets.all(16),
@@ -74,8 +74,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                     } else {
                       return DetailCardForIndividualWidget(
                         id: state.doneeResponseData.doneeCode,
-                        name:
-                            '${state.doneeResponseData.firstName} ${state.doneeResponseData.lastName}',
+                        name: state.doneeResponseData.fullName,
                         address: state.doneeResponseData.addressLine_1,
                       );
                     }

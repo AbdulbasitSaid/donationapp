@@ -21,6 +21,9 @@ import '../../../data/models/donation_models/donee_model.dart';
 import '../../widgets/donee_avatar_place_holder.dart';
 import '../../widgets/labels/level_2_heading.dart';
 import '../donation_history/cubit/donation_history_summary_cubit.dart';
+import '../new_donation/cubit/get_payment_methods_cubit.dart';
+import '../new_donation/cubit/getdoneebycode_cubit.dart';
+import '../new_donation/donation_details.dart';
 
 class SavedDoneeDetails extends StatefulWidget {
   const SavedDoneeDetails({Key? key, required this.donationData})
@@ -353,9 +356,12 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
         //todo change color
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            //todo naviga to donation for the save donee
-            Navigator.pushAndRemoveUntil(context,
-                AppRouter.routeToPage(const HomeScreen()), (route) => false);
+            context
+                .read<GetdoneebycodeCubit>()
+                .getDoneeByCode(widget.donationData.doneeCode!);
+            context.read<GetPaymentMethodsCubit>().getPaymentMethods();
+            Navigator.push(
+                context, AppRouter.routeToPage(const DonationDetialsScreen()));
           },
           label: Text('new donation'.toUpperCase()),
           icon: const Icon(

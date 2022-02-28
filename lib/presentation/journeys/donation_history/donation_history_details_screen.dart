@@ -3,11 +3,13 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/data/models/donation_models/donation_history_model.dart';
 import 'package:idonatio/presentation/journeys/donation_history/donee_detail_history.dart';
 import 'package:idonatio/presentation/reusables.dart';
+import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import 'package:intl/intl.dart';
 
+import '../../widgets/deactivated_sign_widget.dart';
 import '../../widgets/labels/level_6_headline.dart';
 
 class DonationHistoryDetialsScreen extends StatefulWidget {
@@ -48,12 +50,12 @@ class _DonationHistoryDetialsScreenState
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(
+                Padding(
+                  padding: const EdgeInsets.symmetric(
                     vertical: 4,
                     horizontal: 16,
                   ),
-                  child: Text('Donation to:'),
+                  child: Text('Donation to:'.toUpperCase()),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -64,8 +66,20 @@ class _DonationHistoryDetialsScreenState
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Level2Headline(
-                            text: widget.donationHistoryData.donee.fullName),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Level2Headline(
+                                text:
+                                    widget.donationHistoryData.donee.fullName),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            widget.donationHistoryData.donee.isActive == false
+                                ? const DeactivatedSignWidget()
+                                : const SizedBox.shrink()
+                          ],
+                        ),
                         const DoneeAvatarPlaceHolder(),
                       ]),
                 ),
