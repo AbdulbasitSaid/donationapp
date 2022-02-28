@@ -29,6 +29,7 @@ class DonationHistoryByDoneeIdData {
     required this.createdAt,
     required this.donationDetails,
     required this.donee,
+    required this.rank,
   });
 
   String id;
@@ -36,11 +37,24 @@ class DonationHistoryByDoneeIdData {
   String doneeId;
   String currency;
   DateTime createdAt;
+  int rank;
   List<DonationDetail> donationDetails;
   Donee donee;
   factory DonationHistoryByDoneeIdData.fromJson(json) =>
       _$DonationHistoryByDoneeIdDataFromJson(json);
   Map<String, dynamic> toJson() => _$DonationHistoryByDoneeIdDataToJson(this);
+  String get displayDationType {
+    return donationDetails.length > 1
+        ? 'Multiple donation types'
+        : donationDetails.first.donationType.type;
+  }
+
+  double get totalPayment {
+    return donationDetails
+        .map((e) => e.amount)
+        .toList()
+        .reduce((value, element) => value + element);
+  }
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
@@ -56,7 +70,7 @@ class DonationDetail {
   String id;
   String donationId;
   String donationTypeId;
-  int amount;
+  double amount;
   DonationType donationType;
   factory DonationDetail.fromJson(json) => _$DonationDetailFromJson(json);
   Map<String, dynamic> toJson() => _$DonationDetailToJson(this);

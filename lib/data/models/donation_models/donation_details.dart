@@ -17,7 +17,6 @@ class DonationDetails {
     required this.amount,
     required this.donationType,
   });
-
   factory DonationDetails.fromJson(Map<String, dynamic> json) =>
       _$DonationDetailsFromJson(json);
 

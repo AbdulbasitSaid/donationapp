@@ -35,37 +35,38 @@ class DonationHistoryListCard extends StatelessWidget {
             : const SizedBox.shrink(),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const DoneeAvatarPlaceHolder(),
-            const SizedBox(
-              width: 16,
-            ),
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    donationHistoryListCardEntity.name,
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          fontSize: 16,
-                          color: AppColor.text80Primary,
-                        ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    donationHistoryListCardEntity.donationType,
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          fontSize: 12,
-                          color: AppColor.text70Primary,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              width: 16,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const DoneeAvatarPlaceHolder(),
+                const SizedBox(
+                  width: 16,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      donationHistoryListCardEntity.name,
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            fontSize: 16,
+                            color: AppColor.text80Primary,
+                          ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      donationHistoryListCardEntity.donationType,
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            fontSize: 12,
+                            color: AppColor.text70Primary,
+                          ),
+                    ),
+                  ],
+                ),
+              ],
             ),
             Text(
               '£${donationHistoryListCardEntity.amount}',

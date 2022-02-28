@@ -302,48 +302,65 @@ class DonationHistoryListCardItem extends StatelessWidget {
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            donationData.rank == 1
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${DateFormat.EEEE().format(donationData.createdAt)},${DateFormat.d().format(donationData.createdAt)} ${DateFormat.MMMM().format(donationData.createdAt)}',
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                              color: AppColor.text70Primary,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                            ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink(),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const DoneeAvatarPlaceHolder(),
-                const SizedBox(
-                  width: 16,
-                ),
-                Column(
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(donationData.donee.fullName),
+                    const DoneeAvatarPlaceHolder(),
                     const SizedBox(
-                      height: 8,
+                      width: 16,
                     ),
-                    Text(
-                      donationData.donationDetails.length > 1
-                          ? 'Multiple donation types'
-                          : '${donationData.donationDetails.first.donationType?.type}',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      '${DateFormat.EEEE().format(donationData.createdAt)},${DateFormat.d().format(donationData.createdAt)} ${DateFormat.MMMM().format(donationData.createdAt)}',
-                      style: Theme.of(context).textTheme.bodySmall,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(donationData.donee.fullName),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          '${donationData.displayDonationType}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                      ],
                     ),
                   ],
                 ),
+                Column(
+                  children: [
+                    Text(
+                      '£${donationData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)!}',
+                    ),
+                  ],
+                )
               ],
             ),
-            Column(
-              children: [
-                Text(
-                  '£${donationData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)!}',
-                ),
-              ],
-            )
           ],
         ),
       ),

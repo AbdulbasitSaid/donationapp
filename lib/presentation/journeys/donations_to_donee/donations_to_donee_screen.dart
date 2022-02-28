@@ -82,14 +82,12 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                             child: DonationHistoryListCard(
                               donationHistoryListCardEntity:
                                   DonationHistoryListCardEntity(
-                                amount: 20,
-                                donationType: 'change this',
+                                amount: doneeData[index].totalPayment,
+                                donationType:
+                                    doneeData[index].displayDationType,
                                 dontionDate: doneeData[index].createdAt,
                                 name: doneeData[index].donee.fullName,
-                                //todo set ranking from api
-                                rank: index == 0
-                                    ? 1
-                                    : 1 + Random().nextInt(4 - 1),
+                                rank: doneeData[index].rank,
                               ),
                             ),
                           ),

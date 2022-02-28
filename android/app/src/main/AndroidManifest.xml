@@ -4,7 +4,7 @@
 
    <application
         android:label="idonatio"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
      
 <meta-data
   android:name="com.google.android.gms.wallet.api.enabled"

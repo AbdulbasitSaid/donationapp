@@ -43,9 +43,18 @@ class DonationHistoryData {
   String? expiryMonth;
   String? expiryYear;
   DateTime createdAt;
+  int rank;
   List<DonationDetails> donationDetails;
   Donee donee;
-
+  double get totalPayment => donationDetails
+      .map(
+        (e) => e.amount,
+      )
+      .toList()
+      .reduce((value, element) => value! + element!)!;
+  String? get displayDonationType => donationDetails.length > 1
+      ? 'Multiple donation types'
+      : donationDetails.first.donationType!.type;
   DonationHistoryData(
       {required this.id,
       required this.donorId,
@@ -67,8 +76,10 @@ class DonationHistoryData {
       required this.expiryYear,
       required this.createdAt,
       required this.donationDetails,
+      required this.rank,
       required this.donee});
 
-  factory DonationHistoryData.fromJson(Map<String, dynamic> json) => _$DonationHistoryDataFromJson(json);
+  factory DonationHistoryData.fromJson(Map<String, dynamic> json) =>
+      _$DonationHistoryDataFromJson(json);
   Map<String, dynamic> toJson() => _$DonationHistoryDataToJson(this);
 }
