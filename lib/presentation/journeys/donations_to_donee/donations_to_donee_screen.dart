@@ -1,10 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/get_donation_history_by_donee_id_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
+import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
 import 'package:idonatio/presentation/widgets/donee_list_tile_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
+
+import '../../widgets/list_cards/donation_history_list_card_widget.dart';
 
 class DonationsTodoneeScreen extends StatefulWidget {
   const DonationsTodoneeScreen({Key? key}) : super(key: key);
@@ -28,22 +33,39 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
             expandedHeight: 140,
             backgroundColor: const Color.fromRGBO(219, 229, 255, 1),
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.only(left: 40, top: 40, bottom: 8),
+              titlePadding: const EdgeInsets.only(
+                  left: 40, right: 40, top: 40, bottom: 8),
               centerTitle: false,
               background: Container(decoration: gradientBoxDecoration()),
               title: FittedBox(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.,
-                    children: [
-                      Text(
-                        'All Donations'.toUpperCase(),
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(fontSize: 10),
-                      ),
-                      const Level2Headline(text: 'RCCG East London')
-                    ]),
+                child: Flexible(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.,
+                      children: [
+                        Text(
+                          'All Donations'.toUpperCase(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontSize: 10),
+                        ),
+                        BlocBuilder<GetDonationHistoryByDoneeIdCubit,
+                            GetDonationHistoryByDoneeIdState>(
+                          builder: (context, state) {
+                            if (state is GetDonationHistoryByDoneeIdSuccess) {
+                              return Level2Headline(
+                                  text: state.donationHistoryByDoneeIdModel.data
+                                      .first.donee.fullName);
+                            }
+                            if (state is GetDonationHistoryByDoneeIdFailure) {
+                              return const Level2Headline(
+                                  text: 'Failed to get donee');
+                            } else {}
+                            return const Level2Headline(text: 'Loading...');
+                          },
+                        )
+                      ]),
+                ),
               ),
             ),
           ),
@@ -55,11 +77,21 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
                       (context, index) => Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: DoneeListTile(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 16.0, horizontal: 16),
+                            child: DonationHistoryListCard(
+                              donationHistoryListCardEntity:
+                                  DonationHistoryListCardEntity(
+                                amount: 20,
+                                donationType: 'change this',
+                                dontionDate: doneeData[index].createdAt,
                                 name: doneeData[index].donee.fullName,
-                                address: doneeData[index].donee.fullAddress,
-                                doneeCode: doneeData[index].donee.doneeCode!),
+                                //todo set ranking from api
+                                rank: index == 0
+                                    ? 1
+                                    : 1 + Random().nextInt(4 - 1),
+                              ),
+                            ),
                           ),
                       childCount: doneeData.length),
                 );
