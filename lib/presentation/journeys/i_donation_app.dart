@@ -9,6 +9,7 @@ import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
 import 'package:idonatio/presentation/bloc/registration_steps/cubit/registration_steps_cubit.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_summary_cubit.dart';
+import 'package:idonatio/presentation/journeys/donation_history/cubit/get_donation_history_by_donee_id_cubit.dart';
 import 'package:idonatio/presentation/journeys/email_verification/cubit/verification_cubit.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/change_password_cubit.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/contact_support_cubit.dart';
@@ -153,6 +154,10 @@ class _IdonatioAppState extends State<IdonatioApp> {
           ),
           BlocProvider(
             create: (context) => DonationHistorySummaryCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                GetDonationHistoryByDoneeIdCubit(getItInstance()),
           ),
         ],
         child: MultiRepositoryProvider(

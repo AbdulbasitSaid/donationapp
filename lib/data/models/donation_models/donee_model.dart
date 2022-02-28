@@ -55,6 +55,12 @@ class Donee {
         : '${organization!.name}';
   }
 
+  String get fullAddress {
+    return organization == null
+        ? '$addressLine_1 $addressLine_2'
+        : '${organization!.addressLine_1} ${organization!.addressLine_2}';
+  }
+
   factory Donee.fromJson(Map<String, dynamic> json) => _$DoneeFromJson(json);
 
   Map<String, dynamic> toJson() => _$DoneeToJson(this);

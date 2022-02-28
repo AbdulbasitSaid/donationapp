@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_summary_cubit.dart';
+import 'package:idonatio/presentation/journeys/donations_to_donee/donations_to_donee_screen.dart';
 import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/save_donee_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
+import 'package:idonatio/presentation/widgets/veiw_all_button_widget.dart';
 
 import '../../../data/models/donation_models/donation_history_model.dart';
 import '../../widgets/donation_summary_widget.dart';
@@ -216,10 +218,9 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Level6Headline(text: 'Donation history'),
-                      TextButton(
-                          //todo create veiw all page
-                          onPressed: () {},
-                          child: Text('view all'.toUpperCase()))
+                      ViewAllButtonWidget(
+                        doneeId: widget.donationData.doneeId,
+                      )
                     ],
                   ),
                 ),

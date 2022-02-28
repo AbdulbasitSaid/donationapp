@@ -14,6 +14,7 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/donation_summary_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
+import 'package:idonatio/presentation/widgets/veiw_all_button_widget.dart';
 
 import '../../../data/models/donation_models/donation_history_model.dart';
 import '../../../data/models/donation_models/donee_model.dart';
@@ -233,10 +234,9 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Level6Headline(text: 'Donation history'),
-                        TextButton(
-                            //todo create veiw all page
-                            onPressed: () {},
-                            child: Text('view all'.toUpperCase()))
+                        ViewAllButtonWidget(
+                          doneeId: widget.donationData.id!,
+                        )
                       ],
                     ),
                   ),
