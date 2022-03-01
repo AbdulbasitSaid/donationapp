@@ -22,7 +22,6 @@ class LoginScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              //TODO remove on production
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

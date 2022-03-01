@@ -3,7 +3,6 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/data/models/donation_models/donation_history_model.dart';
 import 'package:idonatio/presentation/journeys/donation_history/donee_detail_history.dart';
 import 'package:idonatio/presentation/reusables.dart';
-import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';

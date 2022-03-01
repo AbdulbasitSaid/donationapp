@@ -439,18 +439,12 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    // setState(() {
-                    //   Navigator.pop(context, 'Cancel');
-                    // });
                     Navigator.pop(context, 'Cancel');
                   },
                   child: Text('cancle'.toUpperCase()),
                 ),
                 TextButton(
                   onPressed: () {
-                    // setState(() {
-                    //   Navigator.pop(context, 'Ok');
-                    // });
                     Navigator.pop(context, 'Ok');
                   },
                   child: Text('ok'.toUpperCase()),
@@ -590,9 +584,7 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
                                 DonationItemEntity(
                                     description: e.description,
                                     id: e.id,
-                                    type: e.type == null
-                                        ? '${e.type}'
-                                        : '${e.name}'),
+                                    type: e.type!),
                               );
                         });
                       },
@@ -614,7 +606,7 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
                                           DonationItemEntity(
                                               description: e.description,
                                               id: e.id,
-                                              type: e.description),
+                                              type: e.type!),
                                         );
                                   });
                                 }),
@@ -832,6 +824,9 @@ class _CartItemWdigetState extends State<CartItemWdiget> {
               ),
             ],
           )),
+          const SizedBox(
+            width: 16,
+          ),
           SizedBox(
               width: 96,
               height: 48,

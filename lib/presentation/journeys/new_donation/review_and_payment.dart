@@ -248,7 +248,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Anonymous donation?'),
+                                    const Text('Anonymous donation?'),
                                     Text(isAnonnymous),
                                   ],
                                 ),
@@ -260,7 +260,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('GiftAid enabled?'),
+                                    const Text('GiftAid enabled?'),
                                     Text(isGiftAid),
                                   ],
                                 ),
@@ -277,7 +277,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Level4Headline(text: 'Total to pay'),
+                            const Level4Headline(text: 'Total to pay'),
                             BlocBuilder<DonationCartCubit,
                                 List<DonationItemEntity>>(
                               builder: (context, state) {

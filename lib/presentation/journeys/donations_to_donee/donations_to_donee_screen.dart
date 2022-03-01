@@ -1,12 +1,8 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/get_donation_history_by_donee_id_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
-import 'package:idonatio/presentation/themes/app_color.dart';
-import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
-import 'package:idonatio/presentation/widgets/donee_list_tile_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../widgets/list_cards/donation_history_list_card_widget.dart';

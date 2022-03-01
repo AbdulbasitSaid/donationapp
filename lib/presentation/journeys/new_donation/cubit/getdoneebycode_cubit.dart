@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/models/donation_models/donee_model.dart';
 import 'package:idonatio/data/repository/donee_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 
