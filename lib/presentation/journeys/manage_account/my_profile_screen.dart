@@ -133,34 +133,33 @@ class MyProfileScreen extends StatelessWidget {
                                         const EditAddressScreen()));
                               },
                               icon: const Icon(Icons.place_outlined)),
-                          Flexible(
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('${donor?.address}'),
-                                    IconButton(
-                                        onPressed: () {
-                                          context
-                                              .read<GetcountreisCubit>()
-                                              .getCountries();
-                                          Navigator.push(
-                                              context,
-                                              AppRouter.routeToPage(
-                                                  const EditAddressScreen()));
-                                        },
-                                        icon: const Icon(
-                                          Icons.edit,
-                                          color: AppColor.basePrimary,
-                                        )),
-                                  ],
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * .6,
+                                child: Text(
+                                  '${donor?.address}',
+                                  overflow: TextOverflow.clip,
                                 ),
-                                const Divider(),
-                              ],
-                            ),
-                          )
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    context
+                                        .read<GetcountreisCubit>()
+                                        .getCountries();
+                                    Navigator.push(
+                                        context,
+                                        AppRouter.routeToPage(
+                                            const EditAddressScreen()));
+                                  },
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: AppColor.basePrimary,
+                                  )),
+                            ],
+                          ),
+                          const Divider()
                         ],
                       ),
                       // end address
