@@ -88,7 +88,8 @@ class _IdonatioAppState extends State<IdonatioApp> {
             create: (context) => RegistrationStepsCubit(),
           ),
           BlocProvider<ResetpasswordBloc>(
-            create: (context) => ResetpasswordBloc(getItInstance(),getItInstance()),
+            create: (context) =>
+                ResetpasswordBloc(getItInstance(), getItInstance()),
           ),
           BlocProvider<OnboardingdataholderCubit>(
               create: (context) => OnboardingdataholderCubit()),
