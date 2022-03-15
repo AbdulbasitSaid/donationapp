@@ -50,9 +50,10 @@ class UserRemoteDataSource {
     return ResetPasswordOtpSuccessEntity.fromJson(response);
   }
 
-  Future<dynamic> resendOptCode() async {
-    final response = await _client.get('auth/otp/resend');
-    return response;
+  Future<SuccessModel> resendOptCode(Map<String, String> map) async {
+    final response = await _client.post('auth/password/forgot', params: map);
+
+    return SuccessModel.fromJson(response);
   }
 
   Future<dynamic> changePassword({required Map<String, dynamic> params}) async {

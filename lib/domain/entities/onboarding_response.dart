@@ -38,7 +38,6 @@ class OnboardingResponse {
 class Data {
   Data({
     required this.id,
-    required this.userId,
     required this.firstName,
     required this.lastName,
     required this.isOnboarded,
@@ -57,7 +56,6 @@ class Data {
   });
 
   final String id;
-  final String userId;
   final String firstName;
   final String lastName;
   final bool isOnboarded;
@@ -76,7 +74,6 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
-        userId: json["user_id"],
         firstName: json["first_name"],
         lastName: json["last_name"],
         isOnboarded: json["is_onboarded"],
@@ -96,7 +93,6 @@ class Data {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "user_id": userId,
         "first_name": firstName,
         "last_name": lastName,
         "is_onboarded": isOnboarded,

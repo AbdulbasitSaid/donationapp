@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:idonatio/common/route_list.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
+import 'package:idonatio/presentation/widgets/buttons/reset_otp_code.dart';
 
 class VerifyLoginScreen extends StatelessWidget {
   const VerifyLoginScreen({Key? key}) : super(key: key);
@@ -52,7 +53,9 @@ class VerifyLoginScreen extends StatelessWidget {
                       // maxLength: 1,
                       // maxLines: 1,
                     )),
-                     SizedBox(width: 8,),
+                    SizedBox(
+                      width: 8,
+                    ),
                     Flexible(
                         child: TextField(
                       keyboardType: TextInputType.number,
@@ -78,20 +81,7 @@ class VerifyLoginScreen extends StatelessWidget {
                 const SizedBox(
                   height: 32,
                 ),
-                Row(
-                  children: const [
-                    Flexible(
-                      child: Icon(
-                        Icons.restart_alt,
-                        color: AppColor.basePrimary,
-                      ),
-                    ),
-                    Text(
-                      'Resend code',
-                      style: TextStyle(color: AppColor.basePrimary),
-                    ),
-                  ],
-                ),
+                const ResendOTPCode(),
                 const SizedBox(
                   height: 16,
                 ),

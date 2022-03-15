@@ -10,6 +10,8 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 
+import '../../widgets/buttons/reset_otp_code.dart';
+
 class EmailVerificationScreen extends StatelessWidget {
   const EmailVerificationScreen({Key? key}) : super(key: key);
 
@@ -102,20 +104,7 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
           const SizedBox(
             height: 32,
           ),
-          Row(
-            children: const [
-              Flexible(
-                child: Icon(
-                  Icons.restart_alt,
-                  color: AppColor.basePrimary,
-                ),
-              ),
-              Text(
-                'Resend code',
-                style: TextStyle(color: AppColor.basePrimary),
-              ),
-            ],
-          ),
+          const ResendOTPCode(),
           const SizedBox(
             height: 16,
           ),
@@ -157,6 +146,8 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
     );
   }
 }
+
+
 
 class OTPItem extends StatelessWidget {
   const OTPItem({

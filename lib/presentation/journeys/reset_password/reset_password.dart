@@ -56,7 +56,6 @@ class _ResetPasswordEmailformState extends State<ResetPasswordEmailform> {
     return BlocConsumer<ResetpasswordBloc, ResetpasswordState>(
       listener: (context, state) {
         if (state is ResetpasswordLoadding) {
-       
           showDialog(
               context: context,
               builder: (context) {
@@ -130,7 +129,7 @@ class _ResetPasswordEmailformState extends State<ResetPasswordEmailform> {
                           },
                       child: Row(
                         children: [
-                          Text('Verify Account'.toUpperCase()),
+                          Text('Send otp to email'.toUpperCase()),
                           const SizedBox(
                             width: 8,
                           ),

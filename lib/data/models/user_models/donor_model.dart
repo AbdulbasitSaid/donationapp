@@ -6,8 +6,6 @@ part 'donor_model.g.dart';
 class DonorModel {
   @HiveField(0)
   final String id;
-  @HiveField(1)
-  final String userId;
   @HiveField(2)
   final String firstName;
   @HiveField(3)
@@ -41,7 +39,6 @@ class DonorModel {
 
   DonorModel({
     required this.id,
-    required this.userId,
     required this.firstName,
     required this.lastName,
     required this.isOnboarded,
@@ -61,7 +58,6 @@ class DonorModel {
 
   factory DonorModel.fromJson(Map<String, dynamic> json) => DonorModel(
       id: json["id"],
-      userId: json["user_id"],
       firstName: json["first_name"],
       lastName: json["last_name"],
       isOnboarded: json["is_onboarded"],
@@ -80,7 +76,6 @@ class DonorModel {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "user_id": userId,
         "first_name": firstName,
         "last_name": lastName,
         "is_onboarded": isOnboarded,
@@ -104,7 +99,6 @@ class DonorModel {
 
     return other is DonorModel &&
         other.id == id &&
-        other.userId == userId &&
         other.firstName == firstName &&
         other.lastName == lastName &&
         other.isOnboarded == isOnboarded &&
@@ -125,7 +119,6 @@ class DonorModel {
   @override
   int get hashCode {
     return id.hashCode ^
-        userId.hashCode ^
         firstName.hashCode ^
         lastName.hashCode ^
         isOnboarded.hashCode ^
@@ -145,7 +138,7 @@ class DonorModel {
 
   @override
   String toString() {
-    return 'DonorModel(id: $id, userId: $userId, firstName: $firstName, lastName: $lastName, isOnboarded: $isOnboarded, title: $title, phoneNumber: $phoneNumber, phoneVerifiedAt: $phoneVerifiedAt, phoneReceiveSecurityAlert: $phoneReceiveSecurityAlert, giftAidEnabled: $giftAidEnabled, address: $address, city: $city, countryId: $countryId, postalCode: $postalCode, paymentMethod: $paymentMethod, stripeCustomerId: $stripeCustomerId, sendMarketingMail: $sendMarketingMail)';
+    return 'DonorModel(id: $id,  firstName: $firstName, lastName: $lastName, isOnboarded: $isOnboarded, title: $title, phoneNumber: $phoneNumber, phoneVerifiedAt: $phoneVerifiedAt, phoneReceiveSecurityAlert: $phoneReceiveSecurityAlert, giftAidEnabled: $giftAidEnabled, address: $address, city: $city, countryId: $countryId, postalCode: $postalCode, paymentMethod: $paymentMethod, stripeCustomerId: $stripeCustomerId, sendMarketingMail: $sendMarketingMail)';
   }
 
   DonorModel copyWith({
@@ -168,7 +161,6 @@ class DonorModel {
   }) {
     return DonorModel(
       id: id ?? this.id,
-      userId: userId ?? this.userId,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       isOnboarded: isOnboarded ?? this.isOnboarded,

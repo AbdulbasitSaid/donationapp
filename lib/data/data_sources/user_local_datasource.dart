@@ -19,6 +19,24 @@ class UserLocalDataSource {
     Hive.box<UserData>('user_box').put('user_data', userData);
   }
 
+  Future<void> saveResetPasswordEmail(String email) async {
+    final userResetPasswordEmail =
+        await Hive.openBox('reset_password_email_store');
+    userResetPasswordEmail.put('reset_password_email', email);
+    log(userResetPasswordEmail.get('reset_password_email'));
+  }
+
+  Future<String> getPasswordResetEmail() async {
+    final emailBox = await Hive.openBox('reset_password_email_store');
+    final String email = emailBox.get('reset_password_email');
+    return email;
+  }
+
+  Future<void> deleteResetPasswordEmail() async {
+    Hive.box<UserData>('reset_password_email_store')
+        .delete('reset_password_email');
+  }
+
   Future<UserData> getUser() async {
     final userBox = await Hive.openBox<UserData>('user_box');
     final user = userBox.get('user_data') ??
@@ -29,23 +47,23 @@ class UserLocalDataSource {
             isDeviceSaved: false,
             user: UserModel(
                 donor: DonorModel(
-                    address: null,
-                    city: null,
-                    countryId: null,
-                    firstName: '',
-                    giftAidEnabled: false,
-                    id: '',
-                    isOnboarded: false,
-                    lastName: '',
-                    paymentMethod: null,
-                    phoneNumber: '',
-                    phoneReceiveSecurityAlert: false,
-                    phoneVerifiedAt: null,
-                    postalCode: null,
-                    sendMarketingMail: false,
-                    stripeCustomerId: '',
-                    title: '',
-                    userId: ''),
+                  address: null,
+                  city: null,
+                  countryId: null,
+                  firstName: '',
+                  giftAidEnabled: false,
+                  id: '',
+                  isOnboarded: false,
+                  lastName: '',
+                  paymentMethod: null,
+                  phoneNumber: '',
+                  phoneReceiveSecurityAlert: false,
+                  phoneVerifiedAt: null,
+                  postalCode: null,
+                  sendMarketingMail: false,
+                  stripeCustomerId: '',
+                  title: '',
+                ),
                 email: '',
                 emailVerifiedAt: null,
                 id: '',

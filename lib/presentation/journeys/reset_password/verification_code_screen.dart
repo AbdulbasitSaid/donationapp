@@ -11,6 +11,8 @@ import 'package:idonatio/presentation/widgets/labels/base_label_text.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 
+import '../../widgets/buttons/reset_otp_code.dart';
+
 class ResetPasswordVerificationCodeScreen extends StatelessWidget {
   const ResetPasswordVerificationCodeScreen({Key? key, required this.email})
       : super(key: key);
@@ -129,15 +131,7 @@ class _ResetPasswordVerificationCodeFormState
                       .read<ResetpasswordBloc>()
                       .add(ValidateEmail(email: widget.email));
                 },
-                child: Row(
-                  children: const [
-                    Icon(Icons.restart_alt_sharp),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text('Resend code'),
-                  ],
-                ),
+                child: const ResendOTPCode(),
               ),
               const SizedBox(
                 height: 32,

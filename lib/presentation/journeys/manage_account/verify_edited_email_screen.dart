@@ -8,6 +8,7 @@ import '../../../enums.dart';
 import '../../reusables.dart';
 import '../../router/app_router.dart';
 import '../../themes/app_color.dart';
+import '../../widgets/buttons/reset_otp_code.dart';
 import '../../widgets/labels/level_2_heading.dart';
 import '../auth_guard.dart';
 
@@ -85,22 +86,10 @@ class _VerifyEdittedEmailScreenState extends State<VerifyEdittedEmailScreen> {
             const SizedBox(
               height: 16,
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: const [
-                  Flexible(
-                    child: Icon(
-                      Icons.restart_alt,
-                      color: AppColor.basePrimary,
-                    ),
-                  ),
-                  Text(
-                    'Resend code',
-                    style: TextStyle(color: AppColor.basePrimary),
-                  ),
-                ],
-              ),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: ResendOTPCode(),
+
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),

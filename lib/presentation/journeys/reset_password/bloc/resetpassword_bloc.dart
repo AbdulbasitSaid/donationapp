@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/common/words.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
+import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/repository/user_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 
@@ -12,7 +13,8 @@ part 'resetpassword_state.dart';
 
 class ResetpasswordBloc extends Bloc<ResetpasswordEvent, ResetpasswordState> {
   final UserRepository _authenticationRepository;
-  ResetpasswordBloc(this._authenticationRepository)
+  final UserLocalDataSource _userLocalDataSource;
+  ResetpasswordBloc(this._authenticationRepository, this._userLocalDataSource)
       : super(ResetpasswordInitial()) {
     on<ValidateEmail>(_onValidateEmail);
     on<SendOtp>(_onSendOtp);
@@ -37,6 +39,7 @@ class ResetpasswordBloc extends Bloc<ResetpasswordEvent, ResetpasswordState> {
     try {
       emit(ResetpasswordLoadding());
       await _authenticationRepository.sendEmailForgotPassword(event.email);
+      await _userLocalDataSource.saveResetPasswordEmail(event.email);
       emit(const ResetpasswordSuccess(
           successMessage:
               'If the email you entered is correct, an OTP has been sent to the email'));

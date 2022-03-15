@@ -30,6 +30,7 @@ import 'package:idonatio/presentation/journeys/saved_donees/cubit/save_donee_cub
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 
 import 'package:idonatio/presentation/themes/app_theme_data.dart';
+import 'package:idonatio/presentation/widgets/buttons/cubit/resend_otp_cubit.dart';
 
 import 'auth_guard.dart';
 import 'manage_account/cubit/logout_cubit.dart';
@@ -87,7 +88,7 @@ class _IdonatioAppState extends State<IdonatioApp> {
             create: (context) => RegistrationStepsCubit(),
           ),
           BlocProvider<ResetpasswordBloc>(
-            create: (context) => ResetpasswordBloc(getItInstance()),
+            create: (context) => ResetpasswordBloc(getItInstance(),getItInstance()),
           ),
           BlocProvider<OnboardingdataholderCubit>(
               create: (context) => OnboardingdataholderCubit()),
@@ -158,6 +159,9 @@ class _IdonatioAppState extends State<IdonatioApp> {
           BlocProvider(
             create: (context) =>
                 GetDonationHistoryByDoneeIdCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => ResendOtpCubit(getItInstance()),
           ),
         ],
         child: MultiRepositoryProvider(
