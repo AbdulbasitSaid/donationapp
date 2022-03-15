@@ -91,8 +91,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                                       onPressed: () {
                                         Navigator.pushAndRemoveUntil(
                                             context,
-                                            AppRouter.routeToPage(
-                                                const HomeScreen()),
+                                            AppRouter.routeToPage(HomeScreen()),
                                             (route) => false);
                                       },
                                       child: Text('ok'.toUpperCase())),

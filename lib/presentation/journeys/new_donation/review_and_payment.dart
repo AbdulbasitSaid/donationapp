@@ -377,66 +377,76 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                         } else {
                                           return ElevatedButton(
                                             onPressed: () {
-                                              context.read<MakedonationCubit>().makeDonation(
-                                                  MakeDonationEntity(
-                                                          doneeId:
-                                                              state.doneeId,
-                                                          paidTransactionFee: state
-                                                              .paidTransactionFee,
-                                                          donationMethod:
-                                                              'card',
-                                                          donationLocation: state
-                                                              .donationLocation,
-                                                          isAnonymous:
-                                                              state.isAnonymous,
-                                                          applyGiftAidToDonation: state
-                                                              .applyGiftAidToDonation,
-                                                          giftAidEnabled: state
-                                                              .giftAidEnabled,
-                                                          currency:
-                                                              state.currency,
-                                                          cardLastFourDigits:
-                                                              selectPaymentMethodState!
-                                                                  .cardLastFourDigits,
-                                                          cardType:
-                                                              selectPaymentMethodState
-                                                                  .brand,
-                                                          expiryMonth:
-                                                              selectPaymentMethodState
-                                                                  .expMonth,
-                                                          expiryYear:
-                                                              selectPaymentMethodState
-                                                                  .expYear,
-                                                          saveDonee:
-                                                              state.saveDonee,
-                                                          donationDetails: [
-                                                            ...cartState.map((e) =>
-                                                                DonationDetail(
-                                                                    donationTypeId:
-                                                                        e.id,
-                                                                    amount: e
-                                                                        .amount))
-                                                          ],
-                                                          amount: cartState
-                                                              .map((e) =>
-                                                                  e.amount +
-                                                                  getCharge(
-                                                                    e.amount,
-                                                                    state
-                                                                        .currency,
-                                                                  ))
-                                                              .toList()
-                                                              .reduce((a, b) =>
-                                                                  a + b),
-                                                          stripeConnectedAccountId: state
-                                                              .stripeConnectedAccountId,
-                                                          stripePaymentMethodId:
-                                                              selectPaymentMethodState
-                                                                  .id,
-                                                          idonatioTransactionFee:
-                                                              cartState.map((e) => e.amount).toList().reduce((a, b) => a + b) * .03,
-                                                          stripTransactionFee: stripeRatio(state.currency))
-                                                      .toMap());
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (builder) {
+                                                    return AlertDialog(
+                                                      title: const Text(
+                                                          'About to make a donation'),
+                                                      content: Text(
+                                                          'You are about to make donation. your card will charged a total sum of ${getCurrencySymbol(state.currency, context)}${state.amount + state.idonatoiFee}'),
+                                                      actions: [
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              context.read<MakedonationCubit>().makeDonation(
+                                                                  MakeDonationEntity(
+                                                                          doneeId: state
+                                                                              .doneeId,
+                                                                          paidTransactionFee: state
+                                                                              .paidTransactionFee,
+                                                                          donationMethod:
+                                                                              'card',
+                                                                          donationLocation: state
+                                                                              .donationLocation,
+                                                                          isAnonymous: state
+                                                                              .isAnonymous,
+                                                                          applyGiftAidToDonation: state
+                                                                              .applyGiftAidToDonation,
+                                                                          giftAidEnabled: state
+                                                                              .giftAidEnabled,
+                                                                          currency: state
+                                                                              .currency,
+                                                                          cardLastFourDigits: selectPaymentMethodState!
+                                                                              .cardLastFourDigits,
+                                                                          cardType: selectPaymentMethodState
+                                                                              .brand,
+                                                                          expiryMonth: selectPaymentMethodState
+                                                                              .expMonth,
+                                                                          expiryYear: selectPaymentMethodState
+                                                                              .expYear,
+                                                                          saveDonee: state
+                                                                              .saveDonee,
+                                                                          donationDetails: [
+                                                                            ...cartState.map((e) =>
+                                                                                DonationDetail(donationTypeId: e.id, amount: e.amount))
+                                                                          ],
+                                                                          amount: cartState
+                                                                              .map((e) =>
+                                                                                  e.amount +
+                                                                                  getCharge(
+                                                                                    e.amount,
+                                                                                    state.currency,
+                                                                                  ))
+                                                                              .toList()
+                                                                              .reduce((a, b) => a + b),
+                                                                          stripeConnectedAccountId: state.stripeConnectedAccountId,
+                                                                          stripePaymentMethodId: selectPaymentMethodState.id,
+                                                                          idonatioTransactionFee: cartState.map((e) => e.amount).toList().reduce((a, b) => a + b) * .03,
+                                                                          stripTransactionFee: stripeRatio(state.currency))
+                                                                      .toMap());
+                                                            },
+                                                            child: Text('yes'
+                                                                .toUpperCase())),
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child: Text('no'
+                                                                .toUpperCase()))
+                                                      ],
+                                                    );
+                                                  });
                                             },
                                             child: Text('Complete Donation'
                                                 .toUpperCase()),
@@ -497,8 +507,8 @@ class SelectPaymentCardWidget extends StatelessWidget {
                     children: [
                       //selected
                       ...state.paymentMethods.data.map(
-                        (e) => GestureDetector(
-                          onTap: () => context
+                        (e) => TextButton(
+                          onPressed: () => context
                               .read<SelectPaymentMethodCubit>()
                               .selectPaymentMethod(e),
                           child: Container(

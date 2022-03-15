@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
@@ -115,12 +116,17 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
             height: 32,
           ),
           BlocConsumer<VerificationCubit, VerificationState>(
-            listenWhen: (previous, current) => current is VerificationSuccess,
             listener: (context, state) {
-              context
-                  .read<UserCubit>()
-                  .setUserState(getItInstance(), AuthStatus.authenticated);
-              Navigator.push(context, AppRouter.routeToPage(const AuthGaurd()));
+              if (state is VerificationFailure) {
+                Fluttertoast.showToast(msg: state.errorMessage);
+              }
+              if (state is VerificationSuccess) {
+                context
+                    .read<UserCubit>()
+                    .setUserState(getItInstance(), AuthStatus.authenticated);
+                Navigator.push(
+                    context, AppRouter.routeToPage(const AuthGaurd()));
+              }
             },
             builder: (context, state) {
               if (state is VerificationLoading) {
@@ -146,8 +152,6 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
     );
   }
 }
-
-
 
 class OTPItem extends StatelessWidget {
   const OTPItem({

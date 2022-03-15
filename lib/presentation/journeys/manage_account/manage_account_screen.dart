@@ -55,8 +55,8 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: () => Navigator.push(context,
+                    TextButton(
+                      onPressed: () => Navigator.push(context,
                           AppRouter.routeToPage(const MyProfileScreen())),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,8 +117,8 @@ class ManageAccountScreen extends StatelessWidget {
                         }
                       },
                       builder: (context, state) {
-                        return GestureDetector(
-                          onTap: () {
+                        return TextButton(
+                          onPressed: () {
                             context
                                 .read<CreateSetupIntentCubit>()
                                 .createSetupIntent();
@@ -171,8 +171,8 @@ class ManageAccountScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.caption,
                     ),
                     const Divider(),
-                    GestureDetector(
-                      onTap: () => Navigator.push(context,
+                    TextButton(
+                      onPressed: () => Navigator.push(context,
                           AppRouter.routeToPage(const ContactSupportScreen())),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,8 +239,8 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: () => showDialog(
+                    TextButton(
+                      onPressed: () => showDialog(
                           barrierDismissible: false,
                           context: context,
                           builder: (builder) => const DeleteAccountWidget()),
@@ -265,8 +265,8 @@ class ManageAccountScreen extends StatelessWidget {
                         if (state is LogoutLoading) {
                           return const CircularProgressIndicator();
                         }
-                        return GestureDetector(
-                          onTap: () {
+                        return TextButton(
+                          onPressed: () {
                             context.read<LogoutCubit>().logoutUser();
                           },
                           child: Text(

@@ -149,7 +149,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     'Password should be a mininum of 8 characters')
                           ]),
                           decoration: InputDecoration(
-                            hintText: 'Current password',
+                            hintText: 'new password',
                             prefixIcon: const Icon(Icons.lock_outline),
                             suffixIcon: IconButton(
                               icon: const Icon(Icons.remove_red_eye_sharp),
@@ -201,8 +201,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         if (state is ChangePasswordSuccess) {
                           Fluttertoast.showToast(msg: state.successMessage);
 
-                          Navigator.push(context,
-                              AppRouter.routeToPage(const HomeScreen()));
+                          Navigator.push(
+                              context, AppRouter.routeToPage(HomeScreen()));
                         }
                       },
                       builder: (context, state) {

@@ -75,11 +75,6 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                     TextFormField(
                       keyboardType: TextInputType.streetAddress,
                       controller: addressController,
-                      onChanged: (value) {
-                        setState(() {
-                          addressController.text = value;
-                        });
-                      },
                       validator: MultiValidator([
                         RequiredValidator(errorText: 'address is required'),
                         MinLengthValidator(8,

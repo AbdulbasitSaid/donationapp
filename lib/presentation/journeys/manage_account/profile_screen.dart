@@ -179,8 +179,8 @@ class ManageAccountScreen extends StatelessWidget {
                         if (state is LogoutLoading) {
                           return const CircularProgressIndicator();
                         }
-                        return GestureDetector(
-                          onTap: () {
+                        return TextButton(
+                          onPressed: () {
                             context.read<LogoutCubit>().logoutUser();
                           },
                           child: Text(

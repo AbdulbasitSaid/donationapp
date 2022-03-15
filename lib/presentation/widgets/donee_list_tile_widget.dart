@@ -19,8 +19,8 @@ class DoneeListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
+    return TextButton(
+      onPressed: () {
         context.read<GetdoneebycodeCubit>().getDoneeByCode(doneeCode);
         context.read<GetPaymentMethodsCubit>().getPaymentMethods();
         Navigator.push(

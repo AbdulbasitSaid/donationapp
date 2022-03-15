@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/presentation/journeys/email_verification/cubit/verification_cubit.dart';
 
@@ -89,7 +90,6 @@ class _VerifyEdittedEmailScreenState extends State<VerifyEdittedEmailScreen> {
             const Padding(
               padding: EdgeInsets.all(16.0),
               child: ResendOTPCode(),
-
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -103,13 +103,16 @@ class _VerifyEdittedEmailScreenState extends State<VerifyEdittedEmailScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 BlocConsumer<VerificationCubit, VerificationState>(
-                  listenWhen: (previous, current) =>
-                      current is VerificationSuccess,
                   listener: (context, state) {
-                    context.read<UserCubit>().setUserState(
-                        getItInstance(), AuthStatus.authenticated);
-                    Navigator.push(
-                        context, AppRouter.routeToPage(const AuthGaurd()));
+                    if (state is VerificationFailure) {
+                      Fluttertoast.showToast(msg: state.errorMessage);
+                    }
+                    if (state is VerificationSuccess) {
+                      context.read<UserCubit>().setUserState(
+                          getItInstance(), AuthStatus.authenticated);
+                      Navigator.push(
+                          context, AppRouter.routeToPage(const AuthGaurd()));
+                    }
                   },
                   builder: (context, state) {
                     if (state is VerificationLoading) {

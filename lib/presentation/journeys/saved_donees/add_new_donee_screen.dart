@@ -91,7 +91,7 @@ class _AddNewDoneeScreenState extends State<AddNewDoneeScreen> {
 
                               Navigator.pushAndRemoveUntil(
                                   context,
-                                  AppRouter.routeToPage(const HomeScreen()),
+                                  AppRouter.routeToPage(HomeScreen()),
                                   (route) => false);
 
                               context

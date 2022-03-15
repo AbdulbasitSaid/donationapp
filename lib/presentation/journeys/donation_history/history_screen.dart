@@ -97,77 +97,119 @@ A history of donations you’ve made through this app. Select a donation to view
                             .where((element) =>
                                 element.donationDetails.isNotEmpty);
 
-                        return !isStartSearch
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                    const Padding(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Level6Headline(text: 'This month'),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: whiteContainerBackGround(),
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Column(children: [
-                                        ...thisMonthDonations.map(
-                                            (e) => DonationHistoryListCardItem(
+                        return state.donationHistoryModel.data.isEmpty
+                            ? Container(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                          'Get started by making a donation.'),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      const Text(
+                                          'A list of your past donations will appear here once you make a donation.'),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: () {},
+                                          child: Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.add,
+                                              ),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Text('New Donation'.toUpperCase())
+                                            ],
+                                          ))
+                                    ]),
+                              )
+                            : !isStartSearch
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                        const Padding(
+                                          padding: EdgeInsets.all(16.0),
+                                          child: Level6Headline(
+                                              text: 'This month'),
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.all(16),
+                                          decoration:
+                                              whiteContainerBackGround(),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: Column(children: [
+                                            ...thisMonthDonations.map((e) =>
+                                                DonationHistoryListCardItem(
                                                   donationData: e,
                                                 ))
-                                      ]),
-                                    ),
-                                    const SizedBox(
-                                      height: 32,
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Level6Headline(text: 'Earlier'),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: whiteContainerBackGround(),
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Column(children: [
-                                        ...earlierDonations.map(
-                                            (e) => DonationHistoryListCardItem(
+                                          ]),
+                                        ),
+                                        const SizedBox(
+                                          height: 32,
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.all(16.0),
+                                          child:
+                                              Level6Headline(text: 'Earlier'),
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.all(16),
+                                          decoration:
+                                              whiteContainerBackGround(),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: Column(children: [
+                                            ...earlierDonations.map((e) =>
+                                                DonationHistoryListCardItem(
                                                   donationData: e,
                                                 ))
-                                      ]),
-                                    ),
-                                  ])
-                            : state.donationHistoryModel.data.isEmpty
-                                ? Padding(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text('No results found.'),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            'Please try a different search term.',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption,
-                                          )
-                                        ]),
-                                  )
-                                : Container(
-                                    padding: const EdgeInsets.all(16),
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(.8)),
-                                    child: Column(
-                                      children: [
-                                        ...state.donationHistoryModel.data.map(
-                                            (e) => DonationHistoryListCardItem(
-                                                  donationData: e,
-                                                ))
-                                      ],
-                                    ),
-                                  );
+                                          ]),
+                                        ),
+                                      ])
+                                : state.donationHistoryModel.data.isEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Text('No results found.'),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Text(
+                                                'Please try a different search term.',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .caption,
+                                              )
+                                            ]),
+                                      )
+                                    : Container(
+                                        padding: const EdgeInsets.all(16),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Colors.white.withOpacity(.8)),
+                                        child: Column(
+                                          children: [
+                                            ...state.donationHistoryModel.data
+                                                .map((e) =>
+                                                    DonationHistoryListCardItem(
+                                                      donationData: e,
+                                                    ))
+                                          ],
+                                        ),
+                                      );
                       }
                       return Padding(
                           padding: const EdgeInsets.all(16),
@@ -186,8 +228,8 @@ A history of donations you’ve made through this app. Select a donation to view
                               const SizedBox(
                                 height: 16,
                               ),
-                              GestureDetector(
-                                onTap: () {
+                              TextButton(
+                                onPressed: () {
                                   context
                                       .read<DonationHistoryCubit>()
                                       .getDonationHistory();

@@ -116,8 +116,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
               BlocBuilder<DonationCartCubit, List<DonationItemEntity>>(
                 builder: (context, cartState) {
                   if (cartState.isEmpty) {
-                    return GestureDetector(
-                      onTap: () {
+                    return TextButton(
+                      onPressed: () {
                         showDonationCartDialoge(context);
                       },
                       child: Container(
@@ -235,8 +235,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                     child: Column(
                       children: [
                         //enabling gift aid
-                        GestureDetector(
-                          onTap: () => context
+                        TextButton(
+                          onPressed: () => context
                               .read<DonationProcessCubit>()
                               .updateDonationProccess(state.copyWith(
                                 applyGiftAidToDonation:
@@ -278,8 +278,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                         const SizedBox(height: 16),
                         //todo make this selection start from user details
                         // toggle donate anonymously
-                        GestureDetector(
-                          onTap: () {
+                        TextButton(
+                          onPressed: () {
                             context
                                 .read<DonationProcessCubit>()
                                 .updateDonationProccess(state.copyWith(
@@ -463,8 +463,8 @@ class IncludeTransactionFeeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DonationProcessCubit, DonationProcessEntity>(
       builder: (context, dpState) {
-        return GestureDetector(
-          onTap: () {
+        return TextButton(
+          onPressed: () {
             context.read<DonationProcessCubit>().updateDonationProccess(dpState
                 .copyWith(paidTransactionFee: !dpState.paidTransactionFee));
           },
@@ -577,8 +577,8 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
 
           return Column(
             children: donationTypes!
-                .map((e) => GestureDetector(
-                      onTap: () {
+                .map((e) => TextButton(
+                      onPressed: () {
                         setState(() {
                           context.read<DonationCartCubit>().addToCart(
                                 DonationItemEntity(
@@ -832,6 +832,7 @@ class _CartItemWdigetState extends State<CartItemWdiget> {
               height: 48,
               child: TextFormField(
                 controller: amountController,
+                textAlign: TextAlign.end,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   prefix: BlocBuilder<GetdoneebycodeCubit, GetdoneebycodeState>(

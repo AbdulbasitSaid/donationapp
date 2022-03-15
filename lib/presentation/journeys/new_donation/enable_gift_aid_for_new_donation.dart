@@ -50,8 +50,8 @@ class _EnableGiftAidForDonationState extends State<EnableGiftAidForDonation> {
                     const SizedBox(
                       height: 12,
                     ),
-                    GestureDetector(
-                      onTap: () {},
+                    TextButton(
+                      onPressed: () {},
                       child: Text(
                         'Learn more about GiftAid',
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(
@@ -77,8 +77,8 @@ class _EnableGiftAidForDonationState extends State<EnableGiftAidForDonation> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         //enabling gift aid to this donation
-                        GestureDetector(
-                          onTap: () => context
+                        TextButton(
+                          onPressed: () => context
                               .read<DonationProcessCubit>()
                               .updateDonationProccess(state.copyWith(
                                   applyGiftAidToDonation:
@@ -111,8 +111,8 @@ class _EnableGiftAidForDonationState extends State<EnableGiftAidForDonation> {
                           height: 12,
                         ),
                         //enable gift aid for future
-                        GestureDetector(
-                          onTap: () => context
+                        TextButton(
+                          onPressed: () => context
                               .read<DonationProcessCubit>()
                               .updateDonationProccess(state.copyWith(
                                   giftAidEnabled: !state.giftAidEnabled)),
@@ -145,8 +145,8 @@ class _EnableGiftAidForDonationState extends State<EnableGiftAidForDonation> {
                   },
                 ),
               ),
-              GestureDetector(
-                onTap: () => setState(() {
+              TextButton(
+                onPressed: () => setState(() {
                   isTermsAndCondition = !isTermsAndCondition!;
                 }),
                 child: Padding(
