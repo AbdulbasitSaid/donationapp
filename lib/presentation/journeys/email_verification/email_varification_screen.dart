@@ -8,7 +8,6 @@ import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/email_verification/cubit/verification_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
-import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 
 import '../../widgets/buttons/reset_otp_code.dart';

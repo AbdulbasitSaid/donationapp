@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:idonatio/common/route_list.dart';
-import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/buttons/reset_otp_code.dart';
 

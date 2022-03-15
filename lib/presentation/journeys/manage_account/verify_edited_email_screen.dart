@@ -8,7 +8,6 @@ import '../../../di/get_it.dart';
 import '../../../enums.dart';
 import '../../reusables.dart';
 import '../../router/app_router.dart';
-import '../../themes/app_color.dart';
 import '../../widgets/buttons/reset_otp_code.dart';
 import '../../widgets/labels/level_2_heading.dart';
 import '../auth_guard.dart';

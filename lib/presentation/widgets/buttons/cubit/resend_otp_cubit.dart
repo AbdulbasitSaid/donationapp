@@ -4,7 +4,6 @@ import 'package:idonatio/data/models/base_success_model.dart';
 import 'package:idonatio/data/repository/user_repository.dart';
 import 'package:idonatio/presentation/reusables.dart';
 
-import '../../../journeys/reset_password/enitities/reset_password_otp_success_entity.dart';
 
 part 'resend_otp_state.dart';
 

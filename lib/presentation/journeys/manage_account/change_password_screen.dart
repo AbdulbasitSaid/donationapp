@@ -202,7 +202,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           Fluttertoast.showToast(msg: state.successMessage);
 
                           Navigator.push(
-                              context, AppRouter.routeToPage(HomeScreen()));
+                              context, AppRouter.routeToPage(const HomeScreen()));
                         }
                       },
                       builder: (context, state) {
