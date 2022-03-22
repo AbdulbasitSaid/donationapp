@@ -34,7 +34,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _checkboxValue = false;
-
+   bool _enableRegister = false;
   @override
   void initState() {
     super.initState();
@@ -60,6 +60,11 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
+      onChanged: (){
+        setState(() {
+          _enableRegister = _formKey.currentState!.validate();
+        });
+      },
       child: BlocBuilder<RegistrationStepsCubit, RegistrationStepsState>(
         builder: (context, state) {
           switch (state.stage) {
@@ -163,12 +168,15 @@ class _RegisterFormState extends State<RegisterForm> {
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed:_enableRegister? () {
                     if (_formKey.currentState!.validate()) {
                       BlocProvider.of<RegistrationStepsCubit>(context)
                           .nextStage();
+                      setState(() {
+                        _enableRegister = false;
+                      });
                     }
-                  },
+                  }:null,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -339,7 +347,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       );
                     } else {
                       return ElevatedButton(
-                        onPressed: () {
+                        onPressed:_enableRegister? () {
                           if (_formKey.currentState!.validate()) {
                             context.read<RegisterCubit>().initiateRegistration(
                                 RegisterUserRequestParameter(
@@ -363,7 +371,7 @@ class _RegisterFormState extends State<RegisterForm> {
                             context.read<UserCubit>().setUserState(
                                 getItInstance(), AuthStatus.authenticated);
                           }
-                        },
+                        }:null,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,

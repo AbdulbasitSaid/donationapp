@@ -44,3 +44,17 @@ String getErrorMessage(AppErrorType appErrorType) {
       return 'Opps something went wrong';
   }
 }
+
+double stripeRatio(String code) {
+  return code.toLowerCase() == 'gbp' ? .0165 + .02 : .0315 + .02;
+}
+///
+/// idonation plus amount before Stripe charges
+///
+double getCharge(double amount, String currencyCode) {
+  var stripeCharge = (amount * stripeRatio(currencyCode));
+  var idonationCharge = amount * .03;
+  var totalCharge = (stripeCharge + idonationCharge);
+  return totalCharge;
+  // AssetImage()
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/donee_confirmatoin.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
@@ -32,7 +33,7 @@ class _AddDoneeByIdScreenState extends State<AddDoneeByIdScreen> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  bool  _enableButton = false;
+  bool _enableButton = false;
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +116,9 @@ class _AddDoneeByIdScreenState extends State<AddDoneeByIdScreen> {
                             return ElevatedButton(
                                 onPressed: _enableButton
                                     ? () {
+                                        context
+                                            .read<GetDonationFeesCubit>()
+                                            .getFees();
                                         context
                                             .read<GetdoneebycodeCubit>()
                                             .getDoneeByCode(

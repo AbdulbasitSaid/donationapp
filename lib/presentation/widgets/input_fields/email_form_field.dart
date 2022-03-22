@@ -2,17 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/presentation/widgets/labels/base_label_text.dart';
 
-class EmailField extends StatelessWidget {
+class EmailField extends StatefulWidget {
   final TextEditingController emailController;
   final GlobalKey<FormState> formKey;
+  final String? email;
+
   const EmailField({
     Key? key,
     required this.emailController,
-    required this.formKey,
+    required this.formKey, this.email,
   }) : super(key: key);
 
   @override
+  State<EmailField> createState() => _EmailFieldState();
+}
+
+class _EmailFieldState extends State<EmailField> {
+  @override
   Widget build(BuildContext context) {
+
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,15 +34,15 @@ class EmailField extends StatelessWidget {
         Focus(
           onFocusChange: (value) {
             if (!value) {
-              formKey.currentState!.validate();
+              widget.formKey.currentState!.validate();
             }
           },
           child: TextFormField(
-            controller: emailController,
+            controller: widget.emailController,
+
             keyboardType: TextInputType.emailAddress,
-            onEditingComplete: () {
-              formKey.currentState!.validate();
-            },
+            // initialValue: email,
+
             validator: MultiValidator([
               RequiredValidator(errorText: 'Email is required'),
               EmailValidator(errorText: 'Please Enter a valid email Address'),

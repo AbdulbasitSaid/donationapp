@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_process_cubit.dart';
+import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/enable_gift_aid_for_new_donation.dart';
@@ -59,7 +60,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                 padding: EdgeInsets.all(16),
                 child: Level6Headline(text: 'Donating to:'),
               ),
-              // Denee Detail card
+              // Donee Detail card
               BlocBuilder<GetdoneebycodeCubit, GetdoneebycodeState>(
                 builder: (context, state) {
                   if (state is GetdoneebycodeSuccess) {
@@ -454,105 +455,81 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
   }
 }
 
-class IncludeTransactionFeeWidget extends StatelessWidget {
+class IncludeTransactionFeeWidget extends StatefulWidget {
   const IncludeTransactionFeeWidget({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<IncludeTransactionFeeWidget> createState() =>
+      _IncludeTransactionFeeWidgetState();
+}
+
+class _IncludeTransactionFeeWidgetState
+    extends State<IncludeTransactionFeeWidget> {
+  @override
+  void initState() {
+    context.read<GetDonationFeesCubit>().getFees();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<DonationProcessCubit, DonationProcessEntity>(
       builder: (context, dpState) {
-        return TextButton(
-          onPressed: () {
-            context.read<DonationProcessCubit>().updateDonationProccess(dpState
-                .copyWith(paidTransactionFee: !dpState.paidTransactionFee));
-          },
-          child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Checkbox(
-                      value: dpState.paidTransactionFee,
-                      onChanged: (value) {
-                        context
-                            .read<DonationProcessCubit>()
-                            .updateDonationProccess(dpState.copyWith(
-                                paidTransactionFee:
-                                    !dpState.paidTransactionFee));
-                      }),
-                  Flexible(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Include transaction fee',
-                        style: Theme.of(context).textTheme.subtitle1,
-                      ),
-                      Text(
-                        'Ensure your donee receives 100% of your donation amount.',
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                    ],
-                  )),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  BlocBuilder<DonationProcessCubit, DonationProcessEntity>(
-                    builder: (context, donationProcessState) {
-                      return BlocConsumer<GetPaymentMethodsCubit,
-                          GetPaymentMethodsState>(
-                        listener: (context, paymentState) {
-                          if (paymentState is GetPaymentMethodsFailed) {
-                            Navigator.pop(context);
-                          }
-                        },
-                        builder: (context, paymentState) {
-                          if (paymentState is GetPaymentMethodsSuccessful) {
-                            return BlocBuilder<DonationCartCubit,
-                                List<DonationItemEntity>>(
-                              builder: (context, cartState) {
-                                var listOfamount =
-                                    cartState.map((e) => e.amount).toList();
-                                var amount = listOfamount.reduce(
-                                    (value, element) => value + element);
+        return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Checkbox(
+                    value: dpState.paidTransactionFee,
+                    onChanged: (value) {
+                      context
+                          .read<DonationProcessCubit>()
+                          .updateDonationProccess(
+                              dpState.copyWith(paidTransactionFee: value));
+                    }),
+                Flexible(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Include transaction fee',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                    Text(
+                      'Ensure your donee receives 100% of your donation amount.',
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ],
+                )),
+                const SizedBox(
+                  width: 16,
+                ),
+                // BlocBuilder<GetDonationFeesCubit, GetDonationFeesState>(
+                //   builder: (context, state) {
+                //     if (state is GetDonationFeesSuccess) {
+                //       var charges = state.feesModel.data.map((e) {
+                //         return e;
+                //       }).toList();
+                //       return Text(
+                //           '${getCurrencySymbol('gbp', context)} charges..');
+                //     } else if (state is GetDonationFeesFailed) {
+                //       return const Text('failed...');
+                //     }
+                //     return const Text('loading...');
+                //   },
+                // )
 
-                                double totalCharge = getCharge(
-                                    amount, donationProcessState.currency);
-                                context
-                                    .read<DonationProcessCubit>()
-                                    .updateDonationProccess(
-                                        donationProcessState.copyWith(
-                                      stripeFee: stripeRatio(paymentState
-                                          .paymentMethods.data.first.country),
-                                      idonatoiFee: amount * .03,
-                                    ));
-                                return BlocBuilder<GetdoneebycodeCubit,
-                                    GetdoneebycodeState>(
-                                  builder: (context, state) {
-                                    if (state is GetdoneebycodeSuccess) {
-                                      return Text(
-                                          '${getCurrencySymbol('${state.doneeResponseData.country.currencyCode}', context)} ${amount == 0 ? 0 : totalCharge.toStringAsFixed(2)}');
-                                    }
-                                    return Text(
-                                        '${getCurrencySymbol('gbp', context)} ${amount == 0 ? 0 : totalCharge.toStringAsFixed(2)}');
-                                  },
-                                );
-                              },
-                            );
-                          } else if (paymentState is GetPaymentMethodsLoading) {
-                            return const Text('0...');
-                          } else {
-                            return const Text('error..');
-                          }
-                        },
-                      );
-                    },
-                  ),
-                ],
-              )),
-        );
+                BlocBuilder<DonationProcessCubit, DonationProcessEntity>(
+                  builder: (context, state) {
+                    return Text(
+                        '${getCurrencySymbol('gbp', context)} charges..');
+                  },
+                )
+              ],
+            ));
       },
     );
   }
@@ -863,15 +840,4 @@ class _CartItemWdigetState extends State<CartItemWdiget> {
       ),
     );
   }
-}
-
-double stripeRatio(String code) {
-  return code.toLowerCase() == 'gbp' ? .0165 + .02 : .0315 + .02;
-}
-
-double getCharge(double amount, String currencyCode) {
-  var stripeCharge = (amount * stripeRatio(currencyCode));
-  var idonationCharge = amount * .03;
-  var totalCharge = (stripeCharge + idonationCharge);
-  return totalCharge;
 }

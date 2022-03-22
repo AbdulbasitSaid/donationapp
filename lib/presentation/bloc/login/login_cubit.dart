@@ -16,7 +16,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginInitial());
   }
 
-  void initiateLogin(String email, String password) async {
+  void initiateLogin(String email, String password, bool isRememberMe) async {
     emit(LoginLoading());
     final Either<AppError, bool> eitherResponse =
         await _authenticationRepository.loginUser(
@@ -30,7 +30,7 @@ class LoginCubit extends Cubit<LoginState> {
         model: 'samsung s281',
         ipAddress: '198.0.2.3',
         screenResolution: '1080p',
-      ).toJson(),
+      ).toJson(), isRememberMe
     );
 
     emit(eitherResponse.fold(

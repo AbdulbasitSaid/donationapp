@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/contact_support_cubit.dart';
@@ -19,6 +20,7 @@ class ContactSupportScreen extends StatefulWidget {
 class _ContactSupportScreenState extends State<ContactSupportScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TextEditingController _editingController;
+  bool _enableSendMessage = false;
   @override
   void initState() {
     _editingController = TextEditingController();
@@ -43,6 +45,12 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(
+              onChanged: (){
+                setState(() {
+                  _enableSendMessage = _formKey.currentState!.validate();
+
+                });
+              },
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,10 +104,13 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                                       },
                                       child: Text('ok'.toUpperCase())),
                                 ],
-                                content: const Text(
-                                    'Your message has been sent and a copy has been sent to your registered email address.Please keep an eye on the Junk/Spam folder of your email inbox. We’ll respond directly via email.'),
+                                content:  Text(
+                                    '${state.successMessage} '),
                               ),
                             );
+                          }
+                          if(state is ContactSupportFailed){
+                            Fluttertoast.showToast(msg: state.errorMessage);
                           }
                         },
                         builder: (context, state) {
@@ -109,11 +120,11 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                             );
                           }
                           return ElevatedButton(
-                            onPressed: () {
+                            onPressed:_enableSendMessage? () {
                               context
                                   .read<ContactSupportCubit>()
                                   .contactSupport(_editingController.text);
-                            },
+                            }:null,
                             child: Text(
                               'Send Message'.toUpperCase(),
                             ),

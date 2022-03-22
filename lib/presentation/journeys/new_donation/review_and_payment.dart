@@ -287,23 +287,26 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                         .map((e) => e.amount)
                                         .toList()
                                         .reduce((a, b) => a + b);
-                                var total =
-                                    getCharge(amount, processState.currency) +
-                                        amount;
+                                var total = processState.paidTransactionFee
+                                    ? getCharge(amount, processState.currency) +
+                                        amount
+                                    : 0 + amount;
                                 return BlocBuilder<GetdoneebycodeCubit,
                                     GetdoneebycodeState>(
                                   builder: (context, state) {
                                     if (state is GetdoneebycodeSuccess) {
                                       return Level4Headline(
-                                          text: getCurrencySymbol(
-                                                  '${state.doneeResponseData.country.currencyCode}',
-                                                  context) +
-                                              total.toStringAsFixed(2));
+                                        text: getCurrencySymbol(
+                                                '${state.doneeResponseData.country.currencyCode}',
+                                                context) +
+                                            total.toStringAsFixed(3),
+                                        // total.toStringAsFixed(2),
+                                      );
                                     }
                                     return Level4Headline(
-                                        text:
-                                            getCurrencySymbol('gbp', context) +
-                                                total.toStringAsFixed(2));
+                                      text: getCurrencySymbol('gbp', context) +
+                                          total.toStringAsFixed(3),
+                                    );
                                   },
                                 );
                               },
@@ -375,51 +378,46 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                             child: CircularProgressIndicator(),
                                           );
                                         } else {
-                                          return ElevatedButton(
-                                            onPressed: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (builder) {
-                                                    return AlertDialog(
-                                                      title: const Text(
-                                                          'About to make a donation'),
-                                                      content: Text(
-                                                          'You are about to make donation. your card will charged a total sum of ${getCurrencySymbol(state.currency, context)}${state.amount + state.idonatoiFee}'),
-                                                      actions: [
-                                                        TextButton(
-                                                            onPressed: () {
-                                                              context.read<MakedonationCubit>().makeDonation(
-                                                                  MakeDonationEntity(
-                                                                          doneeId: state
-                                                                              .doneeId,
-                                                                          paidTransactionFee: state
-                                                                              .paidTransactionFee,
-                                                                          donationMethod:
-                                                                              'card',
-                                                                          donationLocation: state
-                                                                              .donationLocation,
-                                                                          isAnonymous: state
-                                                                              .isAnonymous,
-                                                                          applyGiftAidToDonation: state
-                                                                              .applyGiftAidToDonation,
-                                                                          giftAidEnabled: state
-                                                                              .giftAidEnabled,
-                                                                          currency: state
-                                                                              .currency,
-                                                                          cardLastFourDigits: selectPaymentMethodState!
-                                                                              .cardLastFourDigits,
-                                                                          cardType: selectPaymentMethodState
-                                                                              .brand,
-                                                                          expiryMonth: selectPaymentMethodState
-                                                                              .expMonth,
-                                                                          expiryYear: selectPaymentMethodState
-                                                                              .expYear,
-                                                                          saveDonee: state
-                                                                              .saveDonee,
-                                                                          donationDetails: [
-                                                                            ...cartState.map((e) =>
-                                                                                DonationDetail(donationTypeId: e.id, amount: e.amount))
-                                                                          ],
+                                          return BlocBuilder<
+                                              GetPaymentMethodsCubit,
+                                              GetPaymentMethodsState>(
+                                            builder:
+                                                (context, paymentMethodState) {
+                                              if(paymentMethodState is GetPaymentMethodsFailed ){
+                                                return ElevatedButton(onPressed: null,   child: Text('Complete Donation'
+                                                    .toUpperCase()),);
+                                              }    if(paymentMethodState is GetPaymentMethodsSuccessful && paymentMethodState.paymentMethods.data.isEmpty ){
+                                                return ElevatedButton(onPressed: null,   child: Text('Complete Donation'
+                                                    .toUpperCase()),);
+                                              }
+                                              return ElevatedButton(
+                                                onPressed: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (builder) {
+                                                        return AlertDialog(
+                                                          title: const Text(
+                                                              'About to make a donation'),
+                                                          content: Text(
+                                                              'You are about to make donation. your card will charged a total sum of ${getCurrencySymbol(state.currency, context)}${state.amount + state.idonatoiFee}'),
+                                                          actions: [
+                                                            TextButton(
+                                                                onPressed: () {
+                                                                  context.read<MakedonationCubit>().makeDonation(MakeDonationEntity(
+                                                                          doneeId: state.doneeId,
+                                                                          paidTransactionFee: state.paidTransactionFee,
+                                                                          donationMethod: 'card',
+                                                                          donationLocation: state.donationLocation,
+                                                                          isAnonymous: state.isAnonymous,
+                                                                          applyGiftAidToDonation: state.applyGiftAidToDonation,
+                                                                          giftAidEnabled: state.giftAidEnabled,
+                                                                          currency: state.currency,
+                                                                          cardLastFourDigits: selectPaymentMethodState!.cardLastFourDigits,
+                                                                          cardType: selectPaymentMethodState.brand,
+                                                                          expiryMonth: selectPaymentMethodState.expMonth,
+                                                                          expiryYear: selectPaymentMethodState.expYear,
+                                                                          saveDonee: state.saveDonee,
+                                                                          donationDetails: [...cartState.map((e) => DonationDetail(donationTypeId: e.id, amount: e.amount))],
                                                                           amount: cartState
                                                                               .map((e) =>
                                                                                   e.amount +
@@ -434,22 +432,24 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                                                           idonatioTransactionFee: cartState.map((e) => e.amount).toList().reduce((a, b) => a + b) * .03,
                                                                           stripTransactionFee: stripeRatio(state.currency))
                                                                       .toMap());
-                                                            },
-                                                            child: Text('yes'
-                                                                .toUpperCase())),
-                                                        TextButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Text('no'
-                                                                .toUpperCase()))
-                                                      ],
-                                                    );
-                                                  });
+                                                                },
+                                                                child: Text('yes'
+                                                                    .toUpperCase())),
+                                                            TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text('no'
+                                                                    .toUpperCase()))
+                                                          ],
+                                                        );
+                                                      });
+                                                },
+                                                child: Text('Complete Donation'
+                                                    .toUpperCase()),
+                                              );
                                             },
-                                            child: Text('Complete Donation'
-                                                .toUpperCase()),
                                           );
                                         }
                                       },
@@ -497,7 +497,8 @@ class SelectPaymentCardWidget extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: BlocBuilder<GetPaymentMethodsCubit, GetPaymentMethodsState>(
           builder: (context, state) {
-            if (state is GetPaymentMethodsSuccessful) {
+            if (state is GetPaymentMethodsSuccessful &&
+                state.paymentMethods.data.isNotEmpty) {
               context
                   .read<SelectPaymentMethodCubit>()
                   .selectPaymentMethod(state.paymentMethods.data.first);
@@ -606,6 +607,11 @@ class SelectPaymentCardWidget extends StatelessWidget {
                   );
                 },
               );
+            } else if (state is GetPaymentMethodsSuccessful &&
+                state.paymentMethods.data.isEmpty) {
+              return const Center(
+                  child: Text(
+                      'Please Go to manage account to add a payment method'));
             } else if (state is GetPaymentMethodsLoading) {
               return const Center(
                   child: Level4Headline(

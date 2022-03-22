@@ -24,6 +24,7 @@ class VerifyEdittedEmailScreen extends StatefulWidget {
 
 class _VerifyEdittedEmailScreenState extends State<VerifyEdittedEmailScreen> {
   final _formKey = GlobalKey<FormState>();
+  bool _enableVerificationButton = false;
   late TextEditingController _otpController;
   @override
   void initState() {
@@ -65,6 +66,11 @@ class _VerifyEdittedEmailScreenState extends State<VerifyEdittedEmailScreen> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
+                onChanged: (){
+                  setState(() {
+                    _enableVerificationButton = _formKey.currentState!.validate();
+                  });
+                },
                 key: _formKey,
                 child: TextFormField(
                   keyboardType: TextInputType.number,
@@ -120,13 +126,13 @@ class _VerifyEdittedEmailScreenState extends State<VerifyEdittedEmailScreen> {
                       );
                     } else {
                       return ElevatedButton(
-                        onPressed: () async {
+                        onPressed:_enableVerificationButton? () async {
                           if (_formKey.currentState!.validate()) {
                             context
                                 .read<VerificationCubit>()
                                 .verifyOtp(_otpController.text);
                           }
-                        },
+                        }:null,
                         child: const Text('Verify Email'),
                       );
                     }

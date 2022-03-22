@@ -18,15 +18,16 @@ class UserRepository {
   final UserRemoteDataSource _userRemoteDataSource;
   final UserLocalDataSource _userLocalDataSource;
 
-  Future<Either<AppError, bool>> loginUser(Map<String, dynamic> params) async {
+  Future<Either<AppError, bool>> loginUser(Map<String, dynamic> params,bool isRememberMe) async {
     try {
       final response = await _userRemoteDataSource.loginWithEmail(params);
       final data = response.data;
       final user = response.data.user;
       final donor = response.data.user.donor;
+
       await _userLocalDataSource
           .saveUserData(data.copyWith(user: user.copyWith(donor: donor)));
-
+      isRememberMe? await _userLocalDataSource.rememberMeEmail(user.email): await _userLocalDataSource.deleteResetRememberMeEmail();
       return const Right(true);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));

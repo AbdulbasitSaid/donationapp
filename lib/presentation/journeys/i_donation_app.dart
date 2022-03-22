@@ -17,6 +17,7 @@ import 'package:idonatio/presentation/journeys/manage_account/cubit/cubit/close_
 import 'package:idonatio/presentation/journeys/manage_account/cubit/update_profile_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_process_cubit.dart';
+import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/select_payment_method_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/create_setup_intent_cubit.dart';
@@ -32,6 +33,7 @@ import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/themes/app_theme_data.dart';
 import 'package:idonatio/presentation/widgets/buttons/cubit/resend_otp_cubit.dart';
 
+import '../widgets/input_fields/get_remember_me_email_cubit.dart';
 import 'auth_guard.dart';
 import 'manage_account/cubit/logout_cubit.dart';
 import 'new_donation/cubit/get_payment_methods_cubit.dart';
@@ -68,8 +70,8 @@ class _IdonatioAppState extends State<IdonatioApp> {
             ),
           ),
           BlocProvider<RegisterCubit>(
-            create: (context) =>
-                RegisterCubit(getItInstance(), getItInstance()),
+            create: (context) => RegisterCubit(
+                getItInstance(), getItInstance(), getItInstance()),
           ),
           BlocProvider<LoadingCubit>(
             create: (context) => LoadingCubit(),
@@ -79,10 +81,6 @@ class _IdonatioAppState extends State<IdonatioApp> {
           ),
           BlocProvider<OnboardingCubit>(
             create: (context) => OnboardingCubit(getItInstance()),
-          ),
-          BlocProvider<RegisterCubit>(
-            create: (context) =>
-                RegisterCubit(getItInstance(), getItInstance()),
           ),
           BlocProvider<RegistrationStepsCubit>(
             create: (context) => RegistrationStepsCubit(),
@@ -163,6 +161,12 @@ class _IdonatioAppState extends State<IdonatioApp> {
           ),
           BlocProvider(
             create: (context) => ResendOtpCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => GetRememberMeEmailCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => GetDonationFeesCubit(getItInstance()),
           ),
         ],
         child: MultiRepositoryProvider(

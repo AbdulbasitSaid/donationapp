@@ -25,6 +25,7 @@ class DonationHistoryDetialsScreen extends StatefulWidget {
 class _DonationHistoryDetialsScreenState
     extends State<DonationHistoryDetialsScreen> {
   bool dialog = false;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +48,7 @@ class _DonationHistoryDetialsScreenState
           children: [
             SingleChildScrollView(
                 child: Column(
+                
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(

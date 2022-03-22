@@ -7,6 +7,7 @@ import 'package:idonatio/domain/entities/app_error.dart';
 
 import '../core/unauthorized_exception.dart';
 import '../models/donation_models/donation_history_by_donee_id_model.dart';
+import '../models/fees_model.dart';
 
 class DonationRepository {
   final DonationDataSources _donationDataSources;
@@ -68,6 +69,28 @@ class DonationRepository {
       final user = await _userLocalDataSource.getUser();
       final result = await _donationDataSources.getDonationHistoryByDoneeId(
           user.token, doneeId);
+      return Right(result);
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on Exception {
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
+    }
+  }
+
+  Future<Either<AppError, FeesModel>> getDonationFees() async {
+    try {
+      final user = await _userLocalDataSource.getUser();
+      final result = await _donationDataSources.getFees(user.token);
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
