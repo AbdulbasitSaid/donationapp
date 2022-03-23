@@ -1,7 +1,13 @@
+import 'dart:developer';
+
+import 'package:dart_ipify/dart_ipify.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:intl/intl.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 
+import '../data/models/device_info_model.dart';
 import '../domain/entities/app_error.dart';
 
 BoxDecoration whiteContainerBackGround() {
@@ -48,6 +54,7 @@ String getErrorMessage(AppErrorType appErrorType) {
 double stripeRatio(String code) {
   return code.toLowerCase() == 'gbp' ? .0165 + .02 : .0315 + .02;
 }
+
 ///
 /// idonation plus amount before Stripe charges
 ///
@@ -57,4 +64,36 @@ double getCharge(double amount, String currencyCode) {
   var totalCharge = (stripeCharge + idonationCharge);
   return totalCharge;
   // AssetImage()
+}
+
+//
+Future<DeviceInfoModel> getIosInfo(
+    DeviceInfoPlugin deviceInfoPlugin, NetworkInfo networkInfo) async {
+  final iosInfo = await deviceInfoPlugin.iosInfo;
+  final String ipInfo = await Ipify.ipv64();
+  log(iosInfo.toString());
+  return DeviceInfoModel(
+      platform: 'mobile',
+      deviceUid: iosInfo.identifierForVendor,
+      os: 'ios',
+      osVersion: iosInfo.systemVersion,
+      model: iosInfo.systemName,
+      ipAddress: ipInfo,
+      screenResolution: '1080p');
+  // final ios
+}
+
+Future<DeviceInfoModel> getAndroidInfo(
+    DeviceInfoPlugin deviceInfoPlugin, NetworkInfo networkInfo) async {
+  final androidInfo = await deviceInfoPlugin.androidInfo;
+  final String ipInfo = await Ipify.ipv64();
+  return DeviceInfoModel(
+      platform: 'mobile',
+      deviceUid: androidInfo.id,
+      os: 'android',
+      osVersion: androidInfo.version.baseOS,
+      model: androidInfo.model,
+      ipAddress: ipInfo,
+      screenResolution: androidInfo.display);
+  // final ios
 }

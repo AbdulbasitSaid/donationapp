@@ -34,7 +34,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _checkboxValue = false;
-   bool _enableRegister = false;
+  bool _enableRegister = false;
   @override
   void initState() {
     super.initState();
@@ -60,7 +60,7 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      onChanged: (){
+      onChanged: () {
         setState(() {
           _enableRegister = _formKey.currentState!.validate();
         });
@@ -168,15 +168,17 @@ class _RegisterFormState extends State<RegisterForm> {
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: ElevatedButton(
-                  onPressed:_enableRegister? () {
-                    if (_formKey.currentState!.validate()) {
-                      BlocProvider.of<RegistrationStepsCubit>(context)
-                          .nextStage();
-                      setState(() {
-                        _enableRegister = false;
-                      });
-                    }
-                  }:null,
+                  onPressed: _enableRegister
+                      ? () {
+                          if (_formKey.currentState!.validate()) {
+                            BlocProvider.of<RegistrationStepsCubit>(context)
+                                .nextStage();
+                            setState(() {
+                              _enableRegister = false;
+                            });
+                          }
+                        }
+                      : null,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -347,10 +349,13 @@ class _RegisterFormState extends State<RegisterForm> {
                       );
                     } else {
                       return ElevatedButton(
-                        onPressed:_enableRegister? () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<RegisterCubit>().initiateRegistration(
-                                RegisterUserRequestParameter(
+                        onPressed: _enableRegister
+                            ? () {
+                                if (_formKey.currentState!.validate()) {
+                                  context
+                                      .read<RegisterCubit>()
+                                      .initiateRegistration(
+                                          RegisterUserRequestParameter(
                                         title: titleValue,
                                         firstName:
                                             _firsNametTextController.text,
@@ -360,18 +365,14 @@ class _RegisterFormState extends State<RegisterForm> {
                                             _passwordEditingController.text,
                                         phoneNumber:
                                             _mobileNumberTextController.text,
-                                        platform: 'mobile',
-                                        deviceUid: '272892-08287-398903903',
-                                        os: 'ios',
-                                        osVersion: '10',
-                                        model: 'samsung s21',
-                                        ipAddress: '198.0.2.3',
-                                        screenResolution: '1080p')
-                                    .toJson());
-                            context.read<UserCubit>().setUserState(
-                                getItInstance(), AuthStatus.authenticated);
-                          }
-                        }:null,
+                                       
+                                      ));
+                                  context.read<UserCubit>().setUserState(
+                                      getItInstance(),
+                                      AuthStatus.authenticated);
+                                }
+                              }
+                            : null,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,

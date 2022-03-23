@@ -18,13 +18,13 @@ class RegisterUserRequestParameter {
     required this.email,
     required this.password,
     required this.phoneNumber,
-    required this.platform,
-    required this.deviceUid,
-    required this.os,
-    required this.osVersion,
-    required this.model,
-    required this.ipAddress,
-    required this.screenResolution,
+     this.platform,
+     this.deviceUid,
+     this.os,
+     this.osVersion,
+     this.model,
+     this.ipAddress,
+     this.screenResolution,
   });
 
   final String title;
@@ -33,13 +33,13 @@ class RegisterUserRequestParameter {
   final String email;
   final String password;
   final String phoneNumber;
-  final String platform;
-  final String deviceUid;
-  final String os;
-  final String osVersion;
-  final String model;
-  final String ipAddress;
-  final String screenResolution;
+  final String? platform;
+  final String? deviceUid;
+  final String? os;
+  final String? osVersion;
+  final String? model;
+  final String? ipAddress;
+  final String? screenResolution;
 
   factory RegisterUserRequestParameter.fromJson(Map<String, dynamic> json) =>
       RegisterUserRequestParameter(
@@ -73,4 +73,36 @@ class RegisterUserRequestParameter {
         "ip_address": ipAddress,
         "screen_resolution": screenResolution,
       };
+
+  RegisterUserRequestParameter copyWith({
+    String? title,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? password,
+    String? phoneNumber,
+    String? platform,
+    String? deviceUid,
+    String? os,
+    String? osVersion,
+    String? model,
+    String? ipAddress,
+    String? screenResolution,
+  }) {
+    return RegisterUserRequestParameter(
+      title: title ?? this.title,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      platform: platform ?? this.platform,
+      deviceUid: deviceUid ?? this.deviceUid,
+      os: os ?? this.os,
+      osVersion: osVersion ?? this.osVersion,
+      model: model ?? this.model,
+      ipAddress: ipAddress ?? this.ipAddress,
+      screenResolution: screenResolution ?? this.screenResolution,
+    );
+  }
 }

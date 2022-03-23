@@ -1,3 +1,5 @@
+import 'package:dart_ipify/dart_ipify.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:idonatio/data/core/api_client.dart';
@@ -24,6 +26,7 @@ import 'package:idonatio/data/repository/payment_repository.dart';
 
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 
 final GetIt getItInstance = GetIt.I;
 
@@ -80,4 +83,7 @@ Future init() async {
       () => DonationDataSources(getItInstance()));
   getItInstance.registerLazySingleton<DonationRepository>(
       () => DonationRepository(getItInstance(), getItInstance()));
+  getItInstance
+      .registerLazySingleton<DeviceInfoPlugin>(() => DeviceInfoPlugin());
+  getItInstance.registerLazySingleton<NetworkInfo>(() => NetworkInfo());
 }
