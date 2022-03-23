@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +14,6 @@ import 'package:idonatio/presentation/bloc/simple_bloc_observer.dart';
 
 import 'presentation/journeys/i_donation_app.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 
 void main() async {
   // WidgetsBinding widgetsBinding =

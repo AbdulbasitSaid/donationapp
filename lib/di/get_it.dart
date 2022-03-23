@@ -1,4 +1,3 @@
-import 'package:dart_ipify/dart_ipify.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
