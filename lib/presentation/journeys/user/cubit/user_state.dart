@@ -9,7 +9,11 @@ abstract class UserState extends Equatable {
 
 class AuthenticationInitial extends UserState {}
 
-class UnAuthenticated extends UserState {}
+class UnAuthenticated extends UserState {
+  final String? rememberMeEmail;
+
+  const UnAuthenticated({required this.rememberMeEmail});
+}
 
 class UnSaved extends UserState {}
 

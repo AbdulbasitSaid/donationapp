@@ -65,13 +65,13 @@ class _IdonatioAppState extends State<IdonatioApp> {
       child: MultiBlocProvider(
         providers: [
           BlocProvider<LoginCubit>(
-            create: (context) => LoginCubit(
-              getItInstance(),
-            ),
+            create: (context) => LoginCubit(getItInstance(), getItInstance()),
           ),
           BlocProvider<RegisterCubit>(
             create: (context) => RegisterCubit(
-                getItInstance(), getItInstance(), getItInstance()),
+              getItInstance(),
+              getItInstance(),
+            ),
           ),
           BlocProvider<LoadingCubit>(
             create: (context) => LoadingCubit(),

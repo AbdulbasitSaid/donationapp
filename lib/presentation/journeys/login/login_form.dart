@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -20,8 +22,8 @@ import '../../widgets/input_fields/get_remember_me_email_cubit.dart';
 import '../../widgets/labels/base_label_text.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({Key? key}) : super(key: key);
-
+  const LoginForm({Key? key, required this.remberEamil}) : super(key: key);
+  final bool remberEamil;
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -30,13 +32,14 @@ class _LoginFormState extends State<LoginForm> {
   late TextEditingController _emailAddressController, _passwordController;
   bool enableSignIn = false;
   bool hidePassword = true;
-  String _email = '';
+  late bool? rememberEmail = widget.remberEamil;
 
   @override
   void initState() {
     _emailAddressController = TextEditingController();
     _passwordController = TextEditingController();
-    context.read<GetRememberMeEmailCubit>().getRememberMeEmail();
+    // rememberEmail = widget.remberEamil;
+    log('remember me? ${widget.remberEamil}');
     super.initState();
   }
 
@@ -48,7 +51,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  bool rememberEmail = false;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -92,10 +95,10 @@ class _LoginFormState extends State<LoginForm> {
               const SizedBox(
                 height: 16,
               ),
-              BlocBuilder<GetRememberMeEmailCubit, GetRememberMeEmailState>(
+              BlocBuilder<UserCubit, UserState>(
                 builder: (context, state) {
-                  if (state is GetRememberMeEmailSuccessful) {
-                    _email = state.email;
+                  if (state is UnAuthenticated &&
+                      state.rememberMeEmail!.isNotEmpty) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -112,12 +115,8 @@ class _LoginFormState extends State<LoginForm> {
                             }
                           },
                           child: TextFormField(
-                            initialValue: _email,
-                            onChanged: (value) {
-                              setState(() {
-                                _email = value;
-                              });
-                            },
+                            initialValue: state.rememberMeEmail,
+
                             keyboardType: TextInputType.emailAddress,
                             // initialValue: email,
                             validator: MultiValidator([
@@ -134,12 +133,41 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                       ],
                     );
-                  } else {
-                    return EmailField(
-                      emailController: _emailAddressController,
-                      formKey: _formKey,
-                    );
                   }
+                  log('save email $state');
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const BaseLabelText(
+                        text: 'Email address',
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Focus(
+                        onFocusChange: (value) {
+                          if (!value) {
+                            _formKey.currentState!.validate();
+                          }
+                        },
+                        child: TextFormField(
+                          controller: _emailAddressController,
+                          keyboardType: TextInputType.emailAddress,
+                          // initialValue: email,
+                          validator: MultiValidator([
+                            RequiredValidator(errorText: 'Email is required'),
+                            EmailValidator(
+                                errorText:
+                                    'Please Enter a valid email Address'),
+                          ]),
+                          decoration: const InputDecoration(
+                            hintText: 'Email address',
+                            prefixIcon: Icon(Icons.person_outline_outlined),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
                 },
               ),
               const SizedBox(
@@ -165,7 +193,8 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                     Text(
                       'Reset Password',
-                      style: TextStyle(color: AppColor.basePrimary),
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 121, 153, 240)),
                     ),
                   ],
                 ),
@@ -179,7 +208,7 @@ class _LoginFormState extends State<LoginForm> {
                       value: rememberEmail,
                       onChanged: (value) {
                         setState(() {
-                          rememberEmail = value!;
+                          rememberEmail = value;
                         });
                       }),
                   const Flexible(
@@ -197,20 +226,45 @@ class _LoginFormState extends State<LoginForm> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: enableSignIn
-                        ? () {
-                            if (_formKey.currentState!.validate()) {
-                              context.read<LoginCubit>().initiateLogin(
-                                  _email.isEmpty
-                                      ? _emailAddressController.text
-                                      : _email,
-                                  _passwordController.text,
-                                  rememberEmail);
-                            }
-                          }
-                        : null,
-                    child: const Text('Sign in'),
+                  BlocBuilder<UserCubit, UserState>(
+                    builder: (context, state) {
+                      if (state is UnAuthenticated &&
+                          state.rememberMeEmail!.isNotEmpty) {
+                        log('with email');
+                        return ElevatedButton(
+                          onPressed: enableSignIn
+                              ? () {
+                                  log('with email');
+                                  if (_formKey.currentState!.validate()) {
+                                    context.read<LoginCubit>().initiateLogin(
+                                          _emailAddressController.text.isEmpty
+                                              ? state.rememberMeEmail!
+                                              : _emailAddressController.text,
+                                          _passwordController.text,
+                                          rememberEmail!,
+                                        );
+                                  }
+                                }
+                              : null,
+                          child: const Text('Sign in'),
+                        );
+                      }
+                      return ElevatedButton(
+                        onPressed: enableSignIn
+                            ? () {
+                                log(_emailAddressController.text);
+                                if (_formKey.currentState!.validate()) {
+                                  context.read<LoginCubit>().initiateLogin(
+                                        _emailAddressController.text,
+                                        _passwordController.text,
+                                        rememberEmail!,
+                                      );
+                                }
+                              }
+                            : null,
+                        child: const Text('Sign in'),
+                      );
+                    },
                   ),
                 ],
               ),

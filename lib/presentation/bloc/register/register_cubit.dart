@@ -17,14 +17,12 @@ part 'register_state.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit(
-    this.loadingCubit,
     this._registerUserRepositoryImpl,
     this._userLocalDataSource,
   ) : super(RegisterInitial());
-  final LoadingCubit loadingCubit;
   final UserRepository _registerUserRepositoryImpl;
   final UserLocalDataSource _userLocalDataSource;
-
+  
   void initiateRegistration(RegisterUserRequestParameter params) async {
     emit(RegisterLoading());
     final DeviceInfoModel deviceInfoModel = Platform.isIOS

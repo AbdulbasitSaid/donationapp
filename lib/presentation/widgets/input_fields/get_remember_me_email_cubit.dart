@@ -4,20 +4,15 @@ import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 
 part 'get_remember_me_email_state.dart';
 
-class GetRememberMeEmailCubit extends Cubit<GetRememberMeEmailState> {
-  GetRememberMeEmailCubit(this._userLocalDataSource) : super(GetRememberMeEmailInitial());
+class GetRememberMeEmailCubit extends Cubit<String?> {
+  GetRememberMeEmailCubit(this._userLocalDataSource) : super('');
   final UserLocalDataSource _userLocalDataSource;
-  void getRememberMeEmail( )async{
-      emit(GetRememberMeEmailLoading());
-      try{
-       final String email =  await _userLocalDataSource.getRememberMeEmail();
-        emit(GetRememberMeEmailSuccessful(email));
-      }catch(e){
-        emit(GetRememberMeEmailFailed());
-      }
+  void getRememberMeEmail() async {
+    try {
+      final String? email = await _userLocalDataSource.getRememberMeEmail();
+      emit((email));
+    } catch (e) {
+      emit('');
+    }
   }
-
-
 }
-
-

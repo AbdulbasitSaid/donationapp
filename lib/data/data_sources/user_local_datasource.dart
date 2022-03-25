@@ -32,7 +32,7 @@ class UserLocalDataSource {
     final String email = emailBox.get('reset_password_email');
     return email;
   }
-  Future<String>getRememberMeEmail()async{
+  Future<String?>getRememberMeEmail()async{
     final emailBox = await Hive.openBox('remember_me_box');
 
     return  emailBox.get('remember_me_email');

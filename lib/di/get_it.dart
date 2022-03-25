@@ -25,6 +25,7 @@ import 'package:idonatio/data/repository/payment_repository.dart';
 
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
+import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 
 final GetIt getItInstance = GetIt.I;
@@ -41,9 +42,11 @@ Future init() async {
   getItInstance.registerLazySingleton<UserRepository>(
       () => UserRepository(getItInstance(), getItInstance()));
   getItInstance.registerLazySingleton<LoadingCubit>(() => LoadingCubit());
+  getItInstance.registerLazySingleton<RegisterCubit>(
+      () => RegisterCubit(getItInstance(), getItInstance()));
 
-  getItInstance
-      .registerLazySingleton<LoginCubit>(() => LoginCubit(getItInstance()));
+  getItInstance.registerLazySingleton<LoginCubit>(
+      () => LoginCubit(getItInstance(), getItInstance()));
 
   getItInstance.registerLazySingleton<CountryRemoteDataSource>(
       () => CountryRemoteDataSource(getItInstance()));

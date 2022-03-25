@@ -22,13 +22,14 @@ class UserCubit extends Cubit<UserState> {
   void setUserState(
       UserLocalDataSource localDataSource, AuthStatus authStatus) async {
     final user = await localUserDataSource.getUser();
+    final rememberEmail = await localUserDataSource.getRememberMeEmail();
     log(user.toString());
     switch (authStatus) {
       case AuthStatus.appStarted:
-        _checkUserToken(user);
+        _checkUserToken(user, rememberEmail ?? '');
         break;
       case AuthStatus.unauthenticated:
-        emit(UnSaved());
+        emit(UnAuthenticated(rememberMeEmail: rememberEmail ?? ''));
         break;
       case AuthStatus.authenticated:
         _checkEmailVerification(user);
@@ -38,9 +39,9 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  void _checkUserToken(UserData user) {
+  void _checkUserToken(UserData user, String? rememberMeEmail) {
     if (user.token.isNotEmpty) {
-      emit(UnAuthenticated());
+      emit(UnAuthenticated(rememberMeEmail: rememberMeEmail));
     } else {
       emit(UnSaved());
     }
