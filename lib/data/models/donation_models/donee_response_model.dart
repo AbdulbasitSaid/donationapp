@@ -73,6 +73,12 @@ class Data {
         : "${organization!.name}";
   }
 
+  String get currency {
+    return organization == null
+        ? country.currencyCode!
+        : organization!.country!.currencyCode!;
+  }
+
   factory Data.fromJson(json) => _$DataFromJson(json);
   Map<String, dynamic> toJson() => _$DataToJson(this);
 }
