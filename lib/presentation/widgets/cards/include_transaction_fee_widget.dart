@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/data/models/fees_model.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
 
 import '../../../common/stripe_charges_calculations.dart';
@@ -83,10 +84,15 @@ class _IncludeTransactionFeeWidgetState
                               current is GetPaymentMethodsSuccessful,
                           builder: (context, state) {
                             if (state is GetPaymentMethodsSuccessful) {
-                              // return Text(
-                              //     '${getCurrencySymbol('gbp', context)} ${50.889} ');
+                              double amount = cartState
+                                  .map((e) => e.amount)
+                                  .toList()
+                                  .reduce((value, element) => value + element);
+                              String cardCurrency =
+                                  state.paymentMethods.data.first.country;
+                              List<FeeData> feeData = feeState.feesModel.data;
                               return Text(
-                                '${getCurrencySymbol('gbp', context)} ${getCharges(amount: cartState.map((e) => e.amount).toList().reduce((value, element) => value + element), cardCurrency: state.paymentMethods.data.first.country, feeData: feeState.feesModel.data).toStringAsFixed(2)}',
+                                '${getCurrencySymbol('gbp', context)}  ${getCharges(amount: amount, cardCurrency: cardCurrency, feeData: feeData).totalFee}',
                               );
                             } else {
                               return Text(

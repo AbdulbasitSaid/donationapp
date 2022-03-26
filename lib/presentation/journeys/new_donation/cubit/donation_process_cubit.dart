@@ -9,6 +9,7 @@ part 'donation_process_state.dart';
 class DonationProcessCubit extends Cubit<DonationProcessEntity> {
   DonationProcessCubit()
       : super(DonationProcessEntity(
+            cartAmount: 0,
             amount: 0,
             applyGiftAidToDonation: false,
             cardLastFourDigits: '',
@@ -27,7 +28,10 @@ class DonationProcessCubit extends Cubit<DonationProcessEntity> {
             saveDonee: false,
             stripeConnectedAccountId: '',
             stripeFee: 0,
-            stripePaymentMethodId: ''));
+            stripePaymentMethodId: '',
+            totalCharges: 0,
+            cardCountry: '',
+            feedata: []));
   void updateDonationProccess(
       DonationProcessEntity donationProcessEntity) async {
     log(donationProcessEntity.toString());

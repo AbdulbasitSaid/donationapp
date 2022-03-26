@@ -188,10 +188,6 @@ class _EnableGiftAidForDonationState extends State<EnableGiftAidForDonation> {
                         return ElevatedButton(
                             onPressed: isTermsAndCondition!
                                 ? () {
-                                    context
-                                        .read<GetPaymentMethodsCubit>()
-                                        .getPaymentMethods();
-
                                     Navigator.push(
                                         context,
                                         AppRouter.routeToPage(

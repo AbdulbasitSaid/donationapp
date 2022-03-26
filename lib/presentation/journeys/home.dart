@@ -35,9 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
   PageController pageController = PageController();
   @override
   void initState() {
-    startSessionTimer();
-    // startLocalSessionTimer();
-    sessionStopWatch.start();
+    // startSessionTimer();
+    // // startLocalSessionTimer();
+    // sessionStopWatch.start();
     super.initState();
   }
 
@@ -53,34 +53,29 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // void startLocalSessionTimer() {
-  //   log('local session restarted');
+  void startLocalSessionTimer() {
+    log('local session restarted');
 
-  //   localSessionTimer = Timer.periodic(const Duration(seconds: 20), (timer) {
-  //     final timeElapsed = sessionStopWatch.elapsed;
-  //     log(timeElapsed.toString());
-  //     if (timeElapsed > const Duration(seconds: 9)) {
-  //       log('time out ${sessionStopWatch.elapsed}');
-  //       Fluttertoast.showToast(msg: 'Sessoin Time Out');
-  //       context
-  //           .read<UserCubit>()
-  //           .setUserState(getItInstance(), AuthStatus.unauthenticated);
-  //       Navigator.pushAndRemoveUntil(context,
-  //           AppRouter.routeToPage(const AuthGaurd()), (route) => false);
-  //     }
-  //     // context
-  //     //     .read<UserCubit>()
-  //     //     .setUserState(getItInstance(), AuthStatus.unauthenticated);
-  //     // Navigator.pushAndRemoveUntil(
-  //     //     context, AppRouter.routeToPage(const AuthGaurd()), (route) => false);
-  //   });
-  // }
+    localSessionTimer = Timer.periodic(const Duration(seconds: 20), (timer) {
+      final timeElapsed = sessionStopWatch.elapsed;
+      log(timeElapsed.toString());
+      if (timeElapsed > const Duration(seconds: 9)) {
+        log('time out ${sessionStopWatch.elapsed}');
+        Fluttertoast.showToast(msg: 'Sessoin Time Out');
+        context
+            .read<UserCubit>()
+            .setUserState(getItInstance(), AuthStatus.unauthenticated);
+        Navigator.pushAndRemoveUntil(context,
+            AppRouter.routeToPage(const AuthGaurd()), (route) => false);
+      }
+    });
+  }
 
   @override
   void dispose() {
-    sessionTimer.cancel();
-    localSessionTimer.cancel();
-    sessionStopWatch.stop();
+    // sessionTimer.cancel();
+    // localSessionTimer.cancel();
+    // sessionStopWatch.stop();
     super.dispose();
   }
 

@@ -58,13 +58,6 @@ double stripeRatio(String code) {
 ///
 /// idonation plus amount before Stripe charges
 ///
-double getCharge(double amount, String currencyCode) {
-  var stripeCharge = (amount * stripeRatio(currencyCode));
-  var idonationCharge = amount * .03;
-  var totalCharge = (stripeCharge + idonationCharge);
-  return totalCharge;
-  // AssetImage()
-}
 
 //
 Future<DeviceInfoModel> getIosInfo(

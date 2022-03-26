@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:idonatio/common/stripe_charges_calculations.dart';
 import 'package:idonatio/data/models/user_models/payment_method_model.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
@@ -23,6 +24,7 @@ import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 
+import '../../widgets/cards/select_payment_card_widget.dart';
 import 'donation_success_screen.dart';
 
 class ReviewAndPayment extends StatefulWidget {
@@ -160,161 +162,97 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                       height: 8,
                     ),
                     //donations
-                    BlocBuilder<DonationProcessCubit, DonationProcessEntity>(
-                      builder: (context, donationProcessState) {
-                        var isAnonnymous =
-                            donationProcessState.isAnonymous ? 'yes' : 'no';
-                        var isGiftAid =
-                            donationProcessState.giftAidEnabled ? 'yes' : 'no';
 
-                        return BlocBuilder<DonationCartCubit,
-                            List<DonationItemEntity>>(
-                          builder: (context, state) {
-                            double includeFees = donationProcessState
-                                        .paidTransactionFee &&
-                                    state.isNotEmpty
-                                ? getCharge(
-                                    state.map((e) => e.amount).toList().reduce(
-                                        (value, element) => element + value),
-                                    donationProcessState.currency)
-                                : 0.0;
-                            return Column(children: [
-                              ...state
-                                  .map((e) => Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    .7,
-                                                child: Text(e.type)),
-                                            BlocBuilder<GetdoneebycodeCubit,
-                                                GetdoneebycodeState>(
-                                              builder: (context, state) {
-                                                if (state
-                                                    is GetdoneebycodeSuccess) {
-                                                  return Text(getCurrencySymbol(
-                                                          '${state.doneeResponseData.country.currencyCode}',
-                                                          context) +
-                                                      e.amount
-                                                          .toStringAsFixed(2));
-                                                }
-                                                return Text(getCurrencySymbol(
-                                                        'gbp', context) +
-                                                    e.amount
-                                                        .toStringAsFixed(2));
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ))
-                                  .toList(),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('Included transaction fee'),
-                                    BlocBuilder<GetdoneebycodeCubit,
-                                        GetdoneebycodeState>(
-                                      builder: (context, state) {
-                                        if (state is GetdoneebycodeSuccess) {
-                                          return Text(getCurrencySymbol(
-                                                  getCurrencySymbol(
-                                                      '${state.doneeResponseData.country.currencyCode}',
-                                                      context),
-                                                  context) +
-                                              includeFees.toStringAsFixed(2));
-                                        }
-                                        return Text(
-                                            getCurrencySymbol('gpb', context) +
-                                                includeFees.toStringAsFixed(2));
-                                      },
-                                    ),
-                                  ],
-                                ),
+                    Builder(builder: (context) {
+                      // DonationProcessCubit
+                      final donationProcessState =
+                          context.watch<DonationProcessCubit>().state;
+
+                      // DonationCartCubit
+                      final donationCartState =
+                          context.watch<DonationCartCubit>().state;
+
+                      return Column(children: [
+                        ...donationCartState.map((e) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 4.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [Text(e.type), Text('${e.amount}')],
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('Anonymous donation?'),
-                                    Text(isAnonnymous),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('GiftAid enabled?'),
-                                    Text(isGiftAid),
-                                  ],
-                                ),
-                              ),
-                            ]);
-                          },
-                        );
-                      },
-                    ),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Included transaction fee'),
+                              Text(donationProcessState.paidTransactionFee
+                                  ? getCharges(
+                                          amount: donationCartState.isEmpty
+                                              ? 0.0
+                                              : donationCartState
+                                                  .map((e) => e.amount)
+                                                  .toList()
+                                                  .reduce((value, element) =>
+                                                      value + element),
+                                          cardCurrency:
+                                              donationProcessState.cardCountry,
+                                          feeData: donationProcessState.feedata)
+                                      .totalFee
+                                      .toString()
+                                  : 0.0.toString())
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Anonymous donation?'),
+                              Text(donationProcessState.isAnonymous
+                                  ? 'Yes'
+                                  : 'no')
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('GiftAid enabled?'),
+                              Text(donationProcessState.giftAidEnabled
+                                  ? 'Yes'
+                                  : 'no')
+                            ],
+                          ),
+                        ),
+                      ]);
+                    }),
+
                     const Divider(),
+                    Builder(builder: (context) {
+                      // DonationProcessCubit
+                      final donationProcessState =
+                          context.watch<DonationProcessCubit>().state;
+
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Level4Headline(text: 'Total to pay'),
+                          BlocBuilder<DonationProcessCubit,
+                              DonationProcessEntity>(
+                            builder: (context, state) {
+                              return Level4Headline(text: '${state.amount}');
+                            },
+                          ),
+                        ],
+                      );
+                    })
                     //total
-                    BlocBuilder<DonationProcessCubit, DonationProcessEntity>(
-                      builder: (context, processState) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Level4Headline(text: 'Total to pay'),
-                            BlocBuilder<DonationCartCubit,
-                                List<DonationItemEntity>>(
-                              builder: (context, state) {
-                                double amount = state.isEmpty
-                                    ? 0.0
-                                    : state
-                                        .map((e) => e.amount)
-                                        .toList()
-                                        .reduce((a, b) => a + b);
-                                var total = processState.paidTransactionFee
-                                    ? getCharge(amount, processState.currency) +
-                                        amount
-                                    : 0 + amount;
-                                return BlocBuilder<GetdoneebycodeCubit,
-                                    GetdoneebycodeState>(
-                                  builder: (context, state) {
-                                    if (state is GetdoneebycodeSuccess) {
-                                      return Level4Headline(
-                                        text: getCurrencySymbol(
-                                                '${state.doneeResponseData.country.currencyCode}',
-                                                context) +
-                                            total.toStringAsFixed(3),
-                                        // total.toStringAsFixed(2),
-                                      );
-                                    }
-                                    return Level4Headline(
-                                      text: getCurrencySymbol('gbp', context) +
-                                          total.toStringAsFixed(3),
-                                    );
-                                  },
-                                );
-                              },
-                            )
-                          ],
-                        );
-                      },
-                    ),
                   ],
                 ),
               ),
@@ -383,12 +321,27 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                               GetPaymentMethodsState>(
                                             builder:
                                                 (context, paymentMethodState) {
-                                              if(paymentMethodState is GetPaymentMethodsFailed ){
-                                                return ElevatedButton(onPressed: null,   child: Text('Complete Donation'
-                                                    .toUpperCase()),);
-                                              }    if(paymentMethodState is GetPaymentMethodsSuccessful && paymentMethodState.paymentMethods.data.isEmpty ){
-                                                return ElevatedButton(onPressed: null,   child: Text('Complete Donation'
-                                                    .toUpperCase()),);
+                                              if (paymentMethodState
+                                                  is GetPaymentMethodsFailed) {
+                                                return ElevatedButton(
+                                                  onPressed: null,
+                                                  child: Text(
+                                                      'Complete Donation'
+                                                          .toUpperCase()),
+                                                );
+                                              }
+                                              if (paymentMethodState
+                                                      is GetPaymentMethodsSuccessful &&
+                                                  paymentMethodState
+                                                      .paymentMethods
+                                                      .data
+                                                      .isEmpty) {
+                                                return ElevatedButton(
+                                                  onPressed: null,
+                                                  child: Text(
+                                                      'Complete Donation'
+                                                          .toUpperCase()),
+                                                );
                                               }
                                               return ElevatedButton(
                                                 onPressed: () {
@@ -399,39 +352,57 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                                           title: const Text(
                                                               'About to make a donation'),
                                                           content: Text(
-                                                              'You are about to make donation. your card will charged a total sum of ${getCurrencySymbol(state.currency, context)}${state.amount + state.idonatoiFee}'),
+                                                              'You are about to make donation. your card will charged a total sum of ${getCurrencySymbol(state.currency, context)}${state.amount}'),
                                                           actions: [
                                                             TextButton(
                                                                 onPressed: () {
-                                                                  context.read<MakedonationCubit>().makeDonation(MakeDonationEntity(
-                                                                          doneeId: state.doneeId,
-                                                                          paidTransactionFee: state.paidTransactionFee,
-                                                                          donationMethod: 'card',
-                                                                          donationLocation: state.donationLocation,
-                                                                          isAnonymous: state.isAnonymous,
-                                                                          applyGiftAidToDonation: state.applyGiftAidToDonation,
-                                                                          giftAidEnabled: state.giftAidEnabled,
-                                                                          currency: state.currency,
-                                                                          cardLastFourDigits: selectPaymentMethodState!.cardLastFourDigits,
-                                                                          cardType: selectPaymentMethodState.brand,
-                                                                          expiryMonth: selectPaymentMethodState.expMonth,
-                                                                          expiryYear: selectPaymentMethodState.expYear,
-                                                                          saveDonee: state.saveDonee,
-                                                                          donationDetails: [...cartState.map((e) => DonationDetail(donationTypeId: e.id, amount: e.amount))],
-                                                                          amount: cartState
-                                                                              .map((e) =>
-                                                                                  e.amount +
-                                                                                  getCharge(
-                                                                                    e.amount,
-                                                                                    state.currency,
-                                                                                  ))
-                                                                              .toList()
-                                                                              .reduce((a, b) => a + b),
-                                                                          stripeConnectedAccountId: state.stripeConnectedAccountId,
-                                                                          stripePaymentMethodId: selectPaymentMethodState.id,
-                                                                          idonatioTransactionFee: cartState.map((e) => e.amount).toList().reduce((a, b) => a + b) * .03,
-                                                                          stripTransactionFee: stripeRatio(state.currency))
-                                                                      .toMap());
+                                                                  context
+                                                                      .read<
+                                                                          MakedonationCubit>()
+                                                                      .makeDonation(
+                                                                          MakeDonationEntity(
+                                                                        doneeId:
+                                                                            state.doneeId,
+                                                                        paidTransactionFee:
+                                                                            state.paidTransactionFee,
+                                                                        donationMethod:
+                                                                            'card',
+                                                                        donationLocation:
+                                                                            state.donationLocation,
+                                                                        isAnonymous:
+                                                                            state.isAnonymous,
+                                                                        applyGiftAidToDonation:
+                                                                            state.applyGiftAidToDonation,
+                                                                        giftAidEnabled:
+                                                                            state.giftAidEnabled,
+                                                                        currency:
+                                                                            state.currency,
+                                                                        cardLastFourDigits:
+                                                                            selectPaymentMethodState!.cardLastFourDigits,
+                                                                        cardType:
+                                                                            selectPaymentMethodState.brand,
+                                                                        expiryMonth:
+                                                                            selectPaymentMethodState.expMonth,
+                                                                        expiryYear:
+                                                                            selectPaymentMethodState.expYear,
+                                                                        saveDonee:
+                                                                            state.saveDonee,
+                                                                        donationDetails: [
+                                                                          ...cartState.map((e) => DonationDetail(
+                                                                              donationTypeId: e.id,
+                                                                              amount: e.amount))
+                                                                        ],
+                                                                        amount:
+                                                                            state.amount,
+                                                                        stripeConnectedAccountId:
+                                                                            state.stripeConnectedAccountId,
+                                                                        stripePaymentMethodId:
+                                                                            selectPaymentMethodState.id,
+                                                                        idonatioTransactionFee:
+                                                                            state.idonatoiFee,
+                                                                        stripTransactionFee:
+                                                                            state.stripeFee,
+                                                                      ).toMap());
                                                                 },
                                                                 child: Text('yes'
                                                                     .toUpperCase())),
@@ -482,150 +453,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
   }
 }
 
-class SelectPaymentCardWidget extends StatelessWidget {
-  const SelectPaymentCardWidget({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-      height: MediaQuery.of(context).size.height * .25,
-      width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: BlocBuilder<GetPaymentMethodsCubit, GetPaymentMethodsState>(
-          builder: (context, state) {
-            if (state is GetPaymentMethodsSuccessful &&
-                state.paymentMethods.data.isNotEmpty) {
-              context
-                  .read<SelectPaymentMethodCubit>()
-                  .selectPaymentMethod(state.paymentMethods.data.first);
-              return BlocBuilder<SelectPaymentMethodCubit, PaymentMethodDatum?>(
-                builder: (context, selectedPyamentMethodState) {
-                  return Row(
-                    children: [
-                      //selected
-                      ...state.paymentMethods.data.map(
-                        (e) => TextButton(
-                          onPressed: () => context
-                              .read<SelectPaymentMethodCubit>()
-                              .selectPaymentMethod(e),
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Stack(
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              .1,
-                                      width: MediaQuery.of(context).size.width *
-                                          .35,
-                                      padding: const EdgeInsets.all(8),
-                                      child: Center(
-                                        child: Text(
-                                          e.brand.toUpperCase(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  color:
-                                                      const Color(0xff191E6F)),
-                                        ),
-                                      ),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(8)),
-                                          border:
-                                              e == selectedPyamentMethodState
-                                                  ? Border.all(
-                                                      color: AppColor
-                                                          .baseSecondaryGreen,
-                                                      width: 4,
-                                                    )
-                                                  : Border.all(
-                                                      style: BorderStyle.none),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                                offset: Offset(0, 10),
-                                                blurRadius: 14,
-                                                spreadRadius: -8,
-                                                color:
-                                                    AppColor.border50Primary),
-                                          ]),
-                                    ),
-                                    e == selectedPyamentMethodState
-                                        ? Positioned(
-                                            bottom: -10,
-                                            right: -10,
-                                            child: Container(
-                                              padding: const EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                  boxShadow: const [
-                                                    BoxShadow(
-                                                      offset: Offset(0, 10),
-                                                      blurRadius: 14,
-                                                      spreadRadius: -8,
-                                                      color: AppColor
-                                                          .border50Primary,
-                                                    ),
-                                                  ],
-                                                  color: AppColor
-                                                      .baseSecondaryGreen,
-                                                  borderRadius: BorderRadius
-                                                      .all(Radius.circular(
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .height))),
-                                              child: const Icon(
-                                                Icons.check,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          )
-                                        : const SizedBox.shrink(),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Level4Headline(
-                                    text: '....${e.cardLastFourDigits}'),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else if (state is GetPaymentMethodsSuccessful &&
-                state.paymentMethods.data.isEmpty) {
-              return const Center(
-                  child: Text(
-                      'Please Go to manage account to add a payment method'));
-            } else if (state is GetPaymentMethodsLoading) {
-              return const Center(
-                  child: Level4Headline(
-                      text: 'Getting payment methods please wait...'));
-            } else {
-              return const Center(
-                  child: Level2Headline(text: 'Error getting payment methods'));
-            }
-          },
-        ),
-      ),
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(8))),
-    );
-  }
-}
+
+
+//Todo fix Device Change bug

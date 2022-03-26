@@ -4,6 +4,10 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'package:idonatio/common/stripe_charges_calculations.dart';
+import 'package:idonatio/data/models/fees_model.dart';
+
 part 'donation_process_entity.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
@@ -27,33 +31,58 @@ class DonationProcessEntity {
   final double amount;
   final String stripeConnectedAccountId;
   final String stripePaymentMethodId;
-  DonationProcessEntity({
-    required this.doneeId,
-    required this.paidTransactionFee,
-    required this.donationMethod,
-    required this.donationLocation,
-    required this.isAnonymous,
-    required this.applyGiftAidToDonation,
-    required this.giftAidEnabled,
-    required this.currency,
-    required this.cardLastFourDigits,
-    required this.cardType,
-    required this.expiryMonth,
-    required this.expiryYear,
-    required this.saveDonee,
-    required this.donationDetails,
-    required this.amount,
-    required this.stripeConnectedAccountId,
-    required this.stripePaymentMethodId,
-    required this.idonatoiFee,
-    required this.stripeFee,
-  });
+  final double totalCharges;
+  final String cardCountry;
+  final double cartAmount;
+  final List<FeeData> feedata;
+  DonationProcessEntity(
+      {required this.doneeId,
+      required this.paidTransactionFee,
+      required this.donationMethod,
+      required this.donationLocation,
+      required this.isAnonymous,
+      required this.applyGiftAidToDonation,
+      required this.giftAidEnabled,
+      required this.currency,
+      required this.cardLastFourDigits,
+      required this.cardType,
+      required this.expiryMonth,
+      required this.expiryYear,
+      required this.saveDonee,
+      required this.donationDetails,
+      required this.amount,
+      required this.stripeConnectedAccountId,
+      required this.stripePaymentMethodId,
+      required this.idonatoiFee,
+      required this.stripeFee,
+      required this.totalCharges,
+      required this.cardCountry,
+      required this.feedata,
+      required this.cartAmount});
+  double get getTotalCharges {
+    return getCharges(
+            feeData: feedata, cardCurrency: cardCountry, amount: cartAmount)
+        .totalFee;
+  }
+
+  double get getIdonationFee {
+    return getCharges(
+            feeData: feedata, cardCurrency: cardCountry, amount: cartAmount)
+        .idonationFee;
+  }
+
+  double get getStripeFee {
+    return getCharges(
+            feeData: feedata, cardCurrency: cardCountry, amount: cartAmount)
+        .stripeFee;
+  }
+
   factory DonationProcessEntity.fromJson(json) =>
       _$DonationProcessEntityFromJson(json);
   Map<String, dynamic> toJson() => _$DonationProcessEntityToJson(this);
   @override
   String toString() {
-    return 'DonationProcessEntity(doneeId: $doneeId, paidTransactionFee: $paidTransactionFee, donationMethod: $donationMethod, donationLocation: $donationLocation, isAnonymous: $isAnonymous, applyGiftAidToDonation: $applyGiftAidToDonation, giftAidEnabled: $giftAidEnabled, currency: $currency, cardLastFourDigits: $cardLastFourDigits, cardType: $cardType, expiryMonth: $expiryMonth, expiryYear: $expiryYear, saveDonee: $saveDonee, idonatoiFee: $idonatoiFee, stripeFee: $stripeFee, donationDetails: $donationDetails, amount: $amount, stripeConnectedAccountId: $stripeConnectedAccountId, stripePaymentMethodId: $stripePaymentMethodId)';
+    return 'DonationProcessEntity(doneeId: $doneeId, paidTransactionFee: $paidTransactionFee, donationMethod: $donationMethod, donationLocation: $donationLocation, isAnonymous: $isAnonymous, applyGiftAidToDonation: $applyGiftAidToDonation, giftAidEnabled: $giftAidEnabled, currency: $currency, cardLastFourDigits: $cardLastFourDigits, cardType: $cardType, expiryMonth: $expiryMonth, expiryYear: $expiryYear, saveDonee: $saveDonee, idonatoiFee: $idonatoiFee, stripeFee: $stripeFee, donationDetails: $donationDetails, amount: $amount, stripeConnectedAccountId: $stripeConnectedAccountId, stripePaymentMethodId: $stripePaymentMethodId, totalCharges: $totalCharges, cardCountry: $cardCountry, cartAmount: $cartAmount, feedata: $feedata)';
   }
 
   @override
@@ -79,7 +108,11 @@ class DonationProcessEntity {
         listEquals(other.donationDetails, donationDetails) &&
         other.amount == amount &&
         other.stripeConnectedAccountId == stripeConnectedAccountId &&
-        other.stripePaymentMethodId == stripePaymentMethodId;
+        other.stripePaymentMethodId == stripePaymentMethodId &&
+        other.totalCharges == totalCharges &&
+        other.cardCountry == cardCountry &&
+        other.cartAmount == cartAmount &&
+        listEquals(other.feedata, feedata);
   }
 
   @override
@@ -102,7 +135,11 @@ class DonationProcessEntity {
         donationDetails.hashCode ^
         amount.hashCode ^
         stripeConnectedAccountId.hashCode ^
-        stripePaymentMethodId.hashCode;
+        stripePaymentMethodId.hashCode ^
+        totalCharges.hashCode ^
+        cardCountry.hashCode ^
+        cartAmount.hashCode ^
+        feedata.hashCode;
   }
 
   DonationProcessEntity copyWith({
@@ -125,6 +162,10 @@ class DonationProcessEntity {
     double? amount,
     String? stripeConnectedAccountId,
     String? stripePaymentMethodId,
+    double? totalCharges,
+    String? cardCountry,
+    double? cartAmount,
+    List<FeeData>? feedata,
   }) {
     return DonationProcessEntity(
       doneeId: doneeId ?? this.doneeId,
@@ -149,6 +190,10 @@ class DonationProcessEntity {
           stripeConnectedAccountId ?? this.stripeConnectedAccountId,
       stripePaymentMethodId:
           stripePaymentMethodId ?? this.stripePaymentMethodId,
+      totalCharges: totalCharges ?? this.totalCharges,
+      cardCountry: cardCountry ?? this.cardCountry,
+      cartAmount: cartAmount ?? this.cartAmount,
+      feedata: feedata ?? this.feedata,
     );
   }
 }

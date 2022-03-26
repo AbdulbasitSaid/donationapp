@@ -15,10 +15,8 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
 import 'package:idonatio/presentation/widgets/dialogs/app_loader_dialog.dart';
-import 'package:idonatio/presentation/widgets/input_fields/email_form_field.dart';
 import 'package:idonatio/presentation/widgets/input_fields/password_widget.dart';
 
-import '../../widgets/input_fields/get_remember_me_email_cubit.dart';
 import '../../widgets/labels/base_label_text.dart';
 
 class LoginForm extends StatefulWidget {

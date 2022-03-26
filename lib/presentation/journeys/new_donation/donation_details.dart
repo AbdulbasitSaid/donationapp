@@ -1,9 +1,11 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_process_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
+import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/enable_gift_aid_for_new_donation.dart';
 import 'package:idonatio/presentation/reusables.dart';
@@ -13,6 +15,7 @@ import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 
+import '../../../common/stripe_charges_calculations.dart';
 import '../../widgets/cards/cart_item_widget.dart';
 import '../../widgets/cards/detail_card_for_organisation_widget.dart';
 import '../../widgets/cards/include_transaction_fee_widget.dart';
@@ -184,36 +187,45 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                             color: AppColor.text90Primary,
                                             fontSize: 16),
                                   ),
-                                  BlocBuilder<GetdoneebycodeCubit,
-                                      GetdoneebycodeState>(
-                                    builder: (context, state) {
-                                      if (state is GetdoneebycodeSuccess) {
-                                        return Text(getCurrencySymbol(
-                                                '${state.doneeResponseData.country.currencyCode}',
-                                                context) +
-                                            (amount +
-                                                    (donationProcessState
-                                                            .paidTransactionFee
-                                                        ? getCharge(
-                                                            amount,
-                                                            donationProcessState
-                                                                .currency)
-                                                        : 0))
-                                                .toStringAsFixed(2));
-                                      }
+                                  Builder(builder: (context) {
+                                    final doneeState = context
+                                        .watch<GetdoneebycodeCubit>()
+                                        .state;
+                                    final paymentMethodState = context
+                                        .watch<GetPaymentMethodsCubit>()
+                                        .state;
+                                    final feeDataState = context
+                                        .watch<GetDonationFeesCubit>()
+                                        .state;
+                                    //
+                                    if (doneeState is GetdoneebycodeSuccess &&
+                                        paymentMethodState
+                                            is GetPaymentMethodsSuccessful &&
+                                        feeDataState
+                                            is GetDonationFeesSuccess) {
                                       return Text(getCurrencySymbol(
-                                              'gbp', context) +
+                                              '${doneeState.doneeResponseData.country.currencyCode}',
+                                              context) +
                                           (amount +
                                                   (donationProcessState
                                                           .paidTransactionFee
-                                                      ? getCharge(
-                                                          amount,
-                                                          donationProcessState
-                                                              .currency)
+                                                      ? getCharges(
+                                                          amount: amount,
+                                                          cardCurrency:
+                                                              paymentMethodState
+                                                                  .paymentMethods
+                                                                  .data
+                                                                  .first
+                                                                  .country,
+                                                          feeData: feeDataState
+                                                              .feesModel.data,
+                                                        ).totalFee
                                                       : 0))
-                                              .toStringAsFixed(2));
-                                    },
-                                  ),
+                                              .toString());
+                                    } else {
+                                      return const Text('loading');
+                                    }
+                                  })
                                 ],
                               );
                             }),
@@ -340,90 +352,78 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  BlocBuilder<DonationCartCubit, List<DonationItemEntity>>(
-                    builder: (context, cartState) {
-                      double total = cartState.isEmpty
-                          ? 0
-                          : cartState
-                              .map((e) => e.amount)
-                              .toList()
-                              .reduce((a, b) => a + b);
+                  Builder(builder: (context) {
+                    // DonationCartCubit
+                    final donationCartState =
+                        context.watch<DonationCartCubit>().state;
+                    // DonationProcessCubit
+                    final donationProcessState =
+                        context.watch<DonationProcessCubit>().state;
+                    // GetdoneebycodeCubit
+                    final getDoneeByCodeState =
+                        context.watch<GetdoneebycodeCubit>().state;
+                    //
+                    final getFeeData =
+                        context.watch<GetDonationFeesCubit>().state;
+                    final getPaymentMethod =
+                        context.watch<GetPaymentMethodsCubit>().state;
+                    //
+                    double donationCartTotal = donationCartState.isEmpty
+                        ? 0
+                        : donationCartState
+                            .map((e) => e.amount)
+                            .toList()
+                            .reduce((a, b) => a + b);
+                    if (getDoneeByCodeState is GetdoneebycodeSuccess &&
+                        getFeeData is GetDonationFeesSuccess &&
+                        getPaymentMethod is GetPaymentMethodsSuccessful) {
+                      return ElevatedButton(
+                          onPressed: donationCartTotal < 1
+                              ? null
+                              : () {
+                                  log(donationCartTotal.toString());
 
-                      return BlocBuilder<DonationProcessCubit,
-                          DonationProcessEntity>(
-                        builder: (context, state) {
-                          return BlocBuilder<GetdoneebycodeCubit,
-                              GetdoneebycodeState>(
-                            builder: (context, doneeState) {
-                              if (doneeState is GetdoneebycodeSuccess) {
-                                return ElevatedButton(
-                                    onPressed: total < 1
-                                        ? null
-                                        : () {
-                                            context
-                                                .read<DonationProcessCubit>()
-                                                .updateDonationProccess(state.copyWith(
-                                                    stripeConnectedAccountId:
-                                                        doneeState
-                                                            .doneeResponseData
-                                                            .stripeConnectedAccountId,
-                                                    saveDonee: true,
-                                                    doneeId: doneeState
-                                                        .doneeResponseData.id,
-                                                    currency: (doneeState
-                                                                .doneeResponseData
-                                                                .organization
-                                                                ?.id ==
-                                                            null)
-                                                        ? doneeState
-                                                            .doneeResponseData
-                                                            .country
-                                                            .currencyCode
-                                                        : doneeState
-                                                            .doneeResponseData
-                                                            .organization!
-                                                            .country!
-                                                            .currencyCode,
-                                                    amount: total,
-                                                    donationDetails: [
-                                                      ...cartState.map((e) =>
-                                                          DonationProcessDetail(
-                                                              donationTypeId:
-                                                                  e.id,
-                                                              amount: e.amount))
-                                                    ]));
-                                            Navigator.push(
-                                                context,
-                                                AppRouter.routeToPage(
-                                                    const EnableGiftAidForDonation()));
-                                          },
-                                    child: Row(
-                                      children: [
-                                        Text('continue'.toUpperCase()),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        const Icon(Icons.arrow_right_alt)
-                                      ],
-                                    ));
-                              }
-                              return ElevatedButton(
-                                  onPressed: null,
-                                  child: Row(
-                                    children: [
-                                      Text('continue'.toUpperCase()),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      const Icon(Icons.arrow_right_alt)
-                                    ],
-                                  ));
-                            },
-                          );
-                        },
-                      );
-                    },
-                  )
+                                  //Todo check saving a donee during donation
+                                  context
+                                      .read<DonationProcessCubit>()
+                                      .updateDonationProccess(donationProcessState.copyWith(
+                                          stripeConnectedAccountId: getDoneeByCodeState
+                                              .doneeResponseData
+                                              .stripeConnectedAccountId,
+                                          doneeId: getDoneeByCodeState
+                                              .doneeResponseData.id,
+                                          currency: getDoneeByCodeState
+                                              .doneeResponseData.currency,
+                                              cartAmount: donationCartTotal,
+                                          amount: donationProcessState.paidTransactionFee
+                                              ? donationCartTotal +
+                                                  getCharges(
+                                                          feeData: getFeeData
+                                                              .feesModel.data,
+                                                          cardCurrency:
+                                                              getPaymentMethod.paymentMethods.data.first.country,
+                                                          amount: donationCartTotal)
+                                                      .totalFee
+                                              : donationCartTotal,
+                                          stripeFee: donationProcessState.getStripeFee,
+                                          idonatoiFee: donationProcessState.getIdonationFee,
+                                          totalCharges: donationProcessState.getTotalCharges,
+                                          donationDetails: [
+                                            ...donationCartState.map((e) =>
+                                                DonationProcessDetail(
+                                                    amount: e.amount,
+                                                    donationTypeId: e.id))
+                                          ]));
+                                  Navigator.push(
+                                      context,
+                                      AppRouter.routeToPage(
+                                          const EnableGiftAidForDonation()));
+                                },
+                          child: Text('continue'.toUpperCase()));
+                    }
+                    return ElevatedButton(
+                        onPressed: null, child: Text('continue'.toUpperCase()));
+                  })
                 ],
               ),
               const SizedBox(
