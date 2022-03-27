@@ -394,7 +394,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                               .doneeResponseData.id,
                                           currency: getDoneeByCodeState
                                               .doneeResponseData.currency,
-                                              cartAmount: donationCartTotal,
+                                          cartAmount: donationCartTotal,
                                           amount: donationProcessState.paidTransactionFee
                                               ? donationCartTotal +
                                                   getCharges(
@@ -407,7 +407,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                               : donationCartTotal,
                                           stripeFee: donationProcessState.getStripeFee,
                                           idonatoiFee: donationProcessState.getIdonationFee,
-                                          totalCharges: donationProcessState.getTotalCharges,
+                                          totalCharges: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).totalFee,
+                                          totalFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).totalFee,
                                           donationDetails: [
                                             ...donationCartState.map((e) =>
                                                 DonationProcessDetail(

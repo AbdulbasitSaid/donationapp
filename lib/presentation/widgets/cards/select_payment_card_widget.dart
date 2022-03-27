@@ -26,7 +26,6 @@ class SelectPaymentCardWidget extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: BlocBuilder<GetPaymentMethodsCubit, GetPaymentMethodsState>(
           builder: (context, state) {
-            final donationCartState = context.watch<DonationCartCubit>().state;
             if (state is GetPaymentMethodsSuccessful &&
                 state.paymentMethods.data.isNotEmpty) {
               context
@@ -65,6 +64,15 @@ class SelectPaymentCardWidget extends StatelessWidget {
                                             amount: cartTotal)
                                         .idonationFee,
                                     totalCharges: donationProcessState
+                                            .paidTransactionFee
+                                        ? getCharges(
+                                                feeData: donationProcessState
+                                                    .feedata,
+                                                cardCurrency: e.country,
+                                                amount: cartTotal)
+                                            .totalFee
+                                        : 0,
+                                    totalFee: donationProcessState
                                             .paidTransactionFee
                                         ? getCharges(
                                                 feeData: donationProcessState

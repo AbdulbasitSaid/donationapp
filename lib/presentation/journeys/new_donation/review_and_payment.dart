@@ -167,7 +167,8 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                       // DonationProcessCubit
                       final donationProcessState =
                           context.watch<DonationProcessCubit>().state;
-
+                      final doneeState =
+                          context.watch<GetdoneebycodeCubit>().state;
                       // DonationCartCubit
                       final donationCartState =
                           context.watch<DonationCartCubit>().state;
@@ -179,7 +180,11 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: [Text(e.type), Text('${e.amount}')],
+                                children: [
+                                  Text(e.type),
+                                  Text(
+                                      '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}${e.amount}')
+                                ],
                               ),
                             )),
                         Padding(
@@ -189,20 +194,8 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                             children: [
                               const Text('Included transaction fee'),
                               Text(donationProcessState.paidTransactionFee
-                                  ? getCharges(
-                                          amount: donationCartState.isEmpty
-                                              ? 0.0
-                                              : donationCartState
-                                                  .map((e) => e.amount)
-                                                  .toList()
-                                                  .reduce((value, element) =>
-                                                      value + element),
-                                          cardCurrency:
-                                              donationProcessState.cardCountry,
-                                          feeData: donationProcessState.feedata)
-                                      .totalFee
-                                      .toString()
-                                  : 0.0.toString())
+                                  ? '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}${donationProcessState.totalFee}'
+                                  : '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}0.0')
                             ],
                           ),
                         ),
@@ -239,16 +232,16 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                       final donationProcessState =
                           context.watch<DonationProcessCubit>().state;
 
+                      final doneeState =
+                          context.watch<GetdoneebycodeCubit>().state;
+
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Level4Headline(text: 'Total to pay'),
-                          BlocBuilder<DonationProcessCubit,
-                              DonationProcessEntity>(
-                            builder: (context, state) {
-                              return Level4Headline(text: '${state.amount}');
-                            },
-                          ),
+                          Level4Headline(
+                              text:
+                                  '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}${donationProcessState.amount}'),
                         ],
                       );
                     })
