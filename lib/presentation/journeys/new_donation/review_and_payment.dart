@@ -395,6 +395,8 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                                                             state.idonatoiFee,
                                                                         stripTransactionFee:
                                                                             state.stripeFee,
+                                                                        totalFee:
+                                                                            state.totalFee,
                                                                       ).toMap());
                                                                 },
                                                                 child: Text('yes'

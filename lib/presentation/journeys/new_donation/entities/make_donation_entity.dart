@@ -25,6 +25,7 @@ class MakeDonationEntity {
     required this.stripePaymentMethodId,
     required this.idonatioTransactionFee,
     required this.stripTransactionFee,
+    required this.totalFee,
   });
 
   final String doneeId;
@@ -46,6 +47,7 @@ class MakeDonationEntity {
   final String stripePaymentMethodId;
   final double idonatioTransactionFee;
   final double stripTransactionFee;
+  final double totalFee;
 
   factory MakeDonationEntity.fromJson(String str) =>
       MakeDonationEntity.fromMap(json.decode(str));
@@ -74,6 +76,7 @@ class MakeDonationEntity {
         stripeConnectedAccountId: json["stripe_connected_account_id"],
         stripePaymentMethodId: json["stripe_payment_method_id"],
         stripTransactionFee: json['stripe_transaction_fee'],
+        totalFee: json['total_fee'],
       );
 
   Map<dynamic, dynamic> toMap() => {
@@ -96,7 +99,8 @@ class MakeDonationEntity {
         "stripe_connected_account_id": stripeConnectedAccountId,
         "stripe_payment_method_id": stripePaymentMethodId,
         "idonatio_transaction_fee": idonatioTransactionFee,
-        "stripe_transaction_fee": stripTransactionFee
+        "stripe_transaction_fee": stripTransactionFee,
+        "total_fee": totalFee,
       };
 }
 
