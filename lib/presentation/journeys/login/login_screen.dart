@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
@@ -77,8 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   builder: (context, state) {
                     if (state is UnAuthenticated &&
                         state.rememberMeEmail!.isNotEmpty) {
-                      return const LoginForm(
+                      return LoginForm(
                         remberEamil: true,
+                        remberMeEmail: state.rememberMeEmail!,
                       );
                     }
                     return const LoginForm(

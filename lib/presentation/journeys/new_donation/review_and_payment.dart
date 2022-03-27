@@ -132,7 +132,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                     height: 8,
                                   ),
                                   Text(
-                                    'donee id${state.doneeResponseData.id}'
+                                    'donee id: ${state.doneeResponseData.doneeCode}'
                                         .toUpperCase(),
                                     style: Theme.of(context).textTheme.caption,
                                   ),

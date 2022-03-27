@@ -20,8 +20,11 @@ import 'package:idonatio/presentation/widgets/input_fields/password_widget.dart'
 import '../../widgets/labels/base_label_text.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({Key? key, required this.remberEamil}) : super(key: key);
+  const LoginForm(
+      {Key? key, required this.remberEamil, this.remberMeEmail = ''})
+      : super(key: key);
   final bool remberEamil;
+  final String remberMeEmail;
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -35,8 +38,8 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     _emailAddressController = TextEditingController();
+    _emailAddressController.text = widget.remberMeEmail;
     _passwordController = TextEditingController();
-    // rememberEmail = widget.remberEamil;
     log('remember me? ${widget.remberEamil}');
     super.initState();
   }
@@ -106,27 +109,19 @@ class _LoginFormState extends State<LoginForm> {
                         const SizedBox(
                           height: 8,
                         ),
-                        Focus(
-                          onFocusChange: (value) {
-                            if (!value) {
-                              _formKey.currentState!.validate();
-                            }
-                          },
-                          child: TextFormField(
-                            initialValue: state.rememberMeEmail,
-
-                            keyboardType: TextInputType.emailAddress,
-                            // initialValue: email,
-                            validator: MultiValidator([
-                              RequiredValidator(errorText: 'Email is required'),
-                              EmailValidator(
-                                  errorText:
-                                      'Please Enter a valid email Address'),
-                            ]),
-                            decoration: const InputDecoration(
-                              hintText: 'Email address',
-                              prefixIcon: Icon(Icons.person_outline_outlined),
-                            ),
+                        TextFormField(
+                          controller: _emailAddressController,
+                          keyboardType: TextInputType.emailAddress,
+                          // initialValue: email,
+                          validator: MultiValidator([
+                            RequiredValidator(errorText: 'Email is required'),
+                            EmailValidator(
+                                errorText:
+                                    'Please Enter a valid email Address'),
+                          ]),
+                          decoration: const InputDecoration(
+                            hintText: 'Email address',
+                            prefixIcon: Icon(Icons.person_outline_outlined),
                           ),
                         ),
                       ],
@@ -151,7 +146,6 @@ class _LoginFormState extends State<LoginForm> {
                         child: TextFormField(
                           controller: _emailAddressController,
                           keyboardType: TextInputType.emailAddress,
-                          // initialValue: email,
                           validator: MultiValidator([
                             RequiredValidator(errorText: 'Email is required'),
                             EmailValidator(
@@ -224,46 +218,21 @@ class _LoginFormState extends State<LoginForm> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  BlocBuilder<UserCubit, UserState>(
-                    builder: (context, state) {
-                      if (state is UnAuthenticated &&
-                          state.rememberMeEmail!.isNotEmpty) {
-                        log('with email');
-                        return ElevatedButton(
-                          onPressed: enableSignIn
-                              ? () {
-                                  log('with email');
-                                  if (_formKey.currentState!.validate()) {
-                                    context.read<LoginCubit>().initiateLogin(
-                                          _emailAddressController.text.isEmpty
-                                              ? state.rememberMeEmail!
-                                              : _emailAddressController.text,
-                                          _passwordController.text,
-                                          rememberEmail!,
-                                        );
-                                  }
-                                }
-                              : null,
-                          child: const Text('Sign in'),
-                        );
-                      }
-                      return ElevatedButton(
-                        onPressed: enableSignIn
-                            ? () {
-                                log(_emailAddressController.text);
-                                if (_formKey.currentState!.validate()) {
-                                  context.read<LoginCubit>().initiateLogin(
-                                        _emailAddressController.text,
-                                        _passwordController.text,
-                                        rememberEmail!,
-                                      );
-                                }
-                              }
-                            : null,
-                        child: const Text('Sign in'),
-                      );
-                    },
-                  ),
+                  ElevatedButton(
+                    onPressed: enableSignIn
+                        ? () {
+                            log(_emailAddressController.text);
+                            if (_formKey.currentState!.validate()) {
+                              context.read<LoginCubit>().initiateLogin(
+                                    _emailAddressController.text,
+                                    _passwordController.text,
+                                    rememberEmail!,
+                                  );
+                            }
+                          }
+                        : null,
+                    child: const Text('Sign in'),
+                  )
                 ],
               ),
               BlocBuilder<LoginCubit, LoginState>(

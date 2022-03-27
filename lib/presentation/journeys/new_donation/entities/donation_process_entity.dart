@@ -35,30 +35,33 @@ class DonationProcessEntity {
   final String cardCountry;
   final double cartAmount;
   final List<FeeData> feedata;
-  DonationProcessEntity(
-      {required this.doneeId,
-      required this.paidTransactionFee,
-      required this.donationMethod,
-      required this.donationLocation,
-      required this.isAnonymous,
-      required this.applyGiftAidToDonation,
-      required this.giftAidEnabled,
-      required this.currency,
-      required this.cardLastFourDigits,
-      required this.cardType,
-      required this.expiryMonth,
-      required this.expiryYear,
-      required this.saveDonee,
-      required this.donationDetails,
-      required this.amount,
-      required this.stripeConnectedAccountId,
-      required this.stripePaymentMethodId,
-      required this.idonatoiFee,
-      required this.stripeFee,
-      required this.totalCharges,
-      required this.cardCountry,
-      required this.feedata,
-      required this.cartAmount});
+  final double totalFee;
+  DonationProcessEntity({
+    required this.doneeId,
+    required this.paidTransactionFee,
+    required this.donationMethod,
+    required this.donationLocation,
+    required this.isAnonymous,
+    required this.applyGiftAidToDonation,
+    required this.giftAidEnabled,
+    required this.currency,
+    required this.cardLastFourDigits,
+    required this.cardType,
+    required this.expiryMonth,
+    required this.expiryYear,
+    required this.saveDonee,
+    required this.donationDetails,
+    required this.amount,
+    required this.stripeConnectedAccountId,
+    required this.stripePaymentMethodId,
+    required this.idonatoiFee,
+    required this.stripeFee,
+    required this.totalCharges,
+    required this.cardCountry,
+    required this.feedata,
+    required this.cartAmount,
+    required this.totalFee,
+  });
   double get getTotalCharges {
     return getCharges(
             feeData: feedata, cardCurrency: cardCountry, amount: cartAmount)
@@ -82,7 +85,7 @@ class DonationProcessEntity {
   Map<String, dynamic> toJson() => _$DonationProcessEntityToJson(this);
   @override
   String toString() {
-    return 'DonationProcessEntity(doneeId: $doneeId, paidTransactionFee: $paidTransactionFee, donationMethod: $donationMethod, donationLocation: $donationLocation, isAnonymous: $isAnonymous, applyGiftAidToDonation: $applyGiftAidToDonation, giftAidEnabled: $giftAidEnabled, currency: $currency, cardLastFourDigits: $cardLastFourDigits, cardType: $cardType, expiryMonth: $expiryMonth, expiryYear: $expiryYear, saveDonee: $saveDonee, idonatoiFee: $idonatoiFee, stripeFee: $stripeFee, donationDetails: $donationDetails, amount: $amount, stripeConnectedAccountId: $stripeConnectedAccountId, stripePaymentMethodId: $stripePaymentMethodId, totalCharges: $totalCharges, cardCountry: $cardCountry, cartAmount: $cartAmount, feedata: $feedata)';
+    return 'DonationProcessEntity(doneeId: $doneeId, paidTransactionFee: $paidTransactionFee, donationMethod: $donationMethod, donationLocation: $donationLocation, isAnonymous: $isAnonymous, applyGiftAidToDonation: $applyGiftAidToDonation, giftAidEnabled: $giftAidEnabled, currency: $currency, cardLastFourDigits: $cardLastFourDigits, cardType: $cardType, expiryMonth: $expiryMonth, expiryYear: $expiryYear, saveDonee: $saveDonee, idonatoiFee: $idonatoiFee, stripeFee: $stripeFee, donationDetails: $donationDetails, amount: $amount, stripeConnectedAccountId: $stripeConnectedAccountId, stripePaymentMethodId: $stripePaymentMethodId, totalCharges: $totalCharges, cardCountry: $cardCountry, cartAmount: $cartAmount, feedata: $feedata, totalFee: $totalFee)';
   }
 
   @override
@@ -112,7 +115,8 @@ class DonationProcessEntity {
         other.totalCharges == totalCharges &&
         other.cardCountry == cardCountry &&
         other.cartAmount == cartAmount &&
-        listEquals(other.feedata, feedata);
+        listEquals(other.feedata, feedata) &&
+        other.totalFee == totalFee;
   }
 
   @override
@@ -139,7 +143,8 @@ class DonationProcessEntity {
         totalCharges.hashCode ^
         cardCountry.hashCode ^
         cartAmount.hashCode ^
-        feedata.hashCode;
+        feedata.hashCode ^
+        totalFee.hashCode;
   }
 
   DonationProcessEntity copyWith({
@@ -166,6 +171,7 @@ class DonationProcessEntity {
     String? cardCountry,
     double? cartAmount,
     List<FeeData>? feedata,
+    double? totalFee,
   }) {
     return DonationProcessEntity(
       doneeId: doneeId ?? this.doneeId,
@@ -194,6 +200,7 @@ class DonationProcessEntity {
       cardCountry: cardCountry ?? this.cardCountry,
       cartAmount: cartAmount ?? this.cartAmount,
       feedata: feedata ?? this.feedata,
+      totalFee: totalFee ?? this.totalFee,
     );
   }
 }

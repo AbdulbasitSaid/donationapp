@@ -31,7 +31,8 @@ class DonationProcessCubit extends Cubit<DonationProcessEntity> {
             stripePaymentMethodId: '',
             totalCharges: 0,
             cardCountry: '',
-            feedata: []));
+            feedata: [],
+            totalFee: 0));
   void updateDonationProccess(
       DonationProcessEntity donationProcessEntity) async {
     log(donationProcessEntity.toString());
