@@ -2,38 +2,37 @@ import 'dart:developer';
 
 import '../data/models/fees_model.dart';
 
+final List<String> europeanCountries = [
+  'AL',
+  'AD',
+  'AM',
+  'BY',
+  'BA',
+  'FO',
+  'GE',
+  'GI',
+  'IS',
+  'IM',
+  'XK',
+  'LI',
+  'MK',
+  'MD',
+  'MC',
+  'ME',
+  'NO',
+  'RU',
+  'SM',
+  'RS',
+  'CH',
+  'TR',
+  'UA',
+  'GB',
+  'VA',
+];
 ChargesResult getCharges(
     {required List<FeeData> feeData,
     required String cardCurrency,
     required double amount}) {
-  List<String> europeanCountries = [
-    'AL',
-    'AD',
-    'AM',
-    'BY',
-    'BA',
-    'FO',
-    'GE',
-    'GI',
-    'IS',
-    'IM',
-    'XK',
-    'LI',
-    'MK',
-    'MD',
-    'MC',
-    'ME',
-    'NO',
-    'RU',
-    'SM',
-    'RS',
-    'CH',
-    'TR',
-    'UA',
-    'GB',
-    'VA',
-  ];
-
   double europeanCardFeePercentage = feeData
       .firstWhere((element) => element.tag == 'STRIPE_EUROPEAN_CARD_FEE')
       .value;

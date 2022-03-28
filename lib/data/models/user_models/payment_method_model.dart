@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 
 class PaymentMethodsModel {
   PaymentMethodsModel({
@@ -40,8 +41,8 @@ class PaymentMethodsModel {
       'PaymentMethodsModel(status: $status, message: $message, data: $data)';
 }
 
-class PaymentMethodDatum {
-  PaymentMethodDatum({
+class PaymentMethodDatum extends Equatable {
+  const PaymentMethodDatum({
     required this.id,
     required this.brand,
     required this.country,
@@ -103,4 +104,15 @@ class PaymentMethodDatum {
         cardLastFourDigits.hashCode ^
         expYear.hashCode;
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        id,
+        brand,
+        country,
+        expMonth,
+        cardLastFourDigits,
+        expYear,
+      ];
 }
