@@ -192,7 +192,7 @@ class UserRepository {
       valiteOtpForgotPassword(String otp, String email) async {
     try {
       final response = await _userRemoteDataSource
-          .sendOtpForgotPassword({"email": email, "otp": otp});
+          .validateOtpForgotPassword({"email": email, "otp": otp});
 
       return Right(response);
     } on BadRequest {

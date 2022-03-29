@@ -133,9 +133,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                               ),
                               BlocConsumer<GetSavedDoneesCubit,
                                   GetSavedDoneesState>(
-                                listener: (context, state) {
-                                  // TODO: implement listener
-                                },
+                                listener: (context, state) {},
                                 builder: (context, state) {
                                   if (state is RecentdoneesLoading) {
                                     return const Center(
@@ -166,10 +164,11 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                           decoration:
                                               whiteContainerBackGround(),
                                           child: Column(children: [
-                                            ...recentlySaved.map(
-                                                (e) => SavedDoneeListItemWidget(
-                                                      donee: e,
-                                                    ))
+                                            if (recentlySaved.isNotEmpty)
+                                              ...recentlySaved.map((e) =>
+                                                  SavedDoneeListItemWidget(
+                                                    donee: e,
+                                                  ))
                                           ]),
                                         ),
                                       ],

@@ -62,9 +62,10 @@ class UserRemoteDataSource {
 
   //
   /// reset password
-  Future<SuccessModel> resetPassword({required Map<String, dynamic> params}) async {
+  Future<SuccessModel> resetPassword(
+      {required Map<String, dynamic> params}) async {
     final response = await _client.patch('auth/password/reset', params: params);
-    return response;
+    return SuccessModel.fromJson(response);
   }
 
   /// end reset password

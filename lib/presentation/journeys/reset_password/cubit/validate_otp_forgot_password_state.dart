@@ -12,9 +12,9 @@ class ValidateOtpForgotPasswordInitial extends ValidateOtpForgotPasswordState {}
 class ValidateOtpForgotPasswordLoading extends ValidateOtpForgotPasswordState {}
 
 class ValidateOtpForgotPasswordSuccess extends ValidateOtpForgotPasswordState {
-  final String message;
+  final ResetPasswordOtpSuccessEntity response;
 
-  const ValidateOtpForgotPasswordSuccess(this.message);
+  const ValidateOtpForgotPasswordSuccess(this.response);
 }
 
 class ValidateOtpForgotPasswordFailed extends ValidateOtpForgotPasswordState {
