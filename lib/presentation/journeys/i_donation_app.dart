@@ -23,7 +23,10 @@ import 'package:idonatio/presentation/journeys/new_donation/cubit/select_payment
 import 'package:idonatio/presentation/journeys/onboarding/cubit/create_setup_intent_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/getcountreis_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboardingdataholder_cubit.dart';
-import 'package:idonatio/presentation/journeys/reset_password/bloc/resetpassword_bloc.dart';
+import 'package:idonatio/presentation/journeys/reset_password/cubit/resend_otp_forgot_password_cubit.dart';
+import 'package:idonatio/presentation/journeys/reset_password/cubit/reset_password_cubit.dart';
+import 'package:idonatio/presentation/journeys/reset_password/cubit/send_otp_forgot_password_cubit.dart';
+import 'package:idonatio/presentation/journeys/reset_password/cubit/validate_otp_forgot_password_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/delete_save_donee_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
@@ -84,10 +87,6 @@ class _IdonatioAppState extends State<IdonatioApp> {
           ),
           BlocProvider<RegistrationStepsCubit>(
             create: (context) => RegistrationStepsCubit(),
-          ),
-          BlocProvider<ResetpasswordBloc>(
-            create: (context) =>
-                ResetpasswordBloc(getItInstance(), getItInstance()),
           ),
           BlocProvider<OnboardingdataholderCubit>(
               create: (context) => OnboardingdataholderCubit()),
@@ -167,6 +166,19 @@ class _IdonatioAppState extends State<IdonatioApp> {
           ),
           BlocProvider(
             create: (context) => GetDonationFeesCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => SendOtpForgotPasswordCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => ResendOtpForgotPasswordCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                ValidateOtpForgotPasswordCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => ResetPasswordCubit(getItInstance()),
           ),
         ],
         child: MultiRepositoryProvider(

@@ -44,21 +44,35 @@ class UserRemoteDataSource {
     return response;
   }
 
-  Future<ResetPasswordOtpSuccessEntity> sendOtp(Map<String, String> map) async {
+  /// reset password
+  /// send otp forgot password
+  Future<ResetPasswordOtpSuccessEntity> sendOtpForgotPassword(
+      Map<String, String> map) async {
+    final response = await _client.post('auth/password/forgot', params: map);
+    return ResetPasswordOtpSuccessEntity.fromJson(response);
+  }
+
+  /// auth/password/validate-otp
+  Future<ResetPasswordOtpSuccessEntity> validateOtpForgotPassword(
+      Map<String, String> map) async {
     final response =
         await _client.patch('auth/password/validate-otp', params: map);
     return ResetPasswordOtpSuccessEntity.fromJson(response);
   }
 
+  //
+  /// reset password
+  Future<SuccessModel> resetPassword({required Map<String, dynamic> params}) async {
+    final response = await _client.patch('auth/password/reset', params: params);
+    return response;
+  }
+
+  /// end reset password
+
   Future<SuccessModel> resendOptCode(Map<String, String> map) async {
     final response = await _client.post('auth/password/forgot', params: map);
 
     return SuccessModel.fromJson(response);
-  }
-
-  Future<dynamic> changePassword({required Map<String, dynamic> params}) async {
-    final response = await _client.patch('auth/password/reset', params: params);
-    return response;
   }
 
   Future<SuccessModel> logout({required String token}) async {

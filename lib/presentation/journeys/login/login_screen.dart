@@ -27,67 +27,62 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
+    context.read<LoginCubit>().initializeLogin();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: (() async {
-        context.read<LoginCubit>().initializeLogin();
-        return true;
-      }),
-      child: Scaffold(
-        appBar: AppBar(),
-        body: AppBackgroundWidget(
-          childWidget: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Level1Headline(text: 'Sign in'),
-                    IconButton(
-                        onPressed: () {
-                          context.read<LogoutCubit>().logoutUser();
-                          context.read<UserCubit>().setUserState(
-                              getItInstance(), AuthStatus.appStarted);
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              AppRouter.routeToPage(const AuthGaurd()),
-                              (route) => false);
-                        },
-                        icon: const Icon(
-                          Icons.power_settings_new_outlined,
-                          size: 36,
-                        ))
-                  ],
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                const Text('Enter your login details to continue.'),
-                const SizedBox(
-                  height: 8,
-                ),
-                BlocBuilder<UserCubit, UserState>(
-                  builder: (context, state) {
-                    if (state is UnAuthenticated &&
-                        state.rememberMeEmail!.isNotEmpty) {
-                      return LoginForm(
-                        remberEamil: true,
-                        remberMeEmail: state.rememberMeEmail!,
-                      );
-                    }
-                    return const LoginForm(
-                      remberEamil: false,
+    return Scaffold(
+      appBar: AppBar(),
+      body: AppBackgroundWidget(
+        childWidget: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Level1Headline(text: 'Sign in'),
+                  IconButton(
+                      onPressed: () {
+                        context.read<LogoutCubit>().logoutUser();
+                        context.read<UserCubit>().setUserState(
+                            getItInstance(), AuthStatus.appStarted);
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            AppRouter.routeToPage(const AuthGaurd()),
+                            (route) => false);
+                      },
+                      icon: const Icon(
+                        Icons.power_settings_new_outlined,
+                        size: 36,
+                      ))
+                ],
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              const Text('Enter your login details to continue.'),
+              const SizedBox(
+                height: 8,
+              ),
+              BlocBuilder<UserCubit, UserState>(
+                builder: (context, state) {
+                  if (state is UnAuthenticated &&
+                      state.rememberMeEmail!.isNotEmpty) {
+                    return LoginForm(
+                      remberEamil: true,
+                      remberMeEmail: state.rememberMeEmail!,
                     );
-                  },
-                ),
-              ],
-            ),
+                  }
+                  return const LoginForm(
+                    remberEamil: false,
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),

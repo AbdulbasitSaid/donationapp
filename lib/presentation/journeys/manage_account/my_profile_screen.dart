@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
-import 'package:idonatio/presentation/journeys/manage_account/change_password_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/update_profile_cubit.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_address_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_email_screen.dart';
@@ -226,17 +225,17 @@ class MyProfileScreen extends StatelessWidget {
                             Text('*********'),
                           ],
                         ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  AppRouter.routeToPage(
-                                      const ChangePasswordScreen()));
-                            },
-                            icon: const Icon(
-                              Icons.edit,
-                              color: AppColor.basePrimary,
-                            ))
+                        // IconButton(
+                        //     onPressed: () {
+                        //       Navigator.push(
+                        //           context,
+                        //           AppRouter.routeToPage(
+                        //               const ChangePasswordScreen()));
+                        //     },
+                        //     icon: const Icon(
+                        //       Icons.edit,
+                        //       color: AppColor.basePrimary,
+                        //     ))
                       ],
                     ),
                   ),

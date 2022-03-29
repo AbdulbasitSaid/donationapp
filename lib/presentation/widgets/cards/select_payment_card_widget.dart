@@ -50,10 +50,10 @@ class SelectPaymentCardWidget extends StatelessWidget {
                       //selected
                       ...state.paymentMethods.data.map(
                         (e) {
-                          final String id = e.id;
                           return TextButton(
                             onPressed: () {
-                              if (!europeanCountries.contains(e.country)) {
+                              if (!europeanCountries.contains(e.country) &&
+                                  donationProcessState.totalFee > 0) {
                                 showDialog(
                                     context: context,
                                     builder: (context) {

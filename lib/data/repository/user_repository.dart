@@ -13,12 +13,15 @@ import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/onboarding_response.dart';
 import 'package:idonatio/presentation/journeys/reset_password/enitities/reset_password_otp_success_entity.dart';
 
+import '../models/user_models/password_validate_otp_model.dart';
+
 class UserRepository {
   UserRepository(this._userRemoteDataSource, this._userLocalDataSource);
   final UserRemoteDataSource _userRemoteDataSource;
   final UserLocalDataSource _userLocalDataSource;
 
-  Future<Either<AppError, bool>> loginUser(Map<String, dynamic> params,bool isRememberMe) async {
+  Future<Either<AppError, bool>> loginUser(
+      Map<String, dynamic> params, bool isRememberMe) async {
     try {
       final response = await _userRemoteDataSource.loginWithEmail(params);
       final data = response.data;
@@ -27,7 +30,9 @@ class UserRepository {
 
       await _userLocalDataSource
           .saveUserData(data.copyWith(user: user.copyWith(donor: donor)));
-      isRememberMe? await _userLocalDataSource.rememberMeEmail(user.email): await _userLocalDataSource.deleteResetRememberMeEmail();
+      isRememberMe
+          ? await _userLocalDataSource.rememberMeEmail(user.email)
+          : await _userLocalDataSource.deleteResetRememberMeEmail();
       return const Right(true);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
@@ -106,13 +111,17 @@ class UserRepository {
       final user = await UserLocalDataSource().getUser();
       final response =
           await _userRemoteDataSource.onBoarding(params, token: user.token);
-      await _userLocalDataSource.updateUserData(user.copyWith(
+      await _userLocalDataSource.updateUserData(
+        user.copyWith(
           user: user.user.copyWith(
-              donor: user.user.donor.copyWith(
-        isOnboarded: true,
-        firstName: response.data.firstName,
-        lastName: response.data.lastName,
-      ))));
+            donor: user.user.donor.copyWith(
+              isOnboarded: true,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+            ),
+          ),
+        ),
+      );
 
       return Right(response);
     } on BadRequest {
@@ -132,20 +141,107 @@ class UserRepository {
     }
   }
 
+  Future<Either<AppError, PasswordValidateResponseModel>>
+      passwordValidateOtp() async {
+    try {
+      return Right(PasswordValidateResponseModel());
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on Exception {
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
+    }
+  }
+
+  /// Password Reset
   Future<Either<AppError, StatusMessageEntity>> sendEmailForgotPassword(
-      String email) async {
+    String email,
+  ) async {
     try {
       final responce =
           await _userRemoteDataSource.sendOtpToEmail({'email': email});
       return Right(StatusMessageEntity.fromMap(responce));
-    } on UnprocessableEntity {
-      return const Left(
-          AppError(appErrorType: AppErrorType.unProcessableEntity));
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
     } on Exception {
-      return const Left(AppError(appErrorType: AppErrorType.api));
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
   }
 
+  // validate the Email
+  Future<Either<AppError, ResetPasswordOtpSuccessEntity>>
+      valiteOtpForgotPassword(String otp, String email) async {
+    try {
+      final response = await _userRemoteDataSource
+          .sendOtpForgotPassword({"email": email, "otp": otp});
+
+      return Right(response);
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on Exception {
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
+    }
+  }
+
+  // reset the password
+  Future<Either<AppError, SuccessModel>> resetPassword(
+      {required String password,
+      required String email,
+      required String passwordToken}) async {
+    try {
+      final result = await _userRemoteDataSource.resetPassword(params: {
+        'email': email,
+        'password': password,
+        'password_reset_token': passwordToken,
+      });
+      return Right(result);
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on Exception {
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
+    }
+  }
+
+  ///
   Future<Either<AppError, SuccessModel>> logoutUser() async {
     try {
       final user = await _userLocalDataSource.getUser();
@@ -192,63 +288,12 @@ class UserRepository {
     }
   }
 
-  Future<Either<AppError, ResetPasswordOtpSuccessEntity>> sendOtpForgotPassword(
-      String otp, String email) async {
-    try {
-      final localUser = await _userLocalDataSource.getUser();
-      final response =
-          await _userRemoteDataSource.sendOtp({"email": email, "otp": otp});
-      await _userLocalDataSource.updateUserData(localUser.copyWith(
-        user: localUser.user.copyWith(
-          email: response.data.email,
-        ),
-      ));
-
-      return Right(response);
-    } on BadRequest {
-      return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
-      return const Left(AppError(appErrorType: AppErrorType.network));
-    } on UnauthorisedException {
-      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
-    } on Forbidden {
-      return const Left(AppError(appErrorType: AppErrorType.forbidden));
-    } on NotFound {
-      return const Left(AppError(appErrorType: AppErrorType.notFound));
-    } on InternalServerError {
-      return const Left(AppError(appErrorType: AppErrorType.serveError));
-    } on Exception {
-      return const Left(AppError(appErrorType: AppErrorType.unExpected));
-    }
-  }
-
   Future<Either<AppError, SuccessModel>> resendOtpCode() async {
     try {
       final userEmail = await _userLocalDataSource.getPasswordResetEmail();
       final result =
           await _userRemoteDataSource.resendOptCode({'email': userEmail});
       return Right(result);
-    } on BadRequest {
-      return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
-      return const Left(AppError(appErrorType: AppErrorType.network));
-    } on UnauthorisedException {
-      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
-    } on Forbidden {
-      return const Left(AppError(appErrorType: AppErrorType.forbidden));
-    } on NotFound {
-      return const Left(AppError(appErrorType: AppErrorType.notFound));
-    } on InternalServerError {
-      return const Left(AppError(appErrorType: AppErrorType.serveError));
-    } on Exception {
-      return const Left(AppError(appErrorType: AppErrorType.unExpected));
-    }
-  }
-
-  Future<Either<AppError, String>> changePassword(
-      {required String newPassword}) async {
-    try {
-      return const Right("Password reset successfully");
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
     } on NetworkError {

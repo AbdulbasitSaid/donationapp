@@ -8,7 +8,7 @@ import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
-import 'package:idonatio/presentation/journeys/reset_password/reset_password.dart';
+import 'package:idonatio/presentation/journeys/reset_password/sent_opt_forgot_password_screen.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 
@@ -174,7 +174,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               TextButton(
                 onPressed: () => Navigator.push(context,
-                    AppRouter.routeToPage(const ResetPasswordEmailScreen())),
+                    AppRouter.routeToPage(SendOtpForgotPasswordScreen())),
                 child: Row(
                   children: const [
                     Flexible(
