@@ -9,10 +9,13 @@ import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/donation_history/history_screen.dart';
 import 'package:idonatio/presentation/journeys/new_donation/make_donation.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_screen.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 
+import 'donation_history/cubit/donation_history_cubit.dart';
 import 'manage_account/manage_account_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,9 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
   PageController pageController = PageController();
   @override
   void initState() {
-    // startSessionTimer();
-    // // startLocalSessionTimer();
-    // sessionStopWatch.start();
+    //  context.read<DonationHistoryCubit>().getDonationHistory();
+    //     context.read<GetRecentdoneesCubit>().getRecentDonees();
+    //     context.read<GetSavedDoneesCubit>().getSavedDonee();
     super.initState();
   }
 

@@ -18,6 +18,9 @@ import 'package:idonatio/presentation/widgets/dialogs/app_loader_dialog.dart';
 import 'package:idonatio/presentation/widgets/input_fields/password_widget.dart';
 
 import '../../widgets/labels/base_label_text.dart';
+import '../donation_history/cubit/donation_history_cubit.dart';
+import '../saved_donees/cubit/get_saved_donees_cubit.dart';
+import '../saved_donees/cubit/recentdonees_cubit.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm(
@@ -76,7 +79,9 @@ class _LoginFormState extends State<LoginForm> {
             context
                 .read<UserCubit>()
                 .setUserState(getItInstance(), AuthStatus.authenticated);
-
+            context.read<DonationHistoryCubit>().getDonationHistory();
+            context.read<GetRecentdoneesCubit>().getRecentDonees();
+            context.read<GetSavedDoneesCubit>().getSavedDonee();
             Navigator.push(context, AppRouter.routeToPage(const AuthGaurd()));
           } else {
             Navigator.of(context, rootNavigator: true).pop();

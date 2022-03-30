@@ -22,20 +22,20 @@ class RegisterCubit extends Cubit<RegisterState> {
   ) : super(RegisterInitial());
   final UserRepository _registerUserRepositoryImpl;
   final UserLocalDataSource _userLocalDataSource;
-  
+
   void initiateRegistration(RegisterUserRequestParameter params) async {
     emit(RegisterLoading());
-    final DeviceInfoModel deviceInfoModel = Platform.isIOS
-        ? await getIosInfo(getItInstance(), getItInstance())
-        : await getAndroidInfo(getItInstance(), getItInstance());
+    // final DeviceInfoModel deviceInfoModel = Platform.isIOS
+    //     ? await getIosInfo(getItInstance(), getItInstance())
+    //     : await getAndroidInfo(getItInstance(), getItInstance());
     final finalParams = params.copyWith(
-      platform: deviceInfoModel.platform!,
-      deviceUid: deviceInfoModel.deviceUid!,
-      os: deviceInfoModel.os!,
-      osVersion: deviceInfoModel.osVersion!,
-      model: deviceInfoModel.model!,
-      ipAddress: deviceInfoModel.ipAddress ?? 'not found',
-      screenResolution: deviceInfoModel.screenResolution!,
+      platform: 'mobile',
+      deviceUid: '272892-08287-398903903',
+      os: 'ios',
+      osVersion: '10',
+      model: 'samsung s21',
+      ipAddress: '198.0.2.3"',
+      screenResolution: '1080p',
     );
     final Either<AppError, dynamic> eitherResponse =
         await _registerUserRepositoryImpl.registerUser(finalParams.toJson());

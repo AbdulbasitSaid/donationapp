@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -47,6 +48,7 @@ class UserRepository {
     } on InternalServerError {
       return const Left(AppError(appErrorType: AppErrorType.serveError));
     } on Exception {
+      log('e');
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
   }
@@ -193,7 +195,7 @@ class UserRepository {
     try {
       final response = await _userRemoteDataSource
           .validateOtpForgotPassword({"email": email, "otp": otp});
-
+      log(response.toString());
       return Right(response);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));

@@ -42,21 +42,28 @@ class LoginCubit extends Cubit<LoginState> {
 
   void initiateLogin(String email, String password, bool isRememberMe) async {
     emit(LoginLoading());
-    final DeviceInfoModel deviceInfoModel = Platform.isIOS
-        ? await getIosInfo(getItInstance(), getItInstance())
-        : await getAndroidInfo(getItInstance(), getItInstance());
+    // final DeviceInfoModel deviceInfoModel = Platform.isIOS
+    //     ? await getIosInfo(getItInstance(), getItInstance())
+    //     : await getAndroidInfo(getItInstance(), getItInstance());
     final Either<AppError, bool> eitherResponse =
         await _authenticationRepository.loginUser(
             LoginRequestParams(
               email: email,
               password: password,
-              platform: deviceInfoModel.platform!,
-              deviceUid: deviceInfoModel.deviceUid!,
-              os: deviceInfoModel.os!,
-              osVersion: deviceInfoModel.osVersion!,
-              model: deviceInfoModel.model!,
-              ipAddress: deviceInfoModel.ipAddress ?? 'not found',
-              screenResolution: deviceInfoModel.screenResolution!,
+              platform: 'mobile',
+              deviceUid: '272892-08287-398903903',
+              os: 'android',
+              osVersion: '10',
+              model: 'samsung s21',
+              ipAddress: '',
+              screenResolution: '198.0.2.3',
+              // platform: deviceInfoModel.platform!,
+              // deviceUid: deviceInfoModel.deviceUid!,
+              // os: deviceInfoModel.os!,
+              // osVersion: deviceInfoModel.osVersion!,
+              // model: deviceInfoModel.model!,
+              // ipAddress: deviceInfoModel.ipAddress ?? 'not found',
+              // screenResolution: deviceInfoModel.screenResolution!,
             ).toJson(),
             isRememberMe);
 

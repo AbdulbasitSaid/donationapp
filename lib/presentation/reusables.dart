@@ -51,42 +51,39 @@ String getErrorMessage(AppErrorType appErrorType) {
   }
 }
 
-double stripeRatio(String code) {
-  return code.toLowerCase() == 'gbp' ? .0165 + .02 : .0315 + .02;
-}
 
 ///
 /// idonation plus amount before Stripe charges
 ///
 
 //
-Future<DeviceInfoModel> getIosInfo(
-    DeviceInfoPlugin deviceInfoPlugin, NetworkInfo networkInfo) async {
-  final iosInfo = await deviceInfoPlugin.iosInfo;
-  final String ipInfo = await Ipify.ipv64();
-  log(iosInfo.toString());
-  return DeviceInfoModel(
-      platform: 'mobile',
-      deviceUid: iosInfo.identifierForVendor,
-      os: 'ios',
-      osVersion: iosInfo.systemVersion,
-      model: iosInfo.systemName,
-      ipAddress: ipInfo,
-      screenResolution: '1080p');
-  // final ios
-}
+// Future<DeviceInfoModel> getIosInfo(
+//     DeviceInfoPlugin deviceInfoPlugin, NetworkInfo networkInfo) async {
+//   final iosInfo = await deviceInfoPlugin.iosInfo;
+//   final String ipInfo = await Ipify.ipv64();
+//   log(iosInfo.toString());
+//   return DeviceInfoModel(
+//       platform: 'mobile',
+//       deviceUid: iosInfo.identifierForVendor,
+//       os: 'ios',
+//       osVersion: iosInfo.systemVersion,
+//       model: iosInfo.systemName,
+//       ipAddress: ipInfo,
+//       screenResolution: '1080p');
+//   // final ios
+// }
 
-Future<DeviceInfoModel> getAndroidInfo(
-    DeviceInfoPlugin deviceInfoPlugin, NetworkInfo networkInfo) async {
-  final androidInfo = await deviceInfoPlugin.androidInfo;
-  final String ipInfo = await Ipify.ipv64();
-  return DeviceInfoModel(
-      platform: 'mobile',
-      deviceUid: androidInfo.id,
-      os: 'android',
-      osVersion: androidInfo.version.baseOS,
-      model: androidInfo.model,
-      ipAddress: ipInfo,
-      screenResolution: androidInfo.display);
+// Future<DeviceInfoModel> getAndroidInfo(
+//     DeviceInfoPlugin deviceInfoPlugin, NetworkInfo networkInfo) async {
+//   final androidInfo = await deviceInfoPlugin.androidInfo;
+//   final String ipInfo = await Ipify.ipv64();
+//   return DeviceInfoModel(
+//       platform: 'mobile',
+//       deviceUid: androidInfo.id,
+//       os: 'android',
+//       osVersion: androidInfo.version.baseOS,
+//       model: androidInfo.model,
+//       ipAddress: ipInfo,
+//       screenResolution: androidInfo.display);
   // final ios
-}
+

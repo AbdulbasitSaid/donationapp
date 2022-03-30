@@ -28,9 +28,7 @@ class AuthGaurd extends StatelessWidget {
         } else if (state is UnAuthenticated) {
           return const LoginScreen();
         } else if (state is Authenticated) {
-          context.read<DonationHistoryCubit>().getDonationHistory();
-          context.read<GetRecentdoneesCubit>().getRecentDonees();
-          context.read<GetSavedDoneesCubit>().getSavedDonee();
+       
           return const HomeScreen();
         } else if (state is EmailNotVerified) {
           return const EmailVerificationScreen();
