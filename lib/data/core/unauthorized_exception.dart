@@ -10,4 +10,6 @@ class UnprocessableEntity implements Exception {}
 
 class InternalServerError implements Exception {}
 
+class ServerNotAvailableError implements Exception {}
+
 class NetworkError implements Exception {}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 
 import '../journeys/new_donation/cubit/get_payment_methods_cubit.dart';
@@ -23,6 +24,7 @@ class DoneeListTile extends StatelessWidget {
       onPressed: () {
         context.read<GetdoneebycodeCubit>().getDoneeByCode(doneeCode);
         context.read<GetPaymentMethodsCubit>().getPaymentMethods();
+        context.read<GetDonationFeesCubit>().getFees();
         Navigator.push(
             context, AppRouter.routeToPage(const DonationDetialsScreen()));
       },

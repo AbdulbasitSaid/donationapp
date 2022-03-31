@@ -19,4 +19,5 @@ enum AppErrorType {
   unExpected,
   notFound,
   serveError,
+  serverNotAvailble,
 }

@@ -5,7 +5,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:idonatio/common/stripe_charges_calculations.dart';
 import 'package:idonatio/data/models/fees_model.dart';
 
 part 'donation_process_entity.g.dart';
@@ -62,23 +61,23 @@ class DonationProcessEntity {
     required this.cartAmount,
     required this.totalFee,
   });
-  double get getTotalCharges {
-    return getCharges(
-            feeData: feedata, cardCurrency: cardCountry, amount: cartAmount)
-        .totalFee;
-  }
+  // double get getTotalCharges {
+  //   return getCharges(
+  //           feeData: feedata, cardCurrency: cardCountry, amount: cartAmount)
+  //       .totalFee;
+  // }
 
-  double get getIdonationFee {
-    return getCharges(
-            feeData: feedata, cardCurrency: cardCountry, amount: cartAmount)
-        .idonationFee;
-  }
+  // double get getIdonationFee {
+  //   return getCharges(
+  //           feeData: feedata, cardCurrency: cardCountry, amount: cartAmount)
+  //       .idonationFee;
+  // }
 
-  double get getStripeFee {
-    return getCharges(
-            feeData: feedata, cardCurrency: cardCountry, amount: cartAmount)
-        .stripeFee;
-  }
+  // double get getStripeFee {
+  //   return getCharges(
+  //           feeData: feedata, cardCurrency: cardCountry, amount: cartAmount)
+  //       .stripeFee;
+  // }
 
   factory DonationProcessEntity.fromJson(json) =>
       _$DonationProcessEntityFromJson(json);

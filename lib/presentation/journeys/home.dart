@@ -38,119 +38,105 @@ class _HomeScreenState extends State<HomeScreen> {
   PageController pageController = PageController();
   @override
   void initState() {
-    //  context.read<DonationHistoryCubit>().getDonationHistory();
-    //     context.read<GetRecentdoneesCubit>().getRecentDonees();
-    //     context.read<GetSavedDoneesCubit>().getSavedDonee();
     super.initState();
   }
 
-  Stopwatch sessionStopWatch = Stopwatch();
-  void startSessionTimer() {
-    sessionTimer = Timer.periodic(const Duration(minutes: 30), (timer) {
-      Fluttertoast.showToast(msg: 'Sessoin Time Out');
-      context
-          .read<UserCubit>()
-          .setUserState(getItInstance(), AuthStatus.unauthenticated);
-      Navigator.pushAndRemoveUntil(
-          context, AppRouter.routeToPage(const AuthGaurd()), (route) => false);
-    });
-  }
+  // Stopwatch sessionStopWatch = Stopwatch();
+  // void startSessionTimer() {
+  //   sessionTimer = Timer.periodic(const Duration(minutes: 30), (timer) {
+  //     Fluttertoast.showToast(msg: 'Sessoin Time Out');
+  //     context
+  //         .read<UserCubit>()
+  //         .setUserState(getItInstance(), AuthStatus.unauthenticated);
+  //     Navigator.pushAndRemoveUntil(
+  //         context, AppRouter.routeToPage(const AuthGaurd()), (route) => false);
+  //   });
+  // }
 
-  void startLocalSessionTimer() {
-    log('local session restarted');
+  // void startLocalSessionTimer() {
+  //   log('local session restarted');
 
-    localSessionTimer = Timer.periodic(const Duration(seconds: 20), (timer) {
-      final timeElapsed = sessionStopWatch.elapsed;
-      log(timeElapsed.toString());
-      if (timeElapsed > const Duration(seconds: 9)) {
-        log('time out ${sessionStopWatch.elapsed}');
-        Fluttertoast.showToast(msg: 'Sessoin Time Out');
-        context
-            .read<UserCubit>()
-            .setUserState(getItInstance(), AuthStatus.unauthenticated);
-        Navigator.pushAndRemoveUntil(context,
-            AppRouter.routeToPage(const AuthGaurd()), (route) => false);
-      }
-    });
-  }
+  //   localSessionTimer = Timer.periodic(const Duration(seconds: 20), (timer) {
+  //     final timeElapsed = sessionStopWatch.elapsed;
+  //     log(timeElapsed.toString());
+  //     if (timeElapsed > const Duration(seconds: 9)) {
+  //       log('time out ${sessionStopWatch.elapsed}');
+  //       Fluttertoast.showToast(msg: 'Sessoin Time Out');
+  //       context
+  //           .read<UserCubit>()
+  //           .setUserState(getItInstance(), AuthStatus.unauthenticated);
+  //       Navigator.pushAndRemoveUntil(context,
+  //           AppRouter.routeToPage(const AuthGaurd()), (route) => false);
+  //     }
+  //   });
+  // }
 
   @override
   void dispose() {
-    // sessionTimer.cancel();
-    // localSessionTimer.cancel();
-    // sessionStopWatch.stop();
     super.dispose();
   }
 
-  void restartStopWatch() {
-    log('restarted stop watch to`: ${sessionStopWatch.elapsed}');
-    sessionStopWatch.reset();
-  }
+  // void restartStopWatch() {
+  //   log('restarted stop watch to`: ${sessionStopWatch.elapsed}');
+  //   sessionStopWatch.reset();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      onPointerDown: (event) => setState(() {
-        restartStopWatch();
-      }),
-      child: WillPopScope(
-        onWillPop: () async => false,
-        child: Scaffold(
-          body: Center(
-            child: PageView(
-              children: _homeScreens,
-              controller: pageController,
-              onPageChanged: (index) {
-                setState(() {
-                  pageIndex = index;
-                });
-              },
+    return Scaffold(
+      body: Center(
+        child: PageView(
+          children: _homeScreens,
+          controller: pageController,
+          onPageChanged: (index) {
+            setState(() {
+              pageIndex = index;
+            });
+          },
+        ),
+      ),
+      bottomNavigationBar: SizedBox(
+        height: MediaQuery.of(context).size.height * .1,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IdonationButtomNavItem(
+              icon: Icons.add_circle_outline_rounded,
+              pageIndex: 0,
+              text: 'new',
+              pageController: pageController,
+              navItemColor: pageIndex == 0
+                  ? Theme.of(context).primaryColorDark
+                  : Theme.of(context).primaryColor,
             ),
-          ),
-          bottomNavigationBar: SizedBox(
-            height: MediaQuery.of(context).size.height * .1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IdonationButtomNavItem(
-                  icon: Icons.add_circle_outline_rounded,
-                  pageIndex: 0,
-                  text: 'new',
-                  pageController: pageController,
-                  navItemColor: pageIndex == 0
-                      ? Theme.of(context).primaryColorDark
-                      : Theme.of(context).primaryColor,
-                ),
-                IdonationButtomNavItem(
-                  icon: Icons.history,
-                  pageController: pageController,
-                  text: 'History',
-                  pageIndex: 1,
-                  navItemColor: pageIndex == 1
-                      ? Theme.of(context).primaryColorDark
-                      : Theme.of(context).primaryColor,
-                ),
-                IdonationButtomNavItem(
-                  icon: Icons.favorite_border,
-                  pageIndex: 2,
-                  pageController: pageController,
-                  text: 'Donees',
-                  navItemColor: pageIndex == 2
-                      ? Theme.of(context).primaryColorDark
-                      : Theme.of(context).primaryColor,
-                ),
-                IdonationButtomNavItem(
-                  icon: Icons.manage_accounts_outlined,
-                  pageIndex: 3,
-                  pageController: pageController,
-                  text: 'Account',
-                  navItemColor: pageIndex == 3
-                      ? Theme.of(context).primaryColorDark
-                      : Theme.of(context).primaryColor,
-                ),
-              ],
+            IdonationButtomNavItem(
+              icon: Icons.history,
+              pageController: pageController,
+              text: 'History',
+              pageIndex: 1,
+              navItemColor: pageIndex == 1
+                  ? Theme.of(context).primaryColorDark
+                  : Theme.of(context).primaryColor,
             ),
-          ),
+            IdonationButtomNavItem(
+              icon: Icons.favorite_border,
+              pageIndex: 2,
+              pageController: pageController,
+              text: 'Donees',
+              navItemColor: pageIndex == 2
+                  ? Theme.of(context).primaryColorDark
+                  : Theme.of(context).primaryColor,
+            ),
+            IdonationButtomNavItem(
+              icon: Icons.manage_accounts_outlined,
+              pageIndex: 3,
+              pageController: pageController,
+              text: 'Account',
+              navItemColor: pageIndex == 3
+                  ? Theme.of(context).primaryColorDark
+                  : Theme.of(context).primaryColor,
+            ),
+          ],
         ),
       ),
     );

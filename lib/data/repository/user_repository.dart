@@ -47,6 +47,8 @@ class UserRepository {
       return const Left(AppError(appErrorType: AppErrorType.notFound));
     } on InternalServerError {
       return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on ServerNotAvailableError {
+      return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
     } on Exception {
       log('e');
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
@@ -76,6 +78,8 @@ class UserRepository {
       return const Left(AppError(appErrorType: AppErrorType.notFound));
     } on InternalServerError {
       return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on ServerNotAvailableError {
+      return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
     } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
@@ -102,6 +106,8 @@ class UserRepository {
       return const Left(AppError(appErrorType: AppErrorType.notFound));
     } on InternalServerError {
       return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on ServerNotAvailableError {
+      return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
     } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
@@ -138,6 +144,8 @@ class UserRepository {
       return const Left(AppError(appErrorType: AppErrorType.notFound));
     } on InternalServerError {
       return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on ServerNotAvailableError {
+      return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
     } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
@@ -159,6 +167,8 @@ class UserRepository {
       return const Left(AppError(appErrorType: AppErrorType.notFound));
     } on InternalServerError {
       return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on ServerNotAvailableError {
+      return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
     } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
@@ -209,6 +219,8 @@ class UserRepository {
       return const Left(AppError(appErrorType: AppErrorType.notFound));
     } on InternalServerError {
       return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on ServerNotAvailableError {
+      return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
     } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
@@ -238,6 +250,8 @@ class UserRepository {
       return const Left(AppError(appErrorType: AppErrorType.notFound));
     } on InternalServerError {
       return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on ServerNotAvailableError {
+      return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
     } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }

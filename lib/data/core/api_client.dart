@@ -38,6 +38,10 @@ class ApiClient {
         throw UnprocessableEntity();
       case 500:
         throw InternalServerError();
+      case 501:
+        throw InternalServerError();
+      case 503:
+        throw ServerNotAvailableError();
       default:
         throw Exception(response.reasonPhrase);
     }
@@ -71,6 +75,10 @@ class ApiClient {
         throw UnprocessableEntity();
       case 500:
         throw InternalServerError();
+      case 501:
+        throw InternalServerError();
+      case 503:
+        throw ServerNotAvailableError();
       default:
         throw Exception(response.reasonPhrase);
     }
@@ -102,6 +110,12 @@ class ApiClient {
       case 422:
         throw UnprocessableEntity();
       case 500:
+        throw InternalServerError();
+      case 501:
+        throw InternalServerError();
+      case 503:
+        throw ServerNotAvailableError();
+      case 504:
         throw InternalServerError();
       default:
         throw Exception(response.reasonPhrase);
@@ -135,6 +149,11 @@ class ApiClient {
         throw UnprocessableEntity();
       case 500:
         throw InternalServerError();
+
+      case 501:
+        throw InternalServerError();
+      case 503:
+        throw ServerNotAvailableError();
       default:
         throw Exception(response.reasonPhrase);
     }

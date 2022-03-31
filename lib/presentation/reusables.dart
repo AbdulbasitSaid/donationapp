@@ -44,6 +44,8 @@ String getErrorMessage(AppErrorType appErrorType) {
       return 'The requested resource doesn\'t exist.';
     case AppErrorType.serveError:
       return 'Server error. Hopefully this will occur in rear cases.';
+    case AppErrorType.serverNotAvailble:
+      return 'Server not available at the moment please try again!! later';
     case AppErrorType.unExpected:
       return 'Unexpected error.';
     default:

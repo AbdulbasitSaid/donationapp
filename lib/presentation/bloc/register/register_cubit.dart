@@ -7,11 +7,6 @@ import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/repository/user_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/register_request_params.dart';
-import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
-
-import '../../../data/models/device_info_model.dart';
-import '../../../di/get_it.dart';
-import '../../reusables.dart';
 
 part 'register_state.dart';
 

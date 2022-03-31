@@ -258,7 +258,7 @@ class ManageAccountScreen extends StatelessWidget {
                           Navigator.pushAndRemoveUntil(
                               context,
                               AppRouter.routeToPage(const AuthGaurd()),
-                              (route) => false);
+                              (route) => true);
                         }
                       },
                       builder: (context, state) {

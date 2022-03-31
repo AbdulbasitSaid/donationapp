@@ -383,30 +383,30 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                               : () {
                                   log(donationCartTotal.toString());
 
-                                  //Todo check saving a donee during donation
                                   context
                                       .read<DonationProcessCubit>()
                                       .updateDonationProccess(donationProcessState.copyWith(
-                                          stripeConnectedAccountId: getDoneeByCodeState
-                                              .doneeResponseData
-                                              .stripeConnectedAccountId,
+                                          stripeConnectedAccountId:
+                                              getDoneeByCodeState
+                                                  .doneeResponseData
+                                                  .stripeConnectedAccountId,
                                           doneeId: getDoneeByCodeState
                                               .doneeResponseData.id,
+                                          feedata: getFeeData.feesModel.data,
                                           currency: getDoneeByCodeState
                                               .doneeResponseData.currency,
                                           cartAmount: donationCartTotal,
                                           amount: donationProcessState.paidTransactionFee
                                               ? donationCartTotal +
-                                                  getCharges(
-                                                          feeData: getFeeData
-                                                              .feesModel.data,
-                                                          cardCurrency:
-                                                              getPaymentMethod.paymentMethods.data.first.country,
-                                                          amount: donationCartTotal)
+                                                  getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal)
                                                       .totalFee
                                               : donationCartTotal,
-                                          stripeFee: donationProcessState.getStripeFee,
-                                          idonatoiFee: donationProcessState.getIdonationFee,
+                                          stripeFee: getCharges(
+                                                  feeData: getFeeData.feesModel.data,
+                                                  cardCurrency: getPaymentMethod.paymentMethods.data.first.country,
+                                                  amount: donationCartTotal)
+                                              .stripeFee,
+                                          idonatoiFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).idonationFee,
                                           totalCharges: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).totalFee,
                                           totalFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).totalFee,
                                           donationDetails: [

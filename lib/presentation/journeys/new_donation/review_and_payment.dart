@@ -349,6 +349,8 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                                           actions: [
                                                             TextButton(
                                                                 onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
                                                                   context
                                                                       .read<
                                                                           MakedonationCubit>()
