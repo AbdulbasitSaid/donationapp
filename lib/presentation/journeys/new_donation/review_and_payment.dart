@@ -25,6 +25,7 @@ import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 
 import '../../widgets/cards/select_payment_card_widget.dart';
+import '../../widgets/dialogs/app_loader_dialog.dart';
 import 'donation_success_screen.dart';
 
 class ReviewAndPayment extends StatefulWidget {
@@ -295,6 +296,16 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                               context,
                                               AppRouter.routeToPage(
                                                   const DonationSuccessScreen()));
+                                        } else if (makdeDonataionState
+                                            is MakedonationLoading) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return const AppLoader(
+                                                  loadingMessage:
+                                                      'Sending request please wait..',
+                                                );
+                                              });
                                         } else if (makdeDonataionState
                                             is MakedonationFailed) {
                                           Fluttertoast.showToast(

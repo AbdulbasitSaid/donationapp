@@ -25,7 +25,6 @@ class _IncludeTransactionFeeWidgetState
     extends State<IncludeTransactionFeeWidget> {
   @override
   void initState() {
-    context.read<GetDonationFeesCubit>().getFees();
     super.initState();
   }
 
@@ -65,10 +64,6 @@ class _IncludeTransactionFeeWidgetState
                 ),
                 BlocBuilder<DonationCartCubit, List<DonationItemEntity>>(
                   builder: (context, cartState) {
-                    double amount =
-                        cartState.map((e) => e.amount).toList().reduce(
-                              (value, element) => value + element,
-                            );
                     return BlocBuilder<GetDonationFeesCubit,
                         GetDonationFeesState>(builder: (context, feeState) {
                       if (feeState is GetDonationFeesLoading) {
