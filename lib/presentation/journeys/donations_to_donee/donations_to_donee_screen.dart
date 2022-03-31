@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/get_donation_history_by_donee_id_cubit.dart';
@@ -34,34 +33,32 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
               centerTitle: false,
               background: Container(decoration: gradientBoxDecoration()),
               title: FittedBox(
-                child: Flexible(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      // mainAxisAlignment: MainAxisAlignment.,
-                      children: [
-                        Text(
-                          'All Donations'.toUpperCase(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption!
-                              .copyWith(fontSize: 10),
-                        ),
-                        BlocBuilder<GetDonationHistoryByDoneeIdCubit,
-                            GetDonationHistoryByDoneeIdState>(
-                          builder: (context, state) {
-                            if (state is GetDonationHistoryByDoneeIdSuccess) {
-                              return Level2Headline(
-                                  text: state.donationHistoryByDoneeIdModel.data
-                                      .first.donee.fullName);
-                            }
-                            if (state is GetDonationHistoryByDoneeIdFailure) {
-                              return const Level2Headline(
-                                  text: 'Failed to get donee');
-                            } else {}
-                            return const Level2Headline(text: 'Loading...');
-                          },
-                        )
-                      ]),
-                ),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    // mainAxisAlignment: MainAxisAlignment.,
+                    children: [
+                      Text(
+                        'All Donations'.toUpperCase(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption!
+                            .copyWith(fontSize: 10),
+                      ),
+                      BlocBuilder<GetDonationHistoryByDoneeIdCubit,
+                          GetDonationHistoryByDoneeIdState>(
+                        builder: (context, state) {
+                          if (state is GetDonationHistoryByDoneeIdSuccess) {
+                            return Level2Headline(
+                                text: state.donationHistoryByDoneeIdModel.data
+                                    .first.donee.fullName);
+                          }
+                          if (state is GetDonationHistoryByDoneeIdFailure) {
+                            return const Level2Headline(
+                                text: 'Failed to get donee');
+                          } else {}
+                          return const Level2Headline(text: 'Loading...');
+                        },
+                      )
+                    ]),
               ),
             ),
           ),

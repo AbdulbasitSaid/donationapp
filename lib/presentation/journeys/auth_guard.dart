@@ -8,10 +8,7 @@ import 'package:idonatio/presentation/journeys/onboarding/onboarding_screen.dart
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/start_screen.dart';
 
-import '../widgets/input_fields/get_remember_me_email_cubit.dart';
-import 'donation_history/cubit/donation_history_cubit.dart';
-import 'saved_donees/cubit/get_saved_donees_cubit.dart';
-import 'saved_donees/cubit/recentdonees_cubit.dart';
+
 
 class AuthGaurd extends StatelessWidget {
   const AuthGaurd({
