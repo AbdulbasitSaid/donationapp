@@ -35,7 +35,7 @@ class OnboardingScreen extends StatelessWidget {
               Flexible(
                 child: Level1Headline(
                   text:
-                      'Welcome,${localUserObject.user.donor.firstName} ${localUserObject.user.donor.lastName}!',
+                      'Welcome, ${localUserObject.user.donor.firstName} ${localUserObject.user.donor.lastName}!',
                 ),
               ),
               const SizedBox(
@@ -46,7 +46,7 @@ class OnboardingScreen extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyText2!
-                    .copyWith(color: AppColor.darkSecondaryGreen),
+                    .copyWith(color: AppColor.darkSecondaryGreen, fontSize: 18),
               ),
               const SizedBox(
                 height: 16,
@@ -55,12 +55,20 @@ class OnboardingScreen extends StatelessWidget {
                 'Get started by setting up a few preferences that’ll help you get the most out of your donation experience.',
               ),
               const SizedBox(
-                height: 16,
+                height: 64,
               ),
-              ElevatedNextIconButton(
-                text: 'Setup Preferences',
-                onPressed: () => Navigator.push(
-                    context, AppRouter.routeToPage(const GiftAidScreen())),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedNextIconButton(
+                    text: 'Setup Preferences'.toUpperCase(),
+                    onPressed: () => Navigator.push(
+                        context, AppRouter.routeToPage(const GiftAidScreen())),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 16,
               ),
               Padding(
                 padding: const EdgeInsets.all(16),

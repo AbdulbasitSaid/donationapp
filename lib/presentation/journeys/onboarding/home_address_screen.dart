@@ -81,7 +81,7 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
                           text:
                               'Your home address will be used by the charities you donate to for claiming any eligible GiftAid. It is also needed to identify you as a current UK taxpayer. '),
                       const SizedBox(
-                        height: 16,
+                        height: 32,
                       ),
                       TextFormField(
                         keyboardType: TextInputType.streetAddress,

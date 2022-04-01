@@ -17,6 +17,8 @@ import 'package:idonatio/presentation/widgets/labels/label_10_medium.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 
+import '../../widgets/dialogs/app_error_dailog.dart';
+
 class PaymentMethodScreen extends StatefulWidget {
   const PaymentMethodScreen({Key? key}) : super(key: key);
 
@@ -61,6 +63,20 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                   const Level2Headline(text: 'Payment method'),
                   const SizedBox(
                     height: 40,
+                  ),
+                  BlocBuilder<CreateSetupIntentCubit, CreateSetupIntentState>(
+                    builder: (context, state) {
+                      if (state is CreateSetupIntentFailed) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: AppErrorDialogWidget(
+                              title: "Login Failed",
+                              message: state.errorMessage),
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
                   ),
                   const Level4Headline(
                       text: 'Add a payment method to use for your donations'),
@@ -152,8 +168,12 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                               }
                             }
                           }
+                          if (state is CreateSetupIntentFailed) {}
                         },
                         builder: (context, state) {
+                          if (state is CreateSetupIntentLoading) {
+                            return const CircularProgressIndicator();
+                          }
                           return ElevatedButton(
                               onPressed: () async {
                                 await context
