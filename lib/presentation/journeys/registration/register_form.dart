@@ -12,6 +12,9 @@ import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/linked_span_button.dart';
+import 'package:line_icons/line_icons.dart';
+
+import '../../widgets/dialogs/app_loader_dialog.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
@@ -186,6 +189,9 @@ class _RegisterFormState extends State<RegisterForm> {
                       Text(
                         'Next'.toUpperCase(),
                       ),
+                      const SizedBox(
+                        width: 8,
+                      ),
                       const Icon(Icons.arrow_forward)
                     ],
                   ),
@@ -222,7 +228,7 @@ class _RegisterFormState extends State<RegisterForm> {
           decoration: const InputDecoration(
             hintText: TranslationConstants.mobileOptional,
             labelText: TranslationConstants.mobileOptional,
-            prefixIcon: Icon(Icons.phone_outlined),
+            prefixIcon: Icon(LineIcons.phone),
           ),
         ),
         const SizedBox(
@@ -239,7 +245,7 @@ class _RegisterFormState extends State<RegisterForm> {
           decoration: const InputDecoration(
             hintText: TranslationConstants.emailAddress,
             labelText: TranslationConstants.emailAddress,
-            prefixIcon: Icon(Icons.mail_outline),
+            prefixIcon: Icon(LineIcons.envelope),
           ),
         ),
         const SizedBox(
@@ -258,9 +264,9 @@ class _RegisterFormState extends State<RegisterForm> {
           decoration: InputDecoration(
             hintText: TranslationConstants.password,
             labelText: TranslationConstants.password,
-            prefixIcon: const Icon(Icons.lock_outline),
+            prefixIcon: const Icon(LineIcons.lock),
             suffixIcon: IconButton(
-              icon: const Icon(Icons.remove_red_eye_sharp),
+              icon: Icon(hidePassword ? LineIcons.eyeSlash : LineIcons.eye),
               onPressed: () {
                 setState(() {
                   hidePassword = !hidePassword;
@@ -335,19 +341,25 @@ class _RegisterFormState extends State<RegisterForm> {
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: BlocConsumer<RegisterCubit, RegisterState>(
                   listener: (context, state) {
-                    if (state is RegisterSuccess) {
+                    if (state is RegisterLoading) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const AppLoader(
+                              loadingMessage: 'Sending request please wait..',
+                            );
+                          });
+                    } else if (state is RegisterSuccess) {
                       context.read<UserCubit>().setUserState(
                           getItInstance(), AuthStatus.authenticated);
                       Navigator.push(
                           context, AppRouter.routeToPage(const AuthGaurd()));
+                    } else {
+                      Navigator.of(context, rootNavigator: true).pop();
                     }
                   },
                   builder: (context, state) {
-                    if (state is RegisterLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
+                    {
                       return ElevatedButton(
                         onPressed: _enableRegister
                             ? () {
@@ -365,7 +377,6 @@ class _RegisterFormState extends State<RegisterForm> {
                                             _passwordEditingController.text,
                                         phoneNumber:
                                             _mobileNumberTextController.text,
-                                       
                                       ));
                                   context.read<UserCubit>().setUserState(
                                       getItInstance(),

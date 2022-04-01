@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/presentation/widgets/buttons/cubit/resend_otp_cubit.dart';
+import 'package:line_icons/line_icons.dart';
 
 import '../../themes/app_color.dart';
 
@@ -24,47 +25,37 @@ class ResendOTPCode extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is ResendOtpLoading) {
-          return TextButton(
-            onPressed: null,
-            child: Row(
-              children: const [
-                Flexible(
-                  child: Icon(
-                    Icons.restart_alt,
+        return Row(
+          children: [
+            TextButton(
+              onPressed: state is ResendOtpLoading
+                  ? null
+                  : () {
+                      context.read<ResendOtpCubit>().resendOptCode();
+                    },
+              child: Row(
+                children: [
+                  const Icon(
+                    LineIcons.alternateRedo,
                     color: AppColor.basePrimary,
                   ),
-                ),
-                Text(
-                  'Resend code',
-                  style: TextStyle(color: AppColor.basePrimary),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                CircularProgressIndicator()
-              ],
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  const Text(
+                    'Resend code',
+                    style: TextStyle(color: AppColor.basePrimary),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  state is ResendOtpLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : const SizedBox.shrink(),
+                ],
+              ),
             ),
-          );
-        }
-        return TextButton(
-          onPressed: () {
-            context.read<ResendOtpCubit>().resendOptCode();
-          },
-          child: Row(
-            children: const [
-              Flexible(
-                child: Icon(
-                  Icons.restart_alt,
-                  color: AppColor.basePrimary,
-                ),
-              ),
-              Text(
-                'Resend code',
-                style: TextStyle(color: AppColor.basePrimary),
-              ),
-            ],
-          ),
+          ],
         );
       },
     );

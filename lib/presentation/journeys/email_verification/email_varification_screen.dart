@@ -9,6 +9,7 @@ import 'package:idonatio/presentation/journeys/email_verification/cubit/verifica
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
+import 'package:pinput/pinput.dart';
 
 import '../../widgets/buttons/reset_otp_code.dart';
 
@@ -17,11 +18,16 @@ class EmailVerificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: const SingleChildScrollView(
-        child: AppBackgroundWidget(
-          childWidget: VerifyEmailForm(),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+        ),
+        body: const SingleChildScrollView(
+          child: AppBackgroundWidget(
+            childWidget: VerifyEmailForm(),
+          ),
         ),
       ),
     );
@@ -54,6 +60,7 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
 
   @override
   Widget build(BuildContext context) {
+    bool _isOptComplted = false;
     return Form(
       key: _formKey,
       child: Column(
@@ -63,7 +70,7 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
           AspectRatio(
             aspectRatio: 4 / 1,
             child: Text(
-              'Verify',
+              'Register',
               style: Theme.of(context)
                   .textTheme
                   .headline2!
@@ -81,24 +88,38 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
             height: 16,
           ),
           const Text(
-            'We have sent a verification message to your email address.Click the link in the message to verify your email or enter the 6-digit code we sent you below.',
+            'We have sent a verification message to your email address.',
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          const Text(
+            'Click the link in the message to verify your email or enter the 6-digit code we sent you below.',
           ),
           const SizedBox(
             height: 16,
           ),
-          TextFormField(
-            keyboardType: TextInputType.number,
+          Pinput(
+            pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
             controller: _otpController,
-            validator: MultiValidator([
-              RequiredValidator(errorText: 'Opt is required'),
-            ]),
-            onChanged: (value) {
-              _formKey.currentState!.validate();
+            // forceErrorState: true,
+            errorText: 'Error',
+            length: 6,
+
+            onCompleted: (pin) {
+              setState(() {
+                _isOptComplted = true;
+              });
             },
-            decoration: const InputDecoration(
-              hintText: 'OTP Code(123456)',
-              labelText: 'OTP Code',
-              prefixIcon: Icon(Icons.code),
+            defaultPinTheme: PinTheme(
+              width: MediaQuery.of(context).size.width * .12,
+              height: MediaQuery.of(context).size.height * .07,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border:
+                    Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
+                borderRadius: BorderRadius.circular(4),
+              ),
             ),
           ),
           const SizedBox(
@@ -141,7 +162,7 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
                           .verifyOtp(_otpController.text);
                     }
                   },
-                  child: const Text('Verify Email'),
+                  child: Text('Verify Email'.toUpperCase()),
                 );
               }
             },

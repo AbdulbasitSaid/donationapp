@@ -4,6 +4,7 @@ import 'package:idonatio/common/words.dart';
 import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
+import 'package:idonatio/presentation/widgets/dialogs/app_loader_dialog.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../auth_guard.dart';
@@ -42,17 +43,18 @@ class RegistrationScreen extends StatelessWidget {
                       ),
                     );
                   }
-                  if (state is RegisterLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+
                   return const SizedBox.shrink();
                 },
-                listenWhen: (previous, current) => current is RegisterSuccess,
                 listener: (context, state) {
-                  Navigator.push(
-                    context,
-                    AppRouter.routeToPage(const AuthGaurd()),
-                  );
+                  if (state is RegisterSuccess) {
+                    Navigator.push(
+                      context,
+                      AppRouter.routeToPage(const AuthGaurd()),
+                    );
+                  } else {
+                    const SizedBox.shrink();
+                  }
                 },
               ),
               const RegisterForm()

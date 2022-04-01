@@ -67,7 +67,7 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/pngs/logo_mark.png"
-  adaptive_icon_background: "assets/pngs/logo_mark.png"
+  adaptive_icon_background: "#ffffff"
   adaptive_icon_foreground: "assets/pngs/logo_mark.png"
   flutter_test:
     sdk: flutter

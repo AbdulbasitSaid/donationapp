@@ -148,6 +148,7 @@ class AppThemeData {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         primary: AppColor.basePrimary,
+        onSurface: AppColor.darkPrimary,
         minimumSize: const Size(300, 48),
         textStyle: appTextTheme().button,
         elevation: 0,
@@ -156,7 +157,7 @@ class AppThemeData {
             borderRadius: BorderRadius.all(
           Radius.circular(8),
         )),
-      ),
+      ).copyWith(),
     );
   }
 

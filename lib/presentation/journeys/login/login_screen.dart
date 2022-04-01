@@ -4,7 +4,9 @@ import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/login/login_form.dart';
+import 'package:idonatio/presentation/journeys/registration/registration_screen.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
+import 'package:idonatio/presentation/journeys/user/start_screen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_1_headline.dart';
@@ -52,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             getItInstance(), AuthStatus.appStarted);
                         Navigator.pushAndRemoveUntil(
                             context,
-                            AppRouter.routeToPage(const AuthGaurd()),
+                            AppRouter.routeToPage(const StartScreen()),
                             (route) => false);
                       },
                       icon: const Icon(
