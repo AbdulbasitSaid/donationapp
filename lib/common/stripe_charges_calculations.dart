@@ -63,7 +63,9 @@ ChargesResult getCharges(
   return amount == 0
       ? ChargesResult(stripeFee: 0.0, totalFee: 0.0, idonationFee: 0.0)
       : ChargesResult(
-          idonationFee: idonatioFee, stripeFee: idonatioFee, totalFee: charges);
+          idonationFee: idonatioFee,
+          stripeFee: stripeFixedFee,
+          totalFee: charges);
 }
 
 //
