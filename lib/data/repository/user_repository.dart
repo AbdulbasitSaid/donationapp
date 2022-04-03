@@ -119,13 +119,20 @@ class UserRepository {
       final user = await UserLocalDataSource().getUser();
       final response =
           await _userRemoteDataSource.onBoarding(params, token: user.token);
+
       await _userLocalDataSource.updateUserData(
         user.copyWith(
           user: user.user.copyWith(
             donor: user.user.donor.copyWith(
-              isOnboarded: true,
+              isOnboarded: response.data.isOnboarded,
+              giftAidEnabled: response.data.giftAidEnabled,
+              paymentMethod: response.data.paymentMethod,
+              phoneReceiveSecurityAlert:
+                  response.data.phoneReceiveSecurityAlert,
+              sendMarketingMail: response.data.sendMarketingMail,
               firstName: response.data.firstName,
               lastName: response.data.lastName,
+              donateAnonymously: response.data.donateAnonymously,
             ),
           ),
         ),

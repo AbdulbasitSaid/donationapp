@@ -53,6 +53,7 @@ class Data {
     required this.countryId,
     required this.paymentMethod,
     required this.sendMarketingMail,
+    required this.donateAnonymously,
   });
 
   final String id;
@@ -71,6 +72,7 @@ class Data {
   final String? countryId;
   final String? paymentMethod;
   final bool? sendMarketingMail;
+  final bool donateAnonymously;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
@@ -89,6 +91,7 @@ class Data {
         countryId: json["country_id"],
         paymentMethod: json["payment_method"],
         sendMarketingMail: json["send_marketing_mail"],
+        donateAnonymously: json["donate_anonymously"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -108,5 +111,6 @@ class Data {
         "country_id": countryId,
         "payment_method": paymentMethod,
         "send_marketing_mail": sendMarketingMail,
+        "donate_anonymously": donateAnonymously,
       };
 }

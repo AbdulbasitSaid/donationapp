@@ -4,10 +4,10 @@ import 'package:idonatio/presentation/journeys/onboarding/entities/onboarding_en
 
 part 'onboardingdataholder_state.dart';
 
-class OnboardingdataholderCubit extends Cubit<OnboardingdataholderState> {
-  OnboardingdataholderCubit() : super(OnboardingdataholderInitial());
+class OnboardingdataholderCubit extends Cubit<OnboardingEntity> {
+  OnboardingdataholderCubit() : super(const OnboardingEntity());
 
   void updateOnboardingData(OnboardingEntity onboardingEntity) {
-    emit(OnboardingdataUpdated(onboardingEntity: onboardingEntity));
+    emit(onboardingEntity);
   }
 }

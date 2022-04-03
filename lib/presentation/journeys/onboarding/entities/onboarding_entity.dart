@@ -27,7 +27,7 @@ class OnboardingEntity extends Equatable {
     this.donateAnonymously = false,
   });
 
-  final  bool giftAidEnabled;
+  final bool giftAidEnabled;
   final String address;
   final String city;
   final String county;
@@ -81,4 +81,32 @@ class OnboardingEntity extends Equatable {
         {'donate anonymously ?': donateAnonymously},
         {'stripe customer id': stripeCustomerId}
       ];
+
+  OnboardingEntity copyWith({
+    bool? giftAidEnabled,
+    String? address,
+    String? city,
+    String? county,
+    String? postalCode,
+    String? countryId,
+    String? stripeCustomerId,
+    String? paymentMethod,
+    bool? sendMarketingMail,
+    bool? isOnboarded,
+    bool? donateAnonymously,
+  }) {
+    return OnboardingEntity(
+      giftAidEnabled: giftAidEnabled ?? this.giftAidEnabled,
+      address: address ?? this.address,
+      city: city ?? this.city,
+      county: county ?? this.county,
+      postalCode: postalCode ?? this.postalCode,
+      countryId: countryId ?? this.countryId,
+      stripeCustomerId: stripeCustomerId ?? this.stripeCustomerId,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      sendMarketingMail: sendMarketingMail ?? this.sendMarketingMail,
+      isOnboarded: isOnboarded ?? this.isOnboarded,
+      donateAnonymously: donateAnonymously ?? this.donateAnonymously,
+    );
+  }
 }

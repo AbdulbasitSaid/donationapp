@@ -26,31 +26,31 @@ class UserLocalDataSource {
     log(userResetPasswordEmail.get('reset_password_email'));
   }
 
-
   Future<String> getPasswordResetEmail() async {
     final emailBox = await Hive.openBox('reset_password_email_store');
     final String email = emailBox.get('reset_password_email');
     return email;
   }
-  Future<String?>getRememberMeEmail()async{
+
+  Future<String?> getRememberMeEmail() async {
     final emailBox = await Hive.openBox('remember_me_box');
 
-    return  emailBox.get('remember_me_email');
+    return emailBox.get('remember_me_email');
   }
+
   Future<void> deleteResetPasswordEmail() async {
     Hive.box<UserData>('reset_password_email_store')
         .delete('reset_password_email');
   }
 
   Future<void> rememberMeEmail(String email) async {
-    final userResetPasswordEmail =
-    await Hive.openBox('remember_me_box');
+    final userResetPasswordEmail = await Hive.openBox('remember_me_box');
     userResetPasswordEmail.put('remember_me_email', email);
     log(userResetPasswordEmail.get('remember_me_email'));
   }
 
-  Future<void>deleteResetRememberMeEmail()async{
-   await Hive.box('remember_me_box').delete('remember_me_email');
+  Future<void> deleteResetRememberMeEmail() async {
+    await Hive.box('remember_me_box').delete('remember_me_email');
   }
 
   //
@@ -80,6 +80,7 @@ class UserLocalDataSource {
                   sendMarketingMail: false,
                   stripeCustomerId: '',
                   title: '',
+                  donateAnonymously: false,
                 ),
                 email: '',
                 emailVerifiedAt: null,

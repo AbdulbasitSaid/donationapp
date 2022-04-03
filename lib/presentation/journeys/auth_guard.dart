@@ -8,8 +8,6 @@ import 'package:idonatio/presentation/journeys/onboarding/onboarding_screen.dart
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/start_screen.dart';
 
-
-
 class AuthGaurd extends StatelessWidget {
   const AuthGaurd({
     Key? key,
@@ -25,7 +23,6 @@ class AuthGaurd extends StatelessWidget {
         } else if (state is UnAuthenticated) {
           return const LoginScreen();
         } else if (state is Authenticated) {
-       
           return const HomeScreen();
         } else if (state is EmailNotVerified) {
           return const EmailVerificationScreen();

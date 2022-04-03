@@ -19,7 +19,11 @@ import 'donation_history/cubit/donation_history_cubit.dart';
 import 'manage_account/manage_account_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({
+    Key? key,
+    this.pageIndex = 0,
+  }) : super(key: key);
+  final int pageIndex;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -34,52 +38,22 @@ class _HomeScreenState extends State<HomeScreen> {
     const SavedDoneeScreen(),
     const ManageAccountScreen(),
   ];
-  int pageIndex = 0;
-  PageController pageController = PageController();
+  late PageController pageController =
+      PageController(initialPage: widget.pageIndex);
+  late int pageIndex;
+
   @override
   void initState() {
+    pageIndex = widget.pageIndex;
+
     super.initState();
   }
 
-  // Stopwatch sessionStopWatch = Stopwatch();
-  // void startSessionTimer() {
-  //   sessionTimer = Timer.periodic(const Duration(minutes: 30), (timer) {
-  //     Fluttertoast.showToast(msg: 'Sessoin Time Out');
-  //     context
-  //         .read<UserCubit>()
-  //         .setUserState(getItInstance(), AuthStatus.unauthenticated);
-  //     Navigator.pushAndRemoveUntil(
-  //         context, AppRouter.routeToPage(const AuthGaurd()), (route) => false);
-  //   });
-  // }
-
-  // void startLocalSessionTimer() {
-  //   log('local session restarted');
-
-  //   localSessionTimer = Timer.periodic(const Duration(seconds: 20), (timer) {
-  //     final timeElapsed = sessionStopWatch.elapsed;
-  //     log(timeElapsed.toString());
-  //     if (timeElapsed > const Duration(seconds: 9)) {
-  //       log('time out ${sessionStopWatch.elapsed}');
-  //       Fluttertoast.showToast(msg: 'Sessoin Time Out');
-  //       context
-  //           .read<UserCubit>()
-  //           .setUserState(getItInstance(), AuthStatus.unauthenticated);
-  //       Navigator.pushAndRemoveUntil(context,
-  //           AppRouter.routeToPage(const AuthGaurd()), (route) => false);
-  //     }
-  //   });
-  // }
-
   @override
   void dispose() {
+    pageController.dispose();
     super.dispose();
   }
-
-  // void restartStopWatch() {
-  //   log('restarted stop watch to`: ${sessionStopWatch.elapsed}');
-  //   sessionStopWatch.reset();
-  // }
 
   @override
   Widget build(BuildContext context) {

@@ -54,8 +54,7 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
       body: SafeArea(
         child: AppBackgroundWidget(
           childWidget: SingleChildScrollView(
-            child: BlocConsumer<OnboardingdataholderCubit,
-                OnboardingdataholderState>(
+            child: BlocConsumer<OnboardingdataholderCubit, OnboardingEntity>(
               listener: (context, state) {},
               builder: (context, state) {
                 return Form(
@@ -214,26 +213,23 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
                                   countryId != null &&
                                   countyValue != null
                               ? () {
-                                  if (state is OnboardingdataUpdated) {
-                                    context
-                                        .read<OnboardingdataholderCubit>()
-                                        .updateOnboardingData(
-                                          OnboardingEntity(
-                                              giftAidEnabled: state
-                                                  .onboardingEntity
-                                                  .giftAidEnabled,
-                                              address: address.text,
-                                              city: town.text,
-                                              county: countyValue!,
-                                              countryId: countryId!,
-                                              postalCode: postCode.text,
-                                              isOnboarded: true),
-                                        );
-                                    Navigator.push(
-                                        context,
-                                        AppRouter.routeToPage(
-                                            const PaymentMethodScreen()));
-                                  }
+                                  context
+                                      .read<OnboardingdataholderCubit>()
+                                      .updateOnboardingData(
+                                        OnboardingEntity(
+                                            giftAidEnabled:
+                                                state.giftAidEnabled,
+                                            address: address.text,
+                                            city: town.text,
+                                            county: countyValue!,
+                                            countryId: countryId!,
+                                            postalCode: postCode.text,
+                                            isOnboarded: true),
+                                      );
+                                  Navigator.push(
+                                      context,
+                                      AppRouter.routeToPage(
+                                          const PaymentMethodScreen()));
                                 }
                               : null),
                     ],

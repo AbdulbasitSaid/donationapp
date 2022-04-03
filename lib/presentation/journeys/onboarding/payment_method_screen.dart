@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/common/assest.dart';
 import 'package:idonatio/common/enums/payment_options.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
@@ -10,6 +11,7 @@ import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/create_setup_intent_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboarding_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboardingdataholder_cubit.dart';
+import 'package:idonatio/presentation/journeys/onboarding/data_preference_screen.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
@@ -44,6 +46,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final onboardingProcessState =
+        context.watch<OnboardingdataholderCubit>().state;
     return Scaffold(
       appBar: AppBar(
         actions: const [],
@@ -105,52 +109,30 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                   .setUpIntentEnitityData.data.ephemeralKey,
                             ));
                             try {
-                              await Stripe.instance.presentPaymentSheet();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(' succesfully completed'),
-                                ),
-                              );
-                              final onboardingState = context
+                              context
                                   .read<OnboardingdataholderCubit>()
-                                  .state;
-                              if (onboardingState is OnboardingdataUpdated) {
-                                try {
-                                  context.read<OnboardingCubit>().onBoardUser({
-                                    "gift_aid_enabled": onboardingState
-                                        .onboardingEntity.giftAidEnabled,
-                                    "address": onboardingState
-                                        .onboardingEntity.address,
-                                    "city":
-                                        onboardingState.onboardingEntity.city,
-                                    "county":
-                                        onboardingState.onboardingEntity.county,
-                                    "postal_code": onboardingState
-                                        .onboardingEntity.postalCode,
-                                    "country_id": onboardingState
-                                        .onboardingEntity.countryId,
-                                    "payment_method": "card",
-                                    "send_marketing_mail": onboardingState
-                                        .onboardingEntity.sendMarketingMail,
-                                    "is_onboarded": true,
-                                    "donate_anonymously": onboardingState
-                                        .onboardingEntity.donateAnonymously,
-                                    "stripe_customer_id": state
+                                  .updateOnboardingData(
+                                      onboardingProcessState.copyWith(
+                                    stripeCustomerId: state
                                         .setUpIntentEnitityData
                                         .data
-                                        .stripeCustomerId
-                                  });
-                                  context.read<UserCubit>().setUserState(
-                                      getItInstance(),
-                                      AuthStatus.authenticated);
-                                } on UnprocessableEntity {
-                                  throw UnprocessableEntity();
-                                } on Forbidden {
-                                  throw Forbidden();
-                                } on Exception {
-                                  throw Exception();
-                                }
-                              }
+                                        .stripeCustomerId,
+                                    paymentMethod: 'card',
+                                  ));
+
+                              await Stripe.instance.presentPaymentSheet();
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Payment method added successfully :-) !!'),
+                                ),
+                              );
+                              Navigator.push(
+                                context,
+                                AppRouter.routeToPage(
+                                    const OnboardingDataPreferencesScreen()),
+                              );
                             } on Exception catch (e) {
                               if (e is StripeException) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -168,7 +150,12 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                               }
                             }
                           }
-                          if (state is CreateSetupIntentFailed) {}
+
+                          if (state is CreateSetupIntentFailed) {
+                            Fluttertoast.showToast(
+                                msg:
+                                    'Failed to reach stripe!! Please try again');
+                          }
                         },
                         builder: (context, state) {
                           if (state is CreateSetupIntentLoading) {
@@ -186,23 +173,11 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                     ],
                   ),
                   const SizedBox(height: 32),
-                  BlocListener<OnboardingCubit, OnboardingState>(
-                    listener: (context, state) {
-                      if (state is OnboardingSuccess) {
-                        context.read<UserCubit>().setUserState(
-                            getItInstance(), AuthStatus.authenticated);
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            AppRouter.routeToPage(const AuthGaurd()),
-                            (route) => false);
-                      }
-                    },
-                    child: Container(
-                      height: 50,
-                      padding: const EdgeInsets.all(8),
-                      child: const Image(
-                        image: AssetImage(AppAssest.poweredByStripe),
-                      ),
+                  Container(
+                    height: 50,
+                    padding: const EdgeInsets.all(8),
+                    child: const Image(
+                      image: AssetImage(AppAssest.poweredByStripe),
                     ),
                   )
                 ],

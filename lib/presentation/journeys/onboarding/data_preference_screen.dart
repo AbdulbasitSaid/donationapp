@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
+import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboarding_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboardingdataholder_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/entities/onboarding_entity.dart';
@@ -10,6 +12,10 @@ import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
 import 'package:idonatio/presentation/widgets/labels/label_10_medium.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
+
+import '../../../di/get_it.dart';
+import '../../../enums.dart';
+import '../user/cubit/user_cubit.dart';
 
 class OnboardingDataPreferencesScreen extends StatefulWidget {
   const OnboardingDataPreferencesScreen({Key? key}) : super(key: key);
@@ -25,6 +31,8 @@ class _OnboardingDataPreferencesScreenState
   bool isDonateAnonymously = false;
   @override
   Widget build(BuildContext context) {
+    final onboardingProcessState =
+        context.watch<OnboardingdataholderCubit>().state;
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -33,6 +41,9 @@ class _OnboardingDataPreferencesScreenState
             child: BlocConsumer<OnboardingCubit, OnboardingState>(
               listener: (context, state) {
                 if (state is OnboardingSuccess) {
+                  context
+                      .read<UserCubit>()
+                      .setUserState(getItInstance(), AuthStatus.authenticated);
                   Navigator.push(
                       context, AppRouter.routeToPage(const AuthGaurd()));
                 }
@@ -92,6 +103,14 @@ class _OnboardingDataPreferencesScreenState
                                           onChanged: (bool? value) {
                                             setState(() {
                                               isMarketing = value!;
+                                              context
+                                                  .read<
+                                                      OnboardingdataholderCubit>()
+                                                  .updateOnboardingData(
+                                                      onboardingProcessState
+                                                          .copyWith(
+                                                              sendMarketingMail:
+                                                                  value));
                                             });
                                           }),
                                       title: Text(
@@ -111,6 +130,14 @@ class _OnboardingDataPreferencesScreenState
                                           onChanged: (bool? value) {
                                             setState(() {
                                               isDonateAnonymously = value!;
+                                              context
+                                                  .read<
+                                                      OnboardingdataholderCubit>()
+                                                  .updateOnboardingData(
+                                                      onboardingProcessState
+                                                          .copyWith(
+                                                              donateAnonymously:
+                                                                  value));
                                             });
                                           }),
                                       title: Text(
@@ -143,75 +170,19 @@ class _OnboardingDataPreferencesScreenState
                               const SizedBox(
                                 height: 42,
                               ),
-                              BlocBuilder<OnboardingdataholderCubit,
-                                  OnboardingdataholderState>(
-                                builder: (context, state) {
-                                  if (state is OnboardingdataUpdated) {
-                                    return ElevatedButton(
-                                      onPressed: () {
-                                        context
-                                            .read<OnboardingdataholderCubit>()
-                                            .updateOnboardingData(
-                                                OnboardingEntity(
-                                              giftAidEnabled: state
-                                                  .onboardingEntity
-                                                  .giftAidEnabled,
-                                              address: state
-                                                  .onboardingEntity.address,
-                                              city: state.onboardingEntity.city,
-                                              county:
-                                                  state.onboardingEntity.county,
-                                              countryId: state
-                                                  .onboardingEntity.countryId,
-                                              paymentMethod: state
-                                                  .onboardingEntity
-                                                  .paymentMethod,
-                                              postalCode: state
-                                                  .onboardingEntity.postalCode,
-                                              sendMarketingMail: isMarketing,
-                                              isOnboarded: true,
-                                              donateAnonymously:
-                                                  isDonateAnonymously,
-                                            ));
-                                        context
-                                            .read<OnboardingCubit>()
-                                            .onBoardUser(OnboardingEntity(
-                                              giftAidEnabled: state
-                                                  .onboardingEntity
-                                                  .giftAidEnabled,
-                                              address: state
-                                                  .onboardingEntity.address,
-                                              city: state.onboardingEntity.city,
-                                              county:
-                                                  state.onboardingEntity.county,
-                                              countryId: state
-                                                  .onboardingEntity.countryId,
-                                              paymentMethod: state
-                                                  .onboardingEntity
-                                                  .paymentMethod,
-                                              postalCode: state
-                                                  .onboardingEntity.postalCode,
-                                              sendMarketingMail: isMarketing,
-                                              isOnboarded: true,
-                                              donateAnonymously:
-                                                  isDonateAnonymously,
-                                            ).toJson());
-                                      },
-                                      child:
-                                          Text('Complete setup'.toUpperCase()),
-                                    );
-                                  } else {
-                                    return TextButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              AppRouter.routeToPage(
-                                                  const AuthGaurd()));
-                                        },
-                                        child: const Text(
-                                            'Please restart onboarding process'));
-                                  }
+
+                              //
+                              ElevatedButton(
+                                onPressed: () {
+                                  context
+                                      .read<OnboardingdataholderCubit>()
+                                      .updateOnboardingData(
+                                          onboardingProcessState.copyWith(
+                                              isOnboarded: true));
+                                  context.read<OnboardingCubit>().onBoardUser(
+                                      onboardingProcessState.toJson());
                                 },
+                                child: Text('Complete setup'.toUpperCase()),
                               )
                             ],
                           ))
