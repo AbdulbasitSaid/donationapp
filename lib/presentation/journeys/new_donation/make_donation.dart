@@ -161,13 +161,21 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          'Get started by adding a donee above.',
-                          style: Theme.of(context).textTheme.bodyText2,
-                        ),
-                      ),
+                      Builder(builder: (context) {
+                        final doneeState =
+                            context.watch<GetRecentdoneesCubit>().state;
+                        return doneeState is RecentdoneesSuccessful &&
+                                doneeState
+                                    .recentDoneesResponseModel.data!.isEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  'Get started by adding a donee above.',
+                                  style: Theme.of(context).textTheme.bodyText2,
+                                ),
+                              )
+                            : const SizedBox.shrink();
+                      }),
                       const SizedBox(
                         height: 8,
                       ),

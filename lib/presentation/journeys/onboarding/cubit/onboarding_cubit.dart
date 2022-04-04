@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
-import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/repository/user_repository.dart';
 
 part 'onboarding_state.dart';

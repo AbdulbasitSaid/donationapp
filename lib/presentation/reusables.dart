@@ -1,13 +1,8 @@
-import 'dart:developer';
 
-import 'package:dart_ipify/dart_ipify.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:intl/intl.dart';
-import 'package:network_info_plus/network_info_plus.dart';
 
-import '../data/models/device_info_model.dart';
 import '../domain/entities/app_error.dart';
 
 BoxDecoration whiteContainerBackGround() {

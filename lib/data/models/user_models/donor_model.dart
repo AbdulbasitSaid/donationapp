@@ -100,46 +100,46 @@ class DonorModel {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is DonorModel &&
-      other.id == id &&
-      other.firstName == firstName &&
-      other.lastName == lastName &&
-      other.isOnboarded == isOnboarded &&
-      other.title == title &&
-      other.phoneNumber == phoneNumber &&
-      other.phoneVerifiedAt == phoneVerifiedAt &&
-      other.phoneReceiveSecurityAlert == phoneReceiveSecurityAlert &&
-      other.giftAidEnabled == giftAidEnabled &&
-      other.address == address &&
-      other.city == city &&
-      other.countryId == countryId &&
-      other.postalCode == postalCode &&
-      other.paymentMethod == paymentMethod &&
-      other.stripeCustomerId == stripeCustomerId &&
-      other.sendMarketingMail == sendMarketingMail &&
-      other.donateAnonymously == donateAnonymously;
+        other.id == id &&
+        other.firstName == firstName &&
+        other.lastName == lastName &&
+        other.isOnboarded == isOnboarded &&
+        other.title == title &&
+        other.phoneNumber == phoneNumber &&
+        other.phoneVerifiedAt == phoneVerifiedAt &&
+        other.phoneReceiveSecurityAlert == phoneReceiveSecurityAlert &&
+        other.giftAidEnabled == giftAidEnabled &&
+        other.address == address &&
+        other.city == city &&
+        other.countryId == countryId &&
+        other.postalCode == postalCode &&
+        other.paymentMethod == paymentMethod &&
+        other.stripeCustomerId == stripeCustomerId &&
+        other.sendMarketingMail == sendMarketingMail &&
+        other.donateAnonymously == donateAnonymously;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      firstName.hashCode ^
-      lastName.hashCode ^
-      isOnboarded.hashCode ^
-      title.hashCode ^
-      phoneNumber.hashCode ^
-      phoneVerifiedAt.hashCode ^
-      phoneReceiveSecurityAlert.hashCode ^
-      giftAidEnabled.hashCode ^
-      address.hashCode ^
-      city.hashCode ^
-      countryId.hashCode ^
-      postalCode.hashCode ^
-      paymentMethod.hashCode ^
-      stripeCustomerId.hashCode ^
-      sendMarketingMail.hashCode ^
-      donateAnonymously.hashCode;
+        firstName.hashCode ^
+        lastName.hashCode ^
+        isOnboarded.hashCode ^
+        title.hashCode ^
+        phoneNumber.hashCode ^
+        phoneVerifiedAt.hashCode ^
+        phoneReceiveSecurityAlert.hashCode ^
+        giftAidEnabled.hashCode ^
+        address.hashCode ^
+        city.hashCode ^
+        countryId.hashCode ^
+        postalCode.hashCode ^
+        paymentMethod.hashCode ^
+        stripeCustomerId.hashCode ^
+        sendMarketingMail.hashCode ^
+        donateAnonymously.hashCode;
   }
 
   @override
@@ -154,14 +154,14 @@ class DonorModel {
     bool? isOnboarded,
     String? title,
     String? phoneNumber,
-    dynamic? phoneVerifiedAt,
+    dynamic phoneVerifiedAt,
     bool? phoneReceiveSecurityAlert,
     bool? giftAidEnabled,
-    dynamic? address,
-    dynamic? city,
-    dynamic? countryId,
-    dynamic? postalCode,
-    dynamic? paymentMethod,
+    dynamic address,
+    dynamic city,
+    dynamic countryId,
+    dynamic postalCode,
+    dynamic paymentMethod,
     String? stripeCustomerId,
     bool? sendMarketingMail,
     bool? donateAnonymously,
@@ -174,7 +174,8 @@ class DonorModel {
       title: title ?? this.title,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       phoneVerifiedAt: phoneVerifiedAt ?? this.phoneVerifiedAt,
-      phoneReceiveSecurityAlert: phoneReceiveSecurityAlert ?? this.phoneReceiveSecurityAlert,
+      phoneReceiveSecurityAlert:
+          phoneReceiveSecurityAlert ?? this.phoneReceiveSecurityAlert,
       giftAidEnabled: giftAidEnabled ?? this.giftAidEnabled,
       address: address ?? this.address,
       city: city ?? this.city,

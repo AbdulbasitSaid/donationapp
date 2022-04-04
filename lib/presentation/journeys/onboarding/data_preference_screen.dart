@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
-import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboarding_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboardingdataholder_cubit.dart';
-import 'package:idonatio/presentation/journeys/onboarding/entities/onboarding_entity.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';

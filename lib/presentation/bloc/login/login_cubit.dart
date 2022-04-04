@@ -1,17 +1,14 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:idonatio/data/repository/user_repository.dart';
-import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/login_request_params.dart';
 import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
 
-import '../../../data/models/device_info_model.dart';
 import '../../reusables.dart';
 
 part 'login_state.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
@@ -46,6 +45,7 @@ class VerifyEmailForm extends StatefulWidget {
 class _VerifyEmailFormState extends State<VerifyEmailForm> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _otpController;
+
   @override
   void initState() {
     _otpController = TextEditingController();
@@ -61,6 +61,7 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
   @override
   Widget build(BuildContext context) {
     bool _isOptComplted = false;
+
     return Form(
       key: _formKey,
       child: Column(
