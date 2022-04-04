@@ -374,11 +374,13 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                             .map((e) => e.amount)
                             .toList()
                             .reduce((a, b) => a + b);
+                    bool invalidDonationTypes =
+                        donationCartState.map((e) => e.amount).contains(0);
                     if (getDoneeByCodeState is GetdoneebycodeSuccess &&
                         getFeeData is GetDonationFeesSuccess &&
                         getPaymentMethod is GetPaymentMethodsSuccessful) {
                       return ElevatedButton(
-                          onPressed: donationCartTotal < 1
+                          onPressed: invalidDonationTypes
                               ? null
                               : () {
                                   log(donationCartTotal.toString());

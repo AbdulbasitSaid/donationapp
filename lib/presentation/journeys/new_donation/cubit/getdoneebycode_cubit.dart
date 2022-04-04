@@ -4,6 +4,7 @@ import 'package:idonatio/data/repository/donee_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 
 import '../../../../data/models/donation_models/donee_response_model.dart';
+import '../../../reusables.dart';
 
 part 'getdoneebycode_state.dart';
 
@@ -21,16 +22,5 @@ class GetdoneebycodeCubit extends Cubit<GetdoneebycodeState> {
               appErrorType: l.appErrorType,
             ),
         (r) => GetdoneebycodeSuccess(r.data)));
-  }
-
-  String getErrorMessage(AppErrorType appErrorType) {
-    switch (appErrorType) {
-      case AppErrorType.network:
-        return 'Network failure: please check you network and try again';
-      case AppErrorType.unauthorized:
-        return 'session expired';
-      default:
-        return 'Opps something went wrong!';
-    }
   }
 }
