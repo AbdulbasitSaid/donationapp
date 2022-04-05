@@ -6,6 +6,7 @@ import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_me
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/donation_details.dart';
 import 'package:idonatio/presentation/journeys/new_donation/entities/donation_process_entity.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
@@ -97,6 +98,7 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
               ),
               BlocBuilder<GetdoneebycodeCubit, GetdoneebycodeState>(
                 builder: (context, state) {
+                  final donorState = context.watch<UserCubit>().state;
                   final feeState = context.watch<GetDonationFeesCubit>().state;
                   if (state is GetdoneebycodeSuccess &&
                       feeState is GetDonationFeesSuccess) {
@@ -133,8 +135,18 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
                                     ));
                                 Navigator.push(
                                     context,
-                                    AppRouter.routeToPage(
-                                        const DonationDetialsScreen()));
+                                    AppRouter.routeToPage(DonationDetialsScreen(
+                                      isDonateAnonymously:
+                                          donorState is Authenticated
+                                              ? donorState.userData.user.donor
+                                                  .donateAnonymously
+                                              : false,
+                                      isEnableGiftAid:
+                                          donorState is Authenticated
+                                              ? donorState.userData.user.donor
+                                                  .giftAidEnabled
+                                              : false,
+                                    )));
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

@@ -225,17 +225,6 @@ class MyProfileScreen extends StatelessWidget {
                             Text('*********'),
                           ],
                         ),
-                        // IconButton(
-                        //     onPressed: () {
-                        //       Navigator.push(
-                        //           context,
-                        //           AppRouter.routeToPage(
-                        //               const ChangePasswordScreen()));
-                        //     },
-                        //     icon: const Icon(
-                        //       Icons.edit,
-                        //       color: AppColor.basePrimary,
-                        //     ))
                       ],
                     ),
                   ),

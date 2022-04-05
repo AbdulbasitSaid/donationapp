@@ -97,7 +97,7 @@ class _OnboardingDataPreferencesScreenState
                                     ListTile(
                                       leading: Checkbox(
                                           value: isMarketing,
-                                          onChanged: (bool? value) {
+                                          onChanged: (value) {
                                             setState(() {
                                               isMarketing = value!;
                                               context
@@ -107,7 +107,7 @@ class _OnboardingDataPreferencesScreenState
                                                       onboardingProcessState
                                                           .copyWith(
                                                               sendMarketingMail:
-                                                                  value));
+                                                                  isMarketing));
                                             });
                                           }),
                                       title: Text(
@@ -124,7 +124,7 @@ class _OnboardingDataPreferencesScreenState
                                     ListTile(
                                       leading: Checkbox(
                                           value: isDonateAnonymously,
-                                          onChanged: (bool? value) {
+                                          onChanged: (value) {
                                             setState(() {
                                               isDonateAnonymously = value!;
                                               context
@@ -134,7 +134,7 @@ class _OnboardingDataPreferencesScreenState
                                                       onboardingProcessState
                                                           .copyWith(
                                                               donateAnonymously:
-                                                                  value));
+                                                                  isDonateAnonymously));
                                             });
                                           }),
                                       title: Text(

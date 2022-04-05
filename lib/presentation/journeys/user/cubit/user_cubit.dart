@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
+import 'package:idonatio/data/models/user_models/local_user_model.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
@@ -57,7 +58,7 @@ class UserCubit extends Cubit<UserState> {
 
   void _checkOnboardingStatus(UserData user) {
     if (user.user.donor.isOnboarded) {
-      emit(Authenticated());
+      emit(Authenticated(user));
     } else {
       log(user.toString());
       emit(NotBoarded(localUserObject: user));

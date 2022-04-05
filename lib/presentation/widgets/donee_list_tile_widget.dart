@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 
 import '../journeys/new_donation/cubit/get_payment_methods_cubit.dart';
 import '../journeys/new_donation/donation_details.dart';
@@ -20,41 +21,53 @@ class DoneeListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        context.read<GetdoneebycodeCubit>().getDoneeByCode(doneeCode);
-        context.read<GetPaymentMethodsCubit>().getPaymentMethods();
-        context.read<GetDonationFeesCubit>().getFees();
-        Navigator.push(
-            context, AppRouter.routeToPage(const DonationDetialsScreen()));
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const DoneeAvatarPlaceHolder(),
-          const SizedBox(
-            width: 8,
-          ),
-          Flexible(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "$name",
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Text(
-                "$address",
-                style: Theme.of(context).textTheme.caption,
-              ),
-            ],
-          ))
-        ]),
-      ),
-    );
+    return Builder(builder: (context) {
+      final userState = context.watch<UserCubit>().state;
+
+      return TextButton(
+        onPressed: () {
+          context.read<GetdoneebycodeCubit>().getDoneeByCode(doneeCode);
+          context.read<GetPaymentMethodsCubit>().getPaymentMethods();
+          context.read<GetDonationFeesCubit>().getFees();
+          Navigator.push(
+              context,
+              AppRouter.routeToPage(DonationDetialsScreen(
+                isDonateAnonymously: userState is Authenticated
+                    ? userState.userData.user.donor.donateAnonymously
+                    : false,
+                isEnableGiftAid: userState is Authenticated
+                    ? userState.userData.user.donor.giftAidEnabled
+                    : false,
+              )));
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const DoneeAvatarPlaceHolder(),
+            const SizedBox(
+              width: 8,
+            ),
+            Flexible(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "$name",
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "$address",
+                  style: Theme.of(context).textTheme.caption,
+                ),
+              ],
+            ))
+          ]),
+        ),
+      );
+    });
   }
 }

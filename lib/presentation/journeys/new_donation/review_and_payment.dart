@@ -16,6 +16,7 @@ import 'package:idonatio/presentation/journeys/new_donation/entities/donation_pr
 import 'package:idonatio/presentation/journeys/new_donation/entities/make_donation_entity.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -44,6 +45,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final donorState = context.watch<UserCubit>().state;
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -73,8 +75,16 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                         onPressed: () {
                           Navigator.pushAndRemoveUntil(
                               context,
-                              AppRouter.routeToPage(
-                                  const DonationDetialsScreen()),
+                              AppRouter.routeToPage(DonationDetialsScreen(
+                                isDonateAnonymously: donorState is Authenticated
+                                    ? donorState
+                                        .userData.user.donor.donateAnonymously
+                                    : false,
+                                isEnableGiftAid: donorState is Authenticated
+                                    ? donorState
+                                        .userData.user.donor.giftAidEnabled
+                                    : false,
+                              )),
                               (route) => false);
                         },
                         child: Text('edit'.toUpperCase())),

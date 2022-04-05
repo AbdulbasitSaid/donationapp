@@ -14,7 +14,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     emit(OnboardingLoading());
 
     try {
-      final boardedUser = await authenticationRepository.boardUser(params);
+   await authenticationRepository.boardUser(params);
       emit(const OnboardingSuccess('Onboarding was successful'));
     } on UnprocessableEntity {
       emit(const OnboardingFailure('Validation error '));

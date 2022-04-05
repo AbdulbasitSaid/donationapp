@@ -18,6 +18,7 @@ import '../../widgets/labels/level_2_heading.dart';
 import '../new_donation/cubit/get_payment_methods_cubit.dart';
 import '../new_donation/cubit/getdoneebycode_cubit.dart';
 import '../new_donation/donation_details.dart';
+import '../user/cubit/user_cubit.dart';
 
 class SavedDoneeDetails extends StatefulWidget {
   const SavedDoneeDetails({Key? key, required this.donationData})
@@ -348,19 +349,30 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
           ),
         ),
         //todo change color
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            context
-                .read<GetdoneebycodeCubit>()
-                .getDoneeByCode(widget.donationData.doneeCode!);
-            context.read<GetPaymentMethodsCubit>().getPaymentMethods();
-            Navigator.push(
-                context, AppRouter.routeToPage(const DonationDetialsScreen()));
-          },
-          label: Text('new donation'.toUpperCase()),
-          icon: const Icon(
-            Icons.add,
-          ),
-        ));
+        floatingActionButton: Builder(builder: (context) {
+          final userState = context.watch<UserCubit>().state;
+          return FloatingActionButton.extended(
+            onPressed: () {
+              context
+                  .read<GetdoneebycodeCubit>()
+                  .getDoneeByCode(widget.donationData.doneeCode!);
+              context.read<GetPaymentMethodsCubit>().getPaymentMethods();
+              Navigator.push(
+                  context,
+                  AppRouter.routeToPage(DonationDetialsScreen(
+                    isDonateAnonymously: userState is Authenticated
+                        ? userState.userData.user.donor.donateAnonymously
+                        : false,
+                    isEnableGiftAid: userState is Authenticated
+                        ? userState.userData.user.donor.giftAidEnabled
+                        : false,
+                  )));
+            },
+            label: Text('new donation'.toUpperCase()),
+            icon: const Icon(
+              Icons.add,
+            ),
+          );
+        }));
   }
 }

@@ -17,7 +17,11 @@ class UnAuthenticated extends UserState {
 
 class UnSaved extends UserState {}
 
-class Authenticated extends UserState {}
+class Authenticated extends UserState {
+  final UserData userData;
+
+  const Authenticated(this.userData);
+}
 
 class EmailNotVerified extends UserState {}
 
