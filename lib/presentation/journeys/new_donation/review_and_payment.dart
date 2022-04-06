@@ -13,6 +13,7 @@ import 'package:idonatio/presentation/journeys/new_donation/cubit/select_payment
 import 'package:idonatio/presentation/journeys/new_donation/donation_details.dart';
 import 'package:idonatio/presentation/journeys/new_donation/entities/donation_item_entity.dart';
 import 'package:idonatio/presentation/journeys/new_donation/entities/donation_process_entity.dart';
+import 'package:idonatio/presentation/journeys/new_donation/entities/donation_success_entity.dart';
 import 'package:idonatio/presentation/journeys/new_donation/entities/make_donation_entity.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
@@ -46,6 +47,8 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final donorState = context.watch<UserCubit>().state;
+    final donataionProcessState = context.watch<DonationProcessCubit>().state;
+    final getDoneeState = context.watch<GetdoneebycodeCubit>().state;
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -305,7 +308,25 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                           Navigator.push(
                                               context,
                                               AppRouter.routeToPage(
-                                                  const DonationSuccessScreen()));
+                                                  DonationSuccessScreen(
+                                                donationSuccessEnitity:
+                                                    DonationSuccessEnitity(
+                                                  amount: donataionProcessState
+                                                      .amount,
+                                                  nameOfDonee: getDoneeState
+                                                          is GetdoneebycodeSuccess
+                                                      ? getDoneeState
+                                                          .doneeResponseData
+                                                          .fullName
+                                                      : '',
+                                                  transactionFee:
+                                                      donataionProcessState
+                                                          .totalFee,
+                                                  paidCharges:
+                                                      donataionProcessState
+                                                          .paidTransactionFee,
+                                                ),
+                                              )));
                                         } else if (makdeDonataionState
                                             is MakedonationLoading) {
                                           showDialog(
