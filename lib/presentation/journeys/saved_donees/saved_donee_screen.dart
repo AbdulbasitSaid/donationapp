@@ -150,50 +150,53 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                             DateTime.now().month)
                                         .take(5)
                                         .toList();
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Level6Headline(
-                                              text: 'Added recently'),
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.all(16),
-                                          decoration:
-                                              whiteContainerBackGround(),
-                                          child: Column(children: [
-                                            if (recentlySaved.isNotEmpty)
-                                              ...recentlySaved.map((e) =>
-                                                  SavedDoneeListItemWidget(
-                                                    donee: e,
-                                                  ))
-                                          ]),
-                                        ),
-                                      ],
-                                    );
+                                    return recentlySaved.isNotEmpty
+                                        ? Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Padding(
+                                                padding: EdgeInsets.all(16.0),
+                                                child: Level6Headline(
+                                                    text: 'Added recently'),
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.all(16),
+                                                decoration:
+                                                    whiteContainerBackGround(),
+                                                child: Column(children: [
+                                                  if (recentlySaved.isNotEmpty)
+                                                    ...recentlySaved.map((e) =>
+                                                        SavedDoneeListItemWidget(
+                                                          donee: e,
+                                                        ))
+                                                ]),
+                                              ),
+                                            ],
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Text(
+                                                    'Get started by adding a donee.'),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Text(
+                                                  'A list of donees you have saved will appear here once you add a donee.',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption,
+                                                ),
+                                              ],
+                                            ),
+                                          );
                                   }
-                                  return Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                            'Get started by adding a donee.'),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        Text(
-                                          'A list of donees you have saved will appear here once you add a donee.',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .caption,
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                  return const SizedBox.shrink();
                                 },
                               ),
                               const SizedBox(
@@ -240,26 +243,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                       ],
                                     );
                                   }
-                                  return Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                            'Get started by adding a donee.'),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        Text(
-                                          'A list of donees you have saved will appear here once you add a donee.',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .caption,
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                  return const SizedBox.shrink();
                                 },
                               ),
                             ],
