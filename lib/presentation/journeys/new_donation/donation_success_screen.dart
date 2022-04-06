@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/makedonation_cubit.dart';
+import 'package:idonatio/presentation/journeys/new_donation/entities/donation_success_entity.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
@@ -11,8 +12,9 @@ import 'cubit/donation_process_cubit.dart';
 import 'entities/donation_process_entity.dart';
 
 class DonationSuccessScreen extends StatelessWidget {
-  const DonationSuccessScreen({Key? key}) : super(key: key);
-
+  const DonationSuccessScreen({Key? key, required this.donationSuccessEnitity})
+      : super(key: key);
+  final DonationSuccessEnitity donationSuccessEnitity;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -65,7 +67,7 @@ class DonationSuccessScreen extends StatelessWidget {
                                   return Column(
                                     children: [
                                       Text(
-                                        'Your donation has been successfully processed.',
+                                        'Your donation of £${donationSuccessEnitity.amount} to ${donationSuccessEnitity.nameOfDonee} has been successfully processed.',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline2!
@@ -76,6 +78,16 @@ class DonationSuccessScreen extends StatelessWidget {
                                       const SizedBox(
                                         height: 16,
                                       ),
+                                      donationSuccessEnitity.paidCharges
+                                          ? Text(
+                                              'You included the transaction fee of £${donationSuccessEnitity.transactionFee} in your payment. ${donationSuccessEnitity.nameOfDonee} will get 100% of your donation amount.')
+                                          : Text(
+                                              'You did not include the transaction fee of £${donationSuccessEnitity.transactionFee} in your payment. ${donationSuccessEnitity.nameOfDonee} will get ${donationSuccessEnitity.amount - donationSuccessEnitity.transactionFee} of your donation amount.'),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      const Text(
+                                          'A confirmation email has been sent to your email address.'),
                                     ],
                                   );
                                 },
