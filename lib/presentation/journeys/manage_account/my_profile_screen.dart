@@ -59,8 +59,11 @@ class MyProfileScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
-                          child: Text(
-                              '${donor?.title} ${donor?.firstName} ${donor?.lastName}'),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                                '${donor?.title} ${donor?.firstName} ${donor?.lastName}'),
+                          ),
                         ),
                         IconButton(
                           onPressed: () {
@@ -123,44 +126,46 @@ class MyProfileScreen extends StatelessWidget {
                       //address
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    AppRouter.routeToPage(
-                                        const EditAddressScreen()));
-                              },
-                              icon: const Icon(Icons.place_outlined)),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * .6,
-                                child: Text(
-                                  '${donor?.address}',
-                                  overflow: TextOverflow.clip,
-                                ),
-                              ),
                               IconButton(
                                   onPressed: () {
-                                    context
-                                        .read<GetcountreisCubit>()
-                                        .getCountries();
                                     Navigator.push(
                                         context,
                                         AppRouter.routeToPage(
                                             const EditAddressScreen()));
                                   },
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    color: AppColor.basePrimary,
-                                  )),
+                                  icon: const Icon(Icons.place_outlined)),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * .6,
+                                child: Text(
+                                  '${donor?.address}',
+                                  textAlign: TextAlign.start,
+                                  overflow: TextOverflow.clip,
+                                  softWrap: true,
+                                ),
+                              ),
                             ],
                           ),
-                          const Divider()
+                          IconButton(
+                              onPressed: () {
+                                context
+                                    .read<GetcountreisCubit>()
+                                    .getCountries();
+                                Navigator.push(
+                                    context,
+                                    AppRouter.routeToPage(
+                                        const EditAddressScreen()));
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                color: AppColor.basePrimary,
+                              )),
                         ],
                       ),
+                      const Divider(),
                       // end address
                       // email
                       Row(
