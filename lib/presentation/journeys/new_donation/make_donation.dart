@@ -139,8 +139,11 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                           text: 'Recent',
                         ),
                         GestureDetector(
-                          onTap: (() => Navigator.push(context,
-                              AppRouter.routeToPage(const SavedDoneeScreen()))),
+                          onTap: (() => Navigator.push(
+                              context,
+                              AppRouter.routeToPage(const SavedDoneeScreen(
+                                showBackButton: true,
+                              )))),
                           child: Text(
                             "Saved Donees".toUpperCase(),
                             style: Theme.of(context)
