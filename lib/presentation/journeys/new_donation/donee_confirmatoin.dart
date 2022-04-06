@@ -234,8 +234,7 @@ class DoneeCardWidget extends StatelessWidget {
                   leading: const Icon(Icons.location_pin),
                   iconColor: AppColor.baseText80Primary,
                   title: Text(
-                    '${state.doneeResponseData.organization?.addressLine_1}'
-                        .toUpperCase(),
+                    state.doneeResponseData.fullAddress.toUpperCase(),
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           color: AppColor.baseText80Primary,
                         ),
@@ -245,10 +244,7 @@ class DoneeCardWidget extends StatelessWidget {
                   leading: const Icon(Icons.web),
                   iconColor: AppColor.baseText80Primary,
                   title: Text(
-                    state.doneeResponseData.organization?.website == null
-                        ? "has not website".toUpperCase()
-                        : '${state.doneeResponseData.organization?.website}'
-                            .toLowerCase(),
+                    state.doneeResponseData.website.toUpperCase(),
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           color: AppColor.baseText80Primary,
                         ),

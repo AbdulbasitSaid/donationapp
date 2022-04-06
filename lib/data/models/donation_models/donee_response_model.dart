@@ -73,6 +73,16 @@ class Data {
         : "${organization!.name}";
   }
 
+  String get fullAddress {
+    return organization == null
+        ? addressLine_1 + addressLine_2
+        : "${organization?.addressLine_1} + ${organization?.addressLine_2}";
+  }
+
+  String get website {
+    return organization == null ? 'has no website' : '${organization?.website}';
+  }
+
   String get currency {
     return organization == null
         ? country.currencyCode!
