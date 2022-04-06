@@ -4,6 +4,9 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_summary_cubit.dart';
 import 'package:idonatio/presentation/journeys/donation_history/donation_history_details_screen.dart';
+import 'package:idonatio/presentation/journeys/new_donation/add_donee_by_id.dart';
+import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
+import 'package:idonatio/presentation/journeys/new_donation/scan_for_donee.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
@@ -123,7 +126,7 @@ A history of donations you’ve made through this app. Select a donation to view
                                                 builder:
                                                     (context) => SimpleDialog(
                                                             title: const Text(
-                                                                'Add donee'),
+                                                                'Get Donee'),
                                                             children: [
                                                               Padding(
                                                                 padding:
@@ -138,7 +141,7 @@ A history of donations you’ve made through this app. Select a donation to view
                                                                               context);
                                                                           Navigator.push(
                                                                               context,
-                                                                              AppRouter.routeToPage(const SaveDoneeAddDoneeByIdScreen()));
+                                                                              AppRouter.routeToPage(const AddDoneeByIdScreen()));
                                                                         },
                                                                         child:
                                                                             Row(
@@ -167,7 +170,7 @@ A history of donations you’ve made through this app. Select a donation to view
                                                                               context);
                                                                           Navigator.push(
                                                                               context,
-                                                                              AppRouter.routeToPage(const SaveDoneeAddByQrCodeScreen()));
+                                                                              AppRouter.routeToPage(const ScanForDoneeScreen()));
                                                                         },
                                                                         child:
                                                                             Row(
