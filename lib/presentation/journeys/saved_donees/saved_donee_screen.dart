@@ -17,10 +17,14 @@ import '../../widgets/labels/level_2_heading.dart';
 import '../../widgets/labels/level_6_headline.dart';
 
 class SavedDoneeScreen extends StatefulWidget {
-  const SavedDoneeScreen({Key? key}) : super(key: key);
+  const SavedDoneeScreen({
+    Key? key,
+    this.showBackButton = false,
+  }) : super(key: key);
 
   @override
   State<SavedDoneeScreen> createState() => _SavedDoneeScreenState();
+  final bool showBackButton;
 }
 
 class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
@@ -35,6 +39,20 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: widget.showBackButton,
+          actions: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  isStartSearch = !isStartSearch;
+                });
+              },
+              icon: const Icon(Icons.search,
+                  size: 32, color: AppColor.text80Primary),
+            ),
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(
@@ -95,25 +113,59 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
           decoration: gradientBoxDecoration(),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: Stack(
+          child: Column(
             children: [
               SingleChildScrollView(
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isStartSearch = !isStartSearch;
-                            });
-                          },
-                          icon: const Icon(Icons.search,
-                              size: 32, color: AppColor.text80Primary),
-                        ),
-                      ],
-                    ),
+                    isStartSearch
+                        ? Container(
+                            decoration: BoxDecoration(boxShadow: [
+                              BoxShadow(
+                                  color:
+                                      const Color(0xff425A70).withOpacity(.25),
+                                  offset: const Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: -2),
+                              BoxShadow(
+                                  color:
+                                      const Color(0xff425A70).withOpacity(.25),
+                                  offset: const Offset(0, 0),
+                                  blurRadius: 1,
+                                  spreadRadius: 0),
+                            ]),
+                            child: TextFormField(
+                              autofocus: true,
+                              textAlign: TextAlign.start,
+                              textAlignVertical: TextAlignVertical.center,
+                              onChanged: (value) {
+                                context
+                                    .read<GetSavedDoneesCubit>()
+                                    .seachSavedDonee(value);
+                              },
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  hintText: 'Search',
+                                  focusedBorder: InputBorder.none,
+                                  border: InputBorder.none,
+                                  prefix: IconButton(
+                                    padding: const EdgeInsets.all(0),
+                                    icon: const Icon(
+                                      FeatherIcons.x,
+                                      color: AppColor.baseText80Primary,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        context
+                                            .read<GetSavedDoneesCubit>()
+                                            .getSavedDonee();
+                                        isStartSearch = !isStartSearch;
+                                      });
+                                    },
+                                  )),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
                     !isStartSearch
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,52 +358,6 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                 ),
               ),
-              isStartSearch
-                  ? Container(
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                            color: const Color(0xff425A70).withOpacity(.25),
-                            offset: const Offset(0, 2),
-                            blurRadius: 4,
-                            spreadRadius: -2),
-                        BoxShadow(
-                            color: const Color(0xff425A70).withOpacity(.25),
-                            offset: const Offset(0, 0),
-                            blurRadius: 1,
-                            spreadRadius: 0),
-                      ]),
-                      child: TextFormField(
-                        autofocus: true,
-                        textAlign: TextAlign.start,
-                        textAlignVertical: TextAlignVertical.center,
-                        onChanged: (value) {
-                          context
-                              .read<GetSavedDoneesCubit>()
-                              .seachSavedDonee(value);
-                        },
-                        decoration: InputDecoration(
-                            isDense: true,
-                            hintText: 'Search',
-                            focusedBorder: InputBorder.none,
-                            border: InputBorder.none,
-                            prefix: IconButton(
-                              padding: const EdgeInsets.all(0),
-                              icon: const Icon(
-                                FeatherIcons.x,
-                                color: AppColor.baseText80Primary,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  context
-                                      .read<GetSavedDoneesCubit>()
-                                      .getSavedDonee();
-                                  isStartSearch = !isStartSearch;
-                                });
-                              },
-                            )),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
             ],
           ),
         ),
