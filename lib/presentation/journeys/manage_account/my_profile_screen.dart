@@ -37,10 +37,11 @@ class MyProfileScreen extends StatelessWidget {
                 listener: (context, state) {
                   if (state is UpdateProfileLoading) {
                     showDialog(
+                        barrierDismissible: false,
                         context: context,
-                        builder: (_) => AlertDialog(
+                        builder: (_) => const AlertDialog(
                               title: Text('Updating profile'),
-                              content: Container(
+                              content: SizedBox(
                                   height: 40,
                                   width: 40,
                                   child: Center(
