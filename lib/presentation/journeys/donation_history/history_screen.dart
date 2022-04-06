@@ -13,6 +13,8 @@ import 'package:intl/intl.dart';
 
 import '../../../data/models/donation_models/donation_history_model.dart';
 import '../../reusables.dart';
+import '../saved_donees/save_donee_add_by_id_screen.dart';
+import '../saved_donees/save_donee_add_by_qr_code_screen.dart';
 
 class DonationHistoryScreen extends StatefulWidget {
   const DonationHistoryScreen({Key? key}) : super(key: key);
@@ -115,7 +117,74 @@ A history of donations you’ve made through this app. Select a donation to view
                                         height: 16,
                                       ),
                                       ElevatedButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (context) => SimpleDialog(
+                                                            title: const Text(
+                                                                'Add donee'),
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child:
+                                                                    TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          Navigator.push(
+                                                                              context,
+                                                                              AppRouter.routeToPage(const SaveDoneeAddDoneeByIdScreen()));
+                                                                        },
+                                                                        child:
+                                                                            Row(
+                                                                          children: [
+                                                                            const Icon(Icons.add_circle_outline_rounded),
+                                                                            const SizedBox(
+                                                                              width: 24,
+                                                                            ),
+                                                                            Text(
+                                                                              'Add by ID',
+                                                                              style: Theme.of(context).textTheme.bodyLarge,
+                                                                            )
+                                                                          ],
+                                                                        )),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child:
+                                                                    TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          Navigator.push(
+                                                                              context,
+                                                                              AppRouter.routeToPage(const SaveDoneeAddByQrCodeScreen()));
+                                                                        },
+                                                                        child:
+                                                                            Row(
+                                                                          children: [
+                                                                            const Icon(Icons.qr_code_2),
+                                                                            const SizedBox(
+                                                                              width: 24,
+                                                                            ),
+                                                                            Text(
+                                                                              'Scan QR Code',
+                                                                              style: Theme.of(context).textTheme.bodyLarge,
+                                                                            )
+                                                                          ],
+                                                                        )),
+                                                              ),
+                                                            ]));
+                                          },
                                           child: Row(
                                             children: [
                                               const Icon(
