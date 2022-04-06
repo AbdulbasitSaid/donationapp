@@ -284,6 +284,7 @@ class ManageAccountScreen extends StatelessWidget {
                         }
                         return TextButton(
                           onPressed: () {
+                            
                             context.read<LogoutCubit>().logoutUser();
                           },
                           child: Text(

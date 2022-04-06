@@ -12,6 +12,9 @@ import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 
 import '../../../di/get_it.dart';
 import '../../../enums.dart';
+import '../donation_history/cubit/donation_history_cubit.dart';
+import '../saved_donees/cubit/get_saved_donees_cubit.dart';
+import '../saved_donees/cubit/recentdonees_cubit.dart';
 import '../user/cubit/user_cubit.dart';
 
 class OnboardingDataPreferencesScreen extends StatefulWidget {
@@ -41,6 +44,9 @@ class _OnboardingDataPreferencesScreenState
                   context
                       .read<UserCubit>()
                       .setUserState(getItInstance(), AuthStatus.authenticated);
+                  context.read<DonationHistoryCubit>().getDonationHistory();
+                  context.read<GetRecentdoneesCubit>().getRecentDonees();
+                  context.read<GetSavedDoneesCubit>().getSavedDonee();
                   Navigator.push(
                       context, AppRouter.routeToPage(const AuthGaurd()));
                 }
