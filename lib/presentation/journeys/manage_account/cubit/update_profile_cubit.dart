@@ -101,4 +101,15 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
             errorMessage: getErrorMessage(l.appErrorType)),
         (r) => const UpdateProfileSuccessfull(' updated successfully.')));
   }
+
+  void editAnonymousOption({required bool anonymousOption}) async {
+    emit(UpdateProfileLoading());
+    final result = await _profileRepository
+        .updateUser({'donate_anonymously': anonymousOption});
+    emit(result.fold(
+        (l) => UpdateProfileFailed(
+            appErrorType: l.appErrorType,
+            errorMessage: getErrorMessage(l.appErrorType)),
+        (r) => const UpdateProfileSuccessfull(' updated successfully.')));
+  }
 }
