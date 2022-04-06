@@ -159,16 +159,24 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'FAQs',
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      'Answers to the most common user questions.',
-                      style: Theme.of(context).textTheme.caption,
+                    TextButton(
+                      onPressed: () {},
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'FAQs',
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            'Answers to the most common user questions.',
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                        ],
+                      ),
                     ),
                     const Divider(),
                     TextButton(
@@ -208,19 +216,28 @@ class ManageAccountScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'About iDonatio',
-                      style: Theme.of(context).textTheme.subtitle1,
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'About iDonatio',
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
                     ),
                     const Divider(),
-                    Text(
-                      'Terms & conditions',
-                      style: Theme.of(context).textTheme.subtitle1,
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Terms & conditions',
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
                     ),
                     const Divider(),
-                    Text(
-                      'Privacy policy',
-                      style: Theme.of(context).textTheme.subtitle1,
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Privacy policy',
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
                     ),
                   ],
                 ),
