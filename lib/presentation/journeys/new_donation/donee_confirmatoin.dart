@@ -53,7 +53,14 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
                     const SizedBox(
                       height: 8,
                     ),
-                    const Level2Headline(text: 'RCCG East London'),
+                    BlocBuilder<GetdoneebycodeCubit, GetdoneebycodeState>(
+                      builder: (context, state) {
+                        return Level2Headline(
+                            text: state is GetdoneebycodeSuccess
+                                ? state.doneeResponseData.fullName
+                                : 'Failed to get Donee');
+                      },
+                    ),
                   ],
                 ),
               ),
