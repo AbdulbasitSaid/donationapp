@@ -134,45 +134,71 @@ A history of donations you’ve made through this app. Select a donation to view
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Level6Headline(
-                                              text: 'This month'),
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.all(16),
-                                          decoration:
-                                              whiteContainerBackGround(),
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: Column(children: [
-                                            ...thisMonthDonations.map((e) =>
-                                                DonationHistoryListCardItem(
-                                                  donationData: e,
-                                                ))
-                                          ]),
-                                        ),
-                                        const SizedBox(
-                                          height: 32,
-                                        ),
-                                        const Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child:
-                                              Level6Headline(text: 'Earlier'),
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.all(16),
-                                          decoration:
-                                              whiteContainerBackGround(),
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: Column(children: [
-                                            ...earlierDonations.map((e) =>
-                                                DonationHistoryListCardItem(
-                                                  donationData: e,
-                                                ))
-                                          ]),
-                                        ),
+                                        thisMonthDonations.isNotEmpty
+                                            ? Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(16.0),
+                                                    child: Level6Headline(
+                                                        text: 'This month'),
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16),
+                                                    decoration:
+                                                        whiteContainerBackGround(),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    child: Column(children: [
+                                                      ...thisMonthDonations.map(
+                                                          (e) =>
+                                                              DonationHistoryListCardItem(
+                                                                donationData: e,
+                                                              ))
+                                                    ]),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 32,
+                                                  ),
+                                                ],
+                                              )
+                                            : const SizedBox.shrink(),
+                                        //
+                                        earlierDonations.isNotEmpty
+                                            ? Column(
+                                                children: [
+                                                  const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(16.0),
+                                                    child: Level6Headline(
+                                                        text: 'Earlier'),
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16),
+                                                    decoration:
+                                                        whiteContainerBackGround(),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    child: Column(children: [
+                                                      ...earlierDonations.map((e) =>
+                                                          DonationHistoryListCardItem(
+                                                            donationData: e,
+                                                          ))
+                                                    ]),
+                                                  ),
+                                                ],
+                                              )
+                                            : const SizedBox.shrink(),
                                       ])
                                 : state.donationHistoryModel.data.isEmpty
                                     ? Padding(
