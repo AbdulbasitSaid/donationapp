@@ -122,12 +122,12 @@ class _EnableGiftAidForDonationState extends State<EnableGiftAidForDonation> {
                                   value: state.giftAidEnabled,
                                   onChanged: (value) {
                                     setState(() {
-                                      context
-                                          .read<DonationProcessCubit>()
-                                          .updateDonationProccess(
-                                              state.copyWith(
-                                                  giftAidEnabled:
-                                                      !state.giftAidEnabled));
+                                      // context
+                                      //     .read<DonationProcessCubit>()
+                                      //     .updateDonationProccess(
+                                      //         state.copyWith(
+                                      //             giftAidEnabled:
+                                      //                 !state.giftAidEnabled));
                                     });
                                   }),
                               const SizedBox(

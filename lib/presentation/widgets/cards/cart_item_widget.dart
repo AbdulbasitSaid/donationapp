@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -69,7 +68,8 @@ class _CartItemWdigetState extends State<CartItemWdiget> {
               width: 96,
               height: 48,
               child: TextFormField(
-                controller: amountController,
+                // controller: amountController,
+                initialValue: widget._donationItemEntity.amount.toString(),
                 textAlign: TextAlign.end,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
