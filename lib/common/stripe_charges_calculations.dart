@@ -54,18 +54,30 @@ ChargesResult getCharges(
 
   double charges = totalCharge - amount;
   var spliteCharge = charges.toString().split('.');
-  log(spliteCharge.toString());
   var left = spliteCharge[0];
   var right = spliteCharge[1].split('');
-  String stringCharg = left + '.' + right.elementAt(0) + right.elementAt(1);
-  charges = double.parse(stringCharg);
+  String stringCharg =
+      left + '.' + (right.length > 1 ? right.take(2).join() : right.first);
+  // charges = double.parse(stringCharg);
   // onlyCharges.
+  var totalPaySplit =
+      ((double.parse(stringCharg)) + (amount)).toString().split('.');
+  var totalPayLeft = totalPaySplit[0];
+  var totalPayRight = totalPaySplit[1];
+  String totalPayment = totalPayLeft + '.' + totalPayRight;
+  double totalPaymentResult = double.parse(totalPayment);
+  //
   return amount == 0
-      ? ChargesResult(stripeFee: 0.0, totalFee: 0.0, idonationFee: 0.0)
+      ? ChargesResult(
+          stripeFee: 0.0,
+          totalFee: 0.0,
+          idonationFee: 0.0,
+          totalPayment: amount)
       : ChargesResult(
           idonationFee: idonatioFee,
           stripeFee: stripeFixedFee,
-          totalFee: charges);
+          totalFee: double.parse(stringCharg),
+          totalPayment: (double.parse(totalPaymentResult.toStringAsFixed(2))));
 }
 
 //
@@ -87,9 +99,12 @@ class ChargesResult {
   final double stripeFee;
   final double totalFee;
   final double idonationFee;
+  final double totalPayment;
 
-  ChargesResult(
-      {required this.stripeFee,
-      required this.totalFee,
-      required this.idonationFee});
+  ChargesResult({
+    required this.stripeFee,
+    required this.totalFee,
+    required this.idonationFee,
+    required this.totalPayment,
+  });
 }
