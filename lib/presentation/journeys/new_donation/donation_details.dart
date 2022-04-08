@@ -516,9 +516,10 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                       context
                                           .read<DonationProcessCubit>()
                                           .updateDonationProccess(donationProcessState.copyWith(
-                                              stripeConnectedAccountId: getDoneeByCodeState
-                                                  .doneeResponseData
-                                                  .stripeConnectedAccountId,
+                                              stripeConnectedAccountId:
+                                                  getDoneeByCodeState
+                                                      .doneeResponseData
+                                                      .stripeConnectedAccountId,
                                               doneeId: getDoneeByCodeState
                                                   .doneeResponseData.id,
                                               feedata:
@@ -527,9 +528,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                                   .doneeResponseData.currency,
                                               cartAmount: donationCartTotal,
                                               amount: donationProcessState.paidTransactionFee
-                                                  ? donationCartTotal +
-                                                      getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal)
-                                                          .totalFee
+                                                  ? getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal)
+                                                      .totalPayment
                                                   : donationCartTotal,
                                               stripeFee: getCharges(
                                                       feeData: getFeeData.feesModel.data,
