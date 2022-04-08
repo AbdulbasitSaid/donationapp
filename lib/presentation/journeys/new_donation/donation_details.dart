@@ -221,24 +221,17 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                           return Text(getCurrencySymbol(
                                                   '${doneeState.doneeResponseData.country.currencyCode}',
                                                   context) +
-                                              (amount +
-                                                      (donationProcessState
-                                                              .paidTransactionFee
-                                                          ? getCharges(
-                                                              amount: amount,
-                                                              cardCurrency:
-                                                                  paymentMethodState
-                                                                      .paymentMethods
-                                                                      .data
-                                                                      .first
-                                                                      .country,
-                                                              feeData:
-                                                                  feeDataState
-                                                                      .feesModel
-                                                                      .data,
-                                                            ).totalFee
-                                                          : 0))
-                                                  .toString());
+                                              '${(donationProcessState.paidTransactionFee ? getCharges(
+                                                  amount: amount,
+                                                  cardCurrency:
+                                                      paymentMethodState
+                                                          .paymentMethods
+                                                          .data
+                                                          .first
+                                                          .country,
+                                                  feeData: feeDataState
+                                                      .feesModel.data,
+                                                ).totalPayment : amount)}');
                                         } else {
                                           return const Text('loading');
                                         }
