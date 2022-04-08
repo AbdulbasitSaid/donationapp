@@ -68,8 +68,9 @@ class _CartItemWdigetState extends State<CartItemWdiget> {
               width: 96,
               height: 48,
               child: TextFormField(
-                // controller: amountController,
-                initialValue: widget._donationItemEntity.amount.toString(),
+                initialValue: widget._donationItemEntity.amount < 1
+                    ? ''
+                    : widget._donationItemEntity.amount.toString(),
                 textAlign: TextAlign.end,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
