@@ -143,6 +143,19 @@ class _DonationHistoryDetialsScreenState
                         ),
                       ),
                     ),
+                    widget.donationHistoryData.paidTransactionFee
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Included transaction fee'),
+                                Text(
+                                    '${widget.donationHistoryData.stripeTransactionFee + widget.donationHistoryData.idonatioTransactionFee}'),
+                              ],
+                            ),
+                          )
+                        : const SizedBox.shrink(),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
