@@ -47,10 +47,10 @@ ChargesResult getCharges(
   double stripeFixedFee =
       feeData.firstWhere((element) => element.tag == 'STRIPE_FIXED_FEE').value;
   double cardFee = europeanCountries.contains(cardCurrency.toUpperCase())
-      ? europeanCardFeePercentage
-      : nonEuropeanCardFeePercentage;
+      ? amount * europeanCardFeePercentage
+      : amount * nonEuropeanCardFeePercentage;
   //
-  double totalCharge = (amount + idonatioFee + stripeFixedFee) / (1 - cardFee);
+  double totalCharge = (amount + idonatioFee + stripeFixedFee) + cardFee;
 
   double charges = totalCharge - amount;
   var spliteCharge = charges.toString().split('.');
