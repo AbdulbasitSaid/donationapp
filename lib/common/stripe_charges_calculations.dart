@@ -75,7 +75,10 @@ ChargesResult getCharges(
           totalPayment: amount)
       : ChargesResult(
           idonationFee: idonatioFee,
-          stripeFee: stripeFixedFee,
+          stripeFee: getStripeTransactionFee(
+              donationAmount: amount,
+              cardFee: cardFee,
+              fixedStripeFee: stripeFixedFee),
           totalFee: double.parse(stringCharg),
           totalPayment: (double.parse(totalPaymentResult.toStringAsFixed(2))));
 }
