@@ -76,9 +76,10 @@ ChargesResult getCharges(
       : ChargesResult(
           idonationFee: idonatioFee,
           stripeFee: getStripeTransactionFee(
-              donationAmount: amount,
-              cardFee: cardFee,
-              fixedStripeFee: stripeFixedFee),
+            donationAmount: amount,
+            idonatioFee: idonatioFee,
+            totalCharge: double.parse(stringCharg),
+          ),
           totalFee: double.parse(stringCharg),
           totalPayment: (double.parse(totalPaymentResult.toStringAsFixed(2))));
 }
@@ -91,11 +92,11 @@ double getIdonatioTransactionFee(
 
 //
 double getStripeTransactionFee({
+  required double totalCharge,
+  required double idonatioFee,
   required double donationAmount,
-  required double cardFee,
-  required double fixedStripeFee,
 }) {
-  return donationAmount == 0 ? 0 : donationAmount * cardFee + fixedStripeFee;
+  return donationAmount == 0 ? 0 : totalCharge - idonatioFee;
 }
 
 class ChargesResult {
