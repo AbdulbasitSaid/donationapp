@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/data/models/donation_models/donation_history_model.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/get_donation_history_by_donee_id_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
+import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../widgets/list_cards/donation_history_list_card_widget.dart';
+import '../donation_history/donee_detail_history.dart';
 
 class DonationsTodoneeScreen extends StatefulWidget {
   const DonationsTodoneeScreen({Key? key}) : super(key: key);
@@ -72,15 +76,24 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                       (context, index) => Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 16.0, horizontal: 16),
-                            child: DonationHistoryListCard(
-                              donationHistoryListCardEntity:
-                                  DonationHistoryListCardEntity(
-                                amount: doneeData[index].totalPayment,
-                                donationType:
-                                    doneeData[index].displayDationType,
-                                dontionDate: doneeData[index].createdAt,
-                                name: doneeData[index].donee.fullName,
-                                rank: doneeData[index].rank,
+                            child: TextButton(
+                              style: ButtonStyle(
+                                  padding:
+                                      MaterialStateProperty.all<EdgeInsets>(
+                                          EdgeInsets.zero)),
+                              onPressed: () {
+                                final detial = doneeData[index];
+                              },
+                              child: DonationHistoryListCard(
+                                donationHistoryListCardEntity:
+                                    DonationHistoryListCardEntity(
+                                  amount: doneeData[index].totalPayment,
+                                  donationType:
+                                      doneeData[index].displayDationType,
+                                  dontionDate: doneeData[index].createdAt,
+                                  name: doneeData[index].donee.fullName,
+                                  rank: doneeData[index].rank,
+                                ),
                               ),
                             ),
                           ),

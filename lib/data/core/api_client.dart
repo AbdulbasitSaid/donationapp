@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
@@ -8,11 +9,12 @@ import 'api_constants.dart';
 
 class ApiClient {
   final Client _client;
-
+    
   ApiClient({Client? client}) : _client = client ?? Client();
 
   dynamic get(String path,
       {Map<dynamic, dynamic>? params, String? token}) async {
+        
     await Future.delayed(const Duration(milliseconds: 500));
     final response = await _client.get(
       getPath(path, params),
