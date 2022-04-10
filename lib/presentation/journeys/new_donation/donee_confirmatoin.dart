@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/data/models/donation_models/donee_model.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_process_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/donation_details.dart';
 import 'package:idonatio/presentation/journeys/new_donation/entities/donation_process_entity.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -29,6 +31,10 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final savedDoneeState = context.watch<GetSavedDoneesCubit>().state;
+    final List<Donee> savedDoneeList = savedDoneeState is GetSavedDoneesSuccess
+        ? savedDoneeState.savedDoneesResponseModel.data!
+        : [];
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -81,24 +87,45 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
               const SizedBox(
                 height: 24,
               ),
-              ListTile(
-                leading: Checkbox(
-                  onChanged: (value) {
-                    setState(() {
-                      isSaveDonee = value!;
-                    });
-                  },
-                  value: isSaveDonee,
-                ),
-                title: const Text('Add to my Saved Donees list'),
-                subtitle: Text(
-                  'Save this donee to your list for easy access when making a future donation. You can remove a saved donee from your list at any time.',
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        color: AppColor.text70Primary,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                      ),
-                ),
+              BlocBuilder<GetdoneebycodeCubit, GetdoneebycodeState>(
+                builder: (context, state) {
+                  if (state is GetdoneebycodeSuccess) {
+                    bool isDisplaySavedToList = savedDoneeList
+                        .map((e) => e.id)
+                        .toList()
+                        .contains(state.doneeResponseData.id);
+                    return isDisplaySavedToList
+                        ? const SizedBox.shrink()
+                        : ListTile(
+                            leading: Checkbox(
+                              onChanged: (value) {
+                                setState(() {
+                                  isSaveDonee = value!;
+                                });
+                              },
+                              value: isSaveDonee,
+                            ),
+                            title: const Text('Add to my Saved Donees list'),
+                            subtitle: Text(
+                              'Save this donee to your list for easy access when making a future donation. You can remove a saved donee from your list at any time.',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(
+                                    color: AppColor.text70Primary,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                  ),
+                            ),
+                          );
+                  } else if (state is GetSavedDoneesLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
+                  } else {
+                    return const Level2Headline(text: 'Failed to get donee');
+                  }
+                },
               ),
               const SizedBox(
                 height: 52,
