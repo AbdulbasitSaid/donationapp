@@ -20,10 +20,9 @@ class ProfileRepository {
       final user = await userLocalDataSource.getUser();
       final result =
           await profileRemoteDataSource.updateProfile(user.token, params);
-      final newDonorDetial = result.data.user.donor;
+      //
       await userLocalDataSource.updateUserData(user.copyWith(
-        user: user.user
-            .copyWith(donor: newDonorDetial, email: result.data.user.email),
+        user: result.data.user.copyWith(donor: result.data.user.donor),
       ));
       return Right(result);
     } on UnprocessableEntity {

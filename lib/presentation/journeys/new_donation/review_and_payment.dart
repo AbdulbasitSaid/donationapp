@@ -231,7 +231,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text('GiftAid enabled?'),
-                              Text(donationProcessState.giftAidEnabled
+                              Text(donationProcessState.applyGiftAidToDonation
                                   ? 'Yes'
                                   : 'no')
                             ],

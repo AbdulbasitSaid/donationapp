@@ -77,68 +77,51 @@ class _EnableGiftAidForDonationState extends State<EnableGiftAidForDonation> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         //enabling gift aid to this donation
-                        TextButton(
-                          onPressed: () => context
-                              .read<DonationProcessCubit>()
-                              .updateDonationProccess(state.copyWith(
-                                  applyGiftAidToDonation:
-                                      !state.applyGiftAidToDonation)),
-                          child: Row(
-                            children: [
-                              Checkbox(
-                                  value: state.applyGiftAidToDonation,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      context
-                                          .read<DonationProcessCubit>()
-                                          .updateDonationProccess(
-                                              state.copyWith(
-                                                  applyGiftAidToDonation: !state
-                                                      .applyGiftAidToDonation));
-                                    });
-                                  }),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              const Flexible(
-                                child: Text(
-                                    'I’d like to enable GiftAid on this donation.'),
-                              ),
-                            ],
-                          ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: state.applyGiftAidToDonation,
+                                onChanged: (value) {
+                                  setState(() {
+                                    context
+                                        .read<DonationProcessCubit>()
+                                        .updateDonationProccess(state.copyWith(
+                                            applyGiftAidToDonation: value));
+                                  });
+                                }),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            const Flexible(
+                              child: Text(
+                                  'I’d like to enable GiftAid on this donation.'),
+                            ),
+                          ],
                         ),
                         const SizedBox(
                           height: 12,
                         ),
                         //enable gift aid for future
-                        TextButton(
-                          onPressed: () => context
-                              .read<DonationProcessCubit>()
-                              .updateDonationProccess(state.copyWith(
-                                  giftAidEnabled: !state.giftAidEnabled)),
-                          child: Row(
-                            children: [
-                              Checkbox(
-                                  value: state.giftAidEnabled,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      // context
-                                      //     .read<DonationProcessCubit>()
-                                      //     .updateDonationProccess(
-                                      //         state.copyWith(
-                                      //             giftAidEnabled:
-                                      //                 !state.giftAidEnabled));
-                                    });
-                                  }),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              const Flexible(
-                                child: Text(
-                                    'I’d also like to enable GiftAid on future eligible donations.'),
-                              ),
-                            ],
-                          ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: state.giftAidEnabled,
+                                onChanged: (value) {
+                                  setState(() {
+                                    context
+                                        .read<DonationProcessCubit>()
+                                        .updateDonationProccess(state.copyWith(
+                                            giftAidEnabled: value));
+                                  });
+                                }),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            const Flexible(
+                              child: Text(
+                                  'I’d also like to enable GiftAid on future eligible donations.'),
+                            ),
+                          ],
                         ),
                       ],
                     );
