@@ -15,7 +15,9 @@ import '../user/cubit/get_authenticated_user_cubit.dart';
 import '../user/cubit/user_cubit.dart';
 
 class DonationsTodoneeScreen extends StatefulWidget {
-  const DonationsTodoneeScreen({Key? key,}) : super(key: key);
+  const DonationsTodoneeScreen({
+    Key? key,
+  }) : super(key: key);
   @override
   _DonationsTodoneeScreenState createState() => _DonationsTodoneeScreenState();
 }
@@ -69,8 +71,9 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
               ),
             ),
           ),
-          BlocBuilder<GetDonationHistoryByDoneeIdCubit,
+          BlocConsumer<GetDonationHistoryByDoneeIdCubit,
               GetDonationHistoryByDoneeIdState>(
+            listener: (context, state) => {},
             builder: (context, state) {
               if (state is GetDonationHistoryByDoneeIdSuccess) {
                 final doneeData = state.donationHistoryByDoneeIdModel.data;
@@ -79,25 +82,15 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                       (context, index) => Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 16.0, horizontal: 16),
-                            child: TextButton(
-                              style: ButtonStyle(
-                                  padding:
-                                      MaterialStateProperty.all<EdgeInsets>(
-                                          EdgeInsets.zero)),
-                              onPressed: () {
-                                // Navigator.push(
-                                //     context, AppRouter.routeToPage(DoneeDetailHistory(donationData: )));
-                              },
-                              child: DonationHistoryListCard(
-                                donationHistoryListCardEntity:
-                                    DonationHistoryListCardEntity(
-                                  amount: doneeData[index].totalPayment,
-                                  donationType:
-                                      doneeData[index].displayDationType,
-                                  dontionDate: doneeData[index].createdAt,
-                                  name: doneeData[index].donee.fullName,
-                                  rank: doneeData[index].rank,
-                                ),
+                            child: DonationHistoryListCard(
+                              donationHistoryListCardEntity:
+                                  DonationHistoryListCardEntity(
+                                amount: doneeData[index].totalPayment,
+                                donationType:
+                                    doneeData[index].displayDationType,
+                                dontionDate: doneeData[index].createdAt,
+                                name: doneeData[index].donee.fullName,
+                                rank: doneeData[index].rank,
                               ),
                             ),
                           ),
