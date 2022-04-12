@@ -55,6 +55,7 @@ dependencies:
   flutter_hooks: ^0.18.2+1
   pinput: ^2.2.5
   line_icons: ^2.0.1
+  webview_flutter: ^3.0.2
 
 dev_dependencies:
   build_runner: ^2.1.5
