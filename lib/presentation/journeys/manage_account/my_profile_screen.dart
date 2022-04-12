@@ -306,10 +306,50 @@ class MyProfileScreen extends StatelessWidget {
                             Switch(
                                 value: donor!.giftAidEnabled,
                                 onChanged: (onChanged) {
-                                  context
-                                      .read<UpdateProfileCubit>()
-                                      .editGiftAidOption(
-                                          giftAidOption: onChanged);
+                                  onChanged == false
+                                      ? showDialog(
+                                          context: context,
+                                          builder: (builder) => AlertDialog(
+                                                title: const Text(
+                                                    'Disable GiftAid for this donation?'),
+                                                content: const Text(
+                                                  'When you disable GiftAid on an eligible donation your donee will be unable to claim an additional 25% on the value of your donation.If you are a tax paying UK resident, this is at no extra cost to you.',
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      context
+                                                          .read<
+                                                              UpdateProfileCubit>()
+                                                          .editGiftAidOption(
+                                                              giftAidOption:
+                                                                  onChanged);
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text(
+                                                        'Ok'.toUpperCase(),
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600)),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text(
+                                                      'Cancel'.toUpperCase(),
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  )
+                                                ],
+                                              ))
+                                      : context
+                                          .read<UpdateProfileCubit>()
+                                          .editGiftAidOption(
+                                              giftAidOption: onChanged);
                                 })
                           ],
                         ),
