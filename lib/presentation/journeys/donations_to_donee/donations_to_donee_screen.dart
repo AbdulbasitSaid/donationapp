@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/data/models/donation_models/donation_history_model.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/get_donation_history_by_donee_id_cubit.dart';
@@ -9,10 +8,14 @@ import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../widgets/list_cards/donation_history_list_card_widget.dart';
 import '../donation_history/donee_detail_history.dart';
+import '../new_donation/cubit/get_payment_methods_cubit.dart';
+import '../new_donation/cubit/getdoneebycode_cubit.dart';
+import '../new_donation/donation_details.dart';
+import '../user/cubit/get_authenticated_user_cubit.dart';
+import '../user/cubit/user_cubit.dart';
 
 class DonationsTodoneeScreen extends StatefulWidget {
-  const DonationsTodoneeScreen({Key? key}) : super(key: key);
-
+  const DonationsTodoneeScreen({Key? key,}) : super(key: key);
   @override
   _DonationsTodoneeScreenState createState() => _DonationsTodoneeScreenState();
 }
@@ -82,7 +85,8 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                                       MaterialStateProperty.all<EdgeInsets>(
                                           EdgeInsets.zero)),
                               onPressed: () {
-                                final detial = doneeData[index];
+                                // Navigator.push(
+                                //     context, AppRouter.routeToPage(DoneeDetailHistory(donationData: )));
                               },
                               child: DonationHistoryListCard(
                                 donationHistoryListCardEntity:
@@ -110,6 +114,49 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
             },
           )
         ],
+      ),
+
+      //todo change color
+      floatingActionButton: Builder(
+        builder: (context) {
+          final userState = context.watch<UserCubit>().state;
+          final authenticatedUserState =
+              context.watch<GetAuthenticatedUserCubit>().state;
+          final getDoneeHistoryByIdState =
+              context.watch<GetDonationHistoryByDoneeIdCubit>().state;
+          return FloatingActionButton.extended(
+            onPressed: () {
+              context.read<GetdoneebycodeCubit>().getDoneeByCode(
+                  getDoneeHistoryByIdState is GetDonationHistoryByDoneeIdSuccess
+                      ? getDoneeHistoryByIdState
+                          .donationHistoryByDoneeIdModel.data.first.doneeId
+                      : '');
+              context.read<GetPaymentMethodsCubit>().getPaymentMethods();
+              Navigator.push(
+                  context,
+                  AppRouter.routeToPage(DonationDetialsScreen(
+                    isDonateAnonymously: authenticatedUserState
+                            is GetAuthenticatedUserSuccess
+                        ? authenticatedUserState.getAuthenticatedUserModel.data
+                            .user.donor.donateAnonymously
+                        : userState is Authenticated
+                            ? userState.userData.user.donor.donateAnonymously
+                            : false,
+                    isEnableGiftAid:
+                        authenticatedUserState is GetAuthenticatedUserSuccess
+                            ? authenticatedUserState.getAuthenticatedUserModel
+                                .data.user.donor.giftAidEnabled
+                            : userState is Authenticated
+                                ? userState.userData.user.donor.giftAidEnabled
+                                : false,
+                  )));
+            },
+            label: Text('new donation'.toUpperCase()),
+            icon: const Icon(
+              Icons.add,
+            ),
+          );
+        },
       ),
     );
   }
