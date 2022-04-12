@@ -6,6 +6,7 @@ import 'package:idonatio/presentation/journeys/manage_account/contact_support_sc
 import 'package:idonatio/presentation/journeys/manage_account/cubit/cubit/close_account_cubit.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/logout_cubit.dart';
 import 'package:idonatio/presentation/journeys/manage_account/my_profile_screen.dart';
+import 'package:idonatio/presentation/journeys/web_page_viewer.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
@@ -160,7 +161,14 @@ class ManageAccountScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            AppRouter.routeToPage(const WebPageView(
+                              initialPage: 'https://idonat.io/',
+                              pageName: 'FAQs',
+                            )));
+                      },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -217,7 +225,14 @@ class ManageAccountScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            AppRouter.routeToPage(const WebPageView(
+                              initialPage: 'https://idonat.io/',
+                              pageName: 'About iDonatio',
+                            )));
+                      },
                       child: Text(
                         'About iDonatio',
                         style: Theme.of(context).textTheme.subtitle1,
@@ -225,7 +240,14 @@ class ManageAccountScreen extends StatelessWidget {
                     ),
                     const Divider(),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            AppRouter.routeToPage(const WebPageView(
+                              initialPage: 'https://idonat.io/',
+                              pageName: 'Terms & conditions',
+                            )));
+                      },
                       child: Text(
                         'Terms & conditions',
                         style: Theme.of(context).textTheme.subtitle1,
@@ -233,7 +255,14 @@ class ManageAccountScreen extends StatelessWidget {
                     ),
                     const Divider(),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            AppRouter.routeToPage(const WebPageView(
+                              initialPage: 'https://idonat.io/',
+                              pageName: 'Privacy policy',
+                            )));
+                      },
                       child: Text(
                         'Privacy policy',
                         style: Theme.of(context).textTheme.subtitle1,
@@ -284,7 +313,6 @@ class ManageAccountScreen extends StatelessWidget {
                         }
                         return TextButton(
                           onPressed: () {
-                            
                             context.read<LogoutCubit>().logoutUser();
                           },
                           child: Text(
