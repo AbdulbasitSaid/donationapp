@@ -8,6 +8,7 @@ import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode
 import 'package:idonatio/presentation/journeys/new_donation/donation_details.dart';
 import 'package:idonatio/presentation/journeys/new_donation/entities/donation_process_entity.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/get_authenticated_user_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -142,6 +143,9 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
                         BlocBuilder<DonationProcessCubit,
                             DonationProcessEntity>(
                           builder: (context, dpState) {
+                            final getAutheticatedUserState = context
+                                .watch<GetAuthenticatedUserCubit>()
+                                .state;
                             return ElevatedButton(
                               onPressed: () {
                                 context
@@ -171,12 +175,27 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
                                     context,
                                     AppRouter.routeToPage(DonationDetialsScreen(
                                       isDonateAnonymously:
-                                          donorState is Authenticated
-                                              ? donorState.userData.user.donor
+                                          getAutheticatedUserState
+                                                  is GetAuthenticatedUserSuccess
+                                              ? getAutheticatedUserState
+                                                  .getAuthenticatedUserModel
+                                                  .data
+                                                  .user
+                                                  .donor
                                                   .donateAnonymously
-                                              : false,
-                                      isEnableGiftAid:
-                                          donorState is Authenticated
+                                              : donorState is Authenticated
+                                                  ? donorState.userData.user
+                                                      .donor.donateAnonymously
+                                                  : false,
+                                      isEnableGiftAid: getAutheticatedUserState
+                                              is GetAuthenticatedUserSuccess
+                                          ? getAutheticatedUserState
+                                              .getAuthenticatedUserModel
+                                              .data
+                                              .user
+                                              .donor
+                                              .giftAidEnabled
+                                          : donorState is Authenticated
                                               ? donorState.userData.user.donor
                                                   .giftAidEnabled
                                               : false,
