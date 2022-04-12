@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/update_profile_cubit.dart';
@@ -6,6 +7,7 @@ import 'package:idonatio/presentation/journeys/manage_account/edit_address_scree
 import 'package:idonatio/presentation/journeys/manage_account/edit_email_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_name_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_phone_number_screen.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/get_authenticated_user_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -20,6 +22,7 @@ class MyProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final getUserState = context.watch<GetAuthenticatedUserCubit>().state;
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -48,6 +51,12 @@ class MyProfileScreen extends StatelessWidget {
                                       child: CircularProgressIndicator
                                           .adaptive())),
                             ));
+                  } else if (state is UpdateProfileSuccessfull) {
+                    Fluttertoast.showToast(msg: state.successMessage);
+                    context
+                        .read<GetAuthenticatedUserCubit>()
+                        .getAuthenticatedUser();
+                    Navigator.pop(context);
                   } else {
                     Navigator.pop(context);
                   }
@@ -63,6 +72,7 @@ class MyProfileScreen extends StatelessWidget {
                         text: 'My profile',
                       ),
                     ),
+
                     //
                     const SizedBox(height: 32),
                     //name
