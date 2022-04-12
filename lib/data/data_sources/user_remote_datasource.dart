@@ -6,6 +6,8 @@ import 'package:idonatio/data/models/user_models/user_response_model.dart';
 import 'package:idonatio/domain/entities/onboarding_response.dart';
 import 'package:idonatio/presentation/journeys/reset_password/enitities/reset_password_otp_success_entity.dart';
 
+import '../models/user_models/get_authenticated_user_model.dart';
+
 class UserRemoteDataSource {
   final ApiClient _client;
 
@@ -24,6 +26,11 @@ class UserRemoteDataSource {
       Map<String, dynamic> requestBody) async {
     final response = await _client.post('donors/register', params: requestBody);
     return UserResponseModel.fromJson(response);
+  }
+
+  Future<GetAuthenticatedUserModel> getAuthenticatedUser(String token) async {
+    final response = await _client.get('auth/user', token: token);
+    return GetAuthenticatedUserModel.fromJson(response);
   }
 
   Future<dynamic> verifyEmail(Map<String, dynamic> requestBody, token) async {
