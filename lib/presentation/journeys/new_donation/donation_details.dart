@@ -9,6 +9,7 @@ import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_f
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/enable_gift_aid_for_new_donation.dart';
+import 'package:idonatio/presentation/journeys/new_donation/review_and_payment.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/get_authenticated_user_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
@@ -52,7 +53,6 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -478,91 +478,167 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                   const SizedBox(
                     height: 32,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Builder(builder: (context) {
-                        // DonationCartCubit
-                        final donationCartState =
-                            context.watch<DonationCartCubit>().state;
-                        // DonationProcessCubit
-                        final donationProcessState =
-                            context.watch<DonationProcessCubit>().state;
-                        // GetdoneebycodeCubit
-                        final getDoneeByCodeState =
-                            context.watch<GetdoneebycodeCubit>().state;
-                        //
-                        final getFeeData =
-                            context.watch<GetDonationFeesCubit>().state;
-                        final getPaymentMethod =
-                            context.watch<GetPaymentMethodsCubit>().state;
-                        //
-                        double donationCartTotal = donationCartState.isEmpty
-                            ? 0
-                            : donationCartState
-                                .map((e) => e.amount)
-                                .toList()
-                                .reduce((a, b) => a + b);
-                        bool invalidDonationTypes =
-                            donationCartState.map((e) => e.amount).contains(0);
-                        if (getDoneeByCodeState is GetdoneebycodeSuccess &&
-                            getFeeData is GetDonationFeesSuccess &&
-                            getPaymentMethod is GetPaymentMethodsSuccessful) {
-                          return ElevatedButton(
-                              onPressed: invalidDonationTypes ||
-                                      donationCartTotal < 1
-                                  ? null
-                                  : () {
-                                      log(donationCartTotal.toString());
+                  Builder(builder: (context) {
+                    // DonationCartCubit
+                    final donationCartState =
+                        context.watch<DonationCartCubit>().state;
+                    // DonationProcessCubit
+                    final donationProcessState =
+                        context.watch<DonationProcessCubit>().state;
+                    // GetdoneebycodeCubit
+                    final getDoneeByCodeState =
+                        context.watch<GetdoneebycodeCubit>().state;
+                    // getfee
+                    final getFeeData =
+                        context.watch<GetDonationFeesCubit>().state;
+                    final getPaymentMethod =
+                        context.watch<GetPaymentMethodsCubit>().state;
+                    //getting userstate
+                    final userState = context.watch<UserCubit>().state;
+                    // getting authenticated user
+                    final authenticatedUserState =
+                        context.watch<GetAuthenticatedUserCubit>().state;
+                    double donationCartTotal = donationCartState.isEmpty
+                        ? 0
+                        : donationCartState
+                            .map((e) => e.amount)
+                            .toList()
+                            .reduce((a, b) => a + b);
+                    bool invalidDonationTypes =
+                        donationCartState.map((e) => e.amount).contains(0);
+                    return authenticatedUserState is GetAuthenticatedUserLoading
+                        ? Container(
+                            padding: const EdgeInsets.all(8.0),
+                            width: MediaQuery.of(context).size.width * .6,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text('getting user detail please wait...'),
+                                CircularProgressIndicator.adaptive(),
+                              ],
+                            ),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Builder(builder: (context) {
+                                if (getDoneeByCodeState
+                                        is GetdoneebycodeSuccess &&
+                                    getFeeData is GetDonationFeesSuccess &&
+                                    getPaymentMethod
+                                        is GetPaymentMethodsSuccessful) {
+                                  return ElevatedButton(
+                                      onPressed: invalidDonationTypes ||
+                                              donationCartTotal < 1
+                                          ? null
+                                          : () {
+                                              log(donationCartTotal.toString());
 
-                                      context
-                                          .read<DonationProcessCubit>()
-                                          .updateDonationProccess(donationProcessState.copyWith(
-                                              isAnonymous: isDonateAnonymously,
-                                              applyGiftAidToDonation:
-                                                  isApplyGiftAid,
-                                              stripeConnectedAccountId: getDoneeByCodeState
-                                                  .doneeResponseData
-                                                  .stripeConnectedAccountId,
-                                              doneeId: getDoneeByCodeState
-                                                  .doneeResponseData.id,
-                                              feedata:
-                                                  getFeeData.feesModel.data,
-                                              currency: getDoneeByCodeState
-                                                  .doneeResponseData.currency,
-                                              cartAmount: donationCartTotal,
-                                              amount: donationProcessState
-                                                      .paidTransactionFee
-                                                  ? getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal)
-                                                      .totalPayment
-                                                  : donationCartTotal,
-                                              stripeFee: getCharges(
-                                                      feeData: getFeeData.feesModel.data,
-                                                      cardCurrency: getPaymentMethod.paymentMethods.data.first.country,
-                                                      amount: donationCartTotal)
-                                                  .stripeFee,
-                                              idonatoiFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).idonationFee,
-                                              totalCharges: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).totalFee,
-                                              totalFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).totalFee,
-                                              donationDetails: [
-                                                ...donationCartState.map((e) =>
-                                                    DonationProcessDetail(
-                                                        amount: e.amount,
-                                                        donationTypeId: e.id))
-                                              ]));
-                                      Navigator.push(
-                                          context,
-                                          AppRouter.routeToPage(
-                                              const EnableGiftAidForDonation()));
-                                    },
-                              child: Text('continue'.toUpperCase()));
-                        }
-                        return ElevatedButton(
-                            onPressed: null,
-                            child: Text('continue'.toUpperCase()));
-                      })
-                    ],
-                  ),
+                                              context
+                                                  .read<DonationProcessCubit>()
+                                                  .updateDonationProccess(donationProcessState
+                                                      .copyWith(
+                                                          isAnonymous:
+                                                              isDonateAnonymously,
+                                                          applyGiftAidToDonation:
+                                                              isApplyGiftAid,
+                                                          giftAidEnabled: authenticatedUserState
+                                                                  is GetAuthenticatedUserSuccess
+                                                              ? authenticatedUserState
+                                                                  .getAuthenticatedUserModel
+                                                                  .data
+                                                                  .user
+                                                                  .donor
+                                                                  .giftAidEnabled
+                                                              : userState
+                                                                      is Authenticated
+                                                                  ? userState
+                                                                      .userData
+                                                                      .user
+                                                                      .donor
+                                                                      .giftAidEnabled
+                                                                  : false,
+                                                          stripeConnectedAccountId: getDoneeByCodeState
+                                                              .doneeResponseData
+                                                              .stripeConnectedAccountId,
+                                                          doneeId: getDoneeByCodeState
+                                                              .doneeResponseData
+                                                              .id,
+                                                          feedata: getFeeData
+                                                              .feesModel.data,
+                                                          currency: getDoneeByCodeState
+                                                              .doneeResponseData
+                                                              .currency,
+                                                          cartAmount:
+                                                              donationCartTotal,
+                                                          amount: donationProcessState
+                                                                  .paidTransactionFee
+                                                              ? getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal)
+                                                                  .totalPayment
+                                                              : donationCartTotal,
+                                                          stripeFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).stripeFee,
+                                                          idonatoiFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).idonationFee,
+                                                          totalCharges: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).totalFee,
+                                                          totalFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).totalFee,
+                                                          donationDetails: [
+                                                        ...donationCartState.map((e) =>
+                                                            DonationProcessDetail(
+                                                                amount:
+                                                                    e.amount,
+                                                                donationTypeId:
+                                                                    e.id))
+                                                      ]));
+                                              Navigator.push(
+                                                  context,
+                                                  authenticatedUserState
+                                                          is GetAuthenticatedUserSuccess
+                                                      ? AppRouter.routeToPage(authenticatedUserState
+                                                                  .getAuthenticatedUserModel
+                                                                  .data
+                                                                  .user
+                                                                  .donor
+                                                                  .giftAidEnabled ==
+                                                              true
+                                                          ? const ReviewAndPayment()
+                                                          : authenticatedUserState
+                                                                          .getAuthenticatedUserModel
+                                                                          .data
+                                                                          .user
+                                                                          .donor
+                                                                          .giftAidEnabled ==
+                                                                      false &&
+                                                                  donationProcessState
+                                                                          .applyGiftAidToDonation ==
+                                                                      false
+                                                              ? const ReviewAndPayment()
+                                                              : const EnableGiftAidForDonation())
+                                                      : userState
+                                                              is Authenticated
+                                                          ? AppRouter.routeToPage(userState
+                                                                      .userData
+                                                                      .user
+                                                                      .donor
+                                                                      .giftAidEnabled ==
+                                                                  true
+                                                              ? const ReviewAndPayment()
+                                                              : userState.userData.user.donor.giftAidEnabled ==
+                                                                          false &&
+                                                                      donationProcessState.applyGiftAidToDonation ==
+                                                                          false
+                                                                  ? const ReviewAndPayment()
+                                                                  : const EnableGiftAidForDonation())
+                                                          : AppRouter.routeToPage(
+                                                              const EnableGiftAidForDonation()));
+                                            },
+                                      child: Text('continue'.toUpperCase()));
+                                }
+                                return ElevatedButton(
+                                    onPressed: null,
+                                    child: Text('continue'.toUpperCase()));
+                              })
+                            ],
+                          );
+                  }),
                   const SizedBox(
                     height: 56,
                   ),
