@@ -8,6 +8,7 @@ import 'package:idonatio/data/core/unauthorized_exception.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/data_sources/user_remote_datasource.dart';
 import 'package:idonatio/data/models/base_success_model.dart';
+import 'package:idonatio/data/models/user_models/get_authenticated_user_model.dart';
 import 'package:idonatio/data/models/user_models/user_response_model.dart';
 
 import 'package:idonatio/domain/entities/app_error.dart';
@@ -51,6 +52,35 @@ class UserRepository {
       return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
     } on Exception {
       log('e');
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
+    }
+  }
+
+  Future<Either<AppError, GetAuthenticatedUserModel>>
+      getAuthenticatedUser() async {
+    try {
+      final userData = await _userLocalDataSource.getUser();
+      final result =
+          await _userRemoteDataSource.getAuthenticatedUser(userData.token);
+      await _userLocalDataSource
+          .saveUserData(userData.copyWith(user: result.data.user));
+          
+      return Right(result);
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on ServerNotAvailableError {
+      return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
+    } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
   }
