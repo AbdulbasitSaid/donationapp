@@ -31,6 +31,7 @@ import 'package:idonatio/presentation/journeys/saved_donees/cubit/delete_save_do
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/save_donee_cubit.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/get_authenticated_user_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 
 import 'package:idonatio/presentation/themes/app_theme_data.dart';
@@ -179,6 +180,9 @@ class _IdonatioAppState extends State<IdonatioApp> {
           ),
           BlocProvider(
             create: (context) => ResetPasswordCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => GetAuthenticatedUserCubit(getItInstance()),
           ),
         ],
         child: MultiRepositoryProvider(
