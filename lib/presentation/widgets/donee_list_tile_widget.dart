@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/get_authenticated_user_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 
 import '../journeys/new_donation/cubit/get_payment_methods_cubit.dart';
@@ -23,6 +24,7 @@ class DoneeListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
       final userState = context.watch<UserCubit>().state;
+      final authUserState = context.watch<GetAuthenticatedUserCubit>().state;
 
       return TextButton(
         onPressed: () {
@@ -32,12 +34,19 @@ class DoneeListTile extends StatelessWidget {
           Navigator.push(
               context,
               AppRouter.routeToPage(DonationDetialsScreen(
-                isDonateAnonymously: userState is Authenticated
-                    ? userState.userData.user.donor.donateAnonymously
-                    : false,
-                isEnableGiftAid: userState is Authenticated
-                    ? userState.userData.user.donor.giftAidEnabled
-                    : false,
+                isDonateAnonymously:
+                    authUserState is GetAuthenticatedUserSuccess
+                        ? authUserState.getAuthenticatedUserModel.data.user
+                            .donor.donateAnonymously
+                        : userState is Authenticated
+                            ? userState.userData.user.donor.donateAnonymously
+                            : false,
+                isEnableGiftAid: authUserState is GetAuthenticatedUserSuccess
+                    ? authUserState.getAuthenticatedUserModel.data.user.donor
+                        .giftAidEnabled
+                    : userState is Authenticated
+                        ? userState.userData.user.donor.giftAidEnabled
+                        : false,
               )));
         },
         child: Container(
