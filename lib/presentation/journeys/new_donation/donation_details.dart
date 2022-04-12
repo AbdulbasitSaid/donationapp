@@ -9,6 +9,7 @@ import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_f
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/enable_gift_aid_for_new_donation.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/get_authenticated_user_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
@@ -38,19 +39,20 @@ class DonationDetialsScreen extends StatefulWidget {
 }
 
 class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
-  bool? isEnableGiftAid = false;
+  bool? isApplyGiftAid = false;
   bool? isDonateAnonymously = false;
 
   @override
   void initState() {
     context.read<GetDonationFeesCubit>().getFees();
     isDonateAnonymously = widget.isDonateAnonymously;
-    isEnableGiftAid = widget.isEnableGiftAid;
+    isApplyGiftAid = widget.isEnableGiftAid;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -277,7 +279,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Checkbox(
-                                      value: isEnableGiftAid,
+                                      value: isApplyGiftAid,
                                       onChanged: (onChanged) {
                                         setState(() {
                                           if (onChanged == false) {
@@ -292,14 +294,14 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                                           actions: [
                                                             TextButton(
                                                                 onPressed: () {
-                                                                  isEnableGiftAid =
+                                                                  isApplyGiftAid =
                                                                       onChanged;
                                                                   context
                                                                       .read<
                                                                           DonationProcessCubit>()
                                                                       .updateDonationProccess(state.copyWith(
                                                                           applyGiftAidToDonation:
-                                                                              isEnableGiftAid));
+                                                                              isApplyGiftAid));
                                                                   Navigator.pop(
                                                                       context);
                                                                 },
@@ -327,13 +329,13 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                                           ],
                                                         ));
                                           } else {
-                                            isEnableGiftAid = onChanged;
+                                            isApplyGiftAid = onChanged;
                                             context
                                                 .read<DonationProcessCubit>()
                                                 .updateDonationProccess(
                                                     state.copyWith(
                                                         applyGiftAidToDonation:
-                                                            isEnableGiftAid));
+                                                            isApplyGiftAid));
                                           }
                                         });
                                       }),
@@ -516,10 +518,12 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                       context
                                           .read<DonationProcessCubit>()
                                           .updateDonationProccess(donationProcessState.copyWith(
-                                              stripeConnectedAccountId:
-                                                  getDoneeByCodeState
-                                                      .doneeResponseData
-                                                      .stripeConnectedAccountId,
+                                              isAnonymous: isDonateAnonymously,
+                                              applyGiftAidToDonation:
+                                                  isApplyGiftAid,
+                                              stripeConnectedAccountId: getDoneeByCodeState
+                                                  .doneeResponseData
+                                                  .stripeConnectedAccountId,
                                               doneeId: getDoneeByCodeState
                                                   .doneeResponseData.id,
                                               feedata:
@@ -527,7 +531,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                               currency: getDoneeByCodeState
                                                   .doneeResponseData.currency,
                                               cartAmount: donationCartTotal,
-                                              amount: donationProcessState.paidTransactionFee
+                                              amount: donationProcessState
+                                                      .paidTransactionFee
                                                   ? getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal)
                                                       .totalPayment
                                                   : donationCartTotal,
