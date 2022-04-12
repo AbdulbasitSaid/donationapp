@@ -290,7 +290,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                                           title: const Text(
                                                               'Disable GiftAid for this donation?'),
                                                           content: const Text(
-                                                              'When you disable GiftAid on an eligible donation your donee will be unable to claim an additional 25% on the value of your donation.If you are a tax paying UK resident, this is at no extra cost to you.'),
+                                                            'When you disable GiftAid on an eligible donation your donee will be unable to claim an additional 25% on the value of your donation.If you are a tax paying UK resident, this is at no extra cost to you.',
+                                                          ),
                                                           actions: [
                                                             TextButton(
                                                                 onPressed: () {
