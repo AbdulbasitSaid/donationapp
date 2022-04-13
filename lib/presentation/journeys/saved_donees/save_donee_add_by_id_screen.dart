@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/add_new_donee_screen.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -9,7 +11,6 @@ import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
 import 'package:idonatio/presentation/widgets/labels/base_label_text.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class SaveDoneeAddDoneeByIdScreen extends StatefulWidget {
   const SaveDoneeAddDoneeByIdScreen({Key? key}) : super(key: key);
@@ -39,6 +40,7 @@ class _SaveDoneeAddDoneeByIdScreenState
 
   @override
   Widget build(BuildContext context) {
+    final savedDoneeState = context.watch<GetSavedDoneesCubit>().state;
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -51,8 +53,20 @@ class _SaveDoneeAddDoneeByIdScreenState
           child: BlocListener<GetdoneebycodeCubit, GetdoneebycodeState>(
             listener: (context, state) {
               if (state is GetdoneebycodeSuccess) {
-                Navigator.push(
-                    context, AppRouter.routeToPage(const AddNewDoneeScreen()));
+                if (savedDoneeState is GetSavedDoneesSuccess) {
+                  final savedDoneesIds = savedDoneeState
+                      .savedDoneesResponseModel.data!
+                      .map((e) => e.id)
+                      .toList();
+                  if (savedDoneesIds.contains(state.doneeResponseData.id)) {
+                    Fluttertoast.showToast(
+                        timeInSecForIosWeb: 3,
+                        msg: 'This Donee is already saved in your favorite !!');
+                  } else {
+                    Navigator.push(context,
+                        AppRouter.routeToPage(const AddNewDoneeScreen()));
+                  }
+                }
               }
             },
             child: Form(
@@ -118,8 +132,7 @@ class _SaveDoneeAddDoneeByIdScreenState
                             return ElevatedButton(
                                 onPressed: _enableButton
                                     ? () {
-
-                                  context
+                                        context
                                             .read<GetdoneebycodeCubit>()
                                             .getDoneeByCode(
                                                 _doneeIdTextField.text);
