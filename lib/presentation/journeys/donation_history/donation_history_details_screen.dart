@@ -92,10 +92,7 @@ class _DonationHistoryDetialsScreenState
                     width: MediaQuery.of(context).size.width * .5,
                     child: Column(
                       children: [
-                        Text(widget.donationHistoryData.donee.organization ==
-                                null
-                            ? '${widget.donationHistoryData.donee.addressLine_1} ${widget.donationHistoryData.donee.addressLine_2}'
-                            : '${widget.donationHistoryData.donee.organization?.addressLine_1} ${widget.donationHistoryData.donee.organization?.addressLine_1}'),
+                        Text(widget.donationHistoryData.donee.fullAddress),
                       ],
                     ),
                   ),
@@ -151,7 +148,7 @@ class _DonationHistoryDetialsScreenState
                               children: [
                                 const Text('Included transaction fee'),
                                 Text(
-                                    '${widget.donationHistoryData.stripeTransactionFee + widget.donationHistoryData.idonatioTransactionFee}'),
+                                    '${widget.donationHistoryData.transationFee}'),
                               ],
                             ),
                           )
