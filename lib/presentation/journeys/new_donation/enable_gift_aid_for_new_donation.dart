@@ -46,7 +46,7 @@ class _EnableGiftAidForDonationState extends State<EnableGiftAidForDonation> {
                     ),
                     const BaseLabelText(
                         text:
-                            'If you are a tax paying UK resident, the GiftAid scheme lets your favourite charities get an additional 25% on eligible donations – at no extra cost to you.'),
+                            'You have decided to enable GiftAid for this donation, you must be a tax paying UK resident. The GiftAid scheme let your favourite charities get an additional 25% on this donation at no extra cost to you'),
                     const SizedBox(
                       height: 12,
                     ),
@@ -77,30 +77,30 @@ class _EnableGiftAidForDonationState extends State<EnableGiftAidForDonation> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         //enabling gift aid to this donation
-                        Row(
-                          children: [
-                            Checkbox(
-                                value: state.applyGiftAidToDonation,
-                                onChanged: (value) {
-                                  setState(() {
-                                    context
-                                        .read<DonationProcessCubit>()
-                                        .updateDonationProccess(state.copyWith(
-                                            applyGiftAidToDonation: value));
-                                  });
-                                }),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            const Flexible(
-                              child: Text(
-                                  'I’d like to enable GiftAid on this donation.'),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
+                        // Row(
+                        //   children: [
+                        //     Checkbox(
+                        //         value: state.applyGiftAidToDonation,
+                        //         onChanged: (value) {
+                        //           setState(() {
+                        //             context
+                        //                 .read<DonationProcessCubit>()
+                        //                 .updateDonationProccess(state.copyWith(
+                        //                     applyGiftAidToDonation: value));
+                        //           });
+                        //         }),
+                        //     const SizedBox(
+                        //       width: 16,
+                        //     ),
+                        //     const Flexible(
+                        //       child: Text(
+                        //           'I’d like to enable GiftAid on this donation.'),
+                        //     ),
+                        //   ],
+                        // ),
+                        // const SizedBox(
+                        //   height: 12,
+                        // ),
                         //enable gift aid for future
                         Row(
                           children: [
