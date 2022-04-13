@@ -8,6 +8,7 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
+import '../user/cubit/get_authenticated_user_cubit.dart';
 import 'cubit/donation_process_cubit.dart';
 import 'entities/donation_process_entity.dart';
 
@@ -105,6 +106,9 @@ class DonationSuccessScreen extends StatelessWidget {
                           ElevatedButton(
                               onPressed: () {
                                 context.read<DonationCartCubit>().emptyCart();
+                                context
+                                    .read<GetAuthenticatedUserCubit>()
+                                    .getAuthenticatedUser();
                                 context
                                     .read<DonationProcessCubit>()
                                     .updateDonationProccess(
