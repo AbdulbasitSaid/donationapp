@@ -55,6 +55,13 @@ class DonationHistoryData {
   String? get displayDonationType => donationDetails.length > 1
       ? 'Multiple donation types'
       : donationDetails.first.donationType!.type;
+
+  double get transationFee {
+    final fee = idonatioTransactionFee + stripeTransactionFee;
+
+    return paidTransactionFee ? double.parse(fee.toStringAsFixed(2)) : 0.0;
+  }
+
   DonationHistoryData(
       {required this.id,
       required this.donorId,
