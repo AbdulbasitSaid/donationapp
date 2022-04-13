@@ -213,6 +213,12 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
                         ),
                       ],
                     );
+                  }
+                  if (state is GetdoneebycodeLoading ||
+                      feeState is GetDonationFeesLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
                   } else {
                     return const SizedBox.shrink();
                   }
