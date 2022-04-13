@@ -5,6 +5,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/add_new_donee_screen.dart';
+import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,6 +42,7 @@ class _SaveDoneeAddByQrCodeScreenState
 
   @override
   Widget build(BuildContext context) {
+    final getSavedDoneeState = context.watch<GetSavedDoneesCubit>().state;
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -115,9 +117,29 @@ class _SaveDoneeAddByQrCodeScreenState
               listener: (context, state) {
                 if (state is GetdoneebycodeSuccess) {
                   qrViewController!.dispose();
-
-                  Navigator.push(context,
-                      AppRouter.routeToPage(const AddNewDoneeScreen()));
+                  if (getSavedDoneeState is GetSavedDoneesSuccess &&
+                      getSavedDoneeState.savedDoneesResponseModel.data!
+                          .map((e) => e.id)
+                          .toList()
+                          .contains(state.doneeResponseData.id)) {
+                    showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (_) => AlertDialog(
+                              title: const Text(
+                                  'Donee already saved to favourite'),
+                              content: const Text(
+                                  'You have already saved this donee to your favourite!!'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('OK')),
+                              ],
+                            ));
+                  } else {
+                    Navigator.push(context,
+                        AppRouter.routeToPage(const AddNewDoneeScreen()));
+                  }
                 }
               },
               builder: (context, state) {
