@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/donee_confirmatoin.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
@@ -113,7 +114,7 @@ class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
               listener: (context, state) {
                 if (state is GetdoneebycodeSuccess) {
                   qrViewController!.dispose();
-
+                  context.read<GetDonationFeesCubit>().getFees();
                   Navigator.push(context,
                       AppRouter.routeToPage(const DoneeConfirmationScreen()));
                 }
