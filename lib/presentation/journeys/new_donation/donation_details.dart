@@ -20,7 +20,6 @@ import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 
 import '../../../common/stripe_charges_calculations.dart';
-import '../../../data/models/user_models/user_data_model.dart';
 import '../../widgets/cards/cart_item_widget.dart';
 import '../../widgets/cards/detail_card_for_organisation_widget.dart';
 import '../../widgets/cards/include_transaction_fee_widget.dart';
