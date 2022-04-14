@@ -114,8 +114,6 @@ class _SaveDoneeAddByQrCodeScreenState
               ),
             ),
             BlocConsumer<GetdoneebycodeCubit, GetdoneebycodeState>(
-              listenWhen: (previous, current) =>
-                  current is GetdoneebycodeSuccess,
               listener: (context, state) {
                 if (state is GetdoneebycodeSuccess) {
                   qrViewController!.dispose();
@@ -130,18 +128,8 @@ class _SaveDoneeAddByQrCodeScreenState
                         builder: (_) => AlertDialog(
                               title: const Text('Donee already Saved!!'),
                               content: const Text(
-                                  'You have this Donee saved already. Click on retry to add deferent Donee or Click on Cancel to exit page.'),
+                                  'You have this Donee saved already!!.'),
                               actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text(
-                                    'Retry',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                ),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pushAndRemoveUntil(
@@ -152,7 +140,7 @@ class _SaveDoneeAddByQrCodeScreenState
                                         (route) => false);
                                   },
                                   child: const Text(
-                                    'Cancel',
+                                    'Ok',
                                     style:
                                         TextStyle(fontWeight: FontWeight.w600),
                                   ),
@@ -166,7 +154,11 @@ class _SaveDoneeAddByQrCodeScreenState
                 }
               },
               builder: (context, state) {
-                if (state is GetdoneebycodeFailed) {
+                if (state is GetdoneebycodeLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                } else if (state is GetdoneebycodeFailed) {
                   return Positioned.fill(
                     top: MediaQuery.of(context).size.height * .1,
                     bottom: MediaQuery.of(context).size.height * .7,
