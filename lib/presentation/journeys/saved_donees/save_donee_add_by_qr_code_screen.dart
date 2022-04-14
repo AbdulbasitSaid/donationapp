@@ -10,6 +10,8 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../home.dart';
+
 class SaveDoneeAddByQrCodeScreen extends StatefulWidget {
   const SaveDoneeAddByQrCodeScreen({Key? key}) : super(key: key);
 
@@ -126,14 +128,35 @@ class _SaveDoneeAddByQrCodeScreenState
                         barrierDismissible: false,
                         context: context,
                         builder: (_) => AlertDialog(
-                              title: const Text(
-                                  'Donee already saved to favourite'),
+                              title: const Text('Donee already Saved!!'),
                               content: const Text(
-                                  'You have already saved this donee to your favourite!!'),
+                                  'You have this Donee saved already. Click on retry to add deferent Donee or Click on Cancel to exit page.'),
                               actions: [
                                 TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: const Text('OK')),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(
+                                    'Retry',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        AppRouter.routeToPage(const HomeScreen(
+                                          pageIndex: 2,
+                                        )),
+                                        (route) => false);
+                                  },
+                                  child: const Text(
+                                    'Cancel',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                )
                               ],
                             ));
                   } else {
