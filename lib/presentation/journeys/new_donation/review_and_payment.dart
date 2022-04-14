@@ -76,19 +76,19 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                     const Level6Headline(text: 'Donation summary'),
                     TextButton(
                         onPressed: () {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              AppRouter.routeToPage(DonationDetialsScreen(
-                                isDonateAnonymously: donorState is Authenticated
-                                    ? donorState
-                                        .userData.user.donor.donateAnonymously
-                                    : false,
-                                isEnableGiftAid: donorState is Authenticated
-                                    ? donorState
-                                        .userData.user.donor.giftAidEnabled
-                                    : false,
-                              )),
-                              (route) => false);
+                          Navigator.push(
+                            context,
+                            AppRouter.routeToPage(DonationDetialsScreen(
+                              isDonateAnonymously: donorState is Authenticated
+                                  ? donorState
+                                      .userData.user.donor.donateAnonymously
+                                  : false,
+                              isEnableGiftAid: donorState is Authenticated
+                                  ? donorState
+                                      .userData.user.donor.giftAidEnabled
+                                  : false,
+                            )),
+                          );
                         },
                         child: Text('edit'.toUpperCase())),
                   ],
@@ -197,7 +197,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                 children: [
                                   Text(e.type),
                                   Text(
-                                      '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}${e.amount}')
+                                      '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}${e.amount.toStringAsFixed(2)}')
                                 ],
                               ),
                             )),
@@ -208,8 +208,8 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                             children: [
                               const Text('Included transaction fee'),
                               Text(donationProcessState.paidTransactionFee
-                                  ? '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}${donationProcessState.totalFee}'
-                                  : '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}0.0')
+                                  ? '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}${donationProcessState.totalFee.toStringAsFixed(2)}'
+                                  : '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}0.00')
                             ],
                           ),
                         ),
@@ -255,7 +255,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                           const Level4Headline(text: 'Total to pay'),
                           Level4Headline(
                               text:
-                                  '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}${donationProcessState.amount}'),
+                                  '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}${donationProcessState.amount.toStringAsFixed(2)}'),
                         ],
                       );
                     })
