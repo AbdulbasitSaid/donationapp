@@ -113,195 +113,143 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
           decoration: gradientBoxDecoration(),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    isStartSearch
-                        ? Container(
-                            decoration: BoxDecoration(boxShadow: [
-                              BoxShadow(
-                                  color:
-                                      const Color(0xff425A70).withOpacity(.25),
-                                  offset: const Offset(0, 2),
-                                  blurRadius: 4,
-                                  spreadRadius: -2),
-                              BoxShadow(
-                                  color:
-                                      const Color(0xff425A70).withOpacity(.25),
-                                  offset: const Offset(0, 0),
-                                  blurRadius: 1,
-                                  spreadRadius: 0),
-                            ]),
-                            child: TextFormField(
-                              autofocus: true,
-                              textAlign: TextAlign.start,
-                              textAlignVertical: TextAlignVertical.center,
-                              onChanged: (value) {
-                                context
-                                    .read<GetSavedDoneesCubit>()
-                                    .seachSavedDonee(value);
-                              },
-                              decoration: InputDecoration(
-                                  isDense: true,
-                                  hintText: 'Search',
-                                  focusedBorder: InputBorder.none,
-                                  border: InputBorder.none,
-                                  prefix: IconButton(
-                                    padding: const EdgeInsets.all(0),
-                                    icon: const Icon(
-                                      FeatherIcons.x,
-                                      color: AppColor.baseText80Primary,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        context
-                                            .read<GetSavedDoneesCubit>()
-                                            .getSavedDonee();
-                                        isStartSearch = !isStartSearch;
-                                      });
-                                    },
-                                  )),
-                            ),
-                          )
-                        : const SizedBox.shrink(),
-                    !isStartSearch
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Level2Headline(
-                                    text: 'Saved doneess',
-                                  )),
-                              const Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Text(
-                                    """A list of organisation or individual recipients you’ve saved to this app. Add a new donee or select one to view more details.""",
-                                  )),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              BlocConsumer<GetSavedDoneesCubit,
-                                  GetSavedDoneesState>(
-                                listener: (context, state) {},
-                                builder: (context, state) {
-                                  if (state is RecentdoneesLoading) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  }
-                                  if (state is GetSavedDoneesSuccess &&
-                                      state.savedDoneesResponseModel.data !=
-                                          null) {
-                                    final recentlySaved = state
-                                        .savedDoneesResponseModel.data!
-                                        .where((e) =>
-                                            e.createdAt!.month ==
-                                            DateTime.now().month)
-                                        .take(5)
-                                        .toList();
-                                    return recentlySaved.isNotEmpty
-                                        ? Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const Padding(
-                                                padding: EdgeInsets.all(16.0),
-                                                child: Level6Headline(
-                                                    text: 'Added recently'),
-                                              ),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.all(16),
-                                                decoration:
-                                                    whiteContainerBackGround(),
-                                                child: Column(children: [
-                                                  if (recentlySaved.isNotEmpty)
-                                                    ...recentlySaved.map((e) =>
-                                                        SavedDoneeListItemWidget(
-                                                          donee: e,
-                                                        ))
-                                                ]),
-                                              ),
-                                            ],
-                                          )
-                                        : Padding(
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                    'Get started by adding a donee.'),
-                                                const SizedBox(
-                                                  height: 8,
-                                                ),
-                                                Text(
-                                                  'A list of donees you have saved will appear here once you add a donee.',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .caption,
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                  }
-                                  return const SizedBox.shrink();
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                isStartSearch
+                    ? Container(
+                        decoration: BoxDecoration(boxShadow: [
+                          BoxShadow(
+                              color: const Color(0xff425A70).withOpacity(.25),
+                              offset: const Offset(0, 2),
+                              blurRadius: 4,
+                              spreadRadius: -2),
+                          BoxShadow(
+                              color: const Color(0xff425A70).withOpacity(.25),
+                              offset: const Offset(0, 0),
+                              blurRadius: 1,
+                              spreadRadius: 0),
+                        ]),
+                        child: TextFormField(
+                          autofocus: true,
+                          textAlign: TextAlign.start,
+                          textAlignVertical: TextAlignVertical.center,
+                          onChanged: (value) {
+                            context
+                                .read<GetSavedDoneesCubit>()
+                                .seachSavedDonee(value);
+                          },
+                          decoration: InputDecoration(
+                              isDense: true,
+                              hintText: 'Search',
+                              focusedBorder: InputBorder.none,
+                              border: InputBorder.none,
+                              prefix: IconButton(
+                                padding: const EdgeInsets.all(0),
+                                icon: const Icon(
+                                  FeatherIcons.x,
+                                  color: AppColor.baseText80Primary,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    context
+                                        .read<GetSavedDoneesCubit>()
+                                        .getSavedDonee();
+                                    isStartSearch = !isStartSearch;
+                                  });
                                 },
-                              ),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              BlocConsumer<GetSavedDoneesCubit,
-                                  GetSavedDoneesState>(
-                                listener: (context, state) {
-                                  // TODO: implement listener
-                                },
-                                builder: (context, state) {
-                                  if (state is GetSavedDoneesLoading) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  }
-                                  if (state is GetSavedDoneesSuccess &&
-                                      state.savedDoneesResponseModel.data!
-                                          .isNotEmpty &&
-                                      state.savedDoneesResponseModel.data !=
-                                          null) {
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Level6Headline(
-                                              text: 'All donees'),
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.all(16),
-                                          decoration:
-                                              whiteContainerBackGround(),
-                                          child: Column(children: [
-                                            ...state
-                                                .savedDoneesResponseModel.data!
-                                                .map((e) =>
+                              )),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                !isStartSearch
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Level2Headline(
+                                text: 'Saved doneess',
+                              )),
+                          const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Text(
+                                """A list of organisation or individual recipients you’ve saved to this app. Add a new donee or select one to view more details.""",
+                              )),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          BlocConsumer<GetSavedDoneesCubit,
+                              GetSavedDoneesState>(
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              if (state is RecentdoneesLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              if (state is GetSavedDoneesSuccess &&
+                                  state.savedDoneesResponseModel.data != null) {
+                                final recentlySaved = state
+                                    .savedDoneesResponseModel.data!
+                                    .where((e) =>
+                                        e.createdAt!.month ==
+                                        DateTime.now().month)
+                                    .take(5)
+                                    .toList();
+                                return recentlySaved.isNotEmpty
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Level6Headline(
+                                                text: 'Added recently'),
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.all(16),
+                                            decoration:
+                                                whiteContainerBackGround(),
+                                            child: Column(children: [
+                                              if (recentlySaved.isNotEmpty)
+                                                ...recentlySaved.map((e) =>
                                                     SavedDoneeListItemWidget(
                                                       donee: e,
                                                     ))
-                                          ]),
+                                            ]),
+                                          ),
+                                        ],
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                                'Get started by adding a donee.'),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            Text(
+                                              'A list of donees you have saved will appear here once you add a donee.',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .caption,
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    );
-                                  }
-                                  return const SizedBox.shrink();
-                                },
-                              ),
-                            ],
-                          )
-                        : BlocConsumer<GetSavedDoneesCubit,
-                            GetSavedDoneesState>(
+                                      );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          BlocConsumer<GetSavedDoneesCubit,
+                              GetSavedDoneesState>(
                             listener: (context, state) {
                               // TODO: implement listener
                             },
@@ -315,50 +263,85 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                   state.savedDoneesResponseModel.data!
                                       .isNotEmpty &&
                                   state.savedDoneesResponseModel.data != null) {
-                                return Container(
-                                  padding: const EdgeInsets.all(16),
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(.8)),
-                                  child: Column(
-                                    children: [
-                                      ...state.savedDoneesResponseModel.data!
-                                          .map((e) => SavedDoneeListItemWidget(
-                                              donee: e))
-                                    ],
-                                  ),
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Level6Headline(text: 'All donees'),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.all(16),
+                                      decoration: whiteContainerBackGround(),
+                                      child: Column(children: [
+                                        ...state.savedDoneesResponseModel.data!
+                                            .map(
+                                                (e) => SavedDoneeListItemWidget(
+                                                      donee: e,
+                                                    ))
+                                      ]),
+                                    ),
+                                  ],
                                 );
                               }
-                              return Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Column(children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text('No results found.'),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            'Please try a different search term.',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption,
-                                          )
-                                        ]),
-                                  )
-                                ]),
-                              );
+                              return const SizedBox.shrink();
                             },
                           ),
-                  ],
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                ),
-              ),
-            ],
+                        ],
+                      )
+                    : BlocConsumer<GetSavedDoneesCubit, GetSavedDoneesState>(
+                        listener: (context, state) {
+                          // TODO: implement listener
+                        },
+                        builder: (context, state) {
+                          if (state is GetSavedDoneesLoading) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (state is GetSavedDoneesSuccess &&
+                              state.savedDoneesResponseModel.data!.isNotEmpty &&
+                              state.savedDoneesResponseModel.data != null) {
+                            return Container(
+                              padding: const EdgeInsets.all(16),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(.8)),
+                              child: Column(
+                                children: [
+                                  ...state.savedDoneesResponseModel.data!.map(
+                                      (e) => SavedDoneeListItemWidget(donee: e))
+                                ],
+                              ),
+                            );
+                          }
+                          return Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(children: [
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('No results found.'),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        'Please try a different search term.',
+                                        style:
+                                            Theme.of(context).textTheme.caption,
+                                      )
+                                    ]),
+                              )
+                            ]),
+                          );
+                        },
+                      ),
+              ],
+              crossAxisAlignment: CrossAxisAlignment.start,
+            ),
           ),
         ),
       ),
