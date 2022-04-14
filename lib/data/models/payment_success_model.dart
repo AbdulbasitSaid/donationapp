@@ -77,7 +77,7 @@ class DonationDetail {
   String id;
   String donationId;
   String donationTypeId;
-  int amount;
+  double amount;
   factory DonationDetail.fromJson(json) => _$DonationDetailFromJson(json);
   Map<String, dynamic> toJson() => _$DonationDetailToJson(this);
 }
