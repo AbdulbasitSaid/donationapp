@@ -1,4 +1,3 @@
-
 import '../data/models/fees_model.dart';
 
 final List<String> europeanCountries = [
@@ -79,7 +78,8 @@ ChargesResult getCharges(
             idonatioFee: idonatioFee,
             totalCharge: double.parse(stringCharg),
           ),
-          totalFee: double.parse(stringCharg),
+          // totalFee: double.parse(stringCharg),
+          totalFee: double.parse(double.parse(stringCharg).toStringAsFixed(2)),
           totalPayment: (double.parse(totalPaymentResult.toStringAsFixed(2))));
 }
 
