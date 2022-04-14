@@ -223,17 +223,21 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                           return Text(getCurrencySymbol(
                                                   '${doneeState.doneeResponseData.country.currencyCode}',
                                                   context) +
-                                              '${(donationProcessState.paidTransactionFee ? getCharges(
-                                                  amount: amount,
-                                                  cardCurrency:
-                                                      paymentMethodState
-                                                          .paymentMethods
-                                                          .data
-                                                          .first
-                                                          .country,
-                                                  feeData: feeDataState
-                                                      .feesModel.data,
-                                                ).totalPayment : amount)}');
+                                              (donationProcessState
+                                                          .paidTransactionFee
+                                                      ? getCharges(
+                                                          amount: amount,
+                                                          cardCurrency:
+                                                              paymentMethodState
+                                                                  .paymentMethods
+                                                                  .data
+                                                                  .first
+                                                                  .country,
+                                                          feeData: feeDataState
+                                                              .feesModel.data,
+                                                        ).totalPayment
+                                                      : amount)
+                                                  .toStringAsFixed(2));
                                         } else {
                                           return const Text('loading');
                                         }
