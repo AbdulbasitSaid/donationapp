@@ -68,7 +68,7 @@ class DonationSuccessScreen extends StatelessWidget {
                                   return Column(
                                     children: [
                                       Text(
-                                        'Your donation of £${donationSuccessEnitity.amount} to ${donationSuccessEnitity.nameOfDonee} has been successfully processed.',
+                                        'Your donation of £${donationSuccessEnitity.amount.toStringAsFixed(2)} to ${donationSuccessEnitity.nameOfDonee} has been successfully processed.',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline2!
@@ -81,9 +81,9 @@ class DonationSuccessScreen extends StatelessWidget {
                                       ),
                                       donationSuccessEnitity.paidCharges
                                           ? Text(
-                                              'You included the transaction fee of £${donationSuccessEnitity.transactionFee} in your payment. ${donationSuccessEnitity.nameOfDonee} will get 100% of your donation amount.')
+                                              'You included the transaction fee of £${donationSuccessEnitity.transactionFee.toStringAsFixed(2)} in your payment. ${donationSuccessEnitity.nameOfDonee} will get 100% of your donation amount.')
                                           : Text(
-                                              'You did not include the transaction fee of £${donationSuccessEnitity.transactionFee} in your payment. ${donationSuccessEnitity.nameOfDonee} will get ${donationSuccessEnitity.amount - donationSuccessEnitity.transactionFee} of your donation amount.'),
+                                              'You did not include the transaction fee of £${donationSuccessEnitity.transactionFee.toStringAsFixed(2)} in your payment. ${donationSuccessEnitity.nameOfDonee} will get ${(donationSuccessEnitity.amount - donationSuccessEnitity.transactionFee).toStringAsFixed(2)} of your donation amount.'),
                                       const SizedBox(
                                         height: 8,
                                       ),
