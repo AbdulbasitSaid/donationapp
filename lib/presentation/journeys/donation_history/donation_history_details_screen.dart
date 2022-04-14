@@ -123,7 +123,7 @@ class _DonationHistoryDetialsScreenState
                         const Level4Headline(text: 'Total payment'),
                         Level4Headline(
                           text:
-                              '£${widget.donationHistoryData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)!}',
+                              '£${(widget.donationHistoryData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)!).toStringAsFixed(2)}',
                         ),
                       ],
                     ),
@@ -135,7 +135,7 @@ class _DonationHistoryDetialsScreenState
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('${e.donationType?.type}'),
-                            Text('£${e.amount!}'),
+                            Text('£${e.amount!.toStringAsFixed(2)}'),
                           ],
                         ),
                       ),
@@ -147,8 +147,8 @@ class _DonationHistoryDetialsScreenState
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text('Included transaction fee'),
-                                Text(
-                                    '${widget.donationHistoryData.transationFee}'),
+                                Text(widget.donationHistoryData.transationFee
+                                    .toStringAsFixed(2)),
                               ],
                             ),
                           )
