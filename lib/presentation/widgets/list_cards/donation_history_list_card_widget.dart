@@ -69,7 +69,7 @@ class DonationHistoryListCard extends StatelessWidget {
               ],
             ),
             Text(
-              '£${donationHistoryListCardEntity.amount}',
+              '£${donationHistoryListCardEntity.amount.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     fontSize: 16,
                     color: AppColor.text80Primary,
