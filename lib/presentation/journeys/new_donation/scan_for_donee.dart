@@ -147,7 +147,11 @@ class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
                       }
                     },
                     builder: (context, state) {
-                      if (state is GetdoneebycodeFailed) {
+                      if (state is GetdoneebycodeLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        );
+                      } else if (state is GetdoneebycodeFailed) {
                         return Positioned.fill(
                           top: MediaQuery.of(context).size.height * .1,
                           bottom: MediaQuery.of(context).size.height * .7,
