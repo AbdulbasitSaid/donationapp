@@ -112,10 +112,10 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
                             const SizedBox(
                               height: 4,
                             ),
-
-                            ///Todo get UkCharity number
-                            Text(
-                                'UK Charity No.${widget.donationData.donee.id}'),
+                            widget.donationData.donee.organization == null
+                                ? const SizedBox.shrink()
+                                : Text(
+                                    'UK Charity No. ${widget.donationData.donee.organization?.registrationNumber}'),
                           ],
                         ),
                       ),
@@ -221,7 +221,6 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
                     const Level6Headline(text: 'Donation history'),
                     ViewAllButtonWidget(
                       doneeId: widget.donationData.doneeId,
-                  
                     )
                   ],
                 ),
