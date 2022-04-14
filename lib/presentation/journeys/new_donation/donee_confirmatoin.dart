@@ -262,13 +262,17 @@ class DoneeCardWidget extends StatelessWidget {
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),
-                        subtitle: Text(
-                          'UK Charity No. 22345789001',
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    fontSize: 12,
-                                  ),
-                        ),
+                        subtitle: state.doneeResponseData.organization == null
+                            ? const SizedBox.shrink()
+                            : Text(
+                                'UK Charity No. ${state.doneeResponseData.organization?.registrationNumber}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(
+                                      fontSize: 12,
+                                    ),
+                              ),
                       )
                     : const SizedBox.shrink(),
                 ListTile(
