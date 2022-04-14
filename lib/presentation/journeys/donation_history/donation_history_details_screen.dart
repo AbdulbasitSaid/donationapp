@@ -111,7 +111,7 @@ class _DonationHistoryDetialsScreenState
                   ),
                   child: Level6Headline(
                       text:
-                          ' ${DateFormat.yMMMMEEEEd().format(widget.donationHistoryData.createdAt)}, ${DateFormat.jm().format(widget.donationHistoryData.createdAt).toLowerCase()} '),
+                          ' ${DateFormat.yMMMMEEEEd().format(widget.donationHistoryData.createdAt)}, ${DateFormat.jm().format(widget.donationHistoryData.createdAt.toLocal()).toLowerCase()} '),
                 ),
                 Container(
                   decoration: whiteContainerBackGround(),
