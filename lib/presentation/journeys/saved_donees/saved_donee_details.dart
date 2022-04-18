@@ -129,7 +129,12 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
                                 ),
 
                                 ///Todo get UkCharity number
-                                Text('UK Charity No.${widget.donationData.id}'),
+                                widget.donationData.organization
+                                            ?.registrationNumber ==
+                                        null
+                                    ? const SizedBox.shrink()
+                                    : Text(
+                                        'UK Charity No.${widget.donationData.organization?.registrationNumber}'),
                               ],
                             ),
                           ),
