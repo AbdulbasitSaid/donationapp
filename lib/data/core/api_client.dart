@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
@@ -14,7 +13,7 @@ class ApiClient {
 
   dynamic get(String path,
       {Map<dynamic, dynamic>? params, String? token}) async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 200));
     final response = await _client.get(
       getPath(path, params),
       headers: {
@@ -168,23 +167,3 @@ class ApiClient {
     return Uri.parse('${ApiConstants.baseUrl}/$path');
   }
 }
-
-
-  //  on UnprocessableEntity {
-  //     return const Left(
-  //         AppError(appErrorType: AppErrorType.unProcessableEntity));
-  //   } on BadRequest {
-  //     return const Left(AppError(appErrorType: AppErrorType.badRequest));
-  //   } on NetworkError {
-  //     return const Left(AppError(appErrorType: AppErrorType.network));
-  //   } on UnauthorisedException {
-  //     return const Left(AppError(appErrorType: AppErrorType.unauthorized));
-  //   } on Forbidden {
-  //     return const Left(AppError(appErrorType: AppErrorType.forbidden));
-  //   } on NotFound {
-  //     return const Left(AppError(appErrorType: AppErrorType.notFound));
-  //   } on InternalServerError {
-  //     return const Left(AppError(appErrorType: AppErrorType.serveError));
-  //   } on Exception {
-  //     return const Left(AppError(appErrorType: AppErrorType.unExpected));
-  //   }
