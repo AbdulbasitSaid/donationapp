@@ -140,25 +140,26 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                 .seachSavedDonee(value);
                           },
                           decoration: InputDecoration(
-                              isDense: true,
-                              hintText: 'Search',
-                              focusedBorder: InputBorder.none,
-                              border: InputBorder.none,
-                              prefix: IconButton(
-                                padding: const EdgeInsets.all(0),
-                                icon: const Icon(
-                                  FeatherIcons.x,
-                                  color: AppColor.baseText80Primary,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    context
-                                        .read<GetSavedDoneesCubit>()
-                                        .getSavedDonee();
-                                    isStartSearch = !isStartSearch;
-                                  });
-                                },
-                              )),
+                            isDense: true,
+                            hintText: 'Search',
+                            focusedBorder: InputBorder.none,
+                            border: InputBorder.none,
+                            prefix: IconButton(
+                              padding: const EdgeInsets.all(0),
+                              icon: const Icon(
+                                FeatherIcons.x,
+                                color: AppColor.baseText80Primary,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  context
+                                      .read<GetSavedDoneesCubit>()
+                                      .getSavedDonee();
+                                  isStartSearch = !isStartSearch;
+                                });
+                              },
+                            ),
+                          ),
                         ),
                       )
                     : const SizedBox.shrink(),

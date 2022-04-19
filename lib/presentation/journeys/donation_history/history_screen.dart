@@ -12,9 +12,11 @@ import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 import 'package:intl/intl.dart';
+import 'package:substring_highlight/substring_highlight.dart';
 
 import '../../../data/models/donation_models/donation_history_model.dart';
 import '../../reusables.dart';
+import '../../widgets/input_fields/donation_history_list_card_item.dart';
 
 class DonationHistoryScreen extends StatefulWidget {
   const DonationHistoryScreen({Key? key}) : super(key: key);
@@ -25,6 +27,24 @@ class DonationHistoryScreen extends StatefulWidget {
 
 class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   bool isStartSearch = false;
+  late TextEditingController _searchController;
+  @override
+  void initState() {
+    _searchController = TextEditingController();
+    _searchController.addListener(() {
+      context
+          .read<DonationHistoryCubit>()
+          .searchDonationHistory(_searchController.text);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,6 +247,9 @@ A history of donations you’ve made through this app. Select a donation to view
                                                           (e) =>
                                                               DonationHistoryListCardItem(
                                                                 donationData: e,
+                                                                searchTerm:
+                                                                    _searchController
+                                                                        .text,
                                                               ))
                                                     ]),
                                                   ),
@@ -260,6 +283,9 @@ A history of donations you’ve made through this app. Select a donation to view
                                                       ...earlierDonations.map((e) =>
                                                           DonationHistoryListCardItem(
                                                             donationData: e,
+                                                            searchTerm:
+                                                                _searchController
+                                                                    .text,
                                                           ))
                                                     ]),
                                                   ),
@@ -299,6 +325,9 @@ A history of donations you’ve made through this app. Select a donation to view
                                                 .map((e) =>
                                                     DonationHistoryListCardItem(
                                                       donationData: e,
+                                                      searchTerm:
+                                                          _searchController
+                                                              .text,
                                                     ))
                                           ],
                                         ),
@@ -379,11 +408,13 @@ A history of donations you’ve made through this app. Select a donation to view
                       autofocus: true,
                       textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
-                      onChanged: (value) {
-                        context
-                            .read<DonationHistoryCubit>()
-                            .searchDonationHistory(value);
-                      },
+                      controller: _searchController,
+                      // onChanged: (value) {
+                      //   _searchController.text = value;
+                      //   context
+                      //       .read<DonationHistoryCubit>()
+                      //       .searchDonationHistory(_searchController.text);
+                      // },
                       decoration: InputDecoration(
                           isDense: true,
                           hintText: 'Search',
@@ -411,94 +442,5 @@ A history of donations you’ve made through this app. Select a donation to view
         ),
       ),
     ));
-  }
-}
-
-class DonationHistoryListCardItem extends StatelessWidget {
-  final DonationHistoryData donationData;
-  const DonationHistoryListCardItem({
-    Key? key,
-    required this.donationData,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      style: TextButton.styleFrom(primary: AppColor.text80Primary),
-      onPressed: () {
-        context
-            .read<DonationHistorySummaryCubit>()
-            .getDonationHistoryDetailSummary(donationData.doneeId);
-        Navigator.push(
-            context,
-            AppRouter.routeToPage(DonationHistoryDetialsScreen(
-              donationHistoryData: donationData,
-            )));
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            donationData.rank == 1
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${DateFormat.EEEE().format(donationData.createdAt)},${DateFormat.d().format(donationData.createdAt)} ${DateFormat.MMMM().format(donationData.createdAt)}',
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                              color: AppColor.text70Primary,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                            ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                    ],
-                  )
-                : const SizedBox.shrink(),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const DoneeAvatarPlaceHolder(),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(donationData.donee.fullName),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          '${donationData.displayDonationType}',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      '£${(donationData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)!).toStringAsFixed(2)}',
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
