@@ -19,9 +19,7 @@ class AuthGaurd extends StatelessWidget {
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         if (state is AuthenticationInitial) {
-          return const Center(
-            child: PageLoaderWidget(),
-          );
+          return const PageLoaderWidget();
         } else if (state is UnAuthenticated) {
           return const LoginScreen();
         } else if (state is Authenticated) {
