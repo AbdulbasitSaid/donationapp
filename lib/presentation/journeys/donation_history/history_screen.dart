@@ -2,19 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
-import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_summary_cubit.dart';
-import 'package:idonatio/presentation/journeys/donation_history/donation_history_details_screen.dart';
 import 'package:idonatio/presentation/journeys/new_donation/add_donee_by_id.dart';
 import 'package:idonatio/presentation/journeys/new_donation/scan_for_donee.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
-import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
-import 'package:intl/intl.dart';
-import 'package:substring_highlight/substring_highlight.dart';
 
-import '../../../data/models/donation_models/donation_history_model.dart';
 import '../../reusables.dart';
 import '../../widgets/input_fields/donation_history_list_card_item.dart';
 
@@ -101,8 +95,7 @@ A history of donations you’ve made through this app. Select a donation to view
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      }
-                      if (state is DonationHistorySuccess) {
+                      } else if (state is DonationHistorySuccess) {
                         final thisMonthDonations = state
                             .donationHistoryModel.data
                             .where((element) =>
@@ -409,12 +402,6 @@ A history of donations you’ve made through this app. Select a donation to view
                       textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
                       controller: _searchController,
-                      // onChanged: (value) {
-                      //   _searchController.text = value;
-                      //   context
-                      //       .read<DonationHistoryCubit>()
-                      //       .searchDonationHistory(_searchController.text);
-                      // },
                       decoration: InputDecoration(
                           isDense: true,
                           hintText: 'Search',
