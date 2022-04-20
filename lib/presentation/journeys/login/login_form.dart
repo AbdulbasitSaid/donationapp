@@ -67,15 +67,7 @@ class _LoginFormState extends State<LoginForm> {
       key: _formKey,
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
-          if (state is LoginLoading) {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return const AppLoader(
-                    loadingMessage: 'Sending request please wait..',
-                  );
-                });
-          } else if (state is LoginSuccess) {
+          if (state is LoginSuccess) {
             context
                 .read<UserCubit>()
                 .setUserState(getItInstance(), AuthStatus.authenticated);
@@ -83,8 +75,6 @@ class _LoginFormState extends State<LoginForm> {
             context.read<GetRecentdoneesCubit>().getRecentDonees();
             context.read<GetSavedDoneesCubit>().getSavedDonee();
             Navigator.push(context, AppRouter.routeToPage(const AuthGaurd()));
-          } else {
-            Navigator.of(context, rootNavigator: true).pop();
           }
         },
         builder: (context, state) {
@@ -223,20 +213,29 @@ class _LoginFormState extends State<LoginForm> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: enableSignIn
-                        ? () {
-                            log(_emailAddressController.text);
-                            if (_formKey.currentState!.validate()) {
-                              context.read<LoginCubit>().initiateLogin(
-                                    _emailAddressController.text,
-                                    _passwordController.text,
-                                    rememberEmail!,
-                                  );
-                            }
-                          }
-                        : null,
-                    child: const Text('Sign in'),
+                  BlocBuilder<LoginCubit, LoginState>(
+                    builder: (context, state) {
+                      if (state is LoginLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        );
+                      }
+                      return ElevatedButton(
+                        onPressed: enableSignIn
+                            ? () {
+                                log(_emailAddressController.text);
+                                if (_formKey.currentState!.validate()) {
+                                  context.read<LoginCubit>().initiateLogin(
+                                        _emailAddressController.text,
+                                        _passwordController.text,
+                                        rememberEmail!,
+                                      );
+                                }
+                              }
+                            : null,
+                        child: const Text('Sign in'),
+                      );
+                    },
                   )
                 ],
               ),

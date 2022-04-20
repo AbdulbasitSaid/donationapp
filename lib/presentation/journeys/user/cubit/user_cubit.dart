@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
-import 'package:idonatio/data/models/user_models/local_user_model.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
@@ -13,11 +12,8 @@ part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   final UserLocalDataSource localUserDataSource;
-  final LoginCubit loginCubit;
-  late StreamSubscription _loginStreamSubscription;
 
-  UserCubit(this.localUserDataSource, this.loginCubit)
-      : super(AuthenticationInitial()) {
+  UserCubit(this.localUserDataSource) : super(AuthenticationInitial()) {
     setUserState(localUserDataSource, AuthStatus.appStarted);
   }
   void setUserState(
@@ -67,7 +63,6 @@ class UserCubit extends Cubit<UserState> {
 
   @override
   Future<void> close() {
-    _loginStreamSubscription.cancel();
     return super.close();
   }
 }
