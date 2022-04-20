@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/add_donee_by_id.dart';
 import 'package:idonatio/presentation/journeys/new_donation/scan_for_donee.dart';
@@ -26,9 +27,15 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   void initState() {
     _searchController = TextEditingController();
     _searchController.addListener(() {
-      context
-          .read<DonationHistoryCubit>()
-          .searchDonationHistory(_searchController.text);
+      if (_searchController.text.isEmpty) {
+        context.read<DonationHistoryCubit>().getDonationHistory();
+      } else {
+        if (_searchController.text.length > 2) {
+          context
+              .read<DonationHistoryCubit>()
+              .searchDonationHistory(_searchController.text);
+        }
+      }
     });
     super.initState();
   }
@@ -128,86 +135,111 @@ A history of donations you’ve made through this app. Select a donation to view
                                       const SizedBox(
                                         height: 16,
                                       ),
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (context) => SimpleDialog(
-                                                            title: const Text(
-                                                                'Get Donee'),
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child:
-                                                                    TextButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                          Navigator.push(
-                                                                              context,
-                                                                              AppRouter.routeToPage(const AddDoneeByIdScreen()));
-                                                                        },
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            const Icon(Icons.add_circle_outline_rounded),
-                                                                            const SizedBox(
-                                                                              width: 24,
-                                                                            ),
-                                                                            Text(
-                                                                              'Add by ID',
-                                                                              style: Theme.of(context).textTheme.bodyLarge,
-                                                                            )
-                                                                          ],
-                                                                        )),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child:
-                                                                    TextButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                          Navigator.push(
-                                                                              context,
-                                                                              AppRouter.routeToPage(const ScanForDoneeScreen()));
-                                                                        },
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            const Icon(Icons.qr_code_2),
-                                                                            const SizedBox(
-                                                                              width: 24,
-                                                                            ),
-                                                                            Text(
-                                                                              'Scan QR Code',
-                                                                              style: Theme.of(context).textTheme.bodyLarge,
-                                                                            )
-                                                                          ],
-                                                                        )),
-                                                              ),
-                                                            ]));
-                                          },
-                                          child: Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.add,
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text('New Donation'.toUpperCase())
-                                            ],
-                                          ))
+                                      TextButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder:
+                                                  (context) => SimpleDialog(
+                                                          title: const Text(
+                                                              'Get Donee'),
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        AppRouter.routeToPage(
+                                                                            const AddDoneeByIdScreen()));
+                                                                  },
+                                                                  child: Row(
+                                                                    children: [
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .add_circle_outline_rounded),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            24,
+                                                                      ),
+                                                                      Text(
+                                                                        'Add by ID',
+                                                                        style: Theme.of(context)
+                                                                            .textTheme
+                                                                            .bodyLarge,
+                                                                      )
+                                                                    ],
+                                                                  )),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        AppRouter.routeToPage(
+                                                                            const ScanForDoneeScreen()));
+                                                                  },
+                                                                  child: Row(
+                                                                    children: [
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .qr_code_2),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            24,
+                                                                      ),
+                                                                      Text(
+                                                                        'Scan QR Code',
+                                                                        style: Theme.of(context)
+                                                                            .textTheme
+                                                                            .bodyLarge,
+                                                                      )
+                                                                    ],
+                                                                  )),
+                                                            ),
+                                                          ]));
+                                        },
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .6,
+                                          padding: const EdgeInsets.all(16),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(8)),
+                                              border: Border.all(
+                                                  color: AppColor.basePrimary)),
+                                          child: Row(children: const [
+                                            Icon(
+                                              Icons.add,
+                                              color: AppColor.basePrimary,
+                                            ),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              'New Donation',
+                                              style: TextStyle(
+                                                  color: AppColor.basePrimary,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ]),
+                                        ),
+                                      )
                                     ]),
                               )
                             : isStartSearch == false
@@ -346,9 +378,68 @@ A history of donations you’ve made through this app. Select a donation to view
                               ),
                               TextButton(
                                 onPressed: () {
-                                  context
-                                      .read<DonationHistoryCubit>()
-                                      .getDonationHistory();
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => SimpleDialog(
+                                              title: const Text('Get Donee'),
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        Navigator.push(
+                                                            context,
+                                                            AppRouter.routeToPage(
+                                                                const AddDoneeByIdScreen()));
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          const Icon(Icons
+                                                              .add_circle_outline_rounded),
+                                                          const SizedBox(
+                                                            width: 24,
+                                                          ),
+                                                          Text(
+                                                            'Add by ID',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyLarge,
+                                                          )
+                                                        ],
+                                                      )),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        Navigator.push(
+                                                            context,
+                                                            AppRouter.routeToPage(
+                                                                const ScanForDoneeScreen()));
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          const Icon(
+                                                              Icons.qr_code_2),
+                                                          const SizedBox(
+                                                            width: 24,
+                                                          ),
+                                                          Text(
+                                                            'Scan QR Code',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyLarge,
+                                                          )
+                                                        ],
+                                                      )),
+                                                ),
+                                              ]));
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width * .6,
