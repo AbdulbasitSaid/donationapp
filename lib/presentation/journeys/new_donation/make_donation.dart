@@ -205,8 +205,7 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                                         )),
                               ]),
                             );
-                          }
-                          if (state is RecentdoneesLoading) {
+                          } else if (state is RecentdoneesLoading) {
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
