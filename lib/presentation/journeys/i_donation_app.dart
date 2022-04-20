@@ -102,7 +102,9 @@ class _IdonatioAppState extends State<IdonatioApp> {
           BlocProvider(
               create: (context) => CreateSetupIntentCubit(getItInstance())),
           BlocProvider(
-              create: (context) => UserCubit(getItInstance(), getItInstance())),
+              create: (context) => UserCubit(
+                    getItInstance(),
+                  )),
           BlocProvider(
             create: (context) => MakedonationCubit(
               getItInstance(),
