@@ -8,6 +8,8 @@ import 'package:idonatio/presentation/journeys/onboarding/onboarding_screen.dart
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/start_screen.dart';
 
+import '../widgets/loaders/page_loader_widget.dart';
+
 class AuthGaurd extends StatelessWidget {
   const AuthGaurd({
     Key? key,
@@ -36,19 +38,6 @@ class AuthGaurd extends StatelessWidget {
           return const StartScreen();
         }
       },
-    );
-  }
-}
-
-class PageLoaderWidget extends StatelessWidget {
-  const PageLoaderWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
     );
   }
 }
