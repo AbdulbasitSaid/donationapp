@@ -70,7 +70,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  !isStartSearch
+                  isStartSearch == false
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
@@ -110,7 +110,8 @@ A history of donations you’ve made through this app. Select a donation to view
                             .where((element) =>
                                 element.donationDetails.isNotEmpty);
 
-                        return state.donationHistoryModel.data.isEmpty
+                        return state.donationHistoryModel.data.isEmpty &&
+                                isStartSearch == false
                             ? Container(
                                 padding: const EdgeInsets.all(16),
                                 child: Column(
@@ -209,7 +210,7 @@ A history of donations you’ve made through this app. Select a donation to view
                                           ))
                                     ]),
                               )
-                            : !isStartSearch
+                            : isStartSearch == false
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -383,7 +384,7 @@ A history of donations you’ve made through this app. Select a donation to view
                 crossAxisAlignment: CrossAxisAlignment.start,
               ),
             ),
-            isStartSearch
+            isStartSearch == true
                 ? Container(
                     decoration: BoxDecoration(boxShadow: [
                       BoxShadow(
@@ -418,6 +419,7 @@ A history of donations you’ve made through this app. Select a donation to view
                                 context
                                     .read<DonationHistoryCubit>()
                                     .getDonationHistory();
+                                _searchController.clear();
                                 isStartSearch = !isStartSearch;
                               });
                             },
