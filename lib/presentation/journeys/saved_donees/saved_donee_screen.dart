@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:idonatio/data/models/donation_models/donee_model.dart';
-import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_summary_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/save_donee_add_by_id_screen.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/save_donee_add_by_qr_code_screen.dart';
-import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_details.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
-import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
 
 import '../../reusables.dart';
+import '../../widgets/input_fields/saved_donee_list_item_widget.dart';
 import '../../widgets/labels/level_2_heading.dart';
 import '../../widgets/labels/level_6_headline.dart';
 
@@ -29,10 +26,24 @@ class SavedDoneeScreen extends StatefulWidget {
 
 class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
   bool isStartSearch = false;
+
   bool isScrolling = false;
+  late TextEditingController _searchController;
   @override
   void initState() {
+    _searchController = TextEditingController();
+    _searchController.addListener(() {
+      context
+          .read<GetSavedDoneesCubit>()
+          .seachSavedDonee(_searchController.text);
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -132,13 +143,9 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                         ]),
                         child: TextFormField(
                           autofocus: true,
+                          controller: _searchController,
                           textAlign: TextAlign.start,
                           textAlignVertical: TextAlignVertical.center,
-                          onChanged: (value) {
-                            context
-                                .read<GetSavedDoneesCubit>()
-                                .seachSavedDonee(value);
-                          },
                           decoration: InputDecoration(
                             isDense: true,
                             hintText: 'Search',
@@ -217,6 +224,9 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                                 ...recentlySaved.map((e) =>
                                                     SavedDoneeListItemWidget(
                                                       donee: e,
+                                                      highlightString:
+                                                          _searchController
+                                                              .text,
                                                     ))
                                             ]),
                                           ),
@@ -276,10 +286,12 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                       decoration: whiteContainerBackGround(),
                                       child: Column(children: [
                                         ...state.savedDoneesResponseModel.data!
-                                            .map(
-                                                (e) => SavedDoneeListItemWidget(
-                                                      donee: e,
-                                                    ))
+                                            .map((e) =>
+                                                SavedDoneeListItemWidget(
+                                                  donee: e,
+                                                  highlightString:
+                                                      _searchController.text,
+                                                ))
                                       ]),
                                     ),
                                   ],
@@ -310,8 +322,12 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                   color: Colors.white.withOpacity(.8)),
                               child: Column(
                                 children: [
-                                  ...state.savedDoneesResponseModel.data!.map(
-                                      (e) => SavedDoneeListItemWidget(donee: e))
+                                  ...state.savedDoneesResponseModel.data!
+                                      .map((e) => SavedDoneeListItemWidget(
+                                            donee: e,
+                                            highlightString:
+                                                _searchController.text,
+                                          ))
                                 ],
                               ),
                             );
@@ -345,58 +361,6 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class SavedDoneeListItemWidget extends StatelessWidget {
-  const SavedDoneeListItemWidget({
-    Key? key,
-    required this.donee,
-  }) : super(key: key);
-  final Donee donee;
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        context
-            .read<DonationHistorySummaryCubit>()
-            .getDonationHistoryDetailSummary(donee.id!);
-        Navigator.push(context,
-            AppRouter.routeToPage(SavedDoneeDetails(donationData: donee)));
-      },
-      style: TextButton.styleFrom(primary: AppColor.text80Primary),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const DoneeAvatarPlaceHolder(),
-          const SizedBox(
-            width: 16,
-          ),
-          Flexible(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                donee.organization == null
-                    ? '${donee.firstName} ${donee.lastName}'
-                    : '${donee.organization?.name}',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(fontSize: 16),
-              ),
-              Text(
-                donee.organization == null
-                    ? '${donee.addressLine_1} ${donee.addressLine_2}'
-                    : '${donee.organization?.addressLine_1} ${donee.organization?.addressLine_2}',
-                style: Theme.of(context).textTheme.caption,
-              ),
-            ],
-          ))
-        ],
       ),
     );
   }
