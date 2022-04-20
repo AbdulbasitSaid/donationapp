@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/journeys/donation_history/history_screen.dart';
@@ -19,8 +18,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Timer sessionTimer;
-  late Timer localSessionTimer;
   static final List<Widget> _homeScreens = <Widget>[
     const MakeDonationScreen(),
     const DonationHistoryScreen(),
