@@ -1,4 +1,4 @@
-name: idonatio
+name: iDonatio
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -69,8 +69,8 @@ flutter_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/pngs/app_icon.png"
-  adaptive_icon_background: "assets/pngs/iDonatio_Launch_icon_Android _Background.png"
-  adaptive_icon_foreground: "assets/pngs/app_icon.png"
+  adaptive_icon_background: "assets/pngs/adaptive-icon.png"
+  adaptive_icon_foreground: "assets/pngs/foreground.png"
   flutter_test:
     sdk: flutter
 
