@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/add_donee_by_id.dart';
 import 'package:idonatio/presentation/journeys/new_donation/scan_for_donee.dart';
@@ -23,6 +22,7 @@ class DonationHistoryScreen extends StatefulWidget {
 class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   bool isStartSearch = false;
   late TextEditingController _searchController;
+  String highlightSearch = '';
   @override
   void initState() {
     _searchController = TextEditingController();
@@ -30,7 +30,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
       if (_searchController.text.isEmpty) {
         context.read<DonationHistoryCubit>().getDonationHistory();
       } else {
-        if (_searchController.text.length > 2) {
+        if (_searchController.text.isNotEmpty) {
           context
               .read<DonationHistoryCubit>()
               .searchDonationHistory(_searchController.text);
@@ -274,8 +274,7 @@ A history of donations you’ve made through this app. Select a donation to view
                                                               DonationHistoryListCardItem(
                                                                 donationData: e,
                                                                 searchTerm:
-                                                                    _searchController
-                                                                        .text,
+                                                                    highlightSearch,
                                                               ))
                                                     ]),
                                                   ),
@@ -310,8 +309,7 @@ A history of donations you’ve made through this app. Select a donation to view
                                                           DonationHistoryListCardItem(
                                                             donationData: e,
                                                             searchTerm:
-                                                                _searchController
-                                                                    .text,
+                                                                highlightSearch,
                                                           ))
                                                     ]),
                                                   ),
@@ -352,8 +350,7 @@ A history of donations you’ve made through this app. Select a donation to view
                                                     DonationHistoryListCardItem(
                                                       donationData: e,
                                                       searchTerm:
-                                                          _searchController
-                                                              .text,
+                                                          highlightSearch,
                                                     ))
                                           ],
                                         ),
@@ -494,6 +491,11 @@ A history of donations you’ve made through this app. Select a donation to view
                       textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
                       controller: _searchController,
+                      onChanged: (value) {
+                        setState(() {
+                          highlightSearch = value;
+                        });
+                      },
                       decoration: InputDecoration(
                           isDense: true,
                           hintText: 'Search',
