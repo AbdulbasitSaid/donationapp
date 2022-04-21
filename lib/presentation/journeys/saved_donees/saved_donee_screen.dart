@@ -29,6 +29,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
 
   bool isScrolling = false;
   late TextEditingController _searchController;
+  String highlightString = '';
   @override
   void initState() {
     _searchController = TextEditingController();
@@ -148,6 +149,11 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                               spreadRadius: 0),
                         ]),
                         child: TextFormField(
+                          onChanged: (value) {
+                            setState(() {
+                              highlightString = value;
+                            });
+                          },
                           autofocus: true,
                           controller: _searchController,
                           textAlign: TextAlign.start,
@@ -231,8 +237,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                                     SavedDoneeListItemWidget(
                                                       donee: e,
                                                       highlightString:
-                                                          _searchController
-                                                              .text,
+                                                          highlightString,
                                                     ))
                                             ]),
                                           ),
@@ -292,12 +297,12 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                       decoration: whiteContainerBackGround(),
                                       child: Column(children: [
                                         ...state.savedDoneesResponseModel.data!
-                                            .map((e) =>
-                                                SavedDoneeListItemWidget(
-                                                  donee: e,
-                                                  highlightString:
-                                                      _searchController.text,
-                                                ))
+                                            .map(
+                                                (e) => SavedDoneeListItemWidget(
+                                                      donee: e,
+                                                      highlightString:
+                                                          highlightString,
+                                                    ))
                                       ]),
                                     ),
                                   ],
@@ -331,8 +336,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                   ...state.savedDoneesResponseModel.data!
                                       .map((e) => SavedDoneeListItemWidget(
                                             donee: e,
-                                            highlightString:
-                                                _searchController.text,
+                                            highlightString: highlightString,
                                           ))
                                 ],
                               ),
