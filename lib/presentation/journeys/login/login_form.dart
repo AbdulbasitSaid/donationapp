@@ -74,7 +74,8 @@ class _LoginFormState extends State<LoginForm> {
             context.read<DonationHistoryCubit>().getDonationHistory();
             context.read<GetRecentdoneesCubit>().getRecentDonees();
             context.read<GetSavedDoneesCubit>().getSavedDonee();
-            Navigator.push(context, AppRouter.routeToPage(const AuthGaurd()));
+            Navigator.pushAndRemoveUntil(context,
+                AppRouter.routeToPage(const AuthGaurd()), (route) => false);
           }
         },
         builder: (context, state) {
