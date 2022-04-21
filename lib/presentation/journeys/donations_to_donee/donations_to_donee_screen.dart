@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idonatio/data/models/donation_models/donation_history_model.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/get_donation_history_by_donee_id_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../widgets/list_cards/donation_history_list_card_widget.dart';
-import '../donation_history/donee_detail_history.dart';
 import '../new_donation/cubit/get_payment_methods_cubit.dart';
 import '../new_donation/cubit/getdoneebycode_cubit.dart';
 import '../new_donation/donation_details.dart';

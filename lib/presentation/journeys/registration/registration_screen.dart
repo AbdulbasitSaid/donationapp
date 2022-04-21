@@ -4,7 +4,6 @@ import 'package:idonatio/common/words.dart';
 import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
-import 'package:idonatio/presentation/widgets/dialogs/app_loader_dialog.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../auth_guard.dart';
