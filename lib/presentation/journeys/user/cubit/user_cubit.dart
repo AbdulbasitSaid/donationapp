@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/enums.dart';
-import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 
 part 'user_state.dart';
 
