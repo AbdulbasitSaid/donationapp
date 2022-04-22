@@ -1,4 +1,4 @@
-import 'package:device_info_plus/device_info_plus.dart';
+// import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:idonatio/data/core/api_client.dart';
@@ -85,7 +85,7 @@ Future init() async {
       () => DonationDataSources(getItInstance()));
   getItInstance.registerLazySingleton<DonationRepository>(
       () => DonationRepository(getItInstance(), getItInstance()));
-  getItInstance
-      .registerLazySingleton<DeviceInfoPlugin>(() => DeviceInfoPlugin());
+  // getItInstance
+  //     .registerLazySingleton<DeviceInfoPlugin>(() => DeviceInfoPlugin());
   getItInstance.registerLazySingleton<NetworkInfo>(() => NetworkInfo());
 }
