@@ -30,11 +30,9 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
       if (_searchController.text.isEmpty) {
         context.read<DonationHistoryCubit>().getDonationHistory();
       } else {
-        if (_searchController.text.isNotEmpty) {
-          context
-              .read<DonationHistoryCubit>()
-              .searchDonationHistory(_searchController.text);
-        }
+        context
+            .read<DonationHistoryCubit>()
+            .searchDonationHistory(_searchController.text);
       }
     });
     super.initState();
