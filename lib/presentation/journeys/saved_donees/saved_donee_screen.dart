@@ -37,11 +37,9 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
       if (_searchController.text.isEmpty) {
         context.read<GetSavedDoneesCubit>().getSavedDonee();
       } else {
-        if (_searchController.text.length > 2) {
-          context
-              .read<GetSavedDoneesCubit>()
-              .seachSavedDonee(_searchController.text);
-        }
+        context
+            .read<GetSavedDoneesCubit>()
+            .seachSavedDonee(_searchController.text);
       }
     });
     super.initState();
