@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -22,19 +25,32 @@ class DonationHistoryScreen extends StatefulWidget {
 class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   bool isStartSearch = false;
   late TextEditingController _searchController;
+  late Timer searchOnStoppedTyping;
+  static const duration = Duration(milliseconds: 800);
   String highlightSearch = '';
+  _onChangeHandler(value) {
+    const duration = Duration(
+        milliseconds:
+            800); // set the duration that you want call search() after that.
+    setState(() => searchOnStoppedTyping.cancel());
+    search(value) {
+      highlightSearch = value;
+      if (value.isEmpty) {
+        context.read<DonationHistoryCubit>().getDonationHistory();
+      } else {
+        context.read<DonationHistoryCubit>().searchDonationHistory(value);
+      }
+    }
+
+    setState(
+        () => searchOnStoppedTyping = Timer(duration, () => search(value)));
+  }
+
   @override
   void initState() {
     _searchController = TextEditingController();
-    _searchController.addListener(() {
-      // if (_searchController.text.isEmpty) {
-      //   context.read<DonationHistoryCubit>().getDonationHistory();
-      // } else {
-      //   context
-      //       .read<DonationHistoryCubit>()
-      //       .searchDonationHistory(_searchController.text);
-      // }
-    });
+    searchOnStoppedTyping = Timer(duration, () {});
+
     super.initState();
   }
 
@@ -485,24 +501,36 @@ A history of donations you’ve made through this app. Select a donation to view
                           spreadRadius: 0),
                     ]),
                     child: TextFormField(
+                      // onSaved: (value) {
+                      //   setState(() {
+                      //     log(value ?? "");
+                      //   });
+                      // },
+                      onEditingComplete: () {
+                        setState(() {
+                          log(_searchController.text);
+                        });
+                      },
                       autofocus: true,
                       textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
                       controller: _searchController,
-                      onChanged: (value) {
-                        setState(() {
-                          highlightSearch = value;
-                          if (_searchController.text.isEmpty) {
-                            context
-                                .read<DonationHistoryCubit>()
-                                .getDonationHistory();
-                          } else {
-                            context
-                                .read<DonationHistoryCubit>()
-                                .searchDonationHistory(value);
-                          }
-                        });
-                      },
+                      onChanged: _onChangeHandler,
+                      //  (value) {
+                      //   log(value);
+                      //   // setState(() {
+                      //   //   highlightSearch = value;
+                      //   //   if (value.isEmpty) {
+                      //   //     context
+                      //   //         .read<DonationHistoryCubit>()
+                      //   //         .getDonationHistory();
+                      //   //   } else {
+                      //   //     context
+                      //   //         .read<DonationHistoryCubit>()
+                      //   //         .searchDonationHistory(value);
+                      //   //   }
+                      //   // });
+                      // },
                       decoration: InputDecoration(
                           isDense: true,
                           hintText: 'Search',
