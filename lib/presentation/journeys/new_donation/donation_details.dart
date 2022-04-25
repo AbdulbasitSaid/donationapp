@@ -236,8 +236,20 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                                         ).totalPayment
                                                       : amount)
                                                   .toStringAsFixed(2));
+                                        } else if (doneeState
+                                            is GetdoneebycodeLoading) {
+                                          return const Text('getting donee...');
+                                        } else if (paymentMethodState
+                                            is GetPaymentMethodsLoading) {
+                                          return const Text(
+                                              'fetching payment methods...');
+                                        } else if (feeDataState
+                                            is GetDonationFeesLoading) {
+                                          return const Text(
+                                              'fetching Application fees...');
                                         } else {
-                                          return const Text('loading');
+                                          return const Text(
+                                              'Opps and error occured!!');
                                         }
                                       })
                                     ],
