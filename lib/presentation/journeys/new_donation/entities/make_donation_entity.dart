@@ -7,6 +7,7 @@ import 'dart:convert';
 class MakeDonationEntity {
   MakeDonationEntity({
     required this.doneeId,
+    required this.channel,
     required this.paidTransactionFee,
     required this.donationMethod,
     required this.donationLocation,
@@ -31,6 +32,7 @@ class MakeDonationEntity {
   final String doneeId;
   final bool paidTransactionFee;
   final String donationMethod;
+  final String channel;
   final String donationLocation;
   final bool isAnonymous;
   final bool applyGiftAidToDonation;
@@ -57,6 +59,7 @@ class MakeDonationEntity {
   factory MakeDonationEntity.fromMap(Map<dynamic, dynamic> json) =>
       MakeDonationEntity(
         idonatioTransactionFee: json['idonatio_transaction_fee'],
+        channel: json["channel"],
         doneeId: json["donee_id"],
         paidTransactionFee: json["paid_transaction_fee"],
         donationMethod: json["donation_method"],
@@ -96,6 +99,7 @@ class MakeDonationEntity {
         "donation_details":
             List<dynamic>.from(donationDetails.map((x) => x.toMap())),
         "amount": amount,
+        "chaneel": channel,
         "stripe_connected_account_id": stripeConnectedAccountId,
         "stripe_payment_method_id": stripePaymentMethodId,
         "idonatio_transaction_fee": idonatioTransactionFee,
