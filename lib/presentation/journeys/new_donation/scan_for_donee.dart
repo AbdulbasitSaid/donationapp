@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/user_models/user_data_model.dart';
 import '../saved_donees/cubit/get_saved_donees_cubit.dart';
+import 'cubit/get_payment_methods_cubit.dart';
 import 'donation_details.dart';
 
 class ScanForDoneeScreen extends StatefulWidget {
@@ -127,6 +128,9 @@ class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
                       if (state is GetdoneebycodeSuccess) {
                         qrViewController!.dispose();
                         context.read<GetDonationFeesCubit>().getFees();
+                        context
+                            .read<GetPaymentMethodsCubit>()
+                            .getPaymentMethods();
                         if (getSavedDoneeState is GetSavedDoneesSuccess &&
                             getSavedDoneeState.savedDoneesResponseModel.data!
                                 .map((e) => e.id)

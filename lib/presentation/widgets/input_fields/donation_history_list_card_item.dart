@@ -94,7 +94,7 @@ class DonationHistoryListCardItem extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      '£${(donationData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)!).toStringAsFixed(2)}',
+                      '£${(donationData.totalPayment).toStringAsFixed(2)}',
                     ),
                   ],
                 )
