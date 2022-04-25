@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -26,22 +29,36 @@ class SavedDoneeScreen extends StatefulWidget {
 
 class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
   bool isStartSearch = false;
-
+  late Timer searchOnStoppedTyping;
+  static const duration = Duration(milliseconds: 800);
   bool isScrolling = false;
   late TextEditingController _searchController;
   String highlightString = '';
-  @override
-  void initState() {
-    _searchController = TextEditingController();
-    _searchController.addListener(() {
-      if (_searchController.text.isEmpty) {
+  _onChangeHandler(value) {
+    const duration = Duration(
+        milliseconds:
+            800); // set the duration that you want call search() after that.
+    setState(() => searchOnStoppedTyping.cancel());
+    search(String value) {
+      highlightString = value;
+      if (value.isEmpty) {
         context.read<GetSavedDoneesCubit>().getSavedDonee();
       } else {
         context
             .read<GetSavedDoneesCubit>()
             .seachSavedDonee(_searchController.text);
       }
-    });
+    }
+
+    setState(
+        () => searchOnStoppedTyping = Timer(duration, () => search(value)));
+  }
+
+  @override
+  void initState() {
+    _searchController = TextEditingController();
+    searchOnStoppedTyping = Timer(duration, () {});
+
     super.initState();
   }
 
@@ -147,11 +164,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                               spreadRadius: 0),
                         ]),
                         child: TextFormField(
-                          onChanged: (value) {
-                            setState(() {
-                              highlightString = value;
-                            });
-                          },
+                          onChanged: _onChangeHandler,
                           autofocus: true,
                           controller: _searchController,
                           textAlign: TextAlign.start,
