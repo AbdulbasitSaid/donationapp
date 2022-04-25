@@ -123,7 +123,7 @@ class _DonationHistoryDetialsScreenState
                         const Level4Headline(text: 'Total payment'),
                         Level4Headline(
                           text:
-                              '£${(widget.donationHistoryData.donationDetails.map((e) => e.amount).toList().reduce((value, element) => value! + element!)!).toStringAsFixed(2)}',
+                              '£${(widget.donationHistoryData.totalPayment).toStringAsFixed(2)}',
                         ),
                       ],
                     ),
