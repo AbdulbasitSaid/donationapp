@@ -27,13 +27,13 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   void initState() {
     _searchController = TextEditingController();
     _searchController.addListener(() {
-      if (_searchController.text.isEmpty) {
-        context.read<DonationHistoryCubit>().getDonationHistory();
-      } else {
-        context
-            .read<DonationHistoryCubit>()
-            .searchDonationHistory(_searchController.text);
-      }
+      // if (_searchController.text.isEmpty) {
+      //   context.read<DonationHistoryCubit>().getDonationHistory();
+      // } else {
+      //   context
+      //       .read<DonationHistoryCubit>()
+      //       .searchDonationHistory(_searchController.text);
+      // }
     });
     super.initState();
   }
@@ -492,6 +492,15 @@ A history of donations you’ve made through this app. Select a donation to view
                       onChanged: (value) {
                         setState(() {
                           highlightSearch = value;
+                          if (_searchController.text.isEmpty) {
+                            context
+                                .read<DonationHistoryCubit>()
+                                .getDonationHistory();
+                          } else {
+                            context
+                                .read<DonationHistoryCubit>()
+                                .searchDonationHistory(value);
+                          }
                         });
                       },
                       decoration: InputDecoration(
