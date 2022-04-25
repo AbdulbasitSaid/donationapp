@@ -3,6 +3,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
+import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/donation_details.dart';
 import 'package:idonatio/presentation/journeys/new_donation/donee_confirmatoin.dart';
@@ -144,6 +145,10 @@ class _AddDoneeByIdScreenState extends State<AddDoneeByIdScreen> {
                                               context
                                                   .read<GetDonationFeesCubit>()
                                                   .getFees();
+                                              context
+                                                  .read<
+                                                      GetPaymentMethodsCubit>()
+                                                  .getPaymentMethods();
                                               context
                                                   .read<GetdoneebycodeCubit>()
                                                   .getDoneeByCode(
