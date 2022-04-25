@@ -144,9 +144,10 @@ class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
                                       user.donor.donateAnonymously)));
                         } else {
                           Navigator.push(
-                              context,
-                              AppRouter.routeToPage(
-                                  const DoneeConfirmationScreen()));
+                            context,
+                            AppRouter.routeToPage(
+                                const DoneeConfirmationScreen()),
+                          );
                         }
                       }
                     },

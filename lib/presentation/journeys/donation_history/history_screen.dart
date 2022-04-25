@@ -48,9 +48,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
 
   @override
   void initState() {
-    _searchController = TextEditingController();
     searchOnStoppedTyping = Timer(duration, () {});
-
     super.initState();
   }
 
@@ -92,21 +90,25 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                     height: 16,
                   ),
                   isStartSearch == false
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Padding(
-                                padding: EdgeInsets.all(16),
-                                child: Level2Headline(
-                                  text: 'Your donations',
-                                )),
-                            Padding(
-                                padding: EdgeInsets.all(16),
-                                child: Text(
-                                  """
-A history of donations you’ve made through this app. Select a donation to view more details.""",
-                                )),
-                          ],
+                      ? RefreshIndicator(
+                          onRefresh: () async => context
+                              .read<DonationHistoryCubit>()
+                              .getDonationHistory(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: Level2Headline(
+                                    text: 'Your donations',
+                                  )),
+                              Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: Text(
+                                    "A history of donations you’ve made through this app. Select a donation to view more details.",
+                                  )),
+                            ],
+                          ),
                         )
                       : const SizedBox.shrink(),
                   BlocConsumer<DonationHistoryCubit, DonationHistoryState>(
@@ -501,11 +503,6 @@ A history of donations you’ve made through this app. Select a donation to view
                           spreadRadius: 0),
                     ]),
                     child: TextFormField(
-                      // onSaved: (value) {
-                      //   setState(() {
-                      //     log(value ?? "");
-                      //   });
-                      // },
                       onEditingComplete: () {
                         setState(() {
                           log(_searchController.text);
@@ -516,21 +513,6 @@ A history of donations you’ve made through this app. Select a donation to view
                       textAlignVertical: TextAlignVertical.center,
                       controller: _searchController,
                       onChanged: _onChangeHandler,
-                      //  (value) {
-                      //   log(value);
-                      //   // setState(() {
-                      //   //   highlightSearch = value;
-                      //   //   if (value.isEmpty) {
-                      //   //     context
-                      //   //         .read<DonationHistoryCubit>()
-                      //   //         .getDonationHistory();
-                      //   //   } else {
-                      //   //     context
-                      //   //         .read<DonationHistoryCubit>()
-                      //   //         .searchDonationHistory(value);
-                      //   //   }
-                      //   // });
-                      // },
                       decoration: InputDecoration(
                           isDense: true,
                           hintText: 'Search',
