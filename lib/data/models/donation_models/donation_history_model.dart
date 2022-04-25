@@ -46,12 +46,18 @@ class DonationHistoryData {
   int rank;
   List<DonationDetails> donationDetails;
   Donee donee;
-  double get totalPayment => donationDetails
+  double get totalAmount => donationDetails
       .map(
         (e) => e.amount,
       )
       .toList()
       .reduce((value, element) => value! + element!)!;
+  double get totalPayment {
+    return paidTransactionFee
+        ? totalAmount + stripeTransactionFee + idonatioTransactionFee
+        : totalAmount;
+  }
+
   String? get displayDonationType => donationDetails.length > 1
       ? 'Multiple donation types'
       : donationDetails.first.donationType!.type;
