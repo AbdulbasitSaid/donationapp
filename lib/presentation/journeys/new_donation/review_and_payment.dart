@@ -397,6 +397,8 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                                                           MakedonationCubit>()
                                                                       .makeDonation(
                                                                           MakeDonationEntity(
+                                                                        channel:
+                                                                            'mobile',
                                                                         doneeId:
                                                                             state.doneeId,
                                                                         paidTransactionFee:
