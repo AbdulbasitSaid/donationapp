@@ -48,6 +48,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
 
   @override
   void initState() {
+    _searchController = TextEditingController();
     searchOnStoppedTyping = Timer(duration, () {});
     super.initState();
   }
@@ -530,6 +531,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                                     .read<DonationHistoryCubit>()
                                     .getDonationHistory();
                                 _searchController.clear();
+                                highlightSearch = '';
                                 isStartSearch = !isStartSearch;
                               });
                             },
