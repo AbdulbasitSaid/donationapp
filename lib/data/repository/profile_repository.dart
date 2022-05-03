@@ -19,7 +19,7 @@ class ProfileRepository {
     try {
       final user = await userLocalDataSource.getUser();
       final result =
-          await profileRemoteDataSource.updateProfile(user.token, params);
+          await profileRemoteDataSource.updateProfile(user.token, params); 
       //
       await userLocalDataSource.updateUserData(user.copyWith(
         user: result.data.user.copyWith(donor: result.data.user.donor),

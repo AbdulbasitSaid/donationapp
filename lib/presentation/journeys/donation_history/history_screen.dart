@@ -304,6 +304,8 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                                         //
                                         earlierDonations.isNotEmpty
                                             ? Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   const Padding(
                                                     padding:
