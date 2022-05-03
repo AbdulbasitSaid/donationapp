@@ -1,6 +1,7 @@
 // import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:idonatio/common/referesh_ticker.dart';
 import 'package:idonatio/data/core/api_client.dart';
 import 'package:idonatio/data/data_sources/change_password_datasource.dart';
 import 'package:idonatio/data/data_sources/contact_support_datasource.dart';
@@ -88,4 +89,6 @@ Future init() async {
   // getItInstance
   //     .registerLazySingleton<DeviceInfoPlugin>(() => DeviceInfoPlugin());
   getItInstance.registerLazySingleton<NetworkInfo>(() => NetworkInfo());
+  getItInstance
+      .registerLazySingleton<RefereshTicker>(() => const RefereshTicker());
 }

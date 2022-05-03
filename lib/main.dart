@@ -28,7 +28,6 @@ void main() async {
   BlocOverrides.runZoned(
     () async {
       await HiveInitiator.initialize();
-
       runApp(
         const IdonatioApp(),
       );

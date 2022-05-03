@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/journeys/donation_history/history_screen.dart';
 import 'package:idonatio/presentation/journeys/new_donation/make_donation.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_screen.dart';
+import 'package:idonatio/presentation/journeys/session_manager.dart';
 
 import 'manage_account/manage_account_screen.dart';
 
@@ -34,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     super.initState();
   }
- 
 
   @override
   void dispose() {
@@ -45,15 +44,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: PageView(
-          children: _homeScreens,
-          controller: pageController,
-          onPageChanged: (index) {
-            setState(() {
-              pageIndex = index;
-            });
-          },
+      body: SessionManger(
+        child: Center(
+          child: PageView(
+            children: _homeScreens,
+            controller: pageController,
+            onPageChanged: (index) {
+              setState(() {
+                pageIndex = index;
+              });
+            },
+          ),
         ),
       ),
       bottomNavigationBar: SizedBox(

@@ -64,7 +64,7 @@ class UserRepository {
           await _userRemoteDataSource.getAuthenticatedUser(userData.token);
       await _userLocalDataSource
           .saveUserData(userData.copyWith(user: result.data.user));
-          
+
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
@@ -123,6 +123,33 @@ class UserRepository {
           await _userRemoteDataSource.verifyEmail(params, user.token);
       await _userLocalDataSource.updateUserData(user.copyWith(
           user: user.user.copyWith(emailVerifiedAt: DateTime.now())));
+      return Right(response);
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on NetworkError {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on ServerNotAvailableError {
+      return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
+    } on Exception {
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
+    }
+  }
+
+  Future<Either<AppError, dynamic>> refereshUserToken(String token) async {
+    try {
+      final user = await _userLocalDataSource.getUser();
+      final response =
+          await _userRemoteDataSource.getRefereshToken(token: user.token);
+      await _userLocalDataSource
+          .updateUserData(user.copyWith(token: response.data.token));
       return Right(response);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));

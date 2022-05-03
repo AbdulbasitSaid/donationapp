@@ -7,6 +7,7 @@ import 'package:idonatio/domain/entities/onboarding_response.dart';
 import 'package:idonatio/presentation/journeys/reset_password/enitities/reset_password_otp_success_entity.dart';
 
 import '../models/user_models/get_authenticated_user_model.dart';
+import '../models/user_models/referesh_token_model.dart';
 
 class UserRemoteDataSource {
   final ApiClient _client;
@@ -74,6 +75,12 @@ class UserRemoteDataSource {
     final response = await _client.patch('auth/password/reset', params: params);
     log(response);
     return SuccessModel.fromJson(response);
+  }
+
+  Future<RefereshTokenModel> getRefereshToken({required String token}) async {
+    final response = await _client.get('auth/refresh', token: token);
+    log(response.toString());
+    return RefereshTokenModel.fromJson(response);
   }
 
   /// end reset password

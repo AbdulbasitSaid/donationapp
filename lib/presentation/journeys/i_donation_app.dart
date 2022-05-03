@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
@@ -37,6 +39,7 @@ import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/themes/app_theme_data.dart';
 import 'package:idonatio/presentation/widgets/buttons/cubit/resend_otp_cubit.dart';
 
+import '../bloc/referesh_timer_bloc.dart';
 import '../widgets/input_fields/get_remember_me_email_cubit.dart';
 import 'auth_guard.dart';
 import 'manage_account/cubit/logout_cubit.dart';
@@ -186,6 +189,12 @@ class _IdonatioAppState extends State<IdonatioApp> {
           BlocProvider(
             create: (context) => GetAuthenticatedUserCubit(getItInstance()),
           ),
+          BlocProvider(
+            create: (context) => RefereshTimerBloc(
+                localDataSource: getItInstance(),
+                refereshTicker: getItInstance(),
+                userRemoteDataSource: getItInstance()),
+          ),
         ],
         child: MultiRepositoryProvider(
           providers: [
@@ -200,7 +209,17 @@ class _IdonatioAppState extends State<IdonatioApp> {
           child: MaterialApp(
             title: 'Idonation',
             theme: AppThemeData.appTheme(),
-            home: const AuthGaurd(),
+            home: BlocListener<RefereshTimerBloc, RefereshTimerState>(
+              listener: (context, state) {
+                if (state is RefereshTimerRunComplete) {
+                  log('completed timer');
+                  context
+                      .read<RefereshTimerBloc>()
+                      .add(const RefereshTimerReset());
+                }
+              },
+              child: const AuthGaurd(),
+            ),
           ),
         ),
       ),
