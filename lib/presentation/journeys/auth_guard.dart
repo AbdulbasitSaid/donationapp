@@ -21,7 +21,9 @@ class AuthGaurd extends StatelessWidget {
         if (state is AuthenticationInitial) {
           return const PageLoaderWidget();
         } else if (state is UnAuthenticated) {
-          return const LoginScreen();
+          return const LoginScreen(
+            showRegister: true,
+          );
         } else if (state is Authenticated) {
           return const HomeScreen();
         } else if (state is EmailNotVerified) {
