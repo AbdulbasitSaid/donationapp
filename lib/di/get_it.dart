@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:idonatio/common/referesh_ticker.dart';
 import 'package:idonatio/data/core/api_client.dart';
+import 'package:idonatio/data/core/session_ticker.dart';
 import 'package:idonatio/data/data_sources/change_password_datasource.dart';
 import 'package:idonatio/data/data_sources/contact_support_datasource.dart';
 import 'package:idonatio/data/data_sources/donation_datasource.dart';
@@ -86,6 +87,8 @@ Future init() async {
       () => DonationDataSources(getItInstance()));
   getItInstance.registerLazySingleton<DonationRepository>(
       () => DonationRepository(getItInstance(), getItInstance()));
+  getItInstance
+      .registerLazySingleton<SessionTicker>(() => const SessionTicker());
   // getItInstance
   //     .registerLazySingleton<DeviceInfoPlugin>(() => DeviceInfoPlugin());
   getItInstance.registerLazySingleton<NetworkInfo>(() => NetworkInfo());

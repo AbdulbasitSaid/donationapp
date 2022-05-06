@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
+import 'package:idonatio/presentation/bloc/app_session_manager_bloc.dart';
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
@@ -67,6 +68,9 @@ class _LoginFormState extends State<LoginForm> {
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
+            context
+                .read<AppSessionManagerBloc>()
+                .add(const AppSessionStarted(duration: 10));
             context
                 .read<UserCubit>()
                 .setUserState(getItInstance(), AuthStatus.authenticated);

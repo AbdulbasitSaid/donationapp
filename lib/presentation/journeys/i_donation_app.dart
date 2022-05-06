@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/repository/user_repository.dart';
 import 'package:idonatio/di/get_it.dart';
+import 'package:idonatio/presentation/bloc/app_session_manager_bloc.dart';
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
@@ -188,6 +189,9 @@ class _IdonatioAppState extends State<IdonatioApp> {
           ),
           BlocProvider(
             create: (context) => GetAuthenticatedUserCubit(getItInstance()),
+          ),
+          BlocProvider(
+            create: (context) => AppSessionManagerBloc(getItInstance()),
           ),
           BlocProvider(
             create: (context) => RefereshTimerBloc(

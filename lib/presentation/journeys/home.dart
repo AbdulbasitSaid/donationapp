@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/di/get_it.dart';
+import 'package:idonatio/enums.dart';
+import 'package:idonatio/presentation/bloc/app_session_manager_bloc.dart';
+import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/donation_history/history_screen.dart';
 import 'package:idonatio/presentation/journeys/new_donation/make_donation.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_screen.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
+import 'package:idonatio/presentation/router/app_router.dart';
 
 import 'manage_account/manage_account_screen.dart';
 
@@ -44,14 +51,42 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: PageView(
-          children: _homeScreens,
-          controller: pageController,
-          onPageChanged: (index) {
-            setState(() {
-              pageIndex = index;
-            });
+        child: BlocListener<AppSessionManagerBloc, AppSessionManagerState>(
+          listener: (context, state) {
+            if (state is AppSessionManagerCompleted) {
+              // Fluttertoast.showToast(msg: 'Session Expired');
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (builder) => AlertDialog(
+                        title: const Text('App Session Expired!!'),
+                        content: const Text(
+                            'App Expired due to long inactivity. Please sign in again!'),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                context.read<UserCubit>().setUserState(
+                                    getItInstance(),
+                                    AuthStatus.unauthenticated);
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    AppRouter.routeToPage(const AuthGaurd()),
+                                    (route) => false);
+                              },
+                              child: Text('Ok'.toUpperCase()))
+                        ],
+                      ));
+            }
           },
+          child: PageView(
+            children: _homeScreens,
+            controller: pageController,
+            onPageChanged: (index) {
+              setState(() {
+                pageIndex = index;
+              });
+            },
+          ),
         ),
       ),
       bottomNavigationBar: SizedBox(
