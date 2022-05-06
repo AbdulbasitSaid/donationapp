@@ -22,7 +22,6 @@ class MyProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final getUserState = context.watch<GetAuthenticatedUserCubit>().state;
     return Scaffold(
       appBar: AppBar(),
       body: Container(
