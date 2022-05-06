@@ -60,8 +60,6 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isOptComplted = false;
-
     return Form(
       key: _formKey,
       child: Column(
@@ -108,9 +106,7 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
             length: 6,
 
             onCompleted: (pin) {
-              setState(() {
-                _isOptComplted = true;
-              });
+              setState(() {});
             },
             defaultPinTheme: PinTheme(
               width: MediaQuery.of(context).size.width * .12,

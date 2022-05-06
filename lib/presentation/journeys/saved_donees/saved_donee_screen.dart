@@ -292,9 +292,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                             ),
                             BlocConsumer<GetSavedDoneesCubit,
                                 GetSavedDoneesState>(
-                              listener: (context, state) {
-                                // TODO: implement listener
-                              },
+                              listener: (context, state) {},
                               builder: (context, state) {
                                 if (state is GetSavedDoneesLoading) {
                                   return const Center(
@@ -338,9 +336,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                           ],
                         )
                       : BlocConsumer<GetSavedDoneesCubit, GetSavedDoneesState>(
-                          listener: (context, state) {
-                            // TODO: implement listener
-                          },
+                          listener: (context, state) {},
                           builder: (context, state) {
                             if (state is GetSavedDoneesLoading) {
                               return const Center(

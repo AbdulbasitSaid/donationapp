@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -51,24 +52,24 @@ class _WebPageViewState extends State<WebPageView> {
           _controller.complete(webViewController);
         },
         onProgress: (int progress) {
-          print('WebView is loading (progress : $progress%)');
+          log('WebView is loading (progress : $progress%)');
         },
         javascriptChannels: <JavascriptChannel>{
           _toasterJavascriptChannel(context),
         },
         navigationDelegate: (NavigationRequest request) {
           if (request.url.startsWith('https://www.youtube.com/')) {
-            print('blocking navigation to $request}');
+            log('blocking navigation to $request}');
             return NavigationDecision.prevent;
           }
-          print('allowing navigation to $request');
+          log('allowing navigation to $request');
           return NavigationDecision.navigate;
         },
         onPageStarted: (String url) {
-          print('Page started loading: $url');
+          log('Page started loading: $url');
         },
         onPageFinished: (String url) {
-          print('Page finished loading: $url');
+          log('Page finished loading: $url');
         },
         gestureNavigationEnabled: true,
         backgroundColor: const Color(0x00000000),
@@ -180,13 +181,10 @@ class Menu extends StatelessWidget {
                 _onSetCookie(controller.data!, context);
                 break;
               case MenuOptions.navigationDelegate:
-                // TODO: Handle this case.
                 break;
               case MenuOptions.loadHtmlString:
-                // TODO: Handle this case.
                 break;
               case MenuOptions.transparentBackground:
-                // TODO: Handle this case.
                 break;
             }
           },
@@ -369,7 +367,8 @@ class Menu extends StatelessWidget {
 }
 
 class NavigationControls extends StatelessWidget {
-  const NavigationControls(this._webViewControllerFuture);
+  const NavigationControls(this._webViewControllerFuture, {Key? key})
+      : super(key: key);
 
   final Future<WebViewController> _webViewControllerFuture;
 
