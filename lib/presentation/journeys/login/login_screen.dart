@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:idonatio/di/get_it.dart';
-import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/journeys/login/login_form.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
-import 'package:idonatio/presentation/journeys/user/start_screen.dart';
-import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_1_headline.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../manage_account/cubit/logout_cubit.dart';
+import '../registration/registration_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  final bool isLeading;
+  final bool showRegister;
+  const LoginScreen(
+      {Key? key, this.isLeading = false, this.showRegister = false})
+      : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -34,7 +34,51 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: widget.isLeading,
+        actions: [
+          widget.showRegister == false
+              ? const SizedBox.shrink()
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (builder) =>
+                                    const RegistrationScreen()));
+                      },
+                      child: Text(
+                        'Register'.toUpperCase(),
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      )),
+                ),
+          // ValueListenableBuilder(
+          //     valueListenable: Hive.box<UserData>('user_box').listenable(),
+          //     builder: (context, Box<UserData> box, widget) {
+          //       var userData = box.get('user_data');
+          //       return userData == null
+          //           ? const SizedBox.shrink()
+          //           : Padding(
+          //               padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          //               child: TextButton(
+          //                   onPressed: () {
+          //                     Navigator.push(
+          //                         context,
+          //                         MaterialPageRoute(
+          //                             builder: (builder) =>
+          //                                 const RegistrationScreen()));
+          //                   },
+          //                   child: Text(
+          //                     'Register'.toUpperCase(),
+          //                     style:
+          //                         const TextStyle(fontWeight: FontWeight.w600),
+          //                   )),
+          //             );
+          //     }),
+        ],
+      ),
       body: AppBackgroundWidget(
         childWidget: SingleChildScrollView(
           child: Column(
@@ -43,22 +87,22 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Level1Headline(text: 'Sign in'),
-                  IconButton(
-                      onPressed: () {
-                        context.read<LogoutCubit>().logoutUser();
-                        context.read<UserCubit>().setUserState(
-                            getItInstance(), AuthStatus.appStarted);
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            AppRouter.routeToPage(const StartScreen()),
-                            (route) => false);
-                      },
-                      icon: const Icon(
-                        Icons.power_settings_new_outlined,
-                        size: 36,
-                      ))
+                children: const [
+                  Level1Headline(text: 'Sign in'),
+                  // IconButton(
+                  //     onPressed: () {
+                  //       context.read<LogoutCubit>().logoutUser();
+                  //       context.read<UserCubit>().setUserState(
+                  //           getItInstance(), AuthStatus.appStarted);
+                  //       Navigator.pushAndRemoveUntil(
+                  //           context,
+                  //           AppRouter.routeToPage(const StartScreen()),
+                  //           (route) => true);
+                  //     },
+                  //     icon: const Icon(
+                  //       Icons.power_settings_new_outlined,
+                  //       size: 36,
+                  //     ))
                 ],
               ),
               const SizedBox(
