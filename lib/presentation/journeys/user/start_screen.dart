@@ -45,22 +45,7 @@ class StartScreen extends StatelessWidget {
                 ),
                 BlocListener<CloseAccountCubit, CloseAccountState>(
                   listener: (context, state) {
-                    if (state is CloseAccountSuccess) {
-                      // showDialog(
-                      //     context: context,
-                      //     builder: (context) => AlertDialog(
-                      //           title: const Text('Account closed'),
-                      //           content: const Text(
-                      //               'Your iDonatio donor account is now closed and your profile has been deleted. To make a donation using the app, sign in with a different account or register to create a new account.'),
-                      //           actions: [
-                      //             TextButton(
-                      //                 onPressed: () => context
-                      //                     .read<CloseAccountCubit>()
-                      //                     .close(),
-                      //                 child: Text('ok'.toUpperCase()))
-                      //           ],
-                      //         ));
-                    }
+                    if (state is CloseAccountSuccess) {}
                   },
                   child: Container(
                     width: screenWidth * .6,
@@ -100,7 +85,10 @@ class StartScreen extends StatelessWidget {
               ),
               OutlinedButton(
                 onPressed: () => Navigator.push(
-                    context, AppRouter.routeToPage(const LoginScreen())),
+                    context,
+                    AppRouter.routeToPage(const LoginScreen(
+                      isLeading: true,
+                    ))),
                 child: Text(TranslationConstants.signin.toUpperCase()),
               )
             ],
