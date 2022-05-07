@@ -38,10 +38,10 @@ class AppSessionManagerBloc
   }
 
   void _onReseted(AppSessionReset event, Emitter<AppSessionManagerState> emit) {
-    emit(const AppSessionManagerInProgress(_duration));
+    emit(AppSessionManagerInProgress(event.duration));
     _streamSubscription?.cancel();
     _streamSubscription =
-        _sessionTicker.tick(ticks: _duration).listen((duration) {
+        _sessionTicker.tick(ticks: event.duration).listen((duration) {
       add(AppSessionTicked(duration: duration));
     });
   }

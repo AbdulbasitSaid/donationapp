@@ -14,12 +14,12 @@ class AppSessionInitialized extends AppSessionManagerEvent {
 }
 
 class AppSessionStarted extends AppSessionManagerEvent {
-
   const AppSessionStarted();
 }
 
 class AppSessionReset extends AppSessionManagerEvent {
-  const AppSessionReset();
+  final int duration;
+  const AppSessionReset({this.duration = 60});
 }
 
 class AppSessionTicked extends AppSessionManagerEvent {
