@@ -9,7 +9,7 @@ import 'package:idonatio/presentation/bloc/app_session_manager_bloc.dart';
 
 import 'package:idonatio/presentation/themes/app_theme_data.dart';
 
-import '../bloc/referesh_timer_bloc.dart';
+import '../bloc/server_timer_bloc.dart';
 import 'auth_guard.dart';
 
 class IdonatioApp extends StatefulWidget {
@@ -53,13 +53,11 @@ class _IdonatioAppState extends State<IdonatioApp> {
         child: MaterialApp(
           title: 'Idonation',
           theme: AppThemeData.appTheme(),
-          home: BlocListener<RefereshTimerBloc, RefereshTimerState>(
+          home: BlocListener<ServerTimerBloc, ServerTimerState>(
             listener: (context, state) {
-              if (state is RefereshTimerRunComplete) {
+              if (state is ServerTimerRunComplete) {
                 log('completed timer');
-                context
-                    .read<RefereshTimerBloc>()
-                    .add(const RefereshTimerReset());
+                context.read<ServerTimerBloc>().add(const ServerTimerReset());
               }
             },
             child: const AuthGaurd(),

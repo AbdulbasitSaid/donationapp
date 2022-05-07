@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/app_session_manager_bloc.dart';
+import 'package:idonatio/presentation/bloc/server_timer_bloc.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/donation_history/history_screen.dart';
 import 'package:idonatio/presentation/journeys/new_donation/make_donation.dart';
@@ -57,34 +59,26 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final serverTimerState = context.watch<ServerTimerBloc>().state;
     return Scaffold(
       body: Center(
         child: BlocListener<AppSessionManagerBloc, AppSessionManagerState>(
           listener: (context, state) {
             if (state is AppSessionManagerCompleted) {
               // Fluttertoast.showToast(msg: 'Session Expired');
-              showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (builder) => AlertDialog(
-                        title: const Text('App Session Expired!!'),
-                        content: const Text(
-                            'App Expired due to long inactivity. Please sign in again!'),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                // context.read<LogoutCubit>().logoutUser();
-                                context.read<UserCubit>().setUserState(
-                                    getItInstance(),
-                                    AuthStatus.unauthenticated);
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    AppRouter.routeToPage(const AuthGaurd()),
-                                    (route) => false);
-                              },
-                              child: Text('Ok'.toUpperCase()))
-                        ],
-                      ));
+              _sessionLogout(context);
+              Fluttertoast.showToast(
+                msg:
+                    'App Expired due to long inactivity. Please sign in again!',
+                toastLength: Toast.LENGTH_LONG,
+              );
+            }
+            if (serverTimerState is ServerTimerRunComplete) {
+              _sessionLogout(context);
+              Fluttertoast.showToast(
+                msg: 'Server Session Expired!!. Please sign in again!',
+                toastLength: Toast.LENGTH_LONG,
+              );
             }
           },
           child: PageView(
@@ -143,6 +137,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         ),
       ),
     );
+  }
+
+  void _sessionLogout(BuildContext context) {
+    context
+        .read<UserCubit>()
+        .setUserState(getItInstance(), AuthStatus.unauthenticated);
+    Navigator.pushAndRemoveUntil(
+        context, AppRouter.routeToPage(const AuthGaurd()), (route) => false);
   }
 }
 

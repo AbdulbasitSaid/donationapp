@@ -13,7 +13,7 @@ import 'di/get_it.dart';
 import 'presentation/bloc/app_session_manager_bloc.dart';
 import 'presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'presentation/bloc/login/login_cubit.dart';
-import 'presentation/bloc/referesh_timer_bloc.dart';
+import 'presentation/bloc/server_timer_bloc.dart';
 import 'presentation/bloc/register/register_cubit.dart';
 import 'presentation/bloc/registration_steps/cubit/registration_steps_cubit.dart';
 import 'presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
@@ -200,7 +200,7 @@ void main() async {
                 create: (context) => AppSessionManagerBloc(getItInstance()),
               ),
               BlocProvider(
-                create: (context) => RefereshTimerBloc(
+                create: (context) => ServerTimerBloc(
                     localDataSource: getItInstance(),
                     refereshTicker: getItInstance(),
                     userRemoteDataSource: getItInstance()),

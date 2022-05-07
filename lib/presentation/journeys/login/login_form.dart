@@ -7,6 +7,7 @@ import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
+import 'package:idonatio/presentation/bloc/server_timer_bloc.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/reset_password/sent_opt_forgot_password_screen.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
@@ -68,6 +69,7 @@ class _LoginFormState extends State<LoginForm> {
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
+            context.read<ServerTimerBloc>().add(ServerTimerStarted());
             context
                 .read<AppSessionManagerBloc>()
                 .add(const AppSessionStarted());
