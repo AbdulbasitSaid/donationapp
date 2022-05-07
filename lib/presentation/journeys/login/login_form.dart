@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
-import 'package:idonatio/presentation/bloc/app_session_manager_bloc.dart';
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
@@ -17,6 +16,7 @@ import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
 import 'package:idonatio/presentation/widgets/input_fields/password_widget.dart';
 
+import '../../bloc/app_session_manager_bloc.dart';
 import '../../widgets/labels/base_label_text.dart';
 import '../donation_history/cubit/donation_history_cubit.dart';
 import '../saved_donees/cubit/get_saved_donees_cubit.dart';
@@ -70,7 +70,7 @@ class _LoginFormState extends State<LoginForm> {
           if (state is LoginSuccess) {
             context
                 .read<AppSessionManagerBloc>()
-                .add(const AppSessionStarted(duration: 10));
+                .add(const AppSessionStarted());
             context
                 .read<UserCubit>()
                 .setUserState(getItInstance(), AuthStatus.authenticated);
