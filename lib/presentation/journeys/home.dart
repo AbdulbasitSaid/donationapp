@@ -5,7 +5,6 @@ import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/app_session_manager_bloc.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/donation_history/history_screen.dart';
-import 'package:idonatio/presentation/journeys/manage_account/cubit/logout_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/make_donation.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_screen.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
@@ -54,33 +53,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   // ignore: unnecessary_overrides
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    // switch (state) {
-    //   case AppLifecycleState.inactive:
-    //     log('app is inactive');
-    //     context
-    //         .read<AppSessionManagerBloc>()
-    //         .add(const AppSessionStarted(duration: 30));
-    //     break;
-    //   case AppLifecycleState.paused:
-    //     log('app is paused');
-
-    //     context
-    //         .read<AppSessionManagerBloc>()
-    //         .add(const AppSessionStarted(duration: 30));
-    //     break;
-    //   case AppLifecycleState.resumed:
-    //     log('app resumed');
-
-    //     context
-    //         .read<AppSessionManagerBloc>()
-    //         .add(const AppSessionInitialized());
-    //     break;
-    //   default:
-    //     context
-    //         .read<AppSessionManagerBloc>()
-    //         .add(const AppSessionInitialized());
-    //     break;
-    // }
   }
 
   @override
@@ -101,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         actions: [
                           TextButton(
                               onPressed: () {
-                                context.read<LogoutCubit>().logoutUser();
+                                // context.read<LogoutCubit>().logoutUser();
                                 context.read<UserCubit>().setUserState(
                                     getItInstance(),
                                     AuthStatus.unauthenticated);
