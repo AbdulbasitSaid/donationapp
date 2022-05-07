@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -18,6 +17,8 @@ class AppSessionManagerBloc
     on<AppSessionManagerEvent>((event, emit) {});
     on<AppSessionStarted>(_onStarted);
     on<AppSessionTicked>(_onTicked);
+    on<AppSessionInitialized>(_onInitialzed);
+    on<AppSessionReset>(_onReseted);
   }
 
   @override
@@ -28,18 +29,34 @@ class AppSessionManagerBloc
 
   void _onStarted(
       AppSessionStarted event, Emitter<AppSessionManagerState> emit) {
-    emit(AppSessionManagerInProgress(event.duration));
+    emit(const AppSessionManagerInProgress(_duration));
     _streamSubscription?.cancel();
     _streamSubscription =
-        _sessionTicker.tick(ticks: event.duration).listen((duration) {
+        _sessionTicker.tick(ticks: _duration).listen((duration) {
+      add(AppSessionTicked(duration: duration));
+    });
+  }
+
+  void _onReseted(AppSessionReset event, Emitter<AppSessionManagerState> emit) {
+    emit(const AppSessionManagerInProgress(_duration));
+    _streamSubscription?.cancel();
+    _streamSubscription =
+        _sessionTicker.tick(ticks: _duration).listen((duration) {
       add(AppSessionTicked(duration: duration));
     });
   }
 
   void _onTicked(AppSessionTicked event, Emitter<AppSessionManagerState> emit) {
-    log(event.toString());
+    // log(event.toString());
     emit(event.duration > 0
         ? AppSessionManagerInProgress(event.duration)
         : const AppSessionManagerCompleted());
+  }
+
+  FutureOr<void> _onInitialzed(
+      AppSessionInitialized event, Emitter<AppSessionManagerState> emit) {
+    _streamSubscription?.cancel();
+
+    emit(const AppSessionManagerInitial(_duration));
   }
 }
