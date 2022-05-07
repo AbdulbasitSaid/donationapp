@@ -7,10 +7,15 @@ abstract class AppSessionManagerEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AppSessionStarted extends AppSessionManagerEvent {
+class AppSessionInitialized extends AppSessionManagerEvent {
   final int duration;
 
-  const AppSessionStarted({required this.duration});
+  const AppSessionInitialized({this.duration = 0});
+}
+
+class AppSessionStarted extends AppSessionManagerEvent {
+
+  const AppSessionStarted();
 }
 
 class AppSessionReset extends AppSessionManagerEvent {
