@@ -200,18 +200,22 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                 ],
                               ),
                             )),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Included transaction fee'),
-                              Text(donationProcessState.paidTransactionFee
-                                  ? '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}${donationProcessState.totalFee.toStringAsFixed(2)}'
-                                  : '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}0.00')
-                            ],
-                          ),
-                        ),
+                        donationProcessState.paidTransactionFee
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text('Included transaction fee'),
+                                    Text(donationProcessState.paidTransactionFee
+                                        ? '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}${donationProcessState.totalFee.toStringAsFixed(2)}'
+                                        : '${getCurrencySymbol(doneeState is GetdoneebycodeSuccess ? doneeState.doneeResponseData.currency : 'gpb', context)}0.00')
+                                  ],
+                                ),
+                              )
+                            : const SizedBox.shrink(),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
                           child: Row(
