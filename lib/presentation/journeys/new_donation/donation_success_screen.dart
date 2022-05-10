@@ -82,8 +82,7 @@ class DonationSuccessScreen extends StatelessWidget {
                                       donationSuccessEnitity.paidCharges
                                           ? Text(
                                               'You included the transaction fee of £${donationSuccessEnitity.transactionFee.toStringAsFixed(2)} in your payment. ${donationSuccessEnitity.nameOfDonee} will get 100% of your donation amount.')
-                                          : Text(
-                                              'You did not include the transaction fee of £${donationSuccessEnitity.transactionFee.toStringAsFixed(2)} in your payment. ${donationSuccessEnitity.nameOfDonee} will get ${(donationSuccessEnitity.amount - donationSuccessEnitity.transactionFee).toStringAsFixed(2)} of your donation amount.'),
+                                          : const SizedBox.shrink(),
                                       const SizedBox(
                                         height: 8,
                                       ),
