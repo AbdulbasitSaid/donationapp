@@ -7,13 +7,11 @@ abstract class ServerTimerEvent extends Equatable {
   List<Object> get props => [];
 }
 
-
-
 class ServerTimerStarted extends ServerTimerEvent {}
 
-class ServerTimerReset extends ServerTimerEvent {
-  const ServerTimerReset();
-}
+class ServerTimerReset extends ServerTimerEvent {}
+
+class ServerTimerStop extends ServerTimerEvent {}
 
 class ServerTimerTicked extends ServerTimerEvent {
   const ServerTimerTicked({required this.duration});
