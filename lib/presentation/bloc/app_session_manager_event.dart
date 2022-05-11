@@ -17,6 +17,8 @@ class AppSessionStarted extends AppSessionManagerEvent {
   const AppSessionStarted();
 }
 
+class AppSessionStoped extends AppSessionManagerEvent {}
+
 class AppSessionReset extends AppSessionManagerEvent {
   final int duration;
   const AppSessionReset({this.duration = 300});
