@@ -11,6 +11,7 @@ class AppSessionManagerBloc
     extends Bloc<AppSessionManagerEvent, AppSessionManagerState> {
   final SessionTicker _sessionTicker;
   StreamSubscription<int>? _streamSubscription;
+  // static const int _duration = 30;d
   static const int _duration = 300;
   AppSessionManagerBloc(this._sessionTicker)
       : super(const AppSessionManagerInitial(_duration)) {
@@ -19,6 +20,7 @@ class AppSessionManagerBloc
     on<AppSessionTicked>(_onTicked);
     on<AppSessionInitialized>(_onInitialzed);
     on<AppSessionReset>(_onReseted);
+    on<AppSessionStoped>(_onStop);
   }
 
   @override
@@ -50,6 +52,11 @@ class AppSessionManagerBloc
     emit(event.duration > 0
         ? AppSessionManagerInProgress(event.duration)
         : const AppSessionManagerCompleted());
+  }
+
+  void _onStop(AppSessionStoped event, Emitter<AppSessionManagerState> emit) {
+    _streamSubscription?.cancel();
+    emit(const AppSessionManagerCompleted());
   }
 
   FutureOr<void> _onInitialzed(
