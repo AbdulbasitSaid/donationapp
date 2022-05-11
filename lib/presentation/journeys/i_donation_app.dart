@@ -57,7 +57,7 @@ class _IdonatioAppState extends State<IdonatioApp> {
             listener: (context, state) {
               if (state is ServerTimerRunComplete) {
                 log('completed timer');
-                context.read<ServerTimerBloc>().add(const ServerTimerReset());
+                context.read<ServerTimerBloc>().add(ServerTimerReset());
               }
             },
             child: const AuthGaurd(),

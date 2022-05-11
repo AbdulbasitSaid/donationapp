@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         child: BlocListener<AppSessionManagerBloc, AppSessionManagerState>(
           listener: (context, state) {
             if (state is AppSessionManagerCompleted) {
-              // Fluttertoast.showToast(msg: 'Session Expired');
+              context.read<AppSessionManagerBloc>().add(AppSessionStoped());
               _sessionLogout(context);
               Fluttertoast.showToast(
                 msg:
@@ -74,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               );
             }
             if (serverTimerState is ServerTimerRunComplete) {
+              context.read<ServerTimerBloc>().add(ServerTimerStop());
               _sessionLogout(context);
               Fluttertoast.showToast(
                 msg: 'Server Session Expired!!. Please sign in again!',
