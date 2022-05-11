@@ -10,7 +10,7 @@ part 'server_timer_event.dart';
 part 'server_timer_state.dart';
 
 class ServerTimerBloc extends Bloc<ServerTimerEvent, ServerTimerState> {
-  // static const int _duration = 30;
+  // static const int _duration = 10;
   static const int _duration = 1500;
   final ServerTicker _ticker;
   StreamSubscription<int>? _tickerSubscription;

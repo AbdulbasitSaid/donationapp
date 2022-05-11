@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/app_session_manager_bloc.dart';
@@ -60,36 +59,32 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final serverTimerState = context.watch<ServerTimerBloc>().state;
+    final appTimerState = context.watch<AppSessionManagerBloc>().state;
     return Scaffold(
       body: Center(
         child: BlocListener<AppSessionManagerBloc, AppSessionManagerState>(
           listener: (context, state) {
-            if (state is AppSessionManagerCompleted) {
-              context.read<AppSessionManagerBloc>().add(AppSessionStoped());
-              _sessionLogout(context);
-              Fluttertoast.showToast(
-                msg:
-                    'App Expired due to long inactivity. Please sign in again!',
-                toastLength: Toast.LENGTH_LONG,
-              );
-            }
-            if (serverTimerState is ServerTimerRunComplete) {
-              context.read<ServerTimerBloc>().add(ServerTimerStop());
-              _sessionLogout(context);
-              Fluttertoast.showToast(
-                msg: 'Server Session Expired!!. Please sign in again!',
-                toastLength: Toast.LENGTH_LONG,
-              );
+            if (state is AppSessionManagerCompleted &&
+                serverTimerState is ServerTimerRunInProgress) {
+              showAppSessionDialog(context);
             }
           },
-          child: PageView(
-            children: _homeScreens,
-            controller: pageController,
-            onPageChanged: (index) {
-              setState(() {
-                pageIndex = index;
-              });
+          child: BlocListener<ServerTimerBloc, ServerTimerState>(
+            listener: (context, state) {
+              if (state is ServerTimerRunComplete &&
+                  appTimerState is AppSessionManagerInProgress) {
+                showServerSessionDailog(context);
+              }
             },
+            child: PageView(
+              children: _homeScreens,
+              controller: pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  pageIndex = index;
+                });
+              },
+            ),
           ),
         ),
       ),
@@ -140,7 +135,46 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     );
   }
 
+  Future<dynamic> showServerSessionDailog(BuildContext context) {
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (builder) => AlertDialog(
+              title: const Text('Server Session Expired!!!'),
+              content:
+                  const Text('Server Session Expired!!. Please sign in again!'),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      _sessionLogout(context);
+                    },
+                    child: Text('ok'.toUpperCase()))
+              ],
+            ));
+  }
+
+  Future<dynamic> showAppSessionDialog(BuildContext context) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (builder) => AlertDialog(
+        title: const Text('App Session Expired!!!'),
+        content: const Text(
+            'App Expired due to long inactivity. Please sign in again!'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                _sessionLogout(context);
+              },
+              child: Text('ok'.toUpperCase()))
+        ],
+      ),
+    );
+  }
+
   void _sessionLogout(BuildContext context) {
+    context.read<AppSessionManagerBloc>().add(AppSessionStoped());
+    context.read<ServerTimerBloc>().add(ServerTimerStop());
     context
         .read<UserCubit>()
         .setUserState(getItInstance(), AuthStatus.unauthenticated);
