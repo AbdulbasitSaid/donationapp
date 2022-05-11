@@ -10,6 +10,7 @@ part 'server_timer_event.dart';
 part 'server_timer_state.dart';
 
 class ServerTimerBloc extends Bloc<ServerTimerEvent, ServerTimerState> {
+  // static const int _duration = 30;
   static const int _duration = 1500;
   final ServerTicker _ticker;
   StreamSubscription<int>? _tickerSubscription;
@@ -23,6 +24,7 @@ class ServerTimerBloc extends Bloc<ServerTimerEvent, ServerTimerState> {
         super(const ServerTimerInitial(_duration)) {
     on<ServerTimerStarted>(_onStarted);
     on<ServerTimerTicked>(_onTicked);
+    on<ServerTimerStop>(_onStoped);
   }
   @override
   Future<void> close() {
@@ -44,5 +46,11 @@ class ServerTimerBloc extends Bloc<ServerTimerEvent, ServerTimerState> {
           ? ServerTimerRunInProgress(event.duration)
           : const ServerTimerRunComplete(),
     );
+  }
+
+  void _onStoped(ServerTimerStop event, Emitter<ServerTimerState> emit) {
+    _tickerSubscription?.cancel();
+
+    emit(const ServerTimerRunComplete());
   }
 }
