@@ -101,7 +101,7 @@ void main() async {
               BlocProvider<GetcountreisCubit>(
                   create: (context) => GetcountreisCubit(getItInstance())),
               BlocProvider(
-                create: (context) => LogoutCubit(getItInstance()),
+                create: (context) => LogoutCubit(),
               ),
               BlocProvider(
                 create: (context) => GetPaymentMethodsCubit(getItInstance()),
@@ -195,6 +195,9 @@ void main() async {
               ),
               BlocProvider(
                 create: (context) => GetAuthenticatedUserCubit(getItInstance()),
+              ),
+              BlocProvider(
+                create: (context) => LogoutCubit(),
               ),
               BlocProvider(
                 create: (context) => AppSessionManagerBloc(getItInstance()),
