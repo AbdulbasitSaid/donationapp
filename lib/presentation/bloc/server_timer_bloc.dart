@@ -5,11 +5,13 @@ import 'package:equatable/equatable.dart';
 import 'package:idonatio/common/server_ticker.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/data_sources/user_remote_datasource.dart';
+import 'package:idonatio/presentation/journeys/manage_account/cubit/logout_cubit.dart';
 
 part 'server_timer_event.dart';
 part 'server_timer_state.dart';
 
 class ServerTimerBloc extends Bloc<ServerTimerEvent, ServerTimerState> {
+  late StreamSubscription<LogoutState>? _logoutStreamSubscription;
   // static const int _duration = 10;
   static const int _duration = 1500;
   final ServerTicker _ticker;
@@ -29,6 +31,7 @@ class ServerTimerBloc extends Bloc<ServerTimerEvent, ServerTimerState> {
   @override
   Future<void> close() {
     _tickerSubscription?.cancel();
+    _logoutStreamSubscription?.cancel();
     return super.close();
   }
 
@@ -50,7 +53,6 @@ class ServerTimerBloc extends Bloc<ServerTimerEvent, ServerTimerState> {
 
   void _onStoped(ServerTimerStop event, Emitter<ServerTimerState> emit) {
     _tickerSubscription?.cancel();
-
     emit(const ServerTimerRunComplete());
   }
 }
