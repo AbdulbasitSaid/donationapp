@@ -28,6 +28,7 @@ import 'package:idonatio/data/repository/payment_repository.dart';
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
+import 'package:idonatio/presentation/journeys/manage_account/cubit/logout_cubit.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 
 final GetIt getItInstance = GetIt.I;
@@ -81,6 +82,8 @@ Future init() async {
       () => ContactSupportDatasource(
             getItInstance(),
           ));
+  getItInstance
+      .registerLazySingleton<LogoutCubit>(() => LogoutCubit());
   getItInstance.registerLazySingleton<ContactSupportRepository>(
       () => ContactSupportRepository(getItInstance(), getItInstance()));
   getItInstance.registerLazySingleton<DonationDataSources>(
