@@ -6,6 +6,7 @@ import 'package:idonatio/presentation/bloc/app_session_manager_bloc.dart';
 import 'package:idonatio/presentation/bloc/server_timer_bloc.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/donation_history/history_screen.dart';
+import 'package:idonatio/presentation/journeys/manage_account/cubit/logout_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/make_donation.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_screen.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
@@ -60,20 +61,29 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final serverTimerState = context.watch<ServerTimerBloc>().state;
     final appTimerState = context.watch<AppSessionManagerBloc>().state;
+    final logoutState = context.watch<LogoutCubit>().state;
     return Scaffold(
       body: Center(
         child: BlocListener<AppSessionManagerBloc, AppSessionManagerState>(
           listener: (context, state) {
-            if (state is AppSessionManagerCompleted &&
-                serverTimerState is ServerTimerRunInProgress) {
-              showAppSessionDialog(context);
+            if (logoutState is LogoutSuccessful) {
+              return;
+            } else {
+              if (state is AppSessionManagerCompleted &&
+                  serverTimerState is ServerTimerRunInProgress) {
+                showAppSessionDialog(context);
+              }
             }
           },
           child: BlocListener<ServerTimerBloc, ServerTimerState>(
             listener: (context, state) {
-              if (state is ServerTimerRunComplete &&
-                  appTimerState is AppSessionManagerInProgress) {
-                showServerSessionDailog(context);
+              if (logoutState is LogoutSuccessful) {
+                return;
+              } else {
+                if (state is ServerTimerRunComplete &&
+                    appTimerState is AppSessionManagerInProgress) {
+                  showServerSessionDailog(context);
+                }
               }
             },
             child: PageView(
