@@ -6,6 +6,7 @@ import 'package:idonatio/presentation/journeys/manage_account/cubit/update_profi
 import 'package:idonatio/presentation/journeys/manage_account/edit_address_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_email_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_name_screen.dart';
+import 'package:idonatio/presentation/journeys/manage_account/edit_password_screen.dart';
 import 'package:idonatio/presentation/journeys/manage_account/edit_phone_number_screen.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/get_authenticated_user_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
@@ -273,7 +274,12 @@ class MyProfileScreen extends StatelessWidget {
                           ),
                           IconButton(
                             //todo implement change password
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  AppRouter.routeToPage(
+                                      const EditPasswordScreen()));
+                            },
                             icon: const Icon(LineIcons.pen),
                             color: AppColor.basePrimary,
                           )

@@ -7,6 +7,7 @@ import 'package:idonatio/presentation/journeys/reset_password/cubit/reset_passwo
 import 'package:idonatio/presentation/journeys/reset_password/cubit/validate_otp_forgot_password_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
+import 'package:idonatio/presentation/widgets/buttons/logout_button_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../../common/words.dart';
@@ -43,7 +44,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [LogoutButton()],
+      ),
       body: AppBackgroundWidget(
         childWidget: SizedBox(
           width: MediaQuery.of(context).size.width,
