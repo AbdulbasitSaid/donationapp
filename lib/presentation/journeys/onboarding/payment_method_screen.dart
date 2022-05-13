@@ -91,18 +91,26 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                           CreateSetupIntentState>(
                         listener: (context, state) async {
                           if (state is CreateSetupIntentSuccessful) {
-                            await Stripe.instance.initPaymentSheet(
-                                paymentSheetParameters:
-                                    SetupPaymentSheetParameters(
-                              merchantDisplayName: 'Idonatio',
-                              setupIntentClientSecret:
-                                  state.setUpIntentEnitityData.data.setupIntent,
-                              customerId: state
-                                  .setUpIntentEnitityData.data.stripeCustomerId,
-                              customerEphemeralKeySecret: state
-                                  .setUpIntentEnitityData.data.ephemeralKey,
-                            ));
                             try {
+                              await Stripe.instance
+                                  .initPaymentSheet(
+                                      paymentSheetParameters:
+                                          SetupPaymentSheetParameters(
+                                    merchantDisplayName: 'Idonatio',
+                                    setupIntentClientSecret: state
+                                        .setUpIntentEnitityData
+                                        .data
+                                        .setupIntent,
+                                    customerId: state.setUpIntentEnitityData
+                                        .data.stripeCustomerId,
+                                    customerEphemeralKeySecret: state
+                                        .setUpIntentEnitityData
+                                        .data
+                                        .ephemeralKey,
+                                  ))
+                                  .whenComplete(() async => await Stripe
+                                      .instance
+                                      .presentPaymentSheet());
                               context
                                   .read<OnboardingdataholderCubit>()
                                   .updateOnboardingData(
@@ -113,8 +121,6 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                         .stripeCustomerId,
                                     paymentMethod: 'card',
                                   ));
-
-                              await Stripe.instance.presentPaymentSheet();
 
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
