@@ -70,9 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       body: Center(
         child: BlocListener<AppSessionManagerBloc, AppSessionManagerState>(
           listener: (context, state) {
-            if (logoutState is LogoutSuccessful) {
-              return;
-            } else {
+            {
               if (state is AppSessionManagerCompleted &&
                   serverTimerState is ServerTimerRunInProgress) {
                 showAppSessionDialog(context);
