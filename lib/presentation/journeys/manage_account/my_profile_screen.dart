@@ -14,7 +14,9 @@ import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:line_icons/line_icons.dart';
 
+import '../../widgets/buttons/logout_button_widget.dart';
 import '../onboarding/cubit/getcountreis_cubit.dart';
 
 class MyProfileScreen extends StatelessWidget {
@@ -23,7 +25,9 @@ class MyProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [LogoutButton()],
+      ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -257,11 +261,22 @@ class MyProfileScreen extends StatelessWidget {
                           Row(
                             children: const [
                               IconButton(
-                                  onPressed: null,
-                                  icon: Icon(Icons.lock_outline)),
+                                onPressed: null,
+                                icon: Icon(
+                                  Icons.lock_outline,
+                                  color: AppColor.basePrimary,
+                                ),
+                                color: AppColor.basePrimary,
+                              ),
                               Text('*********'),
                             ],
                           ),
+                          IconButton(
+                            //todo implement change password
+                            onPressed: () {},
+                            icon: const Icon(LineIcons.pen),
+                            color: AppColor.basePrimary,
+                          )
                         ],
                       ),
                     ),
