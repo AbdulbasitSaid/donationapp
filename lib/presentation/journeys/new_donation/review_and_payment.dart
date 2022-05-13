@@ -20,6 +20,7 @@ import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
+import 'package:idonatio/presentation/widgets/buttons/logout_button_widget.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
@@ -49,7 +50,9 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
     final donataionProcessState = context.watch<DonationProcessCubit>().state;
     final getDoneeState = context.watch<GetdoneebycodeCubit>().state;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [LogoutButton()],
+      ),
       body: Container(
         height: size.height,
         width: size.width,
