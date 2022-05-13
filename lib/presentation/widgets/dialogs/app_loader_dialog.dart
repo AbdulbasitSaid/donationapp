@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../loaders/primary_app_loader_widget.dart';
+
 class AppLoader extends StatelessWidget {
   const AppLoader({
     Key? key,
@@ -14,7 +16,7 @@ class AppLoader extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(8.0),
           // child: Image.asset(AppAssest.logo),
-          child: CircularProgressIndicator(),
+          child: PrimaryAppLoader(),
         ),
       ),
     );

@@ -12,6 +12,7 @@ import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 
 import '../../../di/get_it.dart';
 import '../../../enums.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import '../donation_history/cubit/donation_history_cubit.dart';
 import '../saved_donees/cubit/get_saved_donees_cubit.dart';
 import '../saved_donees/cubit/recentdonees_cubit.dart';
@@ -70,7 +71,7 @@ class _OnboardingDataPreferencesScreenState
                     ),
                     state is OnboardingLoading
                         ? const Center(
-                            child: CircularProgressIndicator(),
+                            child: PrimaryAppLoader(),
                           )
                         : Form(
                             child: Column(

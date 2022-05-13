@@ -14,6 +14,7 @@ import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 
 import '../../widgets/dialogs/app_error_dailog.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 
 class PaymentMethodScreen extends StatefulWidget {
   const PaymentMethodScreen({Key? key}) : super(key: key);
@@ -159,7 +160,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                         },
                         builder: (context, state) {
                           if (state is CreateSetupIntentLoading) {
-                            return const CircularProgressIndicator();
+                            return const PrimaryAppLoader();
                           }
                           return ElevatedButton(
                               onPressed: () async {

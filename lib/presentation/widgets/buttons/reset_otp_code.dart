@@ -5,6 +5,7 @@ import 'package:idonatio/presentation/widgets/buttons/cubit/resend_otp_cubit.dar
 import 'package:line_icons/line_icons.dart';
 
 import '../../themes/app_color.dart';
+import '../loaders/primary_app_loader_widget.dart';
 
 class ResendOTPCode extends StatelessWidget {
   const ResendOTPCode({
@@ -50,7 +51,7 @@ class ResendOTPCode extends StatelessWidget {
                     width: 8,
                   ),
                   state is ResendOtpLoading
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const Center(child: PrimaryAppLoader())
                       : const SizedBox.shrink(),
                 ],
               ),

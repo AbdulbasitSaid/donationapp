@@ -17,6 +17,7 @@ import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
 import 'package:idonatio/presentation/widgets/input_fields/password_widget.dart';
 
 import '../../widgets/labels/base_label_text.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import '../donation_history/cubit/donation_history_cubit.dart';
 import '../saved_donees/cubit/get_saved_donees_cubit.dart';
 import '../saved_donees/cubit/recentdonees_cubit.dart';
@@ -222,8 +223,10 @@ class _LoginFormState extends State<LoginForm> {
                   BlocBuilder<LoginCubit, LoginState>(
                     builder: (context, state) {
                       if (state is LoginLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator.adaptive(),
+                        return const SizedBox(
+                          height: 54,
+                          width: 54,
+                          child: PrimaryAppLoader(),
                         );
                       }
                       return ElevatedButton(

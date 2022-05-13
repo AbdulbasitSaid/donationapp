@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/presentation/journeys/email_verification/cubit/verification_cubit.dart';
+import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 
 import '../../../di/get_it.dart';
 import '../../../enums.dart';
@@ -66,9 +67,10 @@ class _VerifyEdittedEmailScreenState extends State<VerifyEdittedEmailScreen> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
-                onChanged: (){
+                onChanged: () {
                   setState(() {
-                    _enableVerificationButton = _formKey.currentState!.validate();
+                    _enableVerificationButton =
+                        _formKey.currentState!.validate();
                   });
                 },
                 key: _formKey,
@@ -122,17 +124,19 @@ class _VerifyEdittedEmailScreenState extends State<VerifyEdittedEmailScreen> {
                   builder: (context, state) {
                     if (state is VerificationLoading) {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: PrimaryAppLoader(),
                       );
                     } else {
                       return ElevatedButton(
-                        onPressed:_enableVerificationButton? () async {
-                          if (_formKey.currentState!.validate()) {
-                            context
-                                .read<VerificationCubit>()
-                                .verifyOtp(_otpController.text);
-                          }
-                        }:null,
+                        onPressed: _enableVerificationButton
+                            ? () async {
+                                if (_formKey.currentState!.validate()) {
+                                  context
+                                      .read<VerificationCubit>()
+                                      .verifyOtp(_otpController.text);
+                                }
+                              }
+                            : null,
                         child: const Text('Verify Email'),
                       );
                     }

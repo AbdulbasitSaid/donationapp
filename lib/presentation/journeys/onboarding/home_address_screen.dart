@@ -12,6 +12,7 @@ import 'package:idonatio/presentation/widgets/labels/label_10_medium.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import 'entities/onboarding_entity.dart';
 
 class HomeAddressScreen extends StatefulWidget {
@@ -194,7 +195,7 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
                             );
                           } else if (state is GetcountreisLoading) {
                             return const Center(
-                              child: CircularProgressIndicator(),
+                              child: PrimaryAppLoader(),
                             );
                           } else {
                             return TextButton(

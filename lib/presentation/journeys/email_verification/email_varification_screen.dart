@@ -8,6 +8,7 @@ import 'package:idonatio/presentation/journeys/email_verification/cubit/verifica
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
+import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../widgets/buttons/reset_otp_code.dart';
@@ -148,7 +149,7 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
             builder: (context, state) {
               if (state is VerificationLoading) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: PrimaryAppLoader(),
                 );
               } else {
                 return ElevatedButton(

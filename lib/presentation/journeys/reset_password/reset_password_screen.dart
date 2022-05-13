@@ -11,6 +11,7 @@ import 'package:idonatio/presentation/widgets/buttons/logout_button_widget.dart'
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../../common/words.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -148,7 +149,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           },
                           builder: (context, state) {
                             if (state is ResetPasswordLoading) {
-                              return const CircularProgressIndicator.adaptive();
+                              return const PrimaryAppLoader();
                             }
 
                             return ElevatedButton(

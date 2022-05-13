@@ -7,6 +7,7 @@ import 'package:idonatio/presentation/journeys/manage_account/cubit/update_profi
 import '../../reusables.dart';
 import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/labels/level_4_headline.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import '../onboarding/cubit/getcountreis_cubit.dart';
 
 class EditAddressScreen extends StatefulWidget {
@@ -186,7 +187,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                           );
                         } else if (state is GetcountreisLoading) {
                           return const Center(
-                            child: CircularProgressIndicator(),
+                            child: PrimaryAppLoader(),
                           );
                         } else {
                           return TextButton(
@@ -216,7 +217,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                           builder: (context, state) {
                             if (state is UpdateProfileLoading) {
                               return const Center(
-                                child: CircularProgressIndicator(),
+                                child: PrimaryAppLoader(),
                               );
                             }
                             return ElevatedButton(

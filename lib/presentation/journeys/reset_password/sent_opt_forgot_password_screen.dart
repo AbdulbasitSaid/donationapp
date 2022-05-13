@@ -11,6 +11,7 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../widgets/app_background_widget.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 
 class SendOtpForgotPasswordScreen extends HookWidget {
   SendOtpForgotPasswordScreen({Key? key}) : super(key: key);
@@ -83,7 +84,7 @@ class SendOtpForgotPasswordScreen extends HookWidget {
                             builder: (context, state) {
                               if (state is SendOtpForgotPasswordLoading) {
                                 return const Center(
-                                  child: CircularProgressIndicator.adaptive(),
+                                  child: PrimaryAppLoader(),
                                 );
                               }
                               return ElevatedButton(

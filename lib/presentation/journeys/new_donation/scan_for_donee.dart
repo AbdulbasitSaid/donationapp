@@ -12,6 +12,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/user_models/user_data_model.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import '../saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'cubit/get_payment_methods_cubit.dart';
 import 'donation_details.dart';
@@ -154,7 +155,7 @@ class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
                     builder: (context, state) {
                       if (state is GetdoneebycodeLoading) {
                         return const Center(
-                          child: CircularProgressIndicator.adaptive(),
+                          child: PrimaryAppLoader(),
                         );
                       } else if (state is GetdoneebycodeFailed) {
                         return Positioned.fill(

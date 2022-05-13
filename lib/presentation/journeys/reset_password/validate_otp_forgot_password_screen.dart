@@ -16,6 +16,8 @@ import 'package:line_icons/line_icons.dart';
 
 import 'package:pinput/pinput.dart';
 
+import '../../widgets/loaders/primary_app_loader_widget.dart';
+
 class ValiditeOtpForgotPasswordScreen extends HookWidget {
   final _formKey = GlobalKey<FormState>();
 
@@ -129,7 +131,7 @@ class ValiditeOtpForgotPasswordScreen extends HookWidget {
                                   width: 16,
                                 ),
                                 state is ResendOtpForgotPasswordLoading
-                                    ? const CircularProgressIndicator.adaptive()
+                                    ? const PrimaryAppLoader()
                                     : const SizedBox.shrink(),
                               ],
                             )),
@@ -162,7 +164,7 @@ class ValiditeOtpForgotPasswordScreen extends HookWidget {
                           }),
                       builder: (context, state) {
                         return state is ValidateOtpForgotPasswordLoading
-                            ? const CircularProgressIndicator.adaptive()
+                            ? const PrimaryAppLoader()
                             : ElevatedButton(
                                 onPressed: _isOptComplted.value
                                     ? () {

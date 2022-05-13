@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 
 class PageLoaderWidget extends StatelessWidget {
   const PageLoaderWidget({
@@ -8,7 +9,7 @@ class PageLoaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
+      body: Center(child: PrimaryAppLoader()),
     );
   }
 }

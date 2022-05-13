@@ -24,6 +24,7 @@ import '../../widgets/cards/cart_item_widget.dart';
 import '../../widgets/cards/detail_card_for_organisation_widget.dart';
 import '../../widgets/cards/include_transaction_fee_widget.dart';
 import '../../widgets/dialogs/donation_cart_dialog_content_widget.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import 'entities/donation_item_entity.dart';
 import 'entities/donation_process_entity.dart';
 
@@ -106,7 +107,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                         }
                       } else if (state is GetdoneebycodeLoading) {
                         return const Center(
-                          child: CircularProgressIndicator(),
+                          child: PrimaryAppLoader(),
                         );
                       } else {
                         return const Center(child: Text('failed to get donee'));
@@ -532,7 +533,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: const [
                                 Text('getting user detail please wait...'),
-                                CircularProgressIndicator.adaptive(),
+                                PrimaryAppLoader(),
                               ],
                             ),
                           )

@@ -16,6 +16,7 @@ import '../../../di/get_it.dart';
 import '../../../enums.dart';
 import '../../reusables.dart';
 import '../../router/app_router.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import '../auth_guard.dart';
 import '../onboarding/cubit/create_setup_intent_cubit.dart';
 import '../user/cubit/user_cubit.dart';
@@ -309,7 +310,7 @@ class ManageAccountScreen extends StatelessWidget {
                       },
                       builder: (context, state) {
                         if (state is LogoutLoading) {
-                          return const CircularProgressIndicator();
+                          return const PrimaryAppLoader();
                         }
                         return TextButton(
                           onPressed: () {
@@ -377,7 +378,7 @@ class _DeleteAccountWidgetState extends State<DeleteAccountWidget> {
               builder: (context, state) {
                 if (state is CloseAccountLoading) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: PrimaryAppLoader(),
                   );
                 }
                 if (state is CloseAccountFailed) {

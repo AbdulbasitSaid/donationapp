@@ -17,6 +17,8 @@ import 'package:idonatio/presentation/widgets/labels/base_label_text.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../widgets/loaders/primary_app_loader_widget.dart';
+
 class AddDoneeByIdScreen extends StatefulWidget {
   const AddDoneeByIdScreen({Key? key}) : super(key: key);
 
@@ -139,7 +141,7 @@ class _AddDoneeByIdScreenState extends State<AddDoneeByIdScreen> {
                               builder: (context, state) {
                                 if (state is GetdoneebycodeLoading) {
                                   return const Center(
-                                    child: CircularProgressIndicator(),
+                                    child: PrimaryAppLoader(),
                                   );
                                 } else {
                                   return ElevatedButton(

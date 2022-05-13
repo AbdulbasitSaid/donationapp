@@ -10,6 +10,7 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import '../home.dart';
 
 class SaveDoneeAddByQrCodeScreen extends StatefulWidget {
@@ -156,7 +157,7 @@ class _SaveDoneeAddByQrCodeScreenState
               builder: (context, state) {
                 if (state is GetdoneebycodeLoading) {
                   return const Center(
-                    child: CircularProgressIndicator.adaptive(),
+                    child: PrimaryAppLoader(),
                   );
                 } else if (state is GetdoneebycodeFailed) {
                   return Positioned.fill(

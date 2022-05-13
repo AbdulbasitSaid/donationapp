@@ -10,6 +10,7 @@ import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../reusables.dart';
 import '../../widgets/buttons/logout_button_widget.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 
 class ContactSupportScreen extends StatefulWidget {
   const ContactSupportScreen({Key? key}) : super(key: key);
@@ -118,7 +119,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                         builder: (context, state) {
                           if (state is ContactSupportLoading) {
                             return const Center(
-                              child: CircularProgressIndicator(),
+                              child: PrimaryAppLoader(),
                             );
                           }
                           return ElevatedButton(

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../journeys/donation_history/cubit/donation_history_summary_cubit.dart';
 import '../reusables.dart';
 import 'labels/level_2_heading.dart';
+import 'loaders/primary_app_loader_widget.dart';
 
 class DonationSummaryWidget extends StatelessWidget {
   const DonationSummaryWidget({Key? key}) : super(key: key);
@@ -59,7 +60,7 @@ class DonationSummaryWidget extends StatelessWidget {
           );
         }
         return const Center(
-          child: CircularProgressIndicator(),
+          child: PrimaryAppLoader(),
         );
       },
     );

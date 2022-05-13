@@ -12,9 +12,8 @@ import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/linked_span_button.dart';
+import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 import 'package:line_icons/line_icons.dart';
-
-import '../../widgets/dialogs/app_loader_dialog.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
@@ -341,15 +340,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: BlocConsumer<RegisterCubit, RegisterState>(
                   listener: (context, state) {
-                    if (state is RegisterLoading) {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const AppLoader(
-                              loadingMessage: 'Sending request please wait..',
-                            );
-                          });
-                    } else if (state is RegisterSuccess) {
+                    if (state is RegisterSuccess) {
                       context.read<UserCubit>().setUserState(
                           getItInstance(), AuthStatus.authenticated);
                       Navigator.push(
@@ -360,6 +351,9 @@ class _RegisterFormState extends State<RegisterForm> {
                   },
                   builder: (context, state) {
                     {
+                      if (state is RegisterLoading) {
+                        return const Center(child: PrimaryAppLoader());
+                      }
                       return ElevatedButton(
                         onPressed: _enableRegister
                             ? () {

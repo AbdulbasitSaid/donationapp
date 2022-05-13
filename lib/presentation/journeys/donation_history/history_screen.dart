@@ -11,6 +11,7 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
+import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 
 import '../../reusables.dart';
 import '../../widgets/input_fields/donation_history_list_card_item.dart';
@@ -118,7 +119,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                         builder: (context, state) {
                           if (state is DonationHistoryLoading) {
                             return const Center(
-                              child: CircularProgressIndicator(),
+                              child: PrimaryAppLoader(),
                             );
                           } else if (state is DonationHistorySuccess) {
                             final thisMonthDonations = state

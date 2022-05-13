@@ -18,6 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
 
 import '../../widgets/buttons/logout_button_widget.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import '../onboarding/cubit/getcountreis_cubit.dart';
 
 class MyProfileScreen extends StatelessWidget {
@@ -51,9 +52,7 @@ class MyProfileScreen extends StatelessWidget {
                               content: SizedBox(
                                   height: 40,
                                   width: 40,
-                                  child: Center(
-                                      child: CircularProgressIndicator
-                                          .adaptive())),
+                                  child: Center(child: PrimaryAppLoader())),
                             ));
                   } else if (state is UpdateProfileSuccessfull) {
                     Fluttertoast.showToast(msg: state.successMessage);

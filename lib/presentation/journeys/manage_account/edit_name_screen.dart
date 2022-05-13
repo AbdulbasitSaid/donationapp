@@ -11,6 +11,7 @@ import '../../../data/models/user_models/user_data_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../widgets/buttons/logout_button_widget.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 
 class EditNameScreen extends StatefulWidget {
   const EditNameScreen({Key? key}) : super(key: key);
@@ -166,7 +167,7 @@ class _EditNameScreenState extends State<EditNameScreen> {
                                   builder: (context, state) {
                                     if (state is UpdateProfileLoading) {
                                       return const Center(
-                                        child: CircularProgressIndicator(),
+                                        child: PrimaryAppLoader(),
                                       );
                                     }
                                     return ElevatedButton(

@@ -8,6 +8,7 @@ import 'package:line_icons/line_icons.dart';
 
 import '../../../common/words.dart';
 import '../../../data/core/validator.dart';
+import '../loaders/primary_app_loader_widget.dart';
 
 class EditPasswordFormWidget extends StatefulWidget {
   const EditPasswordFormWidget({
@@ -164,7 +165,7 @@ class _EditPasswordFormWidgetState extends State<EditPasswordFormWidget> {
             BlocBuilder<ChangePasswordCubit, ChangePasswordState>(
               builder: (context, state) {
                 if (state is ChangePasswordLoading) {
-                  return const CircularProgressIndicator.adaptive();
+                  return const PrimaryAppLoader();
                 }
                 return ElevatedButton(
                     onPressed: _enableFormSubmit == true

@@ -4,6 +4,7 @@ import 'package:idonatio/presentation/journeys/donation_history/cubit/get_donati
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
+import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 
 import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/list_cards/donation_history_list_card_widget.dart';
@@ -103,7 +104,7 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
               return SliverList(
                 delegate: SliverChildListDelegate([
                   const Center(
-                    child: CircularProgressIndicator(),
+                    child: PrimaryAppLoader(),
                   )
                 ]),
               );

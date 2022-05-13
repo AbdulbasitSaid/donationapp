@@ -15,6 +15,7 @@ import '../../reusables.dart';
 import '../../widgets/input_fields/saved_donee_list_item_widget.dart';
 import '../../widgets/labels/level_2_heading.dart';
 import '../../widgets/labels/level_6_headline.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 
 class SavedDoneeScreen extends StatefulWidget {
   const SavedDoneeScreen({
@@ -226,7 +227,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                               builder: (context, state) {
                                 if (state is RecentdoneesLoading) {
                                   return const Center(
-                                    child: CircularProgressIndicator(),
+                                    child: PrimaryAppLoader(),
                                   );
                                 }
                                 if (state is GetSavedDoneesSuccess &&
@@ -298,7 +299,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                               builder: (context, state) {
                                 if (state is GetSavedDoneesLoading) {
                                   return const Center(
-                                    child: CircularProgressIndicator(),
+                                    child: PrimaryAppLoader(),
                                   );
                                 }
                                 if (state is GetSavedDoneesSuccess &&
@@ -342,7 +343,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                           builder: (context, state) {
                             if (state is GetSavedDoneesLoading) {
                               return const Center(
-                                child: CircularProgressIndicator(),
+                                child: PrimaryAppLoader(),
                               );
                             }
                             if (state is GetSavedDoneesSuccess &&

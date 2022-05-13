@@ -16,6 +16,7 @@ import '../../../data/models/donation_models/donee_model.dart';
 import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/donee_avatar_place_holder.dart';
 import '../../widgets/labels/level_2_heading.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import '../new_donation/cubit/get_payment_methods_cubit.dart';
 import '../new_donation/cubit/getdoneebycode_cubit.dart';
 import '../new_donation/donation_details.dart';
@@ -278,8 +279,7 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
                                               if (state
                                                   is DeleteSaveDoneeLoading) {
                                                 return const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
+                                                  child: PrimaryAppLoader(),
                                                 );
                                               }
                                               return const Text(
@@ -345,7 +345,7 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
                   builder: (context, state) {
                     if (state is DeleteSaveDoneeLoading) {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: PrimaryAppLoader(),
                       );
                     }
                     return const SizedBox.shrink();

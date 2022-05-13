@@ -8,6 +8,7 @@ import 'package:idonatio/presentation/widgets/labels/base_label_text.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import 'cubit/get_payment_methods_cubit.dart';
 
 class EnableGiftAidForDonation extends StatefulWidget {
@@ -165,7 +166,7 @@ class _EnableGiftAidForDonationState extends State<EnableGiftAidForDonation> {
                     builder: (context, state) {
                       if (state is GetPaymentMethodsLoading) {
                         return const Center(
-                          child: CircularProgressIndicator(),
+                          child: PrimaryAppLoader(),
                         );
                       } else {
                         return ElevatedButton(

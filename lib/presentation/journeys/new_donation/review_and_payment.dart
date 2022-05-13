@@ -28,6 +28,7 @@ import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 
 import '../../widgets/cards/select_payment_card_widget.dart';
 import '../../widgets/dialogs/app_loader_dialog.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import 'donation_success_screen.dart';
 
 class ReviewAndPayment extends StatefulWidget {
@@ -354,7 +355,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                         if (makdeDonataionState
                                             is MakedonationLoading) {
                                           return const Center(
-                                            child: CircularProgressIndicator(),
+                                            child: PrimaryAppLoader(),
                                           );
                                         } else {
                                           return BlocBuilder<

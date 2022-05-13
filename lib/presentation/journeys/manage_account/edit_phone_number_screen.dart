@@ -10,6 +10,7 @@ import '../../../data/models/user_models/user_data_model.dart';
 import '../../reusables.dart';
 import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/labels/level_4_headline.dart';
+import '../../widgets/loaders/primary_app_loader_widget.dart';
 import 'cubit/update_profile_cubit.dart';
 
 class EditPhoneNumberScreen extends StatefulWidget {
@@ -141,7 +142,7 @@ class _EditPhoneNumberScreenState extends State<EditPhoneNumberScreen> {
                                   builder: (context, state) {
                                     if (state is UpdateProfileLoading) {
                                       return const Center(
-                                        child: CircularProgressIndicator(),
+                                        child: PrimaryAppLoader(),
                                       );
                                     }
                                     return ElevatedButton(

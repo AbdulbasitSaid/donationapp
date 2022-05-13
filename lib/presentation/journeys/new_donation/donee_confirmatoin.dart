@@ -15,6 +15,8 @@ import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
+import '../../widgets/loaders/primary_app_loader_widget.dart';
+
 class DoneeConfirmationScreen extends StatefulWidget {
   const DoneeConfirmationScreen({Key? key}) : super(key: key);
 
@@ -121,7 +123,7 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
                           );
                   } else if (state is GetSavedDoneesLoading) {
                     return const Center(
-                      child: CircularProgressIndicator.adaptive(),
+                      child: PrimaryAppLoader(),
                     );
                   } else {
                     return const Level2Headline(text: 'Failed to get donee');
@@ -217,7 +219,7 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
                   if (state is GetdoneebycodeLoading ||
                       feeState is GetDonationFeesLoading) {
                     return const Center(
-                      child: CircularProgressIndicator.adaptive(),
+                      child: PrimaryAppLoader(),
                     );
                   } else {
                     return const SizedBox.shrink();
