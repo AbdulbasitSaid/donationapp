@@ -8,6 +8,7 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
+import '../../widgets/buttons/logout_button_widget.dart';
 import '../user/cubit/get_authenticated_user_cubit.dart';
 import 'cubit/donation_process_cubit.dart';
 import 'entities/donation_process_entity.dart';
@@ -23,6 +24,7 @@ class DonationSuccessScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
+          actions: const [LogoutButton()],
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
