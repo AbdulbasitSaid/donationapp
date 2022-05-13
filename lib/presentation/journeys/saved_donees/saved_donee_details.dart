@@ -13,6 +13,7 @@ import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 import 'package:idonatio/presentation/widgets/veiw_all_button_widget.dart';
 
 import '../../../data/models/donation_models/donee_model.dart';
+import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/donee_avatar_place_holder.dart';
 import '../../widgets/labels/level_2_heading.dart';
 import '../new_donation/cubit/get_payment_methods_cubit.dart';
@@ -44,6 +45,7 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
     return Scaffold(
         appBar: AppBar(
           actions: [
+            const LogoutButton(),
             IconButton(
                 onPressed: () {
                   setState(() {
