@@ -10,6 +10,8 @@ import '../../../data/core/validator.dart';
 import '../../../data/models/user_models/user_data_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../widgets/buttons/logout_button_widget.dart';
+
 class EditNameScreen extends StatefulWidget {
   const EditNameScreen({Key? key}) : super(key: key);
 
@@ -38,7 +40,9 @@ class _EditNameScreenState extends State<EditNameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [LogoutButton()],
+      ),
       body: Container(
         decoration: gradientBoxDecoration(),
         height: MediaQuery.of(context).size.height,
