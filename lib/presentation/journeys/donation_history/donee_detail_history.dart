@@ -12,6 +12,7 @@ import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 import 'package:idonatio/presentation/widgets/veiw_all_button_widget.dart';
 
 import '../../../data/models/donation_models/donation_history_model.dart';
+import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/donation_summary_widget.dart';
 import '../../widgets/donee_avatar_place_holder.dart';
 import '../../widgets/labels/level_2_heading.dart';
@@ -43,6 +44,7 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          const LogoutButton(),
           IconButton(
               onPressed: () {
                 setState(() {
