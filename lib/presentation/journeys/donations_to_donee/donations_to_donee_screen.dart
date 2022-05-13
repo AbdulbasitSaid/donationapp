@@ -5,6 +5,7 @@ import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
+import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/list_cards/donation_history_list_card_widget.dart';
 import '../new_donation/cubit/get_payment_methods_cubit.dart';
 import '../new_donation/cubit/getdoneebycode_cubit.dart';
@@ -24,6 +25,10 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: const [LogoutButton()],
+      ),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
