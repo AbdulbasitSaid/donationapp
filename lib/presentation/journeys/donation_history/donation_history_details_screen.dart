@@ -8,6 +8,7 @@ import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import 'package:intl/intl.dart';
 
+import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/deactivated_sign_widget.dart';
 import '../../widgets/labels/level_6_headline.dart';
 
@@ -31,13 +32,14 @@ class _DonationHistoryDetialsScreenState
     return Scaffold(
       appBar: AppBar(
         actions: [
+          const LogoutButton(),
           IconButton(
               onPressed: () {
                 setState(() {
                   dialog = !dialog;
                 });
               },
-              icon: const Icon(FeatherIcons.moreVertical))
+              icon: const Icon(FeatherIcons.moreVertical)),
         ],
       ),
       body: Container(
