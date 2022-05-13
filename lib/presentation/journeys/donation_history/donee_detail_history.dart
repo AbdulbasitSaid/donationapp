@@ -9,6 +9,7 @@ import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
+import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 import 'package:idonatio/presentation/widgets/veiw_all_button_widget.dart';
 
 import '../../../data/models/donation_models/donation_history_model.dart';
@@ -282,7 +283,7 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
               builder: (context, state) {
                 if (state is SaveDoneeLoading) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: PrimaryAppLoader(),
                   );
                 }
                 return SizedBox.fromSize();
