@@ -8,6 +8,7 @@ import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 import '../../../data/core/validator.dart';
 import '../../../data/models/user_models/user_data_model.dart';
 import '../../reusables.dart';
+import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/labels/level_4_headline.dart';
 import 'cubit/update_profile_cubit.dart';
 
@@ -37,7 +38,9 @@ class _EditPhoneNumberScreenState extends State<EditPhoneNumberScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [LogoutButton()],
+      ),
       body: Container(
         decoration: gradientBoxDecoration(),
         height: MediaQuery.of(context).size.height,
