@@ -79,7 +79,9 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: widget.showBackButton,
         actions: [
-          const LogoutButton(),
+          widget.showBackButton
+              ? const LogoutButton()
+              : const SizedBox.shrink(),
           IconButton(
             onPressed: () {
               setState(() {
