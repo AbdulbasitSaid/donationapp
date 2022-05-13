@@ -5,6 +5,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/update_profile_cubit.dart';
 
 import '../../reusables.dart';
+import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/labels/level_4_headline.dart';
 import '../onboarding/cubit/getcountreis_cubit.dart';
 
@@ -44,7 +45,9 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [LogoutButton()],
+      ),
       body: Container(
         decoration: gradientBoxDecoration(),
         height: MediaQuery.of(context).size.height,
