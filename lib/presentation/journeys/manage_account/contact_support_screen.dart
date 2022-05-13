@@ -9,6 +9,7 @@ import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../reusables.dart';
+import '../../widgets/buttons/logout_button_widget.dart';
 
 class ContactSupportScreen extends StatefulWidget {
   const ContactSupportScreen({Key? key}) : super(key: key);
@@ -36,7 +37,9 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [LogoutButton()],
+      ),
       body: Container(
         decoration: gradientBoxDecoration(),
         height: MediaQuery.of(context).size.height,
@@ -45,10 +48,9 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(
-              onChanged: (){
+              onChanged: () {
                 setState(() {
                   _enableSendMessage = _formKey.currentState!.validate();
-
                 });
               },
               key: _formKey,
@@ -99,17 +101,17 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                                       onPressed: () {
                                         Navigator.pushAndRemoveUntil(
                                             context,
-                                            AppRouter.routeToPage(const HomeScreen()),
+                                            AppRouter.routeToPage(
+                                                const HomeScreen()),
                                             (route) => false);
                                       },
                                       child: Text('ok'.toUpperCase())),
                                 ],
-                                content:  Text(
-                                    '${state.successMessage} '),
+                                content: Text('${state.successMessage} '),
                               ),
                             );
                           }
-                          if(state is ContactSupportFailed){
+                          if (state is ContactSupportFailed) {
                             Fluttertoast.showToast(msg: state.errorMessage);
                           }
                         },
@@ -120,11 +122,14 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                             );
                           }
                           return ElevatedButton(
-                            onPressed:_enableSendMessage? () {
-                              context
-                                  .read<ContactSupportCubit>()
-                                  .contactSupport(_editingController.text);
-                            }:null,
+                            onPressed: _enableSendMessage
+                                ? () {
+                                    context
+                                        .read<ContactSupportCubit>()
+                                        .contactSupport(
+                                            _editingController.text);
+                                  }
+                                : null,
                             child: Text(
                               'Send Message'.toUpperCase(),
                             ),
