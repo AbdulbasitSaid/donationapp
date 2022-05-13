@@ -12,6 +12,8 @@ import 'package:idonatio/presentation/widgets/labels/base_label_text.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../widgets/buttons/logout_button_widget.dart';
+
 class SaveDoneeAddDoneeByIdScreen extends StatefulWidget {
   const SaveDoneeAddDoneeByIdScreen({Key? key}) : super(key: key);
 
@@ -42,7 +44,9 @@ class _SaveDoneeAddDoneeByIdScreenState
   Widget build(BuildContext context) {
     final savedDoneeState = context.watch<GetSavedDoneesCubit>().state;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [LogoutButton()],
+      ),
       body: Container(
         padding: const EdgeInsets.all(16),
         height: MediaQuery.of(context).size.height,
