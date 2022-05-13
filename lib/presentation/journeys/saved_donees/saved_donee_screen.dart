@@ -9,6 +9,7 @@ import 'package:idonatio/presentation/journeys/saved_donees/save_donee_add_by_id
 import 'package:idonatio/presentation/journeys/saved_donees/save_donee_add_by_qr_code_screen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
+import 'package:idonatio/presentation/widgets/buttons/logout_button_widget.dart';
 
 import '../../reusables.dart';
 import '../../widgets/input_fields/saved_donee_list_item_widget.dart';
@@ -77,6 +78,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: widget.showBackButton,
         actions: [
+          const LogoutButton(),
           IconButton(
             onPressed: () {
               setState(() {
@@ -208,7 +210,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                             const Padding(
                                 padding: EdgeInsets.all(16),
                                 child: Level2Headline(
-                                  text: 'Saved doneess',
+                                  text: 'Saved donees',
                                 )),
                             const Padding(
                                 padding: EdgeInsets.all(16),
