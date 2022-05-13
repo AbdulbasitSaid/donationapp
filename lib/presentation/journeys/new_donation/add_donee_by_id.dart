@@ -11,6 +11,7 @@ import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_done
 import 'package:idonatio/presentation/router/app_router.dart';
 
 import 'package:idonatio/presentation/themes/app_color.dart';
+import 'package:idonatio/presentation/widgets/buttons/logout_button_widget.dart';
 import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
 import 'package:idonatio/presentation/widgets/labels/base_label_text.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
@@ -44,7 +45,9 @@ class _AddDoneeByIdScreenState extends State<AddDoneeByIdScreen> {
   Widget build(BuildContext context) {
     final getSavedDoneeState = context.watch<GetSavedDoneesCubit>().state;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [LogoutButton()],
+      ),
       body: Container(
         padding: const EdgeInsets.all(16),
         height: MediaQuery.of(context).size.height,
