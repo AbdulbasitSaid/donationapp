@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,6 +10,7 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../reusables.dart';
+import '../../widgets/buttons/logout_button_widget.dart';
 import 'cubit/update_profile_cubit.dart';
 
 class EditEmailScreen extends StatefulWidget {
@@ -42,7 +42,9 @@ class _EditEmailScreenState extends State<EditEmailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [LogoutButton()],
+      ),
       body: Container(
         decoration: gradientBoxDecoration(),
         height: MediaQuery.of(context).size.height,
