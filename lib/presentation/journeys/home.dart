@@ -12,6 +12,7 @@ import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_screen.d
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 
+import '../widgets/buttons/logout_button_widget.dart';
 import 'manage_account/manage_account_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -63,6 +64,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     final appTimerState = context.watch<AppSessionManagerBloc>().state;
     final logoutState = context.watch<LogoutCubit>().state;
     return Scaffold(
+      appBar: AppBar(
+        actions: const [LogoutButton()],
+      ),
       body: Center(
         child: BlocListener<AppSessionManagerBloc, AppSessionManagerState>(
           listener: (context, state) {
