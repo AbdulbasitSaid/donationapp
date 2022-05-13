@@ -14,6 +14,7 @@ import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
+import 'package:idonatio/presentation/widgets/buttons/logout_button_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
@@ -55,11 +56,13 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: IconButton(
-              onPressed: () {
-                context.read<DonationCartCubit>().emptyCart();
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.cancel)),
+            onPressed: () {
+              context.read<DonationCartCubit>().emptyCart();
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.cancel),
+          ),
+          actions: const [LogoutButton()],
         ),
         body: Container(
             height: MediaQuery.of(context).size.height,
