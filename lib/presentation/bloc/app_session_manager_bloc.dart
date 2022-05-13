@@ -11,7 +11,6 @@ class AppSessionManagerBloc
     extends Bloc<AppSessionManagerEvent, AppSessionManagerState> {
   final SessionTicker _sessionTicker;
   StreamSubscription<int>? _streamSubscription;
-  // static const int _duration = 5;
   static const int _duration = 300;
   AppSessionManagerBloc(this._sessionTicker)
       : super(const AppSessionManagerInitial(_duration)) {

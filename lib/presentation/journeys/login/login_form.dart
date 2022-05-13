@@ -7,7 +7,6 @@ import 'package:idonatio/di/get_it.dart';
 import 'package:idonatio/enums.dart';
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
-import 'package:idonatio/presentation/bloc/server_timer_bloc.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/reset_password/sent_opt_forgot_password_screen.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
@@ -17,7 +16,6 @@ import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
 import 'package:idonatio/presentation/widgets/input_fields/password_widget.dart';
 
-import '../../bloc/app_session_manager_bloc.dart';
 import '../../widgets/labels/base_label_text.dart';
 import '../donation_history/cubit/donation_history_cubit.dart';
 import '../saved_donees/cubit/get_saved_donees_cubit.dart';
@@ -32,7 +30,6 @@ class LoginForm extends StatefulWidget {
   @override
   _LoginFormState createState() => _LoginFormState();
 }
-
 
 class _LoginFormState extends State<LoginForm> {
   late TextEditingController _emailAddressController, _passwordController;
@@ -70,10 +67,12 @@ class _LoginFormState extends State<LoginForm> {
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            context.read<ServerTimerBloc>().add(ServerTimerStarted());
-            context
-                .read<AppSessionManagerBloc>()
-                .add(const AppSessionStarted());
+            //
+            // context.read<ServerTimerBloc>().add(ServerTimerStarted());
+            // context
+            //     .read<AppSessionManagerBloc>()
+            //     .add(const AppSessionStarted());
+            ///
             context
                 .read<UserCubit>()
                 .setUserState(getItInstance(), AuthStatus.authenticated);
