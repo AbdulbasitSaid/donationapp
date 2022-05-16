@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
@@ -24,7 +25,7 @@ class ChangePasswordRepository {
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
