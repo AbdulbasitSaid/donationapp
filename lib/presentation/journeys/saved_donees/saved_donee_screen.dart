@@ -6,7 +6,6 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/get_saved_donees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/save_donee_add_by_id_screen.dart';
-import 'package:idonatio/presentation/journeys/saved_donees/save_donee_add_by_qr_code_screen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/buttons/logout_button_widget.dart';
@@ -127,10 +126,10 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                       child: TextButton(
                           onPressed: () {
                             Navigator.pop(context);
-                            Navigator.push(
-                                context,
-                                AppRouter.routeToPage(
-                                    const SaveDoneeAddByQrCodeScreen()));
+                            // Navigator.push(
+                            //     context,
+                            //     AppRouter.routeToPage(
+                            //         const SaveDoneeAddByQrCodeScreen()));
                           },
                           child: Row(
                             children: [

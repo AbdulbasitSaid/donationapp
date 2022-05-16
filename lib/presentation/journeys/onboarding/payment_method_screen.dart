@@ -97,6 +97,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                                   .initPaymentSheet(
                                       paymentSheetParameters:
                                           SetupPaymentSheetParameters(
+                                    style: ThemeMode.system,
                                     merchantDisplayName: 'Idonatio',
                                     setupIntentClientSecret: state
                                         .setUpIntentEnitityData

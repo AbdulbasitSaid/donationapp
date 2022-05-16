@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/journeys/new_donation/add_donee_by_id.dart';
-import 'package:idonatio/presentation/journeys/new_donation/scan_for_donee.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/recentdonees_cubit.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/saved_donee_screen.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
@@ -98,10 +97,12 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.push(
-                              context,
-                              AppRouter.routeToPage(
-                                  const ScanForDoneeScreen())),
+                          onTap: () {
+                            // Navigator.push(
+                            //   context,
+                            //   AppRouter.routeToPage(
+                            //       const ScanForDoneeScreen()));
+                          },
                           child: ListTile(
                             iconColor: Theme.of(context).primaryColor,
                             dense: true,

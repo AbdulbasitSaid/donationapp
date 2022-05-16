@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/add_donee_by_id.dart';
-import 'package:idonatio/presentation/journeys/new_donation/scan_for_donee.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
@@ -203,8 +202,8 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                                                                           onPressed:
                                                                               () {
                                                                             Navigator.pop(context);
-                                                                            Navigator.push(context,
-                                                                                AppRouter.routeToPage(const ScanForDoneeScreen()));
+                                                                            // Navigator.push(context,
+                                                                            //     AppRouter.routeToPage(const ScanForDoneeScreen()));
                                                                           },
                                                                           child:
                                                                               Row(
@@ -449,11 +448,11 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                                                           onPressed: () {
                                                             Navigator.pop(
                                                                 context);
-                                                            Navigator.push(
-                                                                context,
-                                                                AppRouter
-                                                                    .routeToPage(
-                                                                        const ScanForDoneeScreen()));
+                                                            // Navigator.push(
+                                                            //     context,
+                                                            //     AppRouter
+                                                            //         .routeToPage(
+                                                            //             const ScanForDoneeScreen()));
                                                           },
                                                           child: Row(
                                                             children: [
