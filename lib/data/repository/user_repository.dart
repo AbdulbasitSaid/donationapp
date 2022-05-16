@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -38,7 +39,7 @@ class UserRepository {
       return const Right(true);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -68,7 +69,7 @@ class UserRepository {
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -98,7 +99,7 @@ class UserRepository {
       return Right(response);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -126,7 +127,7 @@ class UserRepository {
       return Right(response);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -153,7 +154,7 @@ class UserRepository {
       return Right(response);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -198,7 +199,7 @@ class UserRepository {
       return Right(response);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -221,7 +222,7 @@ class UserRepository {
       return Right(PasswordValidateResponseModel());
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -248,7 +249,7 @@ class UserRepository {
       return Right(StatusMessageEntity.fromMap(responce));
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -273,7 +274,7 @@ class UserRepository {
       return Right(response);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -304,7 +305,7 @@ class UserRepository {
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -330,7 +331,7 @@ class UserRepository {
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -353,7 +354,7 @@ class UserRepository {
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
@@ -376,7 +377,7 @@ class UserRepository {
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
