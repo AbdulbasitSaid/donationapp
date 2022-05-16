@@ -36,10 +36,18 @@ class PaymentRepository {
       final response =
           await _apiClient.get('donors/payment-methods', token: user.token);
       return Right(PaymentMethodsModel.fromMap(response));
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
     } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
     } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
