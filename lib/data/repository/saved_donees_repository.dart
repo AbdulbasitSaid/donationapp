@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:idonatio/data/data_sources/saved_donees_datasource.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
@@ -23,7 +25,7 @@ class SavedDoneesRepository {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
     } on InternalServerError {
       return const Left(AppError(appErrorType: AppErrorType.serveError));
-    } on NetworkError {
+    } on SocketException {
       return const Left(AppError(appErrorType: AppErrorType.network));
     } on UnauthorisedException {
       return const Left(AppError(appErrorType: AppErrorType.unauthorized));
