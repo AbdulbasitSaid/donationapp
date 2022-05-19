@@ -23,7 +23,8 @@ String getCurrencySymbol(String code, BuildContext context) {
   return format.currencySymbol;
 }
 
-String getErrorMessage(AppErrorType appErrorType) {
+String 
+getErrorMessage(AppErrorType appErrorType) {
   switch (appErrorType) {
     case AppErrorType.unProcessableEntity:
       return 'The request is unprocessable, often due to invalid parameters.';

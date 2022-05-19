@@ -49,10 +49,8 @@ import 'presentation/journeys/user/cubit/get_authenticated_user_cubit.dart';
 import 'presentation/journeys/user/cubit/user_cubit.dart';
 import 'presentation/widgets/buttons/cubit/resend_otp_cubit.dart';
 import 'presentation/widgets/input_fields/get_remember_me_email_cubit.dart';
-// import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  // WidgetsBinding widgetsBinding =
   WidgetsFlutterBinding.ensureInitialized();
 
   Stripe.publishableKey =

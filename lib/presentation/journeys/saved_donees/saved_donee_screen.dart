@@ -15,6 +15,7 @@ import '../../widgets/input_fields/saved_donee_list_item_widget.dart';
 import '../../widgets/labels/level_2_heading.dart';
 import '../../widgets/labels/level_6_headline.dart';
 import '../../widgets/loaders/primary_app_loader_widget.dart';
+import 'save_donee_add_by_qr_code_screen.dart';
 
 class SavedDoneeScreen extends StatefulWidget {
   const SavedDoneeScreen({
@@ -126,10 +127,10 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                       child: TextButton(
                           onPressed: () {
                             Navigator.pop(context);
-                            // Navigator.push(
-                            //     context,
-                            //     AppRouter.routeToPage(
-                            //         const SaveDoneeAddByQrCodeScreen()));
+                            Navigator.push(
+                                context,
+                                AppRouter.routeToPage(
+                                    const SaveDoneeAddByQrCodeScreen()));
                           },
                           child: Row(
                             children: [
@@ -157,6 +158,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
             width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   isStartSearch
                       ? Container(
@@ -393,7 +395,6 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                           },
                         ),
                 ],
-                crossAxisAlignment: CrossAxisAlignment.start,
               ),
             ),
           ),

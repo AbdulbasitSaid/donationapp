@@ -89,13 +89,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               }
             },
             child: PageView(
-              children: _homeScreens,
               controller: pageController,
               onPageChanged: (index) {
                 setState(() {
                   pageIndex = index;
                 });
               },
+              children: _homeScreens,
             ),
           ),
         ),

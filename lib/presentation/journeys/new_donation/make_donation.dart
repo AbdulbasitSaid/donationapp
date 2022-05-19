@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../reusables.dart';
 import '../../widgets/donee_list_tile_widget.dart';
 import '../../widgets/loaders/primary_app_loader_widget.dart';
+import 'scan_for_donee.dart';
 
 class MakeDonationScreen extends StatefulWidget {
   const MakeDonationScreen({Key? key}) : super(key: key);
@@ -98,10 +99,10 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // Navigator.push(
-                            //   context,
-                            //   AppRouter.routeToPage(
-                            //       const ScanForDoneeScreen()));
+                            Navigator.push(
+                                context,
+                                AppRouter.routeToPage(
+                                    const ScanForDoneeScreen()));
                           },
                           child: ListTile(
                             iconColor: Theme.of(context).primaryColor,
@@ -202,7 +203,7 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                                           address: e.fullAddress,
                                           doneeCode: e.doneeCode!,
                                           name: e.organization == null
-                                              ? e.firstName! + ' ' + e.lastName!
+                                              ? '${e.firstName!} ${e.lastName!}'
                                               : e.organization!.name,
                                         )),
                               ]),
