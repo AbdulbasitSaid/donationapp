@@ -13,7 +13,6 @@ class ApiClient {
 
   dynamic get(String path,
       {Map<dynamic, dynamic>? params, String? token}) async {
-    // await Future.delayed(const Duration(milliseconds: 500));
     final response = await _client.get(
       getPath(path, params),
       headers: {
