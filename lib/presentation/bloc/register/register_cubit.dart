@@ -7,6 +7,8 @@ import 'package:idonatio/data/repository/user_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/register_request_params.dart';
 
+import '../../reusables.dart';
+
 part 'register_state.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
@@ -45,15 +47,5 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
   }
 
-  String getErrorMessage(AppErrorType appErrorType) {
-    switch (appErrorType) {
-      case AppErrorType.network:
-        return 'No network';
-      case AppErrorType.api:
-      case AppErrorType.database:
-        return 'Opps something went wrong';
-      default:
-        return 'Email is already taken';
-    }
-  }
+
 }
