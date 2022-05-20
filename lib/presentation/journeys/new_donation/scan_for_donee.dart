@@ -1,20 +1,15 @@
-import 'dart:io';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:fluttericon/font_awesome_icons.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
-import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
-import 'package:idonatio/presentation/journeys/new_donation/donee_confirmatoin.dart';
-import 'package:idonatio/presentation/router/app_router.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:idonatio/presentation/journeys/home.dart';
+import 'package:idonatio/presentation/journeys/new_donation/cubit/getdoneebycode_cubit.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
+import 'package:idonatio/presentation/router/app_router.dart';
+import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../../../data/models/user_models/user_data_model.dart';
-import '../../widgets/loaders/primary_app_loader_widget.dart';
-import '../saved_donees/cubit/get_saved_donees_cubit.dart';
-import 'cubit/get_payment_methods_cubit.dart';
 import 'donation_details.dart';
 
 class ScanForDoneeScreen extends StatefulWidget {
@@ -25,186 +20,198 @@ class ScanForDoneeScreen extends StatefulWidget {
 }
 
 class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  // final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  bool isFlashLightOn = false;
-  QRViewController? qrViewController;
+  // bool isFlashLightOn = false;
+  // QRViewController? qrViewController;
+  // @override
+  // void reassemble() {
+  //   if (Platform.isAndroid) {
+  //     qrViewController!.pauseCamera();
+  //   } else if (Platform.isIOS) {
+  //     qrViewController!.resumeCamera();
+  //   }
+  //   super.reassemble();
+  // }
+
+  // @override
+  // void dispose() {
+  //   qrViewController?.dispose();
+  //   super.dispose();
+  // }
+  late MobileScannerController mobileScannerController;
   @override
-  void reassemble() {
-    if (Platform.isAndroid) {
-      qrViewController!.pauseCamera();
-    } else if (Platform.isIOS) {
-      qrViewController!.resumeCamera();
-    }
-    super.reassemble();
+  void initState() {
+    mobileScannerController = MobileScannerController();
+    // if (mobileScannerController.events!.isPaused) {
+    //   mobileScannerController.start();
+    // }
+    super.initState();
   }
 
   @override
   void dispose() {
-    qrViewController?.dispose();
+    mobileScannerController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final getSavedDoneeState = context.watch<GetSavedDoneesCubit>().state;
-
+    final userState = context.watch<UserCubit>().state;
+    final getDoneeState = context.watch<GetdoneebycodeCubit>().state;
     return Scaffold(
       body: SafeArea(
-        child: ValueListenableBuilder(
-            valueListenable: Hive.box<UserData>('user_box').listenable(),
-            builder: (context, Box<UserData> box, widget) {
-              final user = box.get('user_data')?.user;
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: [
+              BlocConsumer<GetdoneebycodeCubit, GetdoneebycodeState>(
+                listener: (context, state) {
+                  if (state is GetdoneebycodeSuccess &&
+                      userState is Authenticated) {
+                    final user = userState.userData.user.donor;
+                    Navigator.push(
+                      context,
+                      AppRouter.routeToPage(DonationDetialsScreen(
+                        isEnableGiftAid: user.giftAidEnabled,
+                        isDonateAnonymously: user.giftAidEnabled,
+                      )),
+                      // (route) => true,
+                    );
+                  }
+                  if (state is GetdoneebycodeFailed) {
+                    mobileScannerController.events!.cancel();
 
-              return Stack(
-                children: [
-                  QRView(
-                    key: qrKey,
-                    onQRViewCreated: _onQRViewCreated,
-                  ),
-                  Positioned.fill(
-                    bottom: 20,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: const BoxDecoration(
-                          color: Color.fromRGBO(0, 0, 0, .7),
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                        ),
-                        child: Text(
-                          'Point your camera at a QR code',
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (builder) => AlertDialog(
+                              content: Text(state.errorMessage),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          AppRouter.routeToPage(
+                                              const HomeScreen()),
+                                          (route) => false);
+                                    },
+                                    child: Text(
+                                      'retry'.toUpperCase(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ))
+                              ],
+                            ));
+                  }
+                },
+                builder: (context, state) {
+                  log(mobileScannerController.events!.isPaused.toString());
+
+                  return MobileScanner(
+                      allowDuplicates: false,
+                      controller: mobileScannerController,
+                      onDetect: (barcode, args) {
+                        if (barcode.rawValue == null) {
+                          debugPrint('Failed to scan Barcode');
+                          Fluttertoast.showToast(msg: 'Failed to scan Barcode');
+                        } else {
+                          final String code = barcode.rawValue!;
+                          Fluttertoast.showToast(msg: 'Barcode found! $code');
+                          context
+                              .read<GetdoneebycodeCubit>()
+                              .getDoneeByCode(code);
+                        }
+                      });
+                },
+              ),
+              Align(
+                alignment: Alignment.topCenter,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.cancel,
+                          color: Colors.white,
+                        )),
+                    Row(
                       children: [
                         IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
+                          color: Colors.white,
+                          icon: ValueListenableBuilder(
+                            valueListenable: mobileScannerController.torchState,
+                            builder: (context, state, child) {
+                              switch (state as TorchState) {
+                                case TorchState.off:
+                                  return const Icon(Icons.flash_off,
+                                      color: Colors.white);
+                                case TorchState.on:
+                                  if (getDoneeState is GetdoneebycodeLoading) {
+                                    mobileScannerController.toggleTorch();
+                                  }
+                                  return const Icon(Icons.flash_on,
+                                      color: Colors.yellow);
+                              }
                             },
-                            icon: const Icon(
-                              FeatherIcons.x,
-                              color: Colors.white,
-                              size: 32,
-                            )),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                qrViewController?.toggleFlash();
-                                setState(() {
-                                  isFlashLightOn = !isFlashLightOn;
-                                });
-                              },
-                              icon: Icon(isFlashLightOn
-                                  ? FeatherIcons.zap
-                                  : FeatherIcons.zapOff),
-                              color: Colors.white,
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                FontAwesome.question_circle_o,
-                                color: Colors.white,
-                              ),
-                            )
-                          ],
-                        )
+                          ),
+                          iconSize: 32.0,
+                          onPressed: () =>
+                              mobileScannerController.toggleTorch(),
+                        ),
+                        IconButton(
+                          color: Colors.white,
+                          icon: ValueListenableBuilder(
+                            valueListenable:
+                                mobileScannerController.cameraFacingState,
+                            builder: (context, state, child) {
+                              switch (state as CameraFacing) {
+                                case CameraFacing.front:
+                                  return const Icon(Icons.camera_front);
+                                case CameraFacing.back:
+                                  return const Icon(Icons.camera_rear);
+                              }
+                            },
+                          ),
+                          iconSize: 32.0,
+                          onPressed: () =>
+                              mobileScannerController.switchCamera(),
+                        ),
                       ],
-                    ),
-                  ),
-                  BlocConsumer<GetdoneebycodeCubit, GetdoneebycodeState>(
-                    listenWhen: (previous, current) =>
-                        current is GetdoneebycodeSuccess,
-                    listener: (context, state) {
-                      if (state is GetdoneebycodeSuccess) {
-                        qrViewController!.dispose();
-                        context.read<GetDonationFeesCubit>().getFees();
-                        context
-                            .read<GetPaymentMethodsCubit>()
-                            .getPaymentMethods();
-                        if (getSavedDoneeState is GetSavedDoneesSuccess &&
-                            getSavedDoneeState.savedDoneesResponseModel.data!
-                                .map((e) => e.id)
-                                .toList()
-                                .contains(state.doneeResponseData.id)) {
-                          Navigator.push(
-                              context,
-                              AppRouter.routeToPage(DonationDetialsScreen(
-                                  isEnableGiftAid: user!.donor.giftAidEnabled,
-                                  isDonateAnonymously:
-                                      user.donor.donateAnonymously)));
-                        } else {
-                          Navigator.push(
-                            context,
-                            AppRouter.routeToPage(
-                                const DoneeConfirmationScreen()),
-                          );
-                        }
-                      }
-                    },
+                    )
+
+                    //
+                  ],
+                ),
+              ),
+              Positioned(
+                  top: MediaQuery.of(context).size.height * .2,
+                  left: 0,
+                  right: 0,
+                  child: BlocBuilder<GetdoneebycodeCubit, GetdoneebycodeState>(
                     builder: (context, state) {
                       if (state is GetdoneebycodeLoading) {
-                        return const Center(
-                          child: PrimaryAppLoader(),
-                        );
-                      } else if (state is GetdoneebycodeFailed) {
-                        return Positioned.fill(
-                          top: MediaQuery.of(context).size.height * .1,
-                          bottom: MediaQuery.of(context).size.height * .7,
-                          left: 16,
-                          right: 16,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(16))),
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(state.errorMessage),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text('retry'.toUpperCase()))
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        );
+                        if (mobileScannerController.torchEnabled == true) {
+                          mobileScannerController.toggleTorch();
+                        }
+
+                        return SizedBox(
+                            height: MediaQuery.of(context).size.height * .5,
+                            width: MediaQuery.of(context).size.height * .7,
+                            child: const Center(child: PrimaryAppLoader()));
                       } else {
                         return const SizedBox.shrink();
                       }
                     },
-                  )
-                ],
-              );
-            }),
+                  )),
+            ],
+          ),
+        ),
       ),
     );
-  }
-
-  void _onQRViewCreated(QRViewController controller) {
-    qrViewController = controller;
-    qrViewController!.scannedDataStream.listen((scanData) {
-      setState(() {
-        context.read<GetdoneebycodeCubit>().getDoneeByCode(scanData.code!);
-      });
-    });
   }
 }
