@@ -246,17 +246,6 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
                         right: 14,
                         top: 0,
                         child: Container(
-                          child: TextButton(
-                              style: TextButton.styleFrom(
-                                  primary: AppColor.text80Primary),
-                              onPressed: () {
-                                setState(() {
-                                  dialog = !dialog;
-                                });
-                                context.read<SaveDoneeCubit>().saveDonee(
-                                    {'donee_id': widget.donationData.donee.id});
-                              },
-                              child: const Text('Save donees')),
                           decoration:
                               whiteContainerBackGround().copyWith(boxShadow: [
                             const BoxShadow(
@@ -271,6 +260,17 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
                                 spreadRadius: 0),
                           ]),
                           padding: const EdgeInsets.all(16),
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                  primary: AppColor.text80Primary),
+                              onPressed: () {
+                                setState(() {
+                                  dialog = !dialog;
+                                });
+                                context.read<SaveDoneeCubit>().saveDonee(
+                                    {'donee_id': widget.donationData.donee.id});
+                              },
+                              child: const Text('Save donees')),
                         )),
                   )
                 : SizedBox.fromSize(),
