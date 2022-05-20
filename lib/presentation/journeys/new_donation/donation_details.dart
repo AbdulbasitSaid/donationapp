@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_process_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_donation_fees_cubit.dart';
@@ -70,7 +71,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
             leading: IconButton(
               onPressed: () {
                 context.read<DonationCartCubit>().emptyCart();
-                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(context, AppRouter.routeToPage(const HomeScreen()), (route) => false);
               },
               icon: const Icon(Icons.cancel),
             ),
@@ -187,6 +188,11 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
 
                           return Container(
                             padding: const EdgeInsets.all(16),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                            ),
                             child: Column(
                               children: [
                                 Column(
@@ -279,11 +285,6 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                 )
                               ],
                             ),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                            ),
                           );
                         }
                         return const SizedBox.shrink();
@@ -301,6 +302,10 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                       builder: (context, state) {
                         return Container(
                           padding: const EdgeInsets.all(16),
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
                           child: Column(
                             children: [
                               //enabling gift aid
@@ -514,10 +519,6 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                               ),
                             ],
                           ),
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
                         );
                       },
                     ),
