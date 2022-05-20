@@ -55,14 +55,14 @@ ChargesResult getCharges(
   var left = spliteCharge[0];
   var right = spliteCharge[1].split('');
   String stringCharg =
-      left + '.' + (right.length > 1 ? right.take(2).join() : right.first);
+      '$left.${right.length > 1 ? right.take(2).join() : right.first}';
   // charges = double.parse(stringCharg);
   // onlyCharges.
   var totalPaySplit =
       ((double.parse(stringCharg)) + (amount)).toString().split('.');
   var totalPayLeft = totalPaySplit[0];
   var totalPayRight = totalPaySplit[1];
-  String totalPayment = totalPayLeft + '.' + totalPayRight;
+  String totalPayment = '$totalPayLeft.$totalPayRight';
   double totalPaymentResult = double.parse(totalPayment);
   //
   return amount == 0
