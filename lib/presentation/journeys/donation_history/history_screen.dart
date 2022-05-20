@@ -78,6 +78,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
               children: [
                 SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -505,7 +506,6 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                         },
                       ),
                     ],
-                    crossAxisAlignment: CrossAxisAlignment.start,
                   ),
                 ),
                 isStartSearch == true
