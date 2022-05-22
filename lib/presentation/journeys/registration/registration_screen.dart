@@ -6,6 +6,7 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
+import '../../bloc/registration_steps/cubit/registration_steps_cubit.dart';
 import '../auth_guard.dart';
 import 'register_form.dart';
 
@@ -19,45 +20,51 @@ class RegistrationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: AppBackgroundWidget(
-        childWidget: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const AspectRatio(
-                aspectRatio: 5 / 1,
-                child: Level2Headline(
-                  text: TranslationConstants.register,
+      body: WillPopScope(
+        onWillPop: () async {
+          context.read<RegistrationStepsCubit>().resetStage();
+          return true;
+        },
+        child: AppBackgroundWidget(
+          childWidget: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const AspectRatio(
+                  aspectRatio: 5 / 1,
+                  child: Level2Headline(
+                    text: TranslationConstants.register,
+                  ),
                 ),
-              ),
-              BlocConsumer<RegisterCubit, RegisterState>(
-                builder: (context, state) {
-                  if (state is RegisterFailed) {
-                    return Card(
-                      child: ListTile(
-                        leading: const Icon(Icons.cancel_outlined),
-                        title: const Text('Registration failed'),
-                        subtitle: Text(state.errorMessage),
-                      ),
-                    );
-                  }
+                BlocConsumer<RegisterCubit, RegisterState>(
+                  builder: (context, state) {
+                    if (state is RegisterFailed) {
+                      return Card(
+                        child: ListTile(
+                          leading: const Icon(Icons.cancel_outlined),
+                          title: const Text('Registration failed'),
+                          subtitle: Text(state.errorMessage),
+                        ),
+                      );
+                    }
 
-                  return const SizedBox.shrink();
-                },
-                listener: (context, state) {
-                  if (state is RegisterSuccess) {
-                    Navigator.push(
-                      context,
-                      AppRouter.routeToPage(const AuthGaurd()),
-                    );
-                  } else {
-                    const SizedBox.shrink();
-                  }
-                },
-              ),
-              const RegisterForm()
-            ],
+                    return const SizedBox.shrink();
+                  },
+                  listener: (context, state) {
+                    if (state is RegisterSuccess) {
+                      Navigator.push(
+                        context,
+                        AppRouter.routeToPage(const AuthGaurd()),
+                      );
+                    } else {
+                      const SizedBox.shrink();
+                    }
+                  },
+                ),
+                const RegisterForm()
+              ],
+            ),
           ),
         ),
       ),
