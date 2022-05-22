@@ -37,6 +37,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   bool _checkboxValue = false;
   bool _enableRegister = false;
+  
   @override
   void initState() {
     super.initState();
@@ -345,8 +346,9 @@ class _RegisterFormState extends State<RegisterForm> {
                           getItInstance(), AuthStatus.authenticated);
                       Navigator.push(
                           context, AppRouter.routeToPage(const AuthGaurd()));
-                    } else {
-                      Navigator.of(context, rootNavigator: true).pop();
+                    } else if (state is RegisterFailed) {
+                      // Navigator.of(context, rootNavigator: true).pop();
+
                     }
                   },
                   builder: (context, state) {
@@ -372,9 +374,9 @@ class _RegisterFormState extends State<RegisterForm> {
                                         phoneNumber:
                                             _mobileNumberTextController.text,
                                       ));
-                                  context.read<UserCubit>().setUserState(
-                                      getItInstance(),
-                                      AuthStatus.authenticated);
+                                  // context.read<UserCubit>().setUserState(
+                                  //     getItInstance(),
+                                  //     AuthStatus.authenticated);
                                 }
                               }
                             : null,
