@@ -20,32 +20,12 @@ class ScanForDoneeScreen extends StatefulWidget {
 }
 
 class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
-  // final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  // bool isFlashLightOn = false;
-  // QRViewController? qrViewController;
-  // @override
-  // void reassemble() {
-  //   if (Platform.isAndroid) {
-  //     qrViewController!.pauseCamera();
-  //   } else if (Platform.isIOS) {
-  //     qrViewController!.resumeCamera();
-  //   }
-  //   super.reassemble();
-  // }
-
-  // @override
-  // void dispose() {
-  //   qrViewController?.dispose();
-  //   super.dispose();
-  // }
   late MobileScannerController mobileScannerController;
   @override
   void initState() {
     mobileScannerController = MobileScannerController();
-    // if (mobileScannerController.events!.isPaused) {
-    //   mobileScannerController.start();
-    // }
+  
     super.initState();
   }
 
