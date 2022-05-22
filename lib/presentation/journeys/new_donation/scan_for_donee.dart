@@ -20,12 +20,11 @@ class ScanForDoneeScreen extends StatefulWidget {
 }
 
 class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
-
   late MobileScannerController mobileScannerController;
   @override
   void initState() {
     mobileScannerController = MobileScannerController();
-  
+
     super.initState();
   }
 
@@ -98,7 +97,7 @@ class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
                           Fluttertoast.showToast(msg: 'Failed to scan Barcode');
                         } else {
                           final String code = barcode.rawValue!;
-                          Fluttertoast.showToast(msg: 'Barcode found! $code');
+                          Fluttertoast.showToast(msg: 'Found! $code');
                           context
                               .read<GetdoneebycodeCubit>()
                               .getDoneeByCode(code);
