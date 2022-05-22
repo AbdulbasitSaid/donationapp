@@ -1,12 +1,13 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
+import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/data/repository/user_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/register_request_params.dart';
 
+import '../../../data/models/user_models/user_response_model.dart';
 import '../../reusables.dart';
 
 part 'register_state.dart';
@@ -33,19 +34,26 @@ class RegisterCubit extends Cubit<RegisterState> {
       ipAddress: '198.0.2.3"',
       screenResolution: '1080p',
     );
-    final Either<AppError, dynamic> eitherResponse =
+    final Either<AppError, UserResponseModel> eitherResponse =
         await _registerUserRepositoryImpl.registerUser(finalParams.toJson());
     String email = params.email;
     await _userLocalDataSource.saveResetPasswordEmail(email);
+
     emit(
       eitherResponse.fold((l) {
         var message = getErrorMessage(l.appErrorType);
         return RegisterFailed(message);
       }, (r) {
+        _userLocalDataSource.saveUserData(UserData(
+          token: r.data.token,
+          tokenType: r.data.tokenType,
+          expiresIn: r.data.expiresIn,
+          isDeviceSaved: r.data.isDeviceSaved,
+          user: r.data.user,
+          stripeCustomerId: r.data.stripeCustomerId,
+        ));
         return RegisterSuccess();
       }),
     );
   }
-
-
 }

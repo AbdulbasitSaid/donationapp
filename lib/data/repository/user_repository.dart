@@ -91,10 +91,7 @@ class UserRepository {
     try {
       final response = await _userRemoteDataSource.registerUser(params);
       final userData = response.data;
-      final user = response.data.user;
-      final donor = response.data.user.donor;
-      await _userLocalDataSource
-          .saveUserData(userData.copyWith(user: user.copyWith(donor: donor)));
+      await _userLocalDataSource.saveUserData(userData);
 
       return Right(response);
     } on BadRequest {
