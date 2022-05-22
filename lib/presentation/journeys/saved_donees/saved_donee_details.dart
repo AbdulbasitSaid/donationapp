@@ -261,6 +261,20 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
                         right: 14,
                         top: 0,
                         child: Container(
+                          decoration:
+                              whiteContainerBackGround().copyWith(boxShadow: [
+                            const BoxShadow(
+                                color: Color(0x0ff42a70),
+                                offset: Offset(0, 3),
+                                blurRadius: 6,
+                                spreadRadius: -2),
+                            const BoxShadow(
+                                color: Color(0x0ff42a70),
+                                offset: Offset(0, 0),
+                                blurRadius: 1,
+                                spreadRadius: 0),
+                          ]),
+                          padding: const EdgeInsets.all(16),
                           child: TextButton(
                               style: TextButton.styleFrom(
                                   primary: AppColor.text80Primary),
@@ -326,20 +340,6 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
                                         ));
                               },
                               child: const Text('Delete donee')),
-                          decoration:
-                              whiteContainerBackGround().copyWith(boxShadow: [
-                            const BoxShadow(
-                                color: Color(0x0ff42a70),
-                                offset: Offset(0, 3),
-                                blurRadius: 6,
-                                spreadRadius: -2),
-                            const BoxShadow(
-                                color: Color(0x0ff42a70),
-                                offset: Offset(0, 0),
-                                blurRadius: 1,
-                                spreadRadius: 0),
-                          ]),
-                          padding: const EdgeInsets.all(16),
                         )),
                 BlocBuilder<DeleteSaveDoneeCubit, DeleteSaveDoneeState>(
                   builder: (context, state) {
