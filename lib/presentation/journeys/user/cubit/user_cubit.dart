@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/enums.dart';
