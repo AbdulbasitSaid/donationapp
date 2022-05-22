@@ -100,13 +100,42 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                       isStartSearch == false
                           ? Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Padding(
+                              children: [
+                                const Padding(
                                     padding: EdgeInsets.all(16),
                                     child: Level2Headline(
                                       text: 'Your donations',
                                     )),
-                                Padding(
+                                BlocBuilder<DonationHistoryCubit,
+                                    DonationHistoryState>(
+                                  builder: (context, state) {
+                                    if (state is DonationHistorySuccess) {
+                                      return Padding(
+                                          padding: const EdgeInsets.all(16),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  'Overal total donations: ${state.donationHistoryModel.overallTotalDonations.toStringAsFixed(2)}'),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Text(
+                                                  'Number of donations: ${state.donationHistoryModel.numberOfDonations}'),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Text(
+                                                  'Average donation: ${state.donationHistoryModel.averageDonations.toStringAsFixed(2)} '),
+                                            ],
+                                          ));
+                                    }
+                                    return const Text(
+                                        'Please pull to referesh');
+                                  },
+                                ),
+                                const Padding(
                                     padding: EdgeInsets.all(16),
                                     child: Text(
                                       "A history of donations you’ve made through this app. Select a donation to view more details.",
