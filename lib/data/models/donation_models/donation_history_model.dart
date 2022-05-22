@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'donation_details.dart';
@@ -15,6 +16,15 @@ class DonationHistoryModel {
     required this.message,
     required this.data,
   });
+
+  double get overallTotalDonations => data
+      .map((e) => e.totalAmount)
+      .toList()
+      .reduce((value, element) => value + element);
+
+  int get numberOfDonations => data.length;
+
+  double get averageDonations => overallTotalDonations / numberOfDonations;
 
   factory DonationHistoryModel.fromJson(Map<String, dynamic> json) =>
       _$DonationHistoryModelFromJson(json);
