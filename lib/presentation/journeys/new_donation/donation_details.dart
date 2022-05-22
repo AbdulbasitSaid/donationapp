@@ -71,7 +71,10 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
             leading: IconButton(
               onPressed: () {
                 context.read<DonationCartCubit>().emptyCart();
-                Navigator.pushAndRemoveUntil(context, AppRouter.routeToPage(const HomeScreen()), (route) => false);
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    AppRouter.routeToPage(const HomeScreen()),
+                    (route) => false);
               },
               icon: const Icon(Icons.cancel),
             ),
