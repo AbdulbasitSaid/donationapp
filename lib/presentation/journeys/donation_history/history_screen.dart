@@ -117,7 +117,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                  'Overal total donations: ${state.donationHistoryModel.overallTotalDonations.toStringAsFixed(2)}'),
+                                                  'Total donations: £${state.donationHistoryModel.overallTotalDonations.toStringAsFixed(2)}'),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -127,7 +127,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                                                 height: 8,
                                               ),
                                               Text(
-                                                  'Average donation: ${state.donationHistoryModel.averageDonations.toStringAsFixed(2)} '),
+                                                  'Average donation: £${state.donationHistoryModel.averageDonations.toStringAsFixed(2)} '),
                                             ],
                                           ));
                                     }
