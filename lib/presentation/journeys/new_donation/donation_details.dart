@@ -59,6 +59,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final getDoneeState = context.watch<GetdoneebycodeCubit>().state;
     return WillPopScope(
       onWillPop: () async {
         context.read<DonationCartCubit>().emptyCart();
@@ -105,6 +106,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                     BlocBuilder<GetdoneebycodeCubit, GetdoneebycodeState>(
                       builder: (context, state) {
                         if (state is GetdoneebycodeSuccess) {
+                          checkDonationTypes(getDoneeState, context);
                           if (state.doneeResponseData.organization?.id !=
                               null) {
                             return DetailCardForOrganisationWidget(
@@ -145,7 +147,11 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                           BlocBuilder<DonationCartCubit,
                               List<DonationItemEntity>>(
                             builder: (context, state) {
-                              if (state.isNotEmpty) {
+                              if (state.isNotEmpty &&
+                                  getDoneeState is GetdoneebycodeSuccess &&
+                                  getDoneeState.doneeResponseData.donationTypes!
+                                          .length >
+                                      1) {
                                 return TextButton(
                                     onPressed: () {
                                       showDonationCartDialoge(context);
@@ -162,26 +168,35 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                     BlocBuilder<DonationCartCubit, List<DonationItemEntity>>(
                       builder: (context, cartState) {
                         if (cartState.isEmpty) {
-                          return TextButton(
-                            onPressed: () {
-                              showDonationCartDialoge(context);
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
-                              padding: const EdgeInsets.all(16),
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.add),
-                                  SizedBox(
-                                    width: 32,
+                          return BlocBuilder<GetdoneebycodeCubit,
+                              GetdoneebycodeState>(
+                            builder: (context, state) {
+                              if (state is GetdoneebycodeLoading) {
+                                return const SizedBox.shrink();
+                              } else {
+                                return TextButton(
+                                  onPressed: () {
+                                    showDonationCartDialoge(context);
+                                  },
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8))),
+                                    padding: const EdgeInsets.all(16),
+                                    child: Row(
+                                      children: const [
+                                        Icon(Icons.add),
+                                        SizedBox(
+                                          width: 32,
+                                        ),
+                                        Text('Add donation type')
+                                      ],
+                                    ),
                                   ),
-                                  Text('Add donation type')
-                                ],
-                              ),
-                            ),
+                                );
+                              }
+                            },
                           );
                         } else if (cartState.isNotEmpty) {
                           double amount = cartState
@@ -326,6 +341,9 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                         value: isApplyGiftAid,
                                         onChanged: (onChanged) {
                                           setState(() {
+                                            checkDonationTypes(
+                                                getDoneeState, context);
+
                                             if (onChanged == false) {
                                               showDialog(
                                                   context: context,
@@ -426,6 +444,9 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                         value: isDonateAnonymously,
                                         onChanged: (onChanged) {
                                           setState(() {
+                                            checkDonationTypes(
+                                                getDoneeState, context);
+
                                             if (onChanged == false) {
                                               showDialog(
                                                 context: context,
@@ -700,6 +721,20 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                 ),
               ))),
     );
+  }
+
+  void checkDonationTypes(
+      GetdoneebycodeState getDoneeState, BuildContext context) {
+    if (getDoneeState is GetdoneebycodeSuccess &&
+        getDoneeState.doneeResponseData.donationTypes!.length < 2 &&
+        getDoneeState.doneeResponseData.donationTypes!.isNotEmpty) {
+      context.read<DonationCartCubit>().addToCart(DonationItemEntity(
+            id: getDoneeState.doneeResponseData.donationTypes![0].id,
+            type: getDoneeState.doneeResponseData.donationTypes![0].type!,
+            description:
+                getDoneeState.doneeResponseData.donationTypes![0].description,
+          ));
+    }
   }
 
   Future<dynamic> showDonationCartDialoge(BuildContext context) {
