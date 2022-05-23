@@ -97,7 +97,6 @@ class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
                           Fluttertoast.showToast(msg: 'Failed to scan Barcode');
                         } else {
                           final String code = barcode.rawValue!;
-                          Fluttertoast.showToast(msg: 'Found! $code');
                           context
                               .read<GetdoneebycodeCubit>()
                               .getDoneeByCode(code);
