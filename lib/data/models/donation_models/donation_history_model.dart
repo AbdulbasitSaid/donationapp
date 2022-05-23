@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'donation_details.dart';
@@ -18,7 +17,11 @@ class DonationHistoryModel {
   });
 
   double get overallTotalDonations => data
-      .map((e) => e.totalAmount)
+      .map(
+        (e) => e.paidTransactionFee
+            ? e.totalAmount + e.transationFee
+            : e.totalAmount,
+      )
       .toList()
       .reduce((value, element) => value + element);
 
