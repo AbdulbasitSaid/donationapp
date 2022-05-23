@@ -15,6 +15,9 @@ import 'package:idonatio/presentation/widgets/linked_span_button.dart';
 import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 import 'package:line_icons/line_icons.dart';
 
+import '../../bloc/app_session_manager_bloc.dart';
+import '../../bloc/server_timer_bloc.dart';
+
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
     Key? key,
@@ -37,7 +40,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   bool _checkboxValue = false;
   bool _enableRegister = false;
-  
+
   @override
   void initState() {
     super.initState();
@@ -342,6 +345,10 @@ class _RegisterFormState extends State<RegisterForm> {
                 child: BlocConsumer<RegisterCubit, RegisterState>(
                   listener: (context, state) {
                     if (state is RegisterSuccess) {
+                      context.read<ServerTimerBloc>().add(ServerTimerStarted());
+                      context
+                          .read<AppSessionManagerBloc>()
+                          .add(const AppSessionStarted());
                       context.read<UserCubit>().setUserState(
                           getItInstance(), AuthStatus.authenticated);
                       Navigator.push(
