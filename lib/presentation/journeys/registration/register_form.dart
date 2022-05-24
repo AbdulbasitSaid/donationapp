@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -345,10 +346,15 @@ class _RegisterFormState extends State<RegisterForm> {
                 child: BlocConsumer<RegisterCubit, RegisterState>(
                   listener: (context, state) {
                     if (state is RegisterSuccess) {
-                      context.read<ServerTimerBloc>().add(ServerTimerStarted());
-                      context
-                          .read<AppSessionManagerBloc>()
-                          .add(const AppSessionStarted());
+                      if (!kDebugMode) {
+                        context
+                            .read<AppSessionManagerBloc>()
+                            .add(const AppSessionStarted());
+                        context
+                            .read<ServerTimerBloc>()
+                            .add(ServerTimerStarted());
+                      }
+
                       context.read<UserCubit>().setUserState(
                           getItInstance(), AuthStatus.authenticated);
                       Navigator.push(
@@ -381,9 +387,6 @@ class _RegisterFormState extends State<RegisterForm> {
                                         phoneNumber:
                                             _mobileNumberTextController.text,
                                       ));
-                                  // context.read<UserCubit>().setUserState(
-                                  //     getItInstance(),
-                                  //     AuthStatus.authenticated);
                                 }
                               }
                             : null,
