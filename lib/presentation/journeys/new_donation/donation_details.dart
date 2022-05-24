@@ -103,10 +103,14 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                       child: Level6Headline(text: 'Donating to:'),
                     ),
                     // Donee Detail card
-                    BlocBuilder<GetdoneebycodeCubit, GetdoneebycodeState>(
+                    BlocConsumer<GetdoneebycodeCubit, GetdoneebycodeState>(
+                      listener: (context, state) {
+                        if (state is GetdoneebycodeSuccess) {
+                          checkDonationTypes(state, context);
+                        }
+                      },
                       builder: (context, state) {
                         if (state is GetdoneebycodeSuccess) {
-                          checkDonationTypes(getDoneeState, context);
                           if (state.doneeResponseData.organization?.id !=
                               null) {
                             return DetailCardForOrganisationWidget(
@@ -149,9 +153,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                             builder: (context, state) {
                               if (state.isNotEmpty &&
                                   getDoneeState is GetdoneebycodeSuccess &&
-                                  getDoneeState.doneeResponseData.donationTypes!
-                                          .length >
-                                      1) {
+                                  !getDoneeState
+                                      .doneeResponseData.isSingleDonationType) {
                                 return TextButton(
                                     onPressed: () {
                                       showDonationCartDialoge(context);
@@ -341,8 +344,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                         value: isApplyGiftAid,
                                         onChanged: (onChanged) {
                                           setState(() {
-                                            checkDonationTypes(
-                                                getDoneeState, context);
+                                            // checkDonationTypes(
+                                            //     getDoneeState, context);
 
                                             if (onChanged == false) {
                                               showDialog(
@@ -444,8 +447,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                         value: isDonateAnonymously,
                                         onChanged: (onChanged) {
                                           setState(() {
-                                            checkDonationTypes(
-                                                getDoneeState, context);
+                                            // checkDonationTypes(
+                                            //     getDoneeState, context);
 
                                             if (onChanged == false) {
                                               showDialog(
