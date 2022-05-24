@@ -89,6 +89,7 @@ class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
                   log(mobileScannerController.events!.isPaused.toString());
 
                   return MobileScanner(
+                      fit: BoxFit.cover,
                       allowDuplicates: false,
                       controller: mobileScannerController,
                       onDetect: (barcode, args) {
