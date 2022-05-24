@@ -73,6 +73,10 @@ class Data {
         : "${organization!.name}";
   }
 
+  bool get isSingleDonationType {
+    return donationTypes!.length < 2;
+  }
+
   String get fullAddress {
     return organization == null
         ? addressLine_1 + addressLine_2
