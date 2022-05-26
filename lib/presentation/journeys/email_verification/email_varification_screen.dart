@@ -153,13 +153,15 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
                 );
               } else {
                 return ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      context
-                          .read<VerificationCubit>()
-                          .verifyOtp(_otpController.text);
-                    }
-                  },
+                  onPressed: _otpController.text.length == 6
+                      ? () async {
+                          if (_formKey.currentState!.validate()) {
+                            context
+                                .read<VerificationCubit>()
+                                .verifyOtp(_otpController.text);
+                          }
+                        }
+                      : null,
                   child: Text('Verify Email'.toUpperCase()),
                 );
               }
