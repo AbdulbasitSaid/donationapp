@@ -30,6 +30,7 @@ class _VerifyEdittedEmailScreenState extends State<VerifyEdittedEmailScreen> {
   @override
   void initState() {
     _otpController = TextEditingController();
+
     super.initState();
   }
 
@@ -128,7 +129,7 @@ class _VerifyEdittedEmailScreenState extends State<VerifyEdittedEmailScreen> {
                       );
                     } else {
                       return ElevatedButton(
-                        onPressed: _enableVerificationButton
+                        onPressed: _otpController.text.length == 6
                             ? () async {
                                 if (_formKey.currentState!.validate()) {
                                   context
