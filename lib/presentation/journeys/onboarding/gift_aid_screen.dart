@@ -81,6 +81,8 @@ class _GiftAidScreenState extends State<GiftAidScreen> {
                       child: Column(
                         children: [
                           ListTile(
+                            onTap: (() =>
+                                selectGiftAid(GiftAidOptions.enabled)),
                             title: const Text(
                                 'Yes, I’d like to enable GiftAid on eligible donations.*'),
                             subtitle: Padding(
@@ -107,14 +109,13 @@ class _GiftAidScreenState extends State<GiftAidScreen> {
                           ),
                           ListTile(
                             title: const Text('No, thank you.'),
+                            onTap: () {
+                              selectGiftAid(GiftAidOptions.notEnabled);
+                            },
                             leading: Radio<GiftAidOptions>(
                               groupValue: _aidOptions,
                               value: GiftAidOptions.notEnabled,
-                              onChanged: (GiftAidOptions? value) {
-                                setState(() {
-                                  _aidOptions = value;
-                                });
-                              },
+                              onChanged: selectGiftAid,
                             ),
                           )
                         ],
@@ -133,7 +134,7 @@ class _GiftAidScreenState extends State<GiftAidScreen> {
                                       ? true
                                       : false,
                             ));
-                         context.read<GetcountreisCubit>().getCountries();
+                        context.read<GetcountreisCubit>().getCountries();
                         Navigator.push(context,
                             AppRouter.routeToPage(const HomeAddressScreen()));
                       }),
@@ -145,5 +146,10 @@ class _GiftAidScreenState extends State<GiftAidScreen> {
       ),
     );
   }
-}
 
+  void selectGiftAid(GiftAidOptions? value) {
+    setState(() {
+      _aidOptions = value;
+    });
+  }
+}
