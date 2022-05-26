@@ -100,7 +100,7 @@ class _RegisterFormState extends State<RegisterForm> {
               .copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(
-          height: 16,
+          height: 36,
         ),
         const Text('Title'),
         Row(
@@ -130,7 +130,7 @@ class _RegisterFormState extends State<RegisterForm> {
           ],
         ),
         const SizedBox(
-          height: 16,
+          height: 28,
         ),
         TextFormField(
           controller: _firsNametTextController,
@@ -147,7 +147,7 @@ class _RegisterFormState extends State<RegisterForm> {
           ),
         ),
         const SizedBox(
-          height: 16,
+          height: 28,
         ),
         TextFormField(
           onChanged: (value) {
@@ -221,10 +221,10 @@ class _RegisterFormState extends State<RegisterForm> {
               .copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(
-          height: 16,
+          height: 28,
         ),
         const SizedBox(
-          height: 16,
+          height: 28,
         ),
         TextFormField(
           controller: _mobileNumberTextController,
@@ -236,7 +236,7 @@ class _RegisterFormState extends State<RegisterForm> {
           ),
         ),
         const SizedBox(
-          height: 16,
+          height: 28,
         ),
         TextFormField(
           controller: _emailTextController,
@@ -253,7 +253,7 @@ class _RegisterFormState extends State<RegisterForm> {
           ),
         ),
         const SizedBox(
-          height: 16,
+          height: 28,
         ),
         TextFormField(
           controller: _passwordEditingController,
