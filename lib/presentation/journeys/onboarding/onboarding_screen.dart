@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
+import 'package:idonatio/di/get_it.dart';
+import 'package:idonatio/enums.dart';
+import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/onboarding/gift_aid_screen.dart';
+import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
@@ -16,12 +21,46 @@ class OnboardingScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.close),
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        // ),
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (buider) => AlertDialog(
+                title: const Text('Exit setup?'),
+                content: const Text(
+                    'We recommend that you setup your preferences before using the app to help you get started donating quickly.If you exit now, you will still need to setup your options later.'),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Continue setup'.toUpperCase(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )),
+                  TextButton(
+                      onPressed: () {
+                        context.read<UserCubit>().setUserState(
+                            getItInstance(), AuthStatus.unauthenticated);
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            AppRouter.routeToPage(const AuthGaurd()),
+                            (route) => false);
+                      },
+                      child: Text(
+                        'Exit'.toUpperCase(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )),
+                ],
+              ),
+            );
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: AppBackgroundWidget(
