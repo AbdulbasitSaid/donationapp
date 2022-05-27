@@ -16,18 +16,22 @@ class DonationHistoryModel {
     required this.data,
   });
 
-  double get overallTotalDonations => data
-      .map(
-        (e) => e.paidTransactionFee
-            ? e.totalAmount + e.transationFee
-            : e.totalAmount,
-      )
-      .toList()
-      .reduce((value, element) => value + element);
+  double get overallTotalDonations => data.isEmpty
+      ? 0
+      : data
+          .map(
+            (e) => e.paidTransactionFee
+                ? e.totalAmount + e.transationFee
+                : e.totalAmount,
+          )
+          .toList()
+          .reduce((value, element) => value + element);
 
   int get numberOfDonations => data.length;
 
-  double get averageDonations => overallTotalDonations / numberOfDonations;
+  double get averageDonations => overallTotalDonations == 0
+      ? 0
+      : overallTotalDonations / numberOfDonations;
 
   factory DonationHistoryModel.fromJson(Map<String, dynamic> json) =>
       _$DonationHistoryModelFromJson(json);
