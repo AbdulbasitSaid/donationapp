@@ -15,8 +15,10 @@ import 'package:idonatio/presentation/router/app_router.dart';
 
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
-import 'package:idonatio/presentation/widgets/input_fields/password_widget.dart';
+import 'package:line_icons/line_icons.dart';
 
+import '../../../common/words.dart';
+import '../../../data/core/validator.dart';
 import '../../bloc/app_session_manager_bloc.dart';
 import '../../bloc/server_timer_bloc.dart';
 import '../../widgets/labels/base_label_text.dart';
@@ -169,14 +171,36 @@ class _LoginFormState extends State<LoginForm> {
                 },
               ),
               const SizedBox(
-                height: 16,
+                height: 28,
               ),
-              PasswordWidget(
-                formKey: _formKey,
-                passwordController: _passwordController,
+              TextFormField(
+                controller: _passwordController,
+                keyboardType: TextInputType.visiblePassword,
+                obscureText: hidePassword,
+                onChanged: (value) =>
+                    Validator.validateField(formKey: _formKey),
+                validator: MultiValidator([
+                  RequiredValidator(errorText: 'Password is required'),
+                  MinLengthValidator(8,
+                      errorText: 'Password should be a mininum of 8 characters')
+                ]),
+                decoration: InputDecoration(
+                  hintText: TranslationConstants.password,
+                  labelText: TranslationConstants.password,
+                  prefixIcon: const Icon(LineIcons.lock),
+                  suffixIcon: IconButton(
+                    icon:
+                        Icon(hidePassword ? LineIcons.eyeSlash : LineIcons.eye),
+                    onPressed: () {
+                      setState(() {
+                        hidePassword = !hidePassword;
+                      });
+                    },
+                  ),
+                ),
               ),
               const SizedBox(
-                height: 16,
+                height: 28,
               ),
               TextButton(
                 onPressed: () => Navigator.push(context,
