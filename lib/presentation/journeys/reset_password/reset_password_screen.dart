@@ -144,6 +144,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   (route) => false);
                             }
                             if (state is ResetPasswordFailed) {
+                              
                               Fluttertoast.showToast(msg: state.message);
                             }
                           },
