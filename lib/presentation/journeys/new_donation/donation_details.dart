@@ -760,7 +760,9 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                   onPressed: () {
                     Navigator.pop(context, 'Ok');
                   },
-                  child: Text('ok'.toUpperCase()),
+                  child: Text(
+                    'ok'.toUpperCase(),
+                  ),
                 ),
               ],
             ));
