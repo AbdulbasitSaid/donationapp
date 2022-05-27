@@ -30,10 +30,12 @@ class _OnboardingDataPreferencesScreenState
     extends State<OnboardingDataPreferencesScreen> {
   bool isMarketing = false;
   bool isDonateAnonymously = false;
+
   @override
   Widget build(BuildContext context) {
     final onboardingProcessState =
         context.watch<OnboardingdataholderCubit>().state;
+
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -102,6 +104,18 @@ class _OnboardingDataPreferencesScreenState
                                 child: Column(
                                   children: [
                                     ListTile(
+                                      onTap: () {
+                                        setState(() {
+                                          isMarketing = !isMarketing;
+                                          context
+                                              .read<OnboardingdataholderCubit>()
+                                              .updateOnboardingData(
+                                                  onboardingProcessState
+                                                      .copyWith(
+                                                          sendMarketingMail:
+                                                              isMarketing));
+                                        });
+                                      },
                                       leading: Checkbox(
                                           value: isMarketing,
                                           onChanged: (value) {
@@ -114,7 +128,7 @@ class _OnboardingDataPreferencesScreenState
                                                       onboardingProcessState
                                                           .copyWith(
                                                               sendMarketingMail:
-                                                                  isMarketing));
+                                                                  value));
                                             });
                                           }),
                                       title: Text(
@@ -129,6 +143,20 @@ class _OnboardingDataPreferencesScreenState
                                       ),
                                     ),
                                     ListTile(
+                                      onTap: (() => setState(
+                                            () {
+                                              isDonateAnonymously =
+                                                  !isDonateAnonymously;
+                                              context
+                                                  .read<
+                                                      OnboardingdataholderCubit>()
+                                                  .updateOnboardingData(
+                                                    onboardingProcessState.copyWith(
+                                                        donateAnonymously:
+                                                            isDonateAnonymously),
+                                                  );
+                                            },
+                                          )),
                                       leading: Checkbox(
                                           value: isDonateAnonymously,
                                           onChanged: (value) {
@@ -138,10 +166,10 @@ class _OnboardingDataPreferencesScreenState
                                                   .read<
                                                       OnboardingdataholderCubit>()
                                                   .updateOnboardingData(
-                                                      onboardingProcessState
-                                                          .copyWith(
-                                                              donateAnonymously:
-                                                                  isDonateAnonymously));
+                                                    onboardingProcessState.copyWith(
+                                                        donateAnonymously:
+                                                            isDonateAnonymously),
+                                                  );
                                             });
                                           }),
                                       title: Text(
