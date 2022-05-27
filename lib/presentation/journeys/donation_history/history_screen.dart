@@ -150,7 +150,8 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                             return const Center(
                               child: PrimaryAppLoader(),
                             );
-                          } else if (state is DonationHistorySuccess) {
+                          } else if (state is DonationHistorySuccess &&
+                              state.donationHistoryModel.data.isNotEmpty) {
                             final thisMonthDonations = state
                                 .donationHistoryModel.data
                                 .where((element) =>
