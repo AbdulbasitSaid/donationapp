@@ -29,7 +29,7 @@ class ValiditeOtpForgotPasswordScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final otpController = useTextEditingController();
-    final _isOptComplted = useState<bool>(false);
+    final isOptComplted = useState<bool>(false);
 
     return Scaffold(
       appBar: AppBar(),
@@ -81,7 +81,7 @@ class ValiditeOtpForgotPasswordScreen extends HookWidget {
                       length: 6,
 
                       onCompleted: (pin) {
-                        _isOptComplted.value = true;
+                        isOptComplted.value = true;
                       },
                       defaultPinTheme: PinTheme(
                         width: MediaQuery.of(context).size.width * .12,
@@ -106,7 +106,12 @@ class ValiditeOtpForgotPasswordScreen extends HookWidget {
                     if (state is ResendOtpForgotPasswordSuccess) {
                       Fluttertoast.showToast(msg: state.message);
                       otpController.clear();
-                      _isOptComplted.value = false;
+                      isOptComplted.value = false;
+                    }
+                    if (state is ResendOtpForgotPasswordFailed) {
+                      Fluttertoast.showToast(msg: state.message);
+                      otpController.clear();
+                      isOptComplted.value = false;
                     }
                   },
                   builder: (context, state) {
@@ -161,12 +166,17 @@ class ValiditeOtpForgotPasswordScreen extends HookWidget {
                                     AppRouter.routeToPage(
                                         const ResetPasswordScreen()))
                               }
+                            else if (state is ValidateOtpForgotPasswordFailed)
+                              {
+                                otpController.clear(),
+                                isOptComplted.value = false,
+                              }
                           }),
                       builder: (context, state) {
                         return state is ValidateOtpForgotPasswordLoading
                             ? const PrimaryAppLoader()
                             : ElevatedButton(
-                                onPressed: _isOptComplted.value
+                                onPressed: isOptComplted.value
                                     ? () {
                                         log(otpController.text);
                                         log(email);
