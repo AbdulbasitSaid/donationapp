@@ -78,6 +78,7 @@ class SendOtpForgotPasswordScreen extends HookWidget {
                                     )));
                               }
                               if (state is SendOtpForgotPasswordFailed) {
+                                
                                 Fluttertoast.showToast(msg: state.message);
                               }
                             },
