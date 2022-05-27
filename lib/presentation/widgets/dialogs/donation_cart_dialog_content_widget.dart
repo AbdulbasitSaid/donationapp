@@ -70,7 +70,10 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
                                     text: e.type == null
                                         ? '${e.name}'
                                         : '${e.type}'),
-                                Text(e.description),
+                                Text(
+                                  e.description,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
                               ],
                             ))
                           ],
