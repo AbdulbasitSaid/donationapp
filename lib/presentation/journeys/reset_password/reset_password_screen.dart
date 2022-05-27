@@ -9,6 +9,7 @@ import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/buttons/logout_button_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
+import 'package:line_icons/line_icons.dart';
 
 import '../../../common/words.dart';
 import '../../widgets/loaders/primary_app_loader_widget.dart';
@@ -88,7 +89,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       hintText: TranslationConstants.password,
                       prefixIcon: const Icon(Icons.lock_outline),
                       suffixIcon: IconButton(
-                        icon: const Icon(Icons.remove_red_eye_sharp),
+                        icon: Icon(
+                            hidePassword ? LineIcons.eyeSlash : LineIcons.eye),
                         onPressed: () {
                           setState(() {
                             hidePassword = !hidePassword;
@@ -113,7 +115,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       hintText: TranslationConstants.password,
                       prefixIcon: const Icon(Icons.lock_outline),
                       suffixIcon: IconButton(
-                        icon: const Icon(Icons.remove_red_eye_sharp),
+                        icon: Icon(
+                            hidePassword ? LineIcons.eyeSlash : LineIcons.eye),
                         onPressed: () {
                           setState(() {
                             hidePassword = !hidePassword;
@@ -144,7 +147,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   (route) => false);
                             }
                             if (state is ResetPasswordFailed) {
-                              
                               Fluttertoast.showToast(msg: state.message);
                             }
                           },
