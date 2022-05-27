@@ -177,7 +177,13 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
                                   'Get started by adding a donee above.',
-                                  style: Theme.of(context).textTheme.bodyText2,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                 ),
                               )
                             : const SizedBox.shrink();
@@ -221,7 +227,10 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1!
-                                  .copyWith(),
+                                  .copyWith(
+                                    fontSize: 12,
+                                    fontStyle: FontStyle.italic,
+                                  ),
                             ),
                           );
                         },
