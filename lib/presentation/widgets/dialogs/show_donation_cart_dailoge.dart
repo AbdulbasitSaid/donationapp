@@ -33,8 +33,6 @@ Future<dynamic> showDonationCartDialoge(BuildContext context) {
           ));
 }
 
-
-
 class DonationCartDialogContent extends StatefulWidget {
   const DonationCartDialogContent({Key? key}) : super(key: key);
 
@@ -88,7 +86,7 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
                                   });
                                 }),
                             const SizedBox(
-                              width: 8,
+                              width: 16,
                             ),
                             Flexible(
                                 child: Column(
@@ -96,9 +94,12 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
                               children: [
                                 Level4Headline(
                                     text: e.type == null
-                                        ? '${e.name}'
+                                        ? '${e.name} '
                                         : '${e.type}'),
-                                Text(e.description),
+                                Text(
+                                  e.description,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
                               ],
                             ))
                           ],
@@ -114,4 +115,3 @@ class _DonationCartDialogContentState extends State<DonationCartDialogContent> {
     );
   }
 }
-
