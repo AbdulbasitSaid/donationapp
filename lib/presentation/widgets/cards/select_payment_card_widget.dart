@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/common/stripe_charges_calculations.dart';
@@ -23,6 +22,9 @@ class SelectPaymentCardWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
       height: MediaQuery.of(context).size.height * .25,
       width: MediaQuery.of(context).size.width,
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(8))),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: BlocBuilder<GetPaymentMethodsCubit, GetPaymentMethodsState>(
@@ -50,9 +52,13 @@ class SelectPaymentCardWidget extends StatelessWidget {
                       ...state.paymentMethods.data.map(
                         (e) {
                           return TextButton(
+                            key: Key(e.id),
                             onPressed: () {
                               if (!europeanCountries.contains(e.country) &&
-                                  donationProcessState.totalFee > 0) {
+                                  state.paymentMethods.data.length > 1) {
+                                // if (e.id == donationProcessState.ca) {
+                                //   Fluttertoast.showToast(msg: 'bood');
+                                // }
                                 showDialog(
                                     context: context,
                                     builder: (context) {
@@ -210,18 +216,6 @@ class SelectPaymentCardWidget extends StatelessWidget {
                                             MediaQuery.of(context).size.width *
                                                 .35,
                                         padding: const EdgeInsets.all(8),
-                                        child: Center(
-                                          child: Text(
-                                            e.brand.toUpperCase(),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6!
-                                                .copyWith(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: const Color(
-                                                        0xff191E6F)),
-                                          ),
-                                        ),
                                         decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius:
@@ -244,6 +238,18 @@ class SelectPaymentCardWidget extends StatelessWidget {
                                                   color:
                                                       AppColor.border50Primary),
                                             ]),
+                                        child: Center(
+                                          child: Text(
+                                            e.brand.toUpperCase(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: const Color(
+                                                        0xff191E6F)),
+                                          ),
+                                        ),
                                       ),
                                       e == selectedPyamentMethodState
                                           ? Positioned(
@@ -311,9 +317,6 @@ class SelectPaymentCardWidget extends StatelessWidget {
           },
         ),
       ),
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(8))),
     );
   }
 }

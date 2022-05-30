@@ -88,7 +88,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                   : false,
                               isEnableGiftAid: donorState is Authenticated
                                   ? donorState
-                                      .userData.user.alwaysDonateAnonymosly
+                                      .userData.user.donor.giftAidEnabled
                                   : false,
                             )),
                           );
