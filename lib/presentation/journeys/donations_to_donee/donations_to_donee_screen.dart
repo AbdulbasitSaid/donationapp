@@ -136,7 +136,7 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                         authenticatedUserState is GetAuthenticatedUserSuccess
                             ? authenticatedUserState.getAuthenticatedUserModel
                                 .data.user.alwaysDonateAnonymosly
-                            : userState is Authenticated
+                          : userState is Authenticated
                                 ? userState.userData.user.alwaysDonateAnonymosly
                                 : false,
                     isEnableGiftAid:

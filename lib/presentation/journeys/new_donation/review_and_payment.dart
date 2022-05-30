@@ -84,11 +84,11 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                             AppRouter.routeToPage(DonationDetialsScreen(
                               isDonateAnonymously: donorState is Authenticated
                                   ? donorState
-                                      .userData.user.donor.shareBasicInfomation
+                                      .userData.user.alwaysDonateAnonymosly
                                   : false,
                               isEnableGiftAid: donorState is Authenticated
                                   ? donorState
-                                      .userData.user.donor.giftAidEnabled
+                                      .userData.user.alwaysDonateAnonymosly
                                   : false,
                             )),
                           );
@@ -118,12 +118,10 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                     BlocBuilder<GetdoneebycodeCubit, GetdoneebycodeState>(
                       builder: (context, state) {
                         if (state is GetdoneebycodeSuccess) {
-                          var name =
-                              state.doneeResponseData.organization?.id == null
-                                  ? state.doneeResponseData.firstName +
-                                      " " +
-                                      state.doneeResponseData.lastName
-                                  : state.doneeResponseData.organization?.name;
+                          var name = state.doneeResponseData.organization?.id ==
+                                  null
+                              ? "${state.doneeResponseData.firstName} ${state.doneeResponseData.lastName}"
+                              : state.doneeResponseData.organization?.name;
 
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,

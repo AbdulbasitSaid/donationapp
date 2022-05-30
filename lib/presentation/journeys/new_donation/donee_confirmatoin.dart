@@ -183,14 +183,10 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
                                                   .getAuthenticatedUserModel
                                                   .data
                                                   .user
-                                                  .donor
-                                                  .shareBasicInfomation
+                                                  .alwaysDonateAnonymosly
                                               : donorState is Authenticated
-                                                  ? donorState
-                                                      .userData
-                                                      .user
-                                                      .donor
-                                                      .shareBasicInfomation
+                                                  ? donorState.userData.user
+                                                      .alwaysDonateAnonymosly
                                                   : false,
                                       isEnableGiftAid: getAutheticatedUserState
                                               is GetAuthenticatedUserSuccess
