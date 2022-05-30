@@ -37,7 +37,10 @@ class DonorModel {
   @HiveField(16)
   final bool sendMarketingMail;
   @HiveField(17)
-  final bool donateAnonymously;
+  final bool shareBasicInfomation;
+
+ 
+
   DonorModel({
     required this.id,
     required this.firstName,
@@ -55,7 +58,7 @@ class DonorModel {
     required this.paymentMethod,
     required this.sendMarketingMail,
     required this.stripeCustomerId,
-    required this.donateAnonymously,
+    required this.shareBasicInfomation,
   });
 
   factory DonorModel.fromJson(Map<String, dynamic> json) => DonorModel(
@@ -75,7 +78,7 @@ class DonorModel {
       paymentMethod: json["payment_method"],
       sendMarketingMail: json["send_marketing_mail"],
       stripeCustomerId: json["stripe_customer_id"],
-      donateAnonymously: json["donate_anonymously"]);
+      shareBasicInfomation: json["donate_anonymously"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -94,7 +97,7 @@ class DonorModel {
         "payment_method": paymentMethod,
         "send_marketing_mail": sendMarketingMail,
         "stripe_customer_id": stripeCustomerId,
-        "donate_anonymously": donateAnonymously,
+        "donate_anonymously": shareBasicInfomation,
       };
 
   @override
@@ -118,7 +121,7 @@ class DonorModel {
         other.paymentMethod == paymentMethod &&
         other.stripeCustomerId == stripeCustomerId &&
         other.sendMarketingMail == sendMarketingMail &&
-        other.donateAnonymously == donateAnonymously;
+        other.shareBasicInfomation == shareBasicInfomation;
   }
 
   @override
@@ -139,12 +142,12 @@ class DonorModel {
         paymentMethod.hashCode ^
         stripeCustomerId.hashCode ^
         sendMarketingMail.hashCode ^
-        donateAnonymously.hashCode;
+        shareBasicInfomation.hashCode;
   }
 
   @override
   String toString() {
-    return 'DonorModel(id: $id, firstName: $firstName, lastName: $lastName, isOnboarded: $isOnboarded, title: $title, phoneNumber: $phoneNumber, phoneVerifiedAt: $phoneVerifiedAt, phoneReceiveSecurityAlert: $phoneReceiveSecurityAlert, giftAidEnabled: $giftAidEnabled, address: $address, city: $city, countryId: $countryId, postalCode: $postalCode, paymentMethod: $paymentMethod, stripeCustomerId: $stripeCustomerId, sendMarketingMail: $sendMarketingMail, donateAnonymously: $donateAnonymously)';
+    return 'DonorModel(id: $id, firstName: $firstName, lastName: $lastName, isOnboarded: $isOnboarded, title: $title, phoneNumber: $phoneNumber, phoneVerifiedAt: $phoneVerifiedAt, phoneReceiveSecurityAlert: $phoneReceiveSecurityAlert, giftAidEnabled: $giftAidEnabled, address: $address, city: $city, countryId: $countryId, postalCode: $postalCode, paymentMethod: $paymentMethod, stripeCustomerId: $stripeCustomerId, sendMarketingMail: $sendMarketingMail, donateAnonymously: $shareBasicInfomation)';
   }
 
   DonorModel copyWith({
@@ -184,7 +187,7 @@ class DonorModel {
       paymentMethod: paymentMethod ?? this.paymentMethod,
       stripeCustomerId: stripeCustomerId ?? this.stripeCustomerId,
       sendMarketingMail: sendMarketingMail ?? this.sendMarketingMail,
-      donateAnonymously: donateAnonymously ?? this.donateAnonymously,
+      shareBasicInfomation: donateAnonymously ?? shareBasicInfomation,
     );
   }
 }
