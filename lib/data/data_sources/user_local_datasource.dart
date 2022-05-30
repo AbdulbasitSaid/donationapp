@@ -80,7 +80,7 @@ class UserLocalDataSource {
                   sendMarketingMail: false,
                   stripeCustomerId: '',
                   title: '',
-                  donateAnonymously: false,
+                  shareBasicInfomation: false,
                 ),
                 email: '',
                 emailVerifiedAt: DateTime.now(),
