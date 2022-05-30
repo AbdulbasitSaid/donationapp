@@ -82,22 +82,27 @@ class ManageAccountScreen extends StatelessWidget {
                         CreateSetupIntentState>(
                       listener: (context, state) async {
                         if (state is CreateSetupIntentSuccessful) {
-                          await Stripe.instance.initPaymentSheet(
-                              paymentSheetParameters:
-                                  SetupPaymentSheetParameters(
-                            merchantDisplayName: 'Idonatio',
-                            setupIntentClientSecret:
-                                state.setUpIntentEnitityData.data.setupIntent,
-                            customerId: state
-                                .setUpIntentEnitityData.data.stripeCustomerId,
-                            customerEphemeralKeySecret:
-                                state.setUpIntentEnitityData.data.ephemeralKey,
-                          ));
                           try {
-                            await Stripe.instance.presentPaymentSheet();
+                            await Stripe.instance
+                                .initPaymentSheet(
+                                    paymentSheetParameters:
+                                        SetupPaymentSheetParameters(
+                                  style: ThemeMode.system,
+                                  merchantDisplayName: 'Idonatio',
+                                  setupIntentClientSecret: state
+                                      .setUpIntentEnitityData.data.setupIntent,
+                                  customerId: state.setUpIntentEnitityData.data
+                                      .stripeCustomerId,
+                                  customerEphemeralKeySecret: state
+                                      .setUpIntentEnitityData.data.ephemeralKey,
+                                ))
+                                .whenComplete(() async => await Stripe.instance
+                                    .presentPaymentSheet());
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text(' succesfully completed'),
+                                content: Text(
+                                    'Payment method edited successfully :-) !!'),
                               ),
                             );
                           } on Exception catch (e) {
@@ -119,6 +124,9 @@ class ManageAccountScreen extends StatelessWidget {
                         }
                       },
                       builder: (context, state) {
+                        if (state is CreateSetupIntentLoading) {
+                          return const Center(child: PrimaryAppLoader());
+                        }
                         return TextButton(
                           onPressed: () {
                             context
