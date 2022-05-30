@@ -69,6 +69,10 @@ class UserModel extends HiveObject {
     return 'UserModel(id: $id, email: $email, isActive: $isActive, emailVerifiedAt: $emailVerifiedAt, donor: $donor)';
   }
 
+  bool get alwaysDonateAnonymosly {
+    return donor.shareBasicInfomation == true ? false : true;
+  }
+
   UserModel copyWith({
     String? id,
     String? email,
