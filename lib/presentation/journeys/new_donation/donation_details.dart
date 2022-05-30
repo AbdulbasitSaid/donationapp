@@ -41,8 +41,8 @@ class DonationDetialsScreen extends StatefulWidget {
 }
 
 class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
-  bool? isApplyGiftAid = false;
-  bool? isDonateAnonymously = false;
+  bool isApplyGiftAid = false;
+  bool isDonateAnonymously = false;
 
   @override
   void initState() {
@@ -331,79 +331,20 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                             children: [
                               //enabling gift aid
                               TextButton(
-                                onPressed: () => context
-                                    .read<DonationProcessCubit>()
-                                    .updateDonationProccess(state.copyWith(
-                                      applyGiftAidToDonation:
-                                          !state.applyGiftAidToDonation,
-                                    )),
+                                onPressed: () {
+                                  toggleGiftAidOption(
+                                      isApplyGiftAid == true ? false : true,
+                                      context,
+                                      state);
+                                },
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Checkbox(
                                         value: isApplyGiftAid,
                                         onChanged: (onChanged) {
-                                          setState(() {
-                                            // checkDonationTypes(
-                                            //     getDoneeState, context);
-
-                                            if (onChanged == false) {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (builder) =>
-                                                      AlertDialog(
-                                                        title: const Text(
-                                                            'Disable GiftAid for this donation?'),
-                                                        content: const Text(
-                                                          'When you disable GiftAid on an eligible donation your donee will be unable to claim an additional 25% on the value of your donation.If you are a tax paying UK resident, this is at no extra cost to you.',
-                                                        ),
-                                                        actions: [
-                                                          TextButton(
-                                                              onPressed: () {
-                                                                isApplyGiftAid =
-                                                                    onChanged;
-                                                                context
-                                                                    .read<
-                                                                        DonationProcessCubit>()
-                                                                    .updateDonationProccess(state.copyWith(
-                                                                        applyGiftAidToDonation:
-                                                                            isApplyGiftAid));
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                'Disable GiftAid'
-                                                                    .toUpperCase(),
-                                                                style: const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600),
-                                                              )),
-                                                          TextButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Text(
-                                                                'Cancel'
-                                                                    .toUpperCase(),
-                                                                style: const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600)),
-                                                          ),
-                                                        ],
-                                                      ));
-                                            } else {
-                                              isApplyGiftAid = onChanged;
-                                              context
-                                                  .read<DonationProcessCubit>()
-                                                  .updateDonationProccess(
-                                                      state.copyWith(
-                                                          applyGiftAidToDonation:
-                                                              isApplyGiftAid));
-                                            }
-                                          });
+                                          toggleGiftAidOption(
+                                              onChanged, context, state);
                                         }),
                                     Flexible(
                                         child: Column(
@@ -435,10 +376,12 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                               // toggle donate anonymously
                               TextButton(
                                 onPressed: () {
-                                  context
-                                      .read<DonationProcessCubit>()
-                                      .updateDonationProccess(state.copyWith(
-                                          isAnonymous: !state.isAnonymous));
+                                  toggleDonateAnonymously(
+                                      isDonateAnonymously == true
+                                          ? false
+                                          : true,
+                                      context,
+                                      state);
                                 },
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -446,78 +389,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                     Checkbox(
                                         value: isDonateAnonymously,
                                         onChanged: (onChanged) {
-                                          setState(() {
-                                            // checkDonationTypes(
-                                            //     getDoneeState, context);
-
-                                            if (onChanged == false) {
-                                              showDialog(
-                                                context: context,
-                                                builder: (builder) =>
-                                                    AlertDialog(
-                                                  title: const Text(
-                                                      'Anonymous donations'),
-                                                  content: SizedBox(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            .3,
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      child: Column(
-                                                        children: const [
-                                                          Text(
-                                                              'When you choose to make an anonymous donation your personal information is not visible to the donee within the iDonatio platform. '),
-                                                          SizedBox(
-                                                            height: 8,
-                                                          ),
-                                                          Text(
-                                                              'However, a donee may still be able to identify you as a donor in certain limited situations — for example, when the donee manually generates an export of donations for their GiftAid claims.'),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    TextButton(
-                                                        onPressed: () {
-                                                          isDonateAnonymously =
-                                                              onChanged;
-                                                          context
-                                                              .read<
-                                                                  DonationProcessCubit>()
-                                                              .updateDonationProccess(
-                                                                  state
-                                                                      .copyWith(
-                                                                isAnonymous:
-                                                                    isDonateAnonymously,
-                                                              ));
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child: Text(
-                                                          'Ok'.toUpperCase(),
-                                                          style:
-                                                              const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                          ),
-                                                        ))
-                                                  ],
-                                                ),
-                                              );
-                                            } else {
-                                              isDonateAnonymously = onChanged;
-
-                                              context
-                                                  .read<DonationProcessCubit>()
-                                                  .updateDonationProccess(
-                                                      state.copyWith(
-                                                    isAnonymous:
-                                                        isDonateAnonymously,
-                                                  ));
-                                            }
-                                          });
+                                          toggleDonateAnonymously(
+                                              onChanged, context, state);
                                         }),
                                     Flexible(
                                         child: Column(
@@ -724,6 +597,104 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                 ),
               ))),
     );
+  }
+
+  void toggleGiftAidOption(
+      bool? onChanged, BuildContext context, DonationProcessEntity state) {
+    setState(() {
+      if (onChanged == false) {
+        showDialog(
+            context: context,
+            builder: (builder) => AlertDialog(
+                  title: const Text('Disable GiftAid for this donation?'),
+                  content: const Text(
+                    'When you disable GiftAid on an eligible donation your donee will be unable to claim an additional 25% on the value of your donation.If you are a tax paying UK resident, this is at no extra cost to you.',
+                  ),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          isApplyGiftAid = onChanged!;
+                          context
+                              .read<DonationProcessCubit>()
+                              .updateDonationProccess(state.copyWith(
+                                  applyGiftAidToDonation: isApplyGiftAid));
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Disable GiftAid'.toUpperCase(),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        )),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Cancel'.toUpperCase(),
+                          style: const TextStyle(fontWeight: FontWeight.w600)),
+                    ),
+                  ],
+                ));
+      } else {
+        isApplyGiftAid = onChanged!;
+        context.read<DonationProcessCubit>().updateDonationProccess(
+            state.copyWith(applyGiftAidToDonation: isApplyGiftAid));
+      }
+    });
+  }
+
+  void toggleDonateAnonymously(
+      bool? onChanged, BuildContext context, DonationProcessEntity state) {
+    setState(() {
+      if (onChanged == false) {
+        showDialog(
+          context: context,
+          builder: (builder) => AlertDialog(
+            title: const Text('Anonymous donations'),
+            content: SizedBox(
+              height: MediaQuery.of(context).size.height * .3,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: const [
+                    Text(
+                        'When you choose to make an anonymous donation your personal information is not visible to the donee within the iDonatio platform. '),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                        'However, a donee may still be able to identify you as a donor in certain limited situations — for example, when the donee manually generates an export of donations for their GiftAid claims.'),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    isDonateAnonymously = onChanged!;
+                    context
+                        .read<DonationProcessCubit>()
+                        .updateDonationProccess(state.copyWith(
+                          isAnonymous: isDonateAnonymously,
+                        ));
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Ok'.toUpperCase(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ))
+            ],
+          ),
+        );
+      } else {
+        isDonateAnonymously = onChanged!;
+
+        context
+            .read<DonationProcessCubit>()
+            .updateDonationProccess(state.copyWith(
+              isAnonymous: isDonateAnonymously,
+            ));
+      }
+    });
   }
 
   void checkDonationTypes(

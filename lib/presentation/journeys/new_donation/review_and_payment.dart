@@ -84,7 +84,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                             AppRouter.routeToPage(DonationDetialsScreen(
                               isDonateAnonymously: donorState is Authenticated
                                   ? donorState
-                                      .userData.user.donor.donateAnonymously
+                                      .userData.user.donor.shareBasicInfomation
                                   : false,
                               isEnableGiftAid: donorState is Authenticated
                                   ? donorState

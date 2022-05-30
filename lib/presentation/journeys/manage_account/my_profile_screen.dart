@@ -433,7 +433,7 @@ class MyProfileScreen extends StatelessWidget {
                               ),
                             ),
                             Switch(
-                                value: donor.donateAnonymously,
+                                value: donor.shareBasicInfomation,
                                 onChanged: (onChanged) {
                                   context
                                       .read<UpdateProfileCubit>()

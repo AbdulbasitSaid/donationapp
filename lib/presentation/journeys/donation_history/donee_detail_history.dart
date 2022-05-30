@@ -307,13 +307,13 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
               Navigator.push(
                   context,
                   AppRouter.routeToPage(DonationDetialsScreen(
-                    isDonateAnonymously: authenticatedUserState
-                            is GetAuthenticatedUserSuccess
-                        ? authenticatedUserState.getAuthenticatedUserModel.data
-                            .user.donor.donateAnonymously
-                        : userState is Authenticated
-                            ? userState.userData.user.donor.donateAnonymously
-                            : false,
+                    isDonateAnonymously:
+                        authenticatedUserState is GetAuthenticatedUserSuccess
+                            ? authenticatedUserState.getAuthenticatedUserModel
+                                .data.user.alwaysDonateAnonymosly
+                            : userState is Authenticated
+                                ? userState.userData.user.alwaysDonateAnonymosly
+                                : false,
                     isEnableGiftAid:
                         authenticatedUserState is GetAuthenticatedUserSuccess
                             ? authenticatedUserState.getAuthenticatedUserModel

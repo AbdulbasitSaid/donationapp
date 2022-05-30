@@ -37,9 +37,9 @@ class DoneeListTile extends StatelessWidget {
                 isDonateAnonymously:
                     authUserState is GetAuthenticatedUserSuccess
                         ? authUserState.getAuthenticatedUserModel.data.user
-                            .donor.donateAnonymously
+                            .donor.shareBasicInfomation
                         : userState is Authenticated
-                            ? userState.userData.user.donor.donateAnonymously
+                            ? userState.userData.user.donor.shareBasicInfomation
                             : false,
                 isEnableGiftAid: authUserState is GetAuthenticatedUserSuccess
                     ? authUserState.getAuthenticatedUserModel.data.user.donor
