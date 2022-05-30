@@ -176,7 +176,12 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                             builder: (context, state) {
                               if (state is GetdoneebycodeLoading) {
                                 return const SizedBox.shrink();
-                              } else {
+                              } else if (state is GetdoneebycodeSuccess) {
+                                if (state.doneeResponseData.donationTypes!
+                                        .length ==
+                                    1) {
+                                  checkDonationTypes(state, context);
+                                }
                                 return TextButton(
                                   onPressed: () {
                                     showDonationCartDialoge(context);
@@ -199,6 +204,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                   ),
                                 );
                               }
+                              return const SizedBox.shrink();
                             },
                           );
                         } else if (cartState.isNotEmpty) {
