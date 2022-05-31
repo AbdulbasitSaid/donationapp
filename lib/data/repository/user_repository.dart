@@ -348,6 +348,7 @@ class UserRepository {
       final user = await _userLocalDataSource.getUser();
       final result = await _userRemoteDataSource.closeAccount(user.token);
       await _userLocalDataSource.deleteUserData();
+      await _userLocalDataSource.deleteResetRememberMeEmail();
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
