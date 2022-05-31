@@ -47,6 +47,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
   @override
   void initState() {
     context.read<GetDonationFeesCubit>().getFees();
+
     isDonateAnonymously = widget.isDonateAnonymously;
     isApplyGiftAid = widget.isEnableGiftAid;
     super.initState();
@@ -60,6 +61,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
   @override
   Widget build(BuildContext context) {
     final getDoneeState = context.watch<GetdoneebycodeCubit>().state;
+    checkDonationTypes(getDoneeState, context);
     return WillPopScope(
       onWillPop: () async {
         context.read<DonationCartCubit>().emptyCart();
@@ -177,9 +179,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                               if (state is GetdoneebycodeLoading) {
                                 return const SizedBox.shrink();
                               } else if (state is GetdoneebycodeSuccess) {
-                                if (state.doneeResponseData.donationTypes!
-                                        .length ==
-                                    1) {
+                                if (state
+                                    .doneeResponseData.isSingleDonationType) {
                                   checkDonationTypes(state, context);
                                 }
                                 return TextButton(
@@ -706,7 +707,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
   void checkDonationTypes(
       GetdoneebycodeState getDoneeState, BuildContext context) {
     if (getDoneeState is GetdoneebycodeSuccess &&
-        getDoneeState.doneeResponseData.donationTypes!.length < 2 &&
+        getDoneeState.doneeResponseData.isSingleDonationType &&
         getDoneeState.doneeResponseData.donationTypes!.isNotEmpty) {
       context.read<DonationCartCubit>().addToCart(DonationItemEntity(
             id: getDoneeState.doneeResponseData.donationTypes![0].id,
@@ -714,6 +715,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
             description:
                 getDoneeState.doneeResponseData.donationTypes![0].description,
           ));
+    } else {
+      context.read<DonationCartCubit>().emptyCart();
     }
   }
 
