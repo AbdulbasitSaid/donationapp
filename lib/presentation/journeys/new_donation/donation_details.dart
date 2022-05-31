@@ -47,9 +47,10 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
   @override
   void initState() {
     context.read<GetDonationFeesCubit>().getFees();
-
     isDonateAnonymously = widget.isDonateAnonymously;
     isApplyGiftAid = widget.isEnableGiftAid;
+    context.read<DonationCartCubit>().emptyCart();
+
     super.initState();
   }
 
@@ -61,7 +62,6 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
   @override
   Widget build(BuildContext context) {
     final getDoneeState = context.watch<GetdoneebycodeCubit>().state;
-    checkDonationTypes(getDoneeState, context);
     return WillPopScope(
       onWillPop: () async {
         context.read<DonationCartCubit>().emptyCart();
@@ -179,10 +179,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                               if (state is GetdoneebycodeLoading) {
                                 return const SizedBox.shrink();
                               } else if (state is GetdoneebycodeSuccess) {
-                                if (state
-                                    .doneeResponseData.isSingleDonationType) {
-                                  checkDonationTypes(state, context);
-                                }
+                                checkDonationTypes(getDoneeState, context);
                                 return TextButton(
                                   onPressed: () {
                                     showDonationCartDialoge(context);
@@ -706,6 +703,8 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
 
   void checkDonationTypes(
       GetdoneebycodeState getDoneeState, BuildContext context) {
+    context.read<DonationCartCubit>().emptyCart();
+
     if (getDoneeState is GetdoneebycodeSuccess &&
         getDoneeState.doneeResponseData.isSingleDonationType &&
         getDoneeState.doneeResponseData.donationTypes!.isNotEmpty) {
