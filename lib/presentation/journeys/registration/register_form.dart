@@ -51,6 +51,7 @@ class _RegisterFormState extends State<RegisterForm> {
     _mobileNumberTextController = TextEditingController();
     _emailTextController = TextEditingController();
     _passwordEditingController = TextEditingController();
+    context.read<RegistrationStepsCubit>().resetStage();
   }
 
   @override
@@ -373,9 +374,6 @@ class _RegisterFormState extends State<RegisterForm> {
                         onPressed: _enableRegister
                             ? () {
                                 if (_formKey.currentState!.validate()) {
-                                  context
-                                      .read<RegistrationStepsCubit>()
-                                      .resetStage();
                                   context
                                       .read<RegisterCubit>()
                                       .initiateRegistration(
