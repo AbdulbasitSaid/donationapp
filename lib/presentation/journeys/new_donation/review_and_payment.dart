@@ -344,9 +344,11 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                               });
                                         } else if (makdeDonataionState
                                             is MakedonationFailed) {
+                                          Navigator.pop(context);
                                           Fluttertoast.showToast(
+                                              toastLength: Toast.LENGTH_LONG,
                                               msg:
-                                                  'Error trying make Donation');
+                                                  'Error trying make Donation Please try again!! ');
                                         }
                                       },
                                       builder: (context, makdeDonataionState) {
