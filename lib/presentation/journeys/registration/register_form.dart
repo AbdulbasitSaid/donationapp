@@ -374,6 +374,9 @@ class _RegisterFormState extends State<RegisterForm> {
                             ? () {
                                 if (_formKey.currentState!.validate()) {
                                   context
+                                      .read<RegistrationStepsCubit>()
+                                      .resetStage();
+                                  context
                                       .read<RegisterCubit>()
                                       .initiateRegistration(
                                           RegisterUserRequestParameter(
