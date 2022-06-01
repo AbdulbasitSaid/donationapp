@@ -176,18 +176,6 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
                                 Navigator.push(
                                     context,
                                     AppRouter.routeToPage(DonationDetialsScreen(
-                                      isDonateAnonymously:
-                                          getAutheticatedUserState
-                                                  is GetAuthenticatedUserSuccess
-                                              ? getAutheticatedUserState
-                                                  .getAuthenticatedUserModel
-                                                  .data
-                                                  .user
-                                                  .alwaysDonateAnonymosly
-                                              : donorState is Authenticated
-                                                  ? donorState.userData.user
-                                                      .alwaysDonateAnonymosly
-                                                  : false,
                                       isEnableGiftAid: getAutheticatedUserState
                                               is GetAuthenticatedUserSuccess
                                           ? getAutheticatedUserState

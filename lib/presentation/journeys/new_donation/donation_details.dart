@@ -30,12 +30,11 @@ import 'entities/donation_item_entity.dart';
 import 'entities/donation_process_entity.dart';
 
 class DonationDetialsScreen extends StatefulWidget {
-  const DonationDetialsScreen(
-      {Key? key,
-      required this.isEnableGiftAid,
-      required this.isDonateAnonymously})
-      : super(key: key);
-  final bool isEnableGiftAid, isDonateAnonymously;
+  const DonationDetialsScreen({
+    Key? key,
+    required this.isEnableGiftAid,
+  }) : super(key: key);
+  final bool isEnableGiftAid;
   @override
   State<DonationDetialsScreen> createState() => _DonationDetialsScreenState();
 }
@@ -47,7 +46,6 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
   @override
   void initState() {
     context.read<GetDonationFeesCubit>().getFees();
-    isDonateAnonymously = widget.isDonateAnonymously;
     isApplyGiftAid = widget.isEnableGiftAid;
     context.read<DonationCartCubit>().emptyCart();
 

@@ -34,13 +34,6 @@ class DoneeListTile extends StatelessWidget {
           Navigator.push(
               context,
               AppRouter.routeToPage(DonationDetialsScreen(
-                isDonateAnonymously:
-                    authUserState is GetAuthenticatedUserSuccess
-                        ? authUserState.getAuthenticatedUserModel.data.user
-                            .alwaysDonateAnonymosly
-                        : userState is Authenticated
-                            ? userState.userData.user.alwaysDonateAnonymosly
-                            : false,
                 isEnableGiftAid: authUserState is GetAuthenticatedUserSuccess
                     ? authUserState.getAuthenticatedUserModel.data.user.donor
                         .giftAidEnabled

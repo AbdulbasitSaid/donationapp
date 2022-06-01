@@ -367,9 +367,6 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
               Navigator.push(
                   context,
                   AppRouter.routeToPage(DonationDetialsScreen(
-                    isDonateAnonymously: userState is Authenticated
-                        ? userState.userData.user.alwaysDonateAnonymosly
-                        : false,
                     isEnableGiftAid: userState is Authenticated
                         ? userState.userData.user.donor.giftAidEnabled
                         : false,

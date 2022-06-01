@@ -54,8 +54,6 @@ class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
                       context,
                       AppRouter.routeToPage(DonationDetialsScreen(
                         isEnableGiftAid: user.giftAidEnabled,
-                        isDonateAnonymously:
-                            userState.userData.user.alwaysDonateAnonymosly,
                       )),
                       // (route) => true,
                     );

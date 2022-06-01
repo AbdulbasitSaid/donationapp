@@ -82,10 +82,6 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                           Navigator.push(
                             context,
                             AppRouter.routeToPage(DonationDetialsScreen(
-                              isDonateAnonymously: donorState is Authenticated
-                                  ? donorState
-                                      .userData.user.alwaysDonateAnonymosly
-                                  : false,
                               isEnableGiftAid: donorState is Authenticated
                                   ? donorState
                                       .userData.user.donor.giftAidEnabled
@@ -421,6 +417,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                                                             state.applyGiftAidToDonation,
                                                                         giftAidEnabled:
                                                                             state.giftAidEnabled,
+                                                                          
                                                                         currency:
                                                                             state.currency,
                                                                         cardLastFourDigits:
