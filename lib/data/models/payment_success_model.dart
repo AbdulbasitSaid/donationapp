@@ -38,11 +38,13 @@ class PaymentSuccessData {
     required this.donorId,
     required this.id,
     required this.createdAt,
+    required this.channel,
     required this.donationDetails,
   });
 
   String doneeId;
   String donationMethod;
+  String? channel;
   String donationLocation;
   bool isAnonymous;
   bool applyGiftAidToDonation;
