@@ -21,7 +21,6 @@ class ChangePasswordRepository {
       var user = await _userLocalDataSource.getUser();
       var result =
           await _changePasswordDataSource.changePassword(params, user.token);
-      log(result.toString());
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));

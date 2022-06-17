@@ -82,8 +82,7 @@ Future init() async {
       () => ContactSupportDatasource(
             getItInstance(),
           ));
-  getItInstance
-      .registerLazySingleton<LogoutCubit>(() => LogoutCubit());
+  getItInstance.registerLazySingleton<LogoutCubit>(() => LogoutCubit());
   getItInstance.registerLazySingleton<ContactSupportRepository>(
       () => ContactSupportRepository(getItInstance(), getItInstance()));
   getItInstance.registerLazySingleton<DonationDataSources>(

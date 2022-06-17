@@ -139,9 +139,14 @@ class _VerifyEmailFormState extends State<VerifyEmailForm> {
                 Fluttertoast.showToast(msg: state.errorMessage);
               }
               if (state is VerificationSuccess) {
+                Fluttertoast.showToast(
+                    toastLength: Toast.LENGTH_LONG,
+                    msg:
+                        'Registration completed successfully!!. Please sign in to continue.');
+
                 context
                     .read<UserCubit>()
-                    .setUserState(getItInstance(), AuthStatus.authenticated);
+                    .setUserState(getItInstance(), AuthStatus.unauthenticated);
                 Navigator.push(
                     context, AppRouter.routeToPage(const AuthGaurd()));
               }
