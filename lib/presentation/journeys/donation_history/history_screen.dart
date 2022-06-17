@@ -588,6 +588,17 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                         ),
                       )
                     : const SizedBox.shrink(),
+                Positioned(
+                  left: 16,
+                  child: InkWell(
+                    onTap: () => _refereshHistory(),
+                    child: const Icon(
+                      Icons.refresh,
+                      color: AppColor.basePrimary,
+                      size: 28,
+                    ),
+                  ),
+                )
               ],
             ),
           ),
