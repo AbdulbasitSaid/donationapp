@@ -54,13 +54,6 @@ class LoginCubit extends Cubit<LoginState> {
               model: 'samsung s21',
               ipAddress: '',
               screenResolution: '198.0.2.3',
-              // platform: deviceInfoModel.platform!,
-              // deviceUid: deviceInfoModel.deviceUid!,
-              // os: deviceInfoModel.os!,
-              // osVersion: deviceInfoModel.osVersion!,
-              // model: deviceInfoModel.model!,
-              // ipAddress: deviceInfoModel.ipAddress ?? 'not found',
-              // screenResolution: deviceInfoModel.screenResolution!,
             ).toJson(),
             isRememberMe);
 
