@@ -108,6 +108,9 @@ class UserRepository {
       return const Left(AppError(appErrorType: AppErrorType.serveError));
     } on ServerNotAvailableError {
       return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
+    } on UnprocessableEntity {
+      return const Left(
+          AppError(appErrorType: AppErrorType.unProcessableEntity));
     } on Exception {
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
     }
