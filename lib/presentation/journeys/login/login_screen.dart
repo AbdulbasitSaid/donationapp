@@ -54,29 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       )),
                 ),
-          // ValueListenableBuilder(
-          //     valueListenable: Hive.box<UserData>('user_box').listenable(),
-          //     builder: (context, Box<UserData> box, widget) {
-          //       var userData = box.get('user_data');
-          //       return userData == null
-          //           ? const SizedBox.shrink()
-          //           : Padding(
-          //               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          //               child: TextButton(
-          //                   onPressed: () {
-          //                     Navigator.push(
-          //                         context,
-          //                         MaterialPageRoute(
-          //                             builder: (builder) =>
-          //                                 const RegistrationScreen()));
-          //                   },
-          //                   child: Text(
-          //                     'Register'.toUpperCase(),
-          //                     style:
-          //                         const TextStyle(fontWeight: FontWeight.w600),
-          //                   )),
-          //             );
-          //     }),
         ],
       ),
       body: AppBackgroundWidget(
@@ -89,20 +66,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
                   Level1Headline(text: 'Sign in'),
-                  // IconButton(
-                  //     onPressed: () {
-                  //       context.read<LogoutCubit>().logoutUser();
-                  //       context.read<UserCubit>().setUserState(
-                  //           getItInstance(), AuthStatus.appStarted);
-                  //       Navigator.pushAndRemoveUntil(
-                  //           context,
-                  //           AppRouter.routeToPage(const StartScreen()),
-                  //           (route) => true);
-                  //     },
-                  //     icon: const Icon(
-                  //       Icons.power_settings_new_outlined,
-                  //       size: 36,
-                  //     ))
                 ],
               ),
               const SizedBox(
