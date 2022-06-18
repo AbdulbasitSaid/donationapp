@@ -8,7 +8,6 @@ import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/register_request_params.dart';
 
 import '../../../data/models/user_models/user_response_model.dart';
-import '../../reusables.dart';
 
 part 'register_state.dart';
 
@@ -41,7 +40,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
     emit(
       eitherResponse.fold((l) {
-        var message = getErrorMessage(l.appErrorType);
+        var message = _getErrorMessage(l.appErrorType);
         return RegisterFailed(message);
       }, (r) {
         _userLocalDataSource.saveUserData(UserData(
@@ -55,5 +54,34 @@ class RegisterCubit extends Cubit<RegisterState> {
         return RegisterSuccess();
       }),
     );
+  }
+
+  void reset() async {
+    emit(RegisterInitial());
+  }
+}
+
+_getErrorMessage(AppErrorType appErrorType) {
+  switch (appErrorType) {
+    case AppErrorType.unProcessableEntity:
+      return 'This email address has already been taken.';
+    case AppErrorType.badRequest:
+      return 'The request was unacceptable, often due the parameter provided by the client.';
+    case AppErrorType.network:
+      return 'Please check your internet';
+    case AppErrorType.unauthorized:
+      return 'No bearer token provided or an invalid bearer token was provided.';
+    case AppErrorType.forbidden:
+      return 'Authentication failed. This may occur when a wrong email or password is provided during login.';
+    case AppErrorType.notFound:
+      return 'The requested resource doesn\'t exist.';
+    case AppErrorType.serveError:
+      return 'Server error. Hopefully this will occur in rear cases.';
+    case AppErrorType.serverNotAvailble:
+      return 'Server not available at the moment please try again!! later';
+    case AppErrorType.unExpected:
+      return 'Unexpected error.';
+    default:
+      return 'Opps something went wrong';
   }
 }
