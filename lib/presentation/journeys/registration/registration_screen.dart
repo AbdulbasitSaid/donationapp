@@ -7,6 +7,7 @@ import 'package:idonatio/presentation/widgets/app_background_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../bloc/registration_steps/cubit/registration_steps_cubit.dart';
+import '../../widgets/dialogs/app_error_dailog.dart';
 import '../auth_guard.dart';
 import 'register_form.dart';
 
@@ -23,6 +24,7 @@ class RegistrationScreen extends StatelessWidget {
       body: WillPopScope(
         onWillPop: () async {
           context.read<RegistrationStepsCubit>().resetStage();
+          context.read<RegisterCubit>().reset();
           return true;
         },
         child: AppBackgroundWidget(
@@ -40,12 +42,9 @@ class RegistrationScreen extends StatelessWidget {
                 BlocConsumer<RegisterCubit, RegisterState>(
                   builder: (context, state) {
                     if (state is RegisterFailed) {
-                      return Card(
-                        child: ListTile(
-                          leading: const Icon(Icons.cancel_outlined),
-                          title: const Text('Registration failed'),
-                          subtitle: Text(state.errorMessage),
-                        ),
+                      return AppErrorDialogWidget(
+                        message: state.errorMessage,
+                        title: 'Registration Failed',
                       );
                     }
 
