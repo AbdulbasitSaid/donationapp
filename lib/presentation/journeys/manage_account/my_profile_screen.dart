@@ -101,8 +101,9 @@ class MyProfileScreen extends StatelessWidget {
                             onPressed: () {
                               Navigator.push(
                                   context,
-                                  AppRouter.routeToPage(
-                                      const EditNameScreen()));
+                                  AppRouter.routeToPage(EditNameScreen(
+                                    titleValue: user!.donor.title,
+                                  )));
                             },
                             icon: const Icon(
                               Icons.edit,

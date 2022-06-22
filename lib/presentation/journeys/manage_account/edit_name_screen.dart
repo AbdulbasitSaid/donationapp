@@ -14,18 +14,21 @@ import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/loaders/primary_app_loader_widget.dart';
 
 class EditNameScreen extends StatefulWidget {
-  const EditNameScreen({Key? key}) : super(key: key);
+  const EditNameScreen({Key? key, required this.titleValue}) : super(key: key);
 
   @override
   State<EditNameScreen> createState() => _EditNameScreenState();
+
+  final String titleValue;
 }
 
 class _EditNameScreenState extends State<EditNameScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TextEditingController _firstNameTextController, _lastNameTextController;
-  String titleValue = 'Mr';
+  late String _titleValue;
   @override
   void initState() {
+    _titleValue = widget.titleValue;
     _firstNameTextController = TextEditingController();
     _lastNameTextController = TextEditingController();
     super.initState();
@@ -76,12 +79,12 @@ class _EditNameScreenState extends State<EditNameScreen> {
                               children: [
                                 Flexible(
                                   child: DropdownButtonFormField(
-                                    value: titleValue,
+                                    value: _titleValue,
                                     isExpanded: false,
                                     isDense: true,
                                     onChanged: (String? newTitle) {
                                       setState(() {
-                                        titleValue = newTitle!;
+                                        _titleValue = newTitle!;
                                       });
                                     },
                                     items: <String>[
@@ -181,7 +184,7 @@ class _EditNameScreenState extends State<EditNameScreen> {
                                                   lastName:
                                                       _lastNameTextController
                                                           .text,
-                                                  title: titleValue);
+                                                  title: _titleValue);
                                         },
                                         child: Text('save'.toUpperCase()));
                                   },
