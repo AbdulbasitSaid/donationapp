@@ -30,6 +30,9 @@ class DonationHistoryByDoneeIdData {
     required this.donationDetails,
     required this.donee,
     required this.rank,
+    required this.paidTransactionFee,
+    required this.idonatioTransactionFee,
+    required this.stripeTransactionFee,
   });
 
   String id;
@@ -37,6 +40,9 @@ class DonationHistoryByDoneeIdData {
   String doneeId;
   String currency;
   DateTime createdAt;
+  double idonatioTransactionFee;
+  double stripeTransactionFee;
+  bool paidTransactionFee;
   int rank;
   List<DonationDetail> donationDetails;
   Donee donee;
@@ -50,6 +56,12 @@ class DonationHistoryByDoneeIdData {
   }
 
   double get totalPayment {
+    return paidTransactionFee
+        ? totalAmount + stripeTransactionFee + idonatioTransactionFee
+        : totalAmount;
+  }
+
+  double get totalAmount {
     return donationDetails
         .map((e) => e.amount)
         .toList()
