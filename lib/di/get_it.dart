@@ -14,22 +14,23 @@ import 'package:idonatio/data/data_sources/saved_donees_datasource.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/data_sources/user_remote_datasource.dart';
 import 'package:idonatio/data/data_sources/country_remote_datasource.dart';
-import 'package:idonatio/data/repository/change_password_repository.dart';
-import 'package:idonatio/data/repository/contact_support_repository.dart';
-import 'package:idonatio/data/repository/donations_repository.dart';
-import 'package:idonatio/data/repository/donee_repository.dart';
-import 'package:idonatio/data/repository/profile_repository.dart';
-import 'package:idonatio/data/repository/recent_doness_repository.dart';
-import 'package:idonatio/data/repository/saved_donees_repository.dart';
-import 'package:idonatio/data/repository/user_repository.dart';
-import 'package:idonatio/data/repository/countries_repository.dart';
-import 'package:idonatio/data/repository/payment_repository.dart';
 
 import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
 import 'package:idonatio/presentation/journeys/manage_account/cubit/logout_cubit.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+
+import '../domain/repository/change_password_repository.dart';
+import '../domain/repository/contact_support_repository.dart';
+import '../domain/repository/countries_repository.dart';
+import '../domain/repository/donations_repository.dart';
+import '../domain/repository/donee_repository.dart';
+import '../domain/repository/payment_repository.dart';
+import '../domain/repository/profile_repository.dart';
+import '../domain/repository/recent_doness_repository.dart';
+import '../domain/repository/saved_donees_repository.dart';
+import '../domain/repository/user_repository.dart';
 
 final GetIt getItInstance = GetIt.I;
 
