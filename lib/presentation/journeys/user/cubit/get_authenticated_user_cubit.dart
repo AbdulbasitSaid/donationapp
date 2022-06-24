@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/models/user_models/get_authenticated_user_model.dart';
-import 'package:idonatio/data/repository/user_repository.dart';
+
+import '../../../../domain/repository/user_repository.dart';
 
 part 'get_authenticated_user_state.dart';
 

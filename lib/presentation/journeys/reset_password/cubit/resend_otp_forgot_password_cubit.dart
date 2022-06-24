@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../data/repository/user_repository.dart';
+import '../../../../domain/repository/user_repository.dart';
 import '../../../reusables.dart';
 
 part 'resend_otp_forgot_password_state.dart';

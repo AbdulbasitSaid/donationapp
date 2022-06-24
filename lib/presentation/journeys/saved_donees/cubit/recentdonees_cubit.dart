@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/repository/recent_doness_repository.dart';
 
 import '../../../../data/models/donation_models/recent_donees_model.dart';
+import '../../../../domain/repository/recent_doness_repository.dart';
 import '../../../reusables.dart';
 
 part 'recentdonees_state.dart';
@@ -17,5 +17,4 @@ class GetRecentdoneesCubit extends Cubit<RecentdoneesState> {
     emit(result.fold((l) => RecentdoneesFailed(getErrorMessage(l.appErrorType)),
         (r) => RecentdoneesSuccessful(r)));
   }
-
 }

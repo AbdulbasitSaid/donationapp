@@ -4,11 +4,11 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:idonatio/data/repository/user_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/login_request_params.dart';
 import 'package:idonatio/presentation/bloc/register/register_cubit.dart';
 
+import '../../../domain/repository/user_repository.dart';
 import '../../reusables.dart';
 
 part 'login_state.dart';

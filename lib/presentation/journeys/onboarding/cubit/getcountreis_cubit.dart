@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/models/countries_model.dart';
-import 'package:idonatio/data/repository/countries_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
+
+import '../../../../domain/repository/countries_repository.dart';
 
 part 'getcountreis_state.dart';
 

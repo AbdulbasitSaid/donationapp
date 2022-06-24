@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/repository/change_password_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 
+import '../../../../domain/repository/change_password_repository.dart';
 import '../../../reusables.dart';
 
 part 'change_password_state.dart';

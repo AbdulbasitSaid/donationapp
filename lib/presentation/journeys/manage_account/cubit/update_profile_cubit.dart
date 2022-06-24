@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/repository/profile_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 
+import '../../../../domain/repository/profile_repository.dart';
 import '../../../reusables.dart';
 
 part 'update_profile_state.dart';

@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/models/donation_models/donation_history_model.dart';
-import 'package:idonatio/data/repository/donations_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/presentation/reusables.dart';
+
+import '../../../../domain/repository/donations_repository.dart';
 
 part 'donation_history_state.dart';
 

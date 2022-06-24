@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/repository/saved_donees_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 
 import '../../../../data/models/donation_models/saved_donees_model.dart';
+import '../../../../domain/repository/saved_donees_repository.dart';
 
 part 'get_saved_donees_state.dart';
 
@@ -18,14 +18,14 @@ class GetSavedDoneesCubit extends Cubit<GetSavedDoneesState> {
         (l) => GetSavedDoneesFailed(getErrorMessage(l.appErrorType)),
         (r) => GetSavedDoneesSuccess(r)));
   }
+
   void seachSavedDonee(String? search) async {
     emit(GetSavedDoneesLoading());
-    final result = await _savedDoneesRepository.getSavedDonee(param:search);
+    final result = await _savedDoneesRepository.getSavedDonee(param: search);
     emit(result.fold(
         (l) => GetSavedDoneesFailed(getErrorMessage(l.appErrorType)),
         (r) => GetSavedDoneesSuccess(r)));
   }
-
 
   String getErrorMessage(AppErrorType appErrorType) {
     switch (appErrorType) {

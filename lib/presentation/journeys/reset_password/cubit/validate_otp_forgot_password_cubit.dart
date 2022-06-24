@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/repository/user_repository.dart';
 import 'package:idonatio/presentation/reusables.dart';
 
+import '../../../../domain/repository/user_repository.dart';
 import '../enitities/reset_password_otp_success_entity.dart';
 
 part 'validate_otp_forgot_password_state.dart';

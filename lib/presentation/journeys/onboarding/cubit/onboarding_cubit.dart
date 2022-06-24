@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/core/unauthorized_exception.dart';
-import 'package:idonatio/data/repository/user_repository.dart';
+
+import '../../../../domain/repository/user_repository.dart';
 
 part 'onboarding_state.dart';
 
@@ -14,7 +15,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     emit(OnboardingLoading());
 
     try {
-   await authenticationRepository.boardUser(params);
+      await authenticationRepository.boardUser(params);
       emit(const OnboardingSuccess('Onboarding was successful'));
     } on UnprocessableEntity {
       emit(const OnboardingFailure('Validation error '));

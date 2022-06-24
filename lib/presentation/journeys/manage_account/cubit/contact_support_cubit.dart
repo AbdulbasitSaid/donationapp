@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:idonatio/data/repository/contact_support_repository.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/presentation/reusables.dart';
+
+import '../../../../domain/repository/contact_support_repository.dart';
 
 part 'contact_support_state.dart';
 

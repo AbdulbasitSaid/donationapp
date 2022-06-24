@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:idonatio/data/models/fees_model.dart';
-import 'package:idonatio/data/repository/donations_repository.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:meta/meta.dart';
+
+import '../../../../domain/repository/donations_repository.dart';
 
 part 'get_donation_fees_state.dart';
 
