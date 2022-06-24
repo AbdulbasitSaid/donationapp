@@ -33,7 +33,7 @@ class SelectPaymentCardWidget extends StatelessWidget {
                 state.paymentMethods.data.isNotEmpty) {
               context
                   .read<SelectPaymentMethodCubit>()
-                  .selectPaymentMethod(state.paymentMethods.data.first);
+                  .selectPaymentMethod(state.paymentMethods.data.last);
               return BlocBuilder<SelectPaymentMethodCubit, PaymentMethodDatum?>(
                 builder: (context, selectedPyamentMethodState) {
                   final donationProcessState =
@@ -49,7 +49,7 @@ class SelectPaymentCardWidget extends StatelessWidget {
                   return Row(
                     children: [
                       //selected
-                      ...state.paymentMethods.data.map(
+                      ...state.paymentMethods.data.reversed.map(
                         (e) {
                           return TextButton(
                             key: Key(e.id),
