@@ -56,9 +56,6 @@ class SelectPaymentCardWidget extends StatelessWidget {
                             onPressed: () {
                               if (!europeanCountries.contains(e.country) &&
                                   state.paymentMethods.data.length > 1) {
-                                // if (e.id == donationProcessState.ca) {
-                                //   Fluttertoast.showToast(msg: 'bood');
-                                // }
                                 showDialog(
                                     context: context,
                                     builder: (context) {
