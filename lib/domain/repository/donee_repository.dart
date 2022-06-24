@@ -7,7 +7,7 @@ import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/models/base_success_model.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 
-import '../models/donation_models/donee_response_model.dart';
+import '../../data/models/donation_models/donee_response_model.dart';
 
 class DoneeRepository {
   final DoneeRemoteDataSource _doneeRemoteDataSource;

@@ -16,7 +16,7 @@ import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/onboarding_response.dart';
 import 'package:idonatio/presentation/journeys/reset_password/enitities/reset_password_otp_success_entity.dart';
 
-import '../models/user_models/password_validate_otp_model.dart';
+import '../../data/models/user_models/password_validate_otp_model.dart';
 
 class UserRepository {
   UserRepository(this._userRemoteDataSource, this._userLocalDataSource);

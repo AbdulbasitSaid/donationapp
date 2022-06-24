@@ -7,9 +7,9 @@ import 'package:idonatio/data/models/donation_models/donation_history_model.dart
 import 'package:idonatio/data/models/donation_summary_model.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 
-import '../core/unauthorized_exception.dart';
-import '../models/donation_models/donation_history_by_donee_id_model.dart';
-import '../models/fees_model.dart';
+import '../../data/core/unauthorized_exception.dart';
+import '../../data/models/donation_models/donation_history_by_donee_id_model.dart';
+import '../../data/models/fees_model.dart';
 
 class DonationRepository {
   final DonationDataSources _donationDataSources;

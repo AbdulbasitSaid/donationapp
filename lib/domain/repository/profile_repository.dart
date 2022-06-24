@@ -4,9 +4,9 @@ import 'package:dartz/dartz.dart';
 import 'package:idonatio/data/data_sources/profile_remote_datasource.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 
+import '../../data/core/unauthorized_exception.dart';
+import '../../data/models/user_models/profile_response_model.dart';
 import '../../domain/entities/app_error.dart';
-import '../core/unauthorized_exception.dart';
-import '../models/user_models/profile_response_model.dart';
 
 class ProfileRepository {
   final ProfileRemoteDataSource profileRemoteDataSource;

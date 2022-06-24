@@ -1,26 +1,24 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:idonatio/data/data_sources/contact_support_datasource.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
+import 'package:idonatio/data/models/base_success_model.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 
-import '../core/unauthorized_exception.dart';
-import '../data_sources/change_password_datasource.dart';
-import '../models/base_success_model.dart';
+import '../../data/core/unauthorized_exception.dart';
 
-class ChangePasswordRepository {
-  final ChangePasswordDataSource _changePasswordDataSource;
+class ContactSupportRepository {
+  final ContactSupportDatasource _contactSupportDatasource;
   final UserLocalDataSource _userLocalDataSource;
-  ChangePasswordRepository(
-      this._changePasswordDataSource, this._userLocalDataSource);
-
-  Future<Either<AppError, SuccessModel>> changePassword(
+  ContactSupportRepository(
+      this._contactSupportDatasource, this._userLocalDataSource);
+  Future<Either<AppError, SuccessModel>> contactSupport(
       Map<String, dynamic> params) async {
     try {
-      var user = await _userLocalDataSource.getUser();
-      var result =
-          await _changePasswordDataSource.changePassword(params, user.token);
+      final user = await _userLocalDataSource.getUser();
+      final result =
+          await _contactSupportDatasource.contactSupport(params, user.token);
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
