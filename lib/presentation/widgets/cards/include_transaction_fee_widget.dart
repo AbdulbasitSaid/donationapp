@@ -84,7 +84,7 @@ class _IncludeTransactionFeeWidgetState
                                   .toList()
                                   .reduce((value, element) => value + element);
                               String cardCurrency =
-                                  state.paymentMethods.data.first.country;
+                                  state.paymentMethods.data.last.country;
                               List<FeeData> feeData = feeState.feesModel.data;
                               return Text(
                                 '${getCurrencySymbol('gbp', context)}${getCharges(amount: amount, cardCurrency: cardCurrency, feeData: feeData).totalFee.toStringAsFixed(2)}',

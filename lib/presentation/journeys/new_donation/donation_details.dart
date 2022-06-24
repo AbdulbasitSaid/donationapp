@@ -276,7 +276,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                                                 paymentMethodState
                                                                     .paymentMethods
                                                                     .data
-                                                                    .first
+                                                                    .last
                                                                     .country,
                                                             feeData:
                                                                 feeDataState
@@ -525,14 +525,14 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                                                     .paidTransactionFee
                                                                 ? getCharges(
                                                                         feeData: getFeeData.feesModel.data,
-                                                                        cardCurrency: getPaymentMethod.paymentMethods.data.first.country,
+                                                                        cardCurrency: getPaymentMethod.paymentMethods.data.last.country,
                                                                         amount: donationCartTotal)
                                                                     .totalPayment
                                                                 : donationCartTotal,
-                                                            stripeFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).stripeFee,
-                                                            idonatoiFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).idonationFee,
-                                                            totalCharges: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).totalFee,
-                                                            totalFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.first.country, amount: donationCartTotal).totalFee,
+                                                            stripeFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.last.country, amount: donationCartTotal).stripeFee,
+                                                            idonatoiFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.last.country, amount: donationCartTotal).idonationFee,
+                                                            totalCharges: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.last.country, amount: donationCartTotal).totalFee,
+                                                            totalFee: getCharges(feeData: getFeeData.feesModel.data, cardCurrency: getPaymentMethod.paymentMethods.data.last.country, amount: donationCartTotal).totalFee,
                                                             donationDetails: [
                                                           ...donationCartState.map((e) =>
                                                               DonationProcessDetail(
