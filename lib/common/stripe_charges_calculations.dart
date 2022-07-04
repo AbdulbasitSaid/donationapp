@@ -27,10 +27,11 @@ final List<String> europeanCountries = [
   'GB',
   'VA',
 ];
-ChargesResult getCharges(
-    {required List<FeeData> feeData,
-    required String cardCurrency,
-    required double amount}) {
+ChargesResult getCharges({
+  required List<FeeData> feeData,
+  required String cardCurrency,
+  required double amount,
+}) {
   double europeanCardFeePercentage = feeData
       .firstWhere((element) => element.tag == 'STRIPE_EUROPEAN_CARD_FEE')
       .value;
@@ -56,7 +57,6 @@ ChargesResult getCharges(
   var right = spliteCharge[1].split('');
   String stringCharg =
       '$left.${right.length > 1 ? right.take(2).join() : right.first}';
-  // charges = double.parse(stringCharg);
   // onlyCharges.
   var totalPaySplit =
       ((double.parse(stringCharg)) + (amount)).toString().split('.');
@@ -78,18 +78,19 @@ ChargesResult getCharges(
             idonatioFee: idonatioFee,
             totalCharge: double.parse(stringCharg),
           ),
-          // totalFee: double.parse(stringCharg),
           totalFee: double.parse(double.parse(stringCharg).toStringAsFixed(2)),
           totalPayment: (double.parse(totalPaymentResult.toStringAsFixed(2))));
 }
 
 //
-double getIdonatioTransactionFee(
-    {required double donationAmount, required double stripeDontionRatio}) {
+double getIdonatioTransactionFee({
+  required double donationAmount,
+  required double stripeDontionRatio,
+}) {
   return donationAmount == 0 ? 0 : donationAmount * stripeDontionRatio;
 }
 
-//
+// s
 double getStripeTransactionFee({
   required double totalCharge,
   required double idonatioFee,
@@ -98,6 +99,7 @@ double getStripeTransactionFee({
   return donationAmount == 0 ? 0 : totalCharge - idonatioFee;
 }
 
+// easy result retriver class
 class ChargesResult {
   final double stripeFee;
   final double totalFee;
