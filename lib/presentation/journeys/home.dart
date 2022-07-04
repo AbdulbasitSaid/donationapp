@@ -65,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     final logoutState = context.watch<LogoutCubit>().state;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: const [LogoutButton()],
       ),
       body: Center(
