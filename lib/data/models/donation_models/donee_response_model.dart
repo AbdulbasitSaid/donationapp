@@ -64,7 +64,7 @@ class Data {
   late final String phoneNumber;
   late final String verifiedAt;
   late final CountryModel country;
-  late final Organization? organization;
+  late final OrganizationModel? organization;
   late final List<DonationDetailModel>? donationDetails;
   late final List<DonationTypeModel>? donationTypes;
   String get fullName {
