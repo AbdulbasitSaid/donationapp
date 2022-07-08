@@ -25,14 +25,14 @@ import '../user/cubit/user_cubit.dart';
 class SavedDoneeDetails extends StatefulWidget {
   const SavedDoneeDetails({Key? key, required this.donationData})
       : super(key: key);
-  static Route<String> route({required Donee donationData}) {
+  static Route<String> route({required DoneeModel donationData}) {
     return MaterialPageRoute(
         builder: (_) => SavedDoneeDetails(
               donationData: donationData,
             ));
   }
 
-  final Donee donationData;
+  final DoneeModel donationData;
 
   @override
   State<SavedDoneeDetails> createState() => _SavedDoneeDetailsState();
@@ -180,8 +180,7 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                  '${widget.donationData.addressLine_1} ${widget.donationData.addressLine_2}'),
+                              Text('${widget.donationData.fullAddress} '),
                             ],
                           ),
                         ],
@@ -241,7 +240,7 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
                       children: [
                         const Level6Headline(text: 'Donation history'),
                         ViewAllButtonWidget(
-                          doneeId: widget.donationData.id!,
+                          doneeId: widget.donationData.id,
                         )
                       ],
                     ),
@@ -317,7 +316,7 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
                                                       .read<
                                                           DeleteSaveDoneeCubit>()
                                                       .deleteSavedDonee(widget
-                                                          .donationData.id!);
+                                                          .donationData.id);
                                                 },
                                                 child: Text(
                                                   'delete'.toUpperCase(),
@@ -362,7 +361,7 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
             onPressed: () {
               context
                   .read<GetdoneebycodeCubit>()
-                  .getDoneeByCode(widget.donationData.doneeCode!);
+                  .getDoneeByCode(widget.donationData.doneeCode);
               context.read<GetPaymentMethodsCubit>().getPaymentMethods();
               Navigator.push(
                   context,
