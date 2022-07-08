@@ -1,7 +1,7 @@
-import 'package:idonatio/data/models/donation_models/donation_details.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'country_model.dart';
+import 'donation_detail_model.dart';
 import 'donation_type_model.dart';
 import 'organization_model.dart';
 part 'donee_response_model.g.dart';
@@ -63,9 +63,9 @@ class Data {
   late final String postalCode;
   late final String phoneNumber;
   late final String verifiedAt;
-  late final Country country;
+  late final CountryModel country;
   late final Organization? organization;
-  late final List<DonationDetails>? donationDetails;
+  late final List<DonationDetailModel>? donationDetails;
   late final List<DonationTypeModel>? donationTypes;
   String get fullName {
     return organization == null
