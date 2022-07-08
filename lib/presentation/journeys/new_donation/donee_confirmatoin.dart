@@ -35,9 +35,10 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
   @override
   Widget build(BuildContext context) {
     final savedDoneeState = context.watch<GetSavedDoneesCubit>().state;
-    final List<Donee> savedDoneeList = savedDoneeState is GetSavedDoneesSuccess
-        ? savedDoneeState.savedDoneesResponseModel.data!
-        : [];
+    final List<DoneeModel> savedDoneeList =
+        savedDoneeState is GetSavedDoneesSuccess
+            ? savedDoneeState.savedDoneesResponseModel.data!
+            : [];
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
