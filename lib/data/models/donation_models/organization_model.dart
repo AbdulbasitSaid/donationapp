@@ -7,8 +7,8 @@ part 'organization_model.g.dart';
   fieldRename: FieldRename.snake,
   explicitToJson: true,
 )
-class Organization {
-  Organization({
+class OrganizationModel {
+  OrganizationModel({
     required this.id,
     required this.doneeId,
     required this.countryId,
@@ -59,7 +59,7 @@ class Organization {
   late final String? altCountryId;
   late final CountryModel? country;
 
-  factory Organization.fromJson(Map<String, dynamic> json) =>
+  factory OrganizationModel.fromJson(Map<String, dynamic> json) =>
       _$OrganizationFromJson(json);
 
   Map<String, dynamic> toJson() => _$OrganizationToJson(this);
