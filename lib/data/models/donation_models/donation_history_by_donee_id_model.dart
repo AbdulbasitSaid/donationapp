@@ -45,7 +45,7 @@ class DonationHistoryByDoneeIdData {
   bool paidTransactionFee;
   int rank;
   List<DonationDetail> donationDetails;
-  Donee donee;
+  DoneeModel donee;
   factory DonationHistoryByDoneeIdData.fromJson(json) =>
       _$DonationHistoryByDoneeIdDataFromJson(json);
   Map<String, dynamic> toJson() => _$DonationHistoryByDoneeIdDataToJson(this);
