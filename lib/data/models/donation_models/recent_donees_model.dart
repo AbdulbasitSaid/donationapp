@@ -3,7 +3,7 @@ import 'package:idonatio/data/models/donation_models/donee_model.dart';
 class RecentDoneesResponseModel {
   String? status;
   String? message;
-  List<Donee>? data;
+  List<DoneeModel>? data;
 
   RecentDoneesResponseModel({this.status, this.message, this.data});
 
@@ -11,9 +11,9 @@ class RecentDoneesResponseModel {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Donee>[];
+      data = <DoneeModel>[];
       json['data'].forEach((v) {
-        data!.add(Donee.fromJson(v));
+        data!.add(DoneeModel.fromJson(v));
       });
     }
   }
