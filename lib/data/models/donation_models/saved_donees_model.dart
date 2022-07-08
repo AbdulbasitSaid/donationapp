@@ -3,7 +3,7 @@ import 'donee_model.dart';
 class SavedDoneesResponseModel {
   String? status;
   String? message;
-  List<Donee>? data;
+  List<DoneeModel>? data;
 
   SavedDoneesResponseModel({this.status, this.message, this.data});
 
@@ -11,9 +11,9 @@ class SavedDoneesResponseModel {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Donee>[];
+      data = <DoneeModel>[];
       json['data'].forEach((v) {
-        data!.add(Donee.fromJson(v));
+        data!.add(DoneeModel.fromJson(v));
       });
     }
   }
