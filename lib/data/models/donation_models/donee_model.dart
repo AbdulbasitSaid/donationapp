@@ -62,7 +62,7 @@ class DoneeModel {
   final DateTime createdAt;
   final String? imageUrl;
   final CountryModel country;
-  final Organization? organization;
+  final OrganizationModel? organization;
 
   factory DoneeModel.fromJson(json) => _$DoneeModelFromJson(json);
 
