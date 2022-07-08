@@ -57,7 +57,7 @@ class Organization {
   late final String? altCity;
   late final String? altPostalCode;
   late final String? altCountryId;
-  late final Country? country;
+  late final CountryModel? country;
 
   factory Organization.fromJson(Map<String, dynamic> json) =>
       _$OrganizationFromJson(json);
