@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:idonatio/data/models/donation_models/donation_history_data_model.dart';
 import 'package:idonatio/data/models/donation_models/donation_history_model.dart';
+import 'package:idonatio/data/models/donation_models/donee_history_datum_model.dart';
 import 'package:idonatio/presentation/journeys/donation_history/donee_detail_history.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
@@ -16,7 +18,7 @@ class DonationHistoryDetialsScreen extends StatefulWidget {
   const DonationHistoryDetialsScreen(
       {Key? key, required this.donationHistoryData})
       : super(key: key);
-  final DonationHistoryData donationHistoryData;
+  final DonationHistoryDatumModel donationHistoryData;
 
   @override
   State<DonationHistoryDetialsScreen> createState() =>
