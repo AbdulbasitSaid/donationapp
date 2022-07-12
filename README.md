@@ -1,16 +1,33 @@
-# idonatio
+# Idonatio Mobile app Technical documentation
 
-A new Flutter project.
+Complete technical documentation for the Idonatio project. This documentation includes the following:
 
-## Getting Started
+1. Tools used. For example, the Flutter framework.
 
-This project is a starting point for a Flutter application.
+2. Mobile app architecture.
 
-A few resources to get you started if this is your first Flutter project:
+3. Project set-up instructions.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+4. Dependencies and configurations.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+5. Manual user test guide.
+
+## Tools used. For example, the Flutter framework
+
+Flutter is the selected tool used for app development. To install flutter, please visit [flutter. dev.](https://docs.flutter.dev/get-started/install) Flutter development environment can work on  the following operating systems:
+
+- Windows.
+
+- MacOs.
+
+- Linux.
+
+- ChromOS.
+
+For a detailed installation guide, please visit the [installation guide.](https://docs.flutter.dev/get-started/install) Select your operating system and proceed with the setup.
+
+## Mobile app architecture
+
+The mobile app design architecture is derived, from Uncle, bobs clean Architecture pattern, the Flutter-bloc architecture pattern, and some personal design decisions. We chose the clean-architecture pattern to improve the separation of concern.
+
+Below is the image that depicts the clean architecture.
