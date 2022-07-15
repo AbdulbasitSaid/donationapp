@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/data/models/donation_models/donee_model.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 
-import '../../../data/models/donation_models/donee_model.dart';
 import '../../journeys/donation_history/cubit/donation_history_summary_cubit.dart';
 import '../../journeys/saved_donees/saved_donee_details.dart';
 import '../../router/app_router.dart';
@@ -15,7 +15,7 @@ class SavedDoneeListItemWidget extends StatelessWidget {
     required this.highlightString,
     required this.donee,
   }) : super(key: key);
-  final Donee donee;
+  final DoneeModel donee;
   final String highlightString;
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class SavedDoneeListItemWidget extends StatelessWidget {
       onPressed: () {
         context
             .read<DonationHistorySummaryCubit>()
-            .getDonationHistoryDetailSummary(donee.id!);
+            .getDonationHistoryDetailSummary(donee.id);
         Navigator.push(context,
             AppRouter.routeToPage(SavedDoneeDetails(donationData: donee)));
       },
@@ -51,9 +51,7 @@ class SavedDoneeListItemWidget extends StatelessWidget {
                     color: AppColor.basePrimary, fontWeight: FontWeight.bold),
               ),
               Text(
-                donee.organization == null
-                    ? '${donee.addressLine_1} ${donee.addressLine_2}'
-                    : '${donee.organization?.addressLine_1} ${donee.organization?.addressLine_2}',
+                '${donee.fullAddress} ',
                 style: Theme.of(context).textTheme.caption,
               ),
             ],
