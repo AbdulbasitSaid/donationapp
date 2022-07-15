@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/common/server_ticker.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
