@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idonatio/data/models/donation_models/donee_history_datum_model.dart';
 import 'package:intl/intl.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 
-import '../../../data/models/donation_models/donation_history_model.dart';
 import '../../journeys/donation_history/cubit/donation_history_summary_cubit.dart';
 import '../../journeys/donation_history/donation_history_details_screen.dart';
 import '../../router/app_router.dart';
@@ -11,7 +11,7 @@ import '../../themes/app_color.dart';
 import '../donee_avatar_place_holder.dart';
 
 class DonationHistoryListCardItem extends StatelessWidget {
-  final DonationHistoryData donationData;
+  final DonationHistoryDatumModel donationData;
   final String searchTerm;
   const DonationHistoryListCardItem({
     Key? key,
@@ -94,7 +94,7 @@ class DonationHistoryListCardItem extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      '£${(donationData.totalPayment).toStringAsFixed(2)}',
+                      "£${donationData.totalPayment}",
                     ),
                   ],
                 )
