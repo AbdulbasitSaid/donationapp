@@ -25,19 +25,19 @@ class DonationHistoryDataModel {
     required this.total,
   });
 
-  final int currentPage;
+  final int? currentPage;
   final List<DonationHistoryDatumModel> data;
-  final String firstPageUrl;
-  final int from;
-  final int lastPage;
+  final String? firstPageUrl;
+  final int? from;
+  final int? lastPage;
   final String lastPageUrl;
   final List<LinkModel> links;
   final dynamic nextPageUrl;
   final String path;
-  final int perPage;
+  final dynamic perPage;
   final dynamic prevPageUrl;
-  final int to;
-  final int total;
+  final int? to;
+  final int? total;
   factory DonationHistoryDataModel.fromJson(json) =>
       _$DonationHistoryDataModelFromJson(json);
   Map<String, dynamic> toJson() => _$DonationHistoryDataModelToJson(this);
