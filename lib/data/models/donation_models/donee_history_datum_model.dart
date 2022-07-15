@@ -73,22 +73,24 @@ class DonationHistoryDatumModel {
   factory DonationHistoryDatumModel.fromJson(json) =>
       _$DonationHistoryDatumModelFromJson(json);
 
-  get totalPayment => {
-        paidTransactionFee == true
-            ? stripeTransactionFee +
-                idonatioTransactionFee +
-                donationDetails
-                    .map((e) => e.amount)
-                    .toList()
-                    .reduce((value, element) => value + element)
-            : donationDetails
-                .map((e) => e.amount)
-                .toList()
-                .reduce((value, element) => value + element),
-      };
+  get totalPayment => paidTransactionFee == true
+      ? stripeTransactionFee +
+          idonatioTransactionFee +
+          donationDetails
+              .map((e) => e.amount)
+              .toList()
+              .reduce((value, element) => value + element)
+      : donationDetails
+          .map((e) => e.amount)
+          .toList()
+          .reduce((value, element) => value + element);
 
   double get transationFee => paidTransactionFee == true
       ? stripeTransactionFee + idonatioTransactionFee
       : 0.0;
+
+  String get displayDonationType => donationDetails.length > 1
+      ? 'Multiple donation types'
+      : donationDetails.first.donationType.type!;
   Map<String, dynamic> toJson() => _$DonationHistoryDatumModelToJson(this);
 }
