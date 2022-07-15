@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:idonatio/data/models/donation_models/donation_history_data_model.dart';
 import 'package:idonatio/presentation/journeys/saved_donees/cubit/save_donee_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/get_authenticated_user_cubit.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
@@ -13,6 +12,7 @@ import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 import 'package:idonatio/presentation/widgets/veiw_all_button_widget.dart';
 
+import '../../../data/models/donation_models/donee_history_datum_model.dart';
 import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/donation_summary_widget.dart';
 import '../../widgets/donee_avatar_place_holder.dart';
@@ -24,14 +24,15 @@ import '../new_donation/donation_details.dart';
 class DoneeDetailHistory extends StatefulWidget {
   const DoneeDetailHistory({Key? key, required this.donationData})
       : super(key: key);
-  static Route<String> route({required DonationHistoryDataModel donationData}) {
+  static Route<String> route(
+      {required DonationHistoryDatumModel donationData}) {
     return MaterialPageRoute(
         builder: (_) => DoneeDetailHistory(
               donationData: donationData,
             ));
   }
 
-  final DonationHistoryDataModel donationData;
+  final DonationHistoryDatumModel donationData;
 
   @override
   State<DoneeDetailHistory> createState() => _DoneeDetailHistoryState();
@@ -162,8 +163,7 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                              '${widget.donationData.donee.addressLine_1} ${widget.donationData.donee.addressLine_2}'),
+                          Text(widget.donationData.donee.fullAddress),
                         ],
                       ),
                     ],
@@ -302,7 +302,7 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
             onPressed: () {
               context
                   .read<GetdoneebycodeCubit>()
-                  .getDoneeByCode(widget.donationData.donee.doneeCode!);
+                  .getDoneeByCode(widget.donationData.donee.doneeCode);
               context.read<GetPaymentMethodsCubit>().getPaymentMethods();
               Navigator.push(
                   context,
