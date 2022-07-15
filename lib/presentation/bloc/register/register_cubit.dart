@@ -1,10 +1,10 @@
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
 import 'package:idonatio/data/models/user_models/user_data_model.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
 import 'package:idonatio/domain/entities/register_request_params.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/user_models/user_response_model.dart';
 import '../../../domain/repository/user_repository.dart';
