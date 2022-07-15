@@ -88,6 +88,7 @@ Stripe.urlScheme = 'flutterstripe';
 The above depicts some needed declarations that should be added to the app’s main method. for more clarity read the [flutter stripe package documentation.](https://pub.dev/packages/flutter_stripe) To get the stripe publishable key, go to <https://dashboard.stripe.com/test/apikeys> and copy the publishable key.
 
 ![stripe publishable key](/app_docs_assets/stritpublishable%20key.png 'getting your stripe publishable key')
+
 stripe publishable key
 
 ## Manual user test guide
@@ -95,5 +96,6 @@ stripe publishable key
 Below is a table depicting the Manual and end-to-test guide.
 
 | Test case | Description | Expected Result |
-| --------- | ----------- | --------------- |
+| --- | --- | --- |
 | Login     | <ul><li>The email field is required. Password is required.</li><li>The reset password should link to the reset password field.</li><li>Remember-me field should be selectable</li><li>The sign-in button should only be enabled when the above requirements pass.</li><li>When the user inputs an invalid password or email, App should trough an invalid error message should be expected.</li><li>When the user opts in for remember-me, the User email should be prefield on the next login.</li></ul> | <ul><li>After a successful login, The user should navigate to the Home page.</li><li>If the email is verified and the user has completed the onboading.</li><li>If the user's email is not verified, The user should navigate to Verify email page.</li><li>If the user has not boarded, He should navigate the onboarding page.</li></ul> |
+| Registration | <ul><li>Registration should be in two steps</li> <li>Step 1 should contain, Title, First name, and Last name fields.</li> <li>The Title, First name, and Last name fields are all required.</li></ul> | |
