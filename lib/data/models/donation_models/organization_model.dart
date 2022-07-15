@@ -60,7 +60,7 @@ class OrganizationModel {
   late final CountryModel? country;
 
   factory OrganizationModel.fromJson(Map<String, dynamic> json) =>
-      _$OrganizationFromJson(json);
+      _$OrganizationModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$OrganizationToJson(this);
+  Map<String, dynamic> toJson() => _$OrganizationModelToJson(this);
 }
