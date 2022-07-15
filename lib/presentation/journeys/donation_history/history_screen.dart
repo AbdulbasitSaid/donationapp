@@ -1,15 +1,12 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
-import 'package:idonatio/presentation/journeys/new_donation/add_donee_by_id.dart';
+import 'package:idonatio/presentation/journeys/donation_history/bloc/donation_history_bloc.dart';
+import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
-import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
-import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
+import 'package:idonatio/presentation/widgets/dialogs/app_error_dailog.dart';
 import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 
 import '../../reusables.dart';
@@ -25,6 +22,8 @@ class DonationHistoryScreen extends StatefulWidget {
 class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   bool isStartSearch = false;
   late TextEditingController _searchController;
+  final _scrollController = ScrollController();
+
   late Timer searchOnStoppedTyping;
   static const duration = Duration(milliseconds: 800);
   String highlightSearch = '';
@@ -36,9 +35,10 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
     search(value) {
       highlightSearch = value;
       if (value.isEmpty) {
-        context.read<DonationHistoryCubit>().getDonationHistory();
+        context.read<DonationHistoryBloc>().add(const DonationHistoryFetched());
       } else {
-        context.read<DonationHistoryCubit>().searchDonationHistory(value);
+        //Todo add search
+        // context.read<DonationHistoryBloc>().add(value);
       }
     }
 
@@ -50,7 +50,24 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   void initState() {
     _searchController = TextEditingController();
     searchOnStoppedTyping = Timer(duration, () {});
+    _scrollController.addListener(_onScroll);
+
+    // context.read<DonationHistoryBloc>().add(const DonationHistoryFetched());
+
     super.initState();
+  }
+
+  void _onScroll() {
+    if (_isBottom) {
+      context.read<DonationHistoryBloc>().add(const DonationHistoryFetched());
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
   }
 
   @override
@@ -61,547 +78,200 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   }
 
   Future<void> _refereshHistory() async {
-    context.read<DonationHistoryCubit>().getDonationHistory();
+    context.read<DonationHistoryBloc>().add(const DonationHistoryRefreshed());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: _refereshHistory,
-          child: Container(
-            decoration: gradientBoxDecoration(),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                isStartSearch = !isStartSearch;
-                              });
-                            },
-                            icon: const Icon(Icons.search,
-                                size: 32, color: AppColor.text80Primary),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      isStartSearch == false
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: Level2Headline(
-                                      text: 'Your donations',
-                                    )),
-                                BlocBuilder<DonationHistoryCubit,
-                                    DonationHistoryState>(
-                                  builder: (context, state) {
-                                    if (state is DonationHistorySuccess) {
-                                      return Padding(
-                                          padding: const EdgeInsets.all(16),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  'Total donations: £${state.donationHistoryModel.overallTotalDonations.toStringAsFixed(2)}'),
-                                              const SizedBox(
-                                                height: 8,
-                                              ),
-                                              Text(
-                                                  'Number of donations: ${state.donationHistoryModel.numberOfDonations}'),
-                                              const SizedBox(
-                                                height: 8,
-                                              ),
-                                              Text(
-                                                  'Average donation: £${state.donationHistoryModel.averageDonations.toStringAsFixed(2)} '),
-                                            ],
-                                          ));
-                                    }
-                                    return const Text(
-                                        'Please pull to referesh');
-                                  },
-                                ),
-                                const Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: Text(
-                                      "A history of donations you’ve made through this app. Select a donation to view more details.",
-                                    )),
-                              ],
-                            )
-                          : const SizedBox.shrink(),
-                      BlocConsumer<DonationHistoryCubit, DonationHistoryState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          if (state is DonationHistoryLoading) {
-                            return const Center(
-                              child: PrimaryAppLoader(),
-                            );
-                          } else if (state is DonationHistorySuccess &&
-                              state.donationHistoryModel.data.isNotEmpty) {
-                            final thisMonthDonations = state
-                                .donationHistoryModel.data
-                                .where((element) =>
-                                    element.createdAt.month ==
-                                    DateTime.now().month)
-                                .toList()
-                                .where((element) =>
-                                    element.donationDetails.isNotEmpty);
-                            final earlierDonations = state
-                                .donationHistoryModel.data
-                                .where((element) =>
-                                    element.createdAt.month !=
-                                    DateTime.now().month)
-                                .toList()
-                                .where((element) =>
-                                    element.donationDetails.isNotEmpty);
-
-                            return state.donationHistoryModel.data.isEmpty &&
-                                    isStartSearch == false
-                                ? Container(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text(
-                                              'Get started by making a donation.'),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          const Text(
-                                              'A list of your past donations will appear here once you make a donation.'),
-                                          const SizedBox(
-                                            height: 16,
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (context) => SimpleDialog(
-                                                              title: const Text(
-                                                                  'Get Donee'),
-                                                              children: [
-                                                                Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
-                                                                  child:
-                                                                      TextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.pop(context);
-                                                                            Navigator.push(context,
-                                                                                AppRouter.routeToPage(const AddDoneeByIdScreen()));
-                                                                          },
-                                                                          child:
-                                                                              Row(
-                                                                            children: [
-                                                                              const Icon(Icons.add_circle_outline_rounded),
-                                                                              const SizedBox(
-                                                                                width: 24,
-                                                                              ),
-                                                                              Text(
-                                                                                'Add by ID',
-                                                                                style: Theme.of(context).textTheme.bodyLarge,
-                                                                              )
-                                                                            ],
-                                                                          )),
-                                                                ),
-                                                                Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
-                                                                  child:
-                                                                      TextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.pop(context);
-                                                                            // Navigator.push(context,
-                                                                            //     AppRouter.routeToPage(const ScanForDoneeScreen()));
-                                                                          },
-                                                                          child:
-                                                                              Row(
-                                                                            children: [
-                                                                              const Icon(Icons.qr_code_2),
-                                                                              const SizedBox(
-                                                                                width: 24,
-                                                                              ),
-                                                                              Text(
-                                                                                'Scan QR Code',
-                                                                                style: Theme.of(context).textTheme.bodyLarge,
-                                                                              )
-                                                                            ],
-                                                                          )),
-                                                                ),
-                                                              ]));
-                                            },
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  .6,
-                                              padding: const EdgeInsets.all(16),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(8)),
-                                                  border: Border.all(
-                                                      color: AppColor
-                                                          .basePrimary)),
-                                              child: Row(children: const [
-                                                Icon(
-                                                  Icons.add,
-                                                  color: AppColor.basePrimary,
-                                                ),
-                                                SizedBox(
-                                                  width: 8,
-                                                ),
-                                                Text(
-                                                  'New Donation',
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppColor.basePrimary,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                              ]),
-                                            ),
-                                          )
-                                        ]),
-                                  )
-                                : isStartSearch == false
-                                    ? Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                            thisMonthDonations.isNotEmpty
-                                                ? Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const Padding(
-                                                        padding: EdgeInsets.all(
-                                                            16.0),
-                                                        child: Level6Headline(
-                                                            text: 'This month'),
-                                                      ),
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(16),
-                                                        decoration:
-                                                            whiteContainerBackGround(),
-                                                        width: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width,
-                                                        child:
-                                                            Column(children: [
-                                                          ...thisMonthDonations
-                                                              .map((e) =>
-                                                                  DonationHistoryListCardItem(
-                                                                    donationData:
-                                                                        e,
-                                                                    searchTerm:
-                                                                        highlightSearch,
-                                                                  ))
-                                                        ]),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 32,
-                                                      ),
-                                                    ],
-                                                  )
-                                                : const SizedBox.shrink(),
-                                            //
-                                            earlierDonations.isNotEmpty
-                                                ? Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const Padding(
-                                                        padding: EdgeInsets.all(
-                                                            16.0),
-                                                        child: Level6Headline(
-                                                            text: 'Earlier'),
-                                                      ),
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(16),
-                                                        decoration:
-                                                            whiteContainerBackGround(),
-                                                        width: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width,
-                                                        child:
-                                                            Column(children: [
-                                                          ...earlierDonations
-                                                              .map((e) =>
-                                                                  DonationHistoryListCardItem(
-                                                                    donationData:
-                                                                        e,
-                                                                    searchTerm:
-                                                                        highlightSearch,
-                                                                  ))
-                                                        ]),
-                                                      ),
-                                                    ],
-                                                  )
-                                                : const SizedBox.shrink(),
-                                          ])
-                                    : state.donationHistoryModel.data.isEmpty
-                                        ? Padding(
-                                            padding: const EdgeInsets.all(16),
-                                            child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text(
-                                                      'No results found.'),
-                                                  const SizedBox(
-                                                    height: 8,
-                                                  ),
-                                                  Text(
-                                                    'Please try a different search term.',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .caption,
-                                                  )
-                                                ]),
-                                          )
-                                        : Container(
-                                            padding: const EdgeInsets.all(16),
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            decoration: BoxDecoration(
-                                                color: Colors.white
-                                                    .withOpacity(.8)),
-                                            child: Column(
-                                              children: [
-                                                ...state
-                                                    .donationHistoryModel.data
-                                                    .map((e) =>
-                                                        DonationHistoryListCardItem(
-                                                          donationData: e,
-                                                          searchTerm:
-                                                              highlightSearch,
-                                                        ))
-                                              ],
-                                            ),
-                                          );
-                          }
-                          return Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Get started by making a donation.',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Text(
-                                    'A list of your past donations will appear here once you make a donation.',
-                                    style: Theme.of(context).textTheme.caption,
-                                  ),
-                                  const SizedBox(
-                                    height: 16,
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) => SimpleDialog(
-                                                  title:
-                                                      const Text('Get Donee'),
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: TextButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                            Navigator.push(
-                                                                context,
-                                                                AppRouter
-                                                                    .routeToPage(
-                                                                        const AddDoneeByIdScreen()));
-                                                          },
-                                                          child: Row(
-                                                            children: [
-                                                              const Icon(Icons
-                                                                  .add_circle_outline_rounded),
-                                                              const SizedBox(
-                                                                width: 24,
-                                                              ),
-                                                              Text(
-                                                                'Add by ID',
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .bodyLarge,
-                                                              )
-                                                            ],
-                                                          )),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: TextButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                            // Navigator.push(
-                                                            //     context,
-                                                            //     AppRouter
-                                                            //         .routeToPage(
-                                                            //             const ScanForDoneeScreen()));
-                                                          },
-                                                          child: Row(
-                                                            children: [
-                                                              const Icon(Icons
-                                                                  .qr_code_2),
-                                                              const SizedBox(
-                                                                width: 24,
-                                                              ),
-                                                              Text(
-                                                                'Scan QR Code',
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .bodyLarge,
-                                                              )
-                                                            ],
-                                                          )),
-                                                    ),
-                                                  ]));
-                                    },
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          .6,
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(8)),
-                                          border: Border.all(
-                                              color: AppColor.basePrimary)),
-                                      child: Row(children: const [
-                                        Icon(
-                                          Icons.add,
-                                          color: AppColor.basePrimary,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          'New Donation',
-                                          style: TextStyle(
-                                              color: AppColor.basePrimary,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ]),
-                                    ),
-                                  )
-                                ],
-                              ));
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                isStartSearch == true
-                    ? Container(
-                        decoration: BoxDecoration(boxShadow: [
-                          BoxShadow(
-                              color: const Color(0xff425A70).withOpacity(.25),
-                              offset: const Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: -2),
-                          BoxShadow(
-                              color: const Color(0xff425A70).withOpacity(.25),
-                              offset: const Offset(0, 0),
-                              blurRadius: 1,
-                              spreadRadius: 0),
-                        ]),
-                        child: TextFormField(
-                          onEditingComplete: () {
+        child: Container(
+          decoration: gradientBoxDecoration(),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: () {
                             setState(() {
-                              log(_searchController.text);
+                              isStartSearch = !isStartSearch;
                             });
                           },
-                          autofocus: true,
-                          textAlign: TextAlign.start,
-                          textAlignVertical: TextAlignVertical.center,
-                          controller: _searchController,
-                          onChanged: _onChangeHandler,
-                          decoration: InputDecoration(
-                              isDense: true,
-                              hintText: 'Search',
-                              focusedBorder: InputBorder.none,
-                              border: InputBorder.none,
-                              prefix: IconButton(
-                                padding: const EdgeInsets.all(0),
-                                icon: const Icon(
-                                  FeatherIcons.x,
-                                  color: AppColor.baseText80Primary,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    context
-                                        .read<DonationHistoryCubit>()
-                                        .getDonationHistory();
-                                    _searchController.clear();
-                                    highlightSearch = '';
-                                    isStartSearch = !isStartSearch;
-                                  });
-                                },
-                              )),
+                          icon: const Icon(Icons.search,
+                              size: 32, color: AppColor.text80Primary),
                         ),
-                      )
-                    : const SizedBox.shrink(),
-                Positioned(
-                  left: 16,
-                  child: InkWell(
-                    onTap: () => _refereshHistory(),
-                    child: const Icon(
-                      Icons.refresh,
-                      color: AppColor.basePrimary,
-                      size: 28,
+                      ],
                     ),
-                  ),
-                )
-              ],
-            ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Your donations',
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          const Text(
+                              'A history of donations you’ve made through this app. Select a donation to view more details.'),
+                          const SizedBox(
+                            height: 32,
+                          ),
+                          // empty list
+                          BlocBuilder<DonationHistoryBloc,
+                              DonationHistoryState>(
+                            builder: (context, state) {
+                              if (state.status ==
+                                      DonationHistoryStatus.success &&
+                                  state.donationHistory.isNotEmpty) {
+                                return const SizedBox.shrink();
+                              } else {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Get started by making a donation.',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                            fontSize: 14,
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                    ),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    const Text(
+                                      'A list of your past donations will appear here once you make a donation.',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontStyle: FontStyle.italic,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 24,
+                                    ),
+                                    OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                            fixedSize: const Size(180, 48)),
+                                        onPressed: () {
+                                          Navigator.pushAndRemoveUntil(
+                                              context,
+                                              AppRouter.routeToPage(
+                                                  const HomeScreen(
+                                                pageIndex: 0,
+                                              )),
+                                              (route) => false);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            const Icon(Icons.add),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              'New Donation'.toUpperCase(),
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                  ],
+                                );
+                              }
+                            },
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+// data
+                        ],
+                      ),
+                    ),
+                    BlocBuilder<DonationHistoryBloc, DonationHistoryState>(
+                        builder: (context, state) {
+                      switch (state.status) {
+                        case DonationHistoryStatus.failue:
+                          return AppErrorDialogWidget(
+                            message: state.message,
+                            title: 'Error',
+                          );
+                        case DonationHistoryStatus.success:
+                          return state.donationHistory.isNotEmpty
+                              ? Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * .6,
+                                  decoration: whiteContainerBackGround(),
+                                  child: RefreshIndicator(
+                                    onRefresh: _refereshHistory,
+                                    child: ListView.builder(
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return index >=
+                                                state.donationHistory.length
+                                            ? const BottomLoader()
+                                            : DonationHistoryListCardItem(
+                                                key: Key(state
+                                                    .donationHistory[index].id),
+                                                donationData: state
+                                                    .donationHistory[index],
+                                                searchTerm: highlightSearch,
+                                              );
+                                      },
+                                      itemCount: state.hasReachedMax == true
+                                          ? state.donationHistory.length
+                                          : state.donationHistory.length + 1,
+                                      controller: _scrollController,
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink();
+                        default:
+                          return const Center(
+                            child: PrimaryAppLoader(),
+                          );
+                      }
+                    }),
+                  ],
+                ),
+              ),
+            ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class BottomLoader extends StatelessWidget {
+  const BottomLoader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: SizedBox(
+        height: 24,
+        width: 24,
+        child: CircularProgressIndicator(
+          strokeWidth: 1.5,
+          color: Color(0xff4E4CEC),
         ),
       ),
     );
