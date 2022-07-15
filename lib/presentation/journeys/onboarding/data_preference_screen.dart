@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
+import 'package:idonatio/presentation/journeys/donation_history/bloc/donation_history_bloc.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboarding_cubit.dart';
 import 'package:idonatio/presentation/journeys/onboarding/cubit/onboardingdataholder_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
@@ -13,7 +14,6 @@ import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import '../../../di/get_it.dart';
 import '../../../enums.dart';
 import '../../widgets/loaders/primary_app_loader_widget.dart';
-import '../donation_history/cubit/donation_history_cubit.dart';
 import '../saved_donees/cubit/get_saved_donees_cubit.dart';
 import '../saved_donees/cubit/recentdonees_cubit.dart';
 import '../user/cubit/user_cubit.dart';
@@ -47,7 +47,9 @@ class _OnboardingDataPreferencesScreenState
                   context
                       .read<UserCubit>()
                       .setUserState(getItInstance(), AuthStatus.authenticated);
-                  context.read<DonationHistoryCubit>().getDonationHistory();
+                  context
+                      .read<DonationHistoryBloc>()
+                      .add(const DonationHistoryFetched());
                   context.read<GetRecentdoneesCubit>().getRecentDonees();
                   context.read<GetSavedDoneesCubit>().getSavedDonee();
                   Navigator.push(
