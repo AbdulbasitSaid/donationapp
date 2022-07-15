@@ -246,7 +246,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                                       final recentlySaved = state
                                           .savedDoneesResponseModel.data!
                                           .where((e) =>
-                                              e.createdAt!.month ==
+                                              e.createdAt.month ==
                                               DateTime.now().month)
                                           .take(5)
                                           .toList();
