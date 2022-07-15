@@ -191,8 +191,8 @@ class Menu extends StatelessWidget {
           itemBuilder: (BuildContext context) => <PopupMenuItem<MenuOptions>>[
             PopupMenuItem<MenuOptions>(
               value: MenuOptions.showUserAgent,
-              child: const Text('Show user agent'),
               enabled: controller.hasData,
+              child: const Text('Show user agent'),
             ),
             const PopupMenuItem<MenuOptions>(
               value: MenuOptions.listCookies,

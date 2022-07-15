@@ -7,6 +7,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'package:idonatio/di/get_it.dart' as get_it;
 import 'package:idonatio/presentation/bloc/simple_bloc_observer.dart';
+import 'package:idonatio/presentation/journeys/donation_history/bloc/donation_history_bloc.dart';
 
 import 'common/hive_initiator.dart';
 import 'di/get_it.dart';
@@ -16,7 +17,6 @@ import 'presentation/bloc/login/login_cubit.dart';
 import 'presentation/bloc/server_timer_bloc.dart';
 import 'presentation/bloc/register/register_cubit.dart';
 import 'presentation/bloc/registration_steps/cubit/registration_steps_cubit.dart';
-import 'presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
 import 'presentation/journeys/donation_history/cubit/donation_history_summary_cubit.dart';
 import 'presentation/journeys/donation_history/cubit/get_donation_history_by_donee_id_cubit.dart';
 import 'presentation/journeys/email_verification/cubit/verification_cubit.dart';
@@ -148,10 +148,7 @@ void main() async {
                 create: (context) => CloseAccountCubit(getItInstance()),
               ),
               BlocProvider(
-                create: (context) => DonationHistoryCubit(getItInstance()),
-              ),
-              BlocProvider(
-                create: (context) => DonationHistoryCubit(getItInstance()),
+                create: (context) => DonationHistoryBloc(getItInstance()),
               ),
               BlocProvider(
                 create: (context) => DeleteSaveDoneeCubit(getItInstance()),
