@@ -17,7 +17,7 @@ class DonationDetailModel {
   final String donationDetailCode;
   final String donationId;
   final String donationTypeId;
-  final int amount;
+  final double amount;
   final DonationTypeModel donationType;
   factory DonationDetailModel.fromJson(json) =>
       _$DonationDetailModelFromJson(json);
