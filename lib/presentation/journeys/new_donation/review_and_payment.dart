@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/data/models/user_models/payment_method_model.dart';
-import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_history_cubit.dart';
+import 'package:idonatio/presentation/journeys/donation_history/bloc/donation_history_bloc.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_process_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
@@ -303,9 +303,8 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                           context
                                               .read<GetSavedDoneesCubit>()
                                               .getSavedDonee();
-                                          context
-                                              .read<DonationHistoryCubit>()
-                                              .getDonationHistory();
+                                          context.read<DonationHistoryBloc>().add(
+                                              const DonationHistoryRefreshed());
                                           Navigator.push(
                                               context,
                                               AppRouter.routeToPage(
@@ -417,7 +416,6 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                                                             state.applyGiftAidToDonation,
                                                                         giftAidEnabled:
                                                                             state.giftAidEnabled,
-                                                                          
                                                                         currency:
                                                                             state.currency,
                                                                         cardLastFourDigits:
