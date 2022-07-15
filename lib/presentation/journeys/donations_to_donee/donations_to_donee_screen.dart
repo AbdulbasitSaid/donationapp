@@ -126,7 +126,7 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
               context.read<GetdoneebycodeCubit>().getDoneeByCode(
                   getDoneeHistoryByIdState is GetDonationHistoryByDoneeIdSuccess
                       ? getDoneeHistoryByIdState.donationHistoryByDoneeIdModel
-                          .data.first.donee.doneeCode!
+                          .data.first.donee.doneeCode
                       : '');
               context.read<GetPaymentMethodsCubit>().getPaymentMethods();
               Navigator.push(
