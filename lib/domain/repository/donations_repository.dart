@@ -17,12 +17,18 @@ class DonationRepository {
 
   DonationRepository(this._donationDataSources, this._userLocalDataSource);
 
-  Future<Either<AppError, DonationHistoryModel>> getDonationHistory(
-      {String? params = ''}) async {
+  Future<Either<AppError, DonationHistoryModel>> getDonationHistory({
+    String? searchQuery,
+    int? perPage,
+    int? page,
+  }) async {
     try {
       final user = await _userLocalDataSource.getUser();
-      final result =
-          await _donationDataSources.getDonationHistory(user.token, params);
+      final result = await _donationDataSources.getDonationHistory(
+        token: user.token,
+        page: page,
+        perPage: perPage,
+      );
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
