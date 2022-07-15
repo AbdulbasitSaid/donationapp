@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:idonatio/data/models/donation_models/donation_history_data_model.dart';
-import 'package:idonatio/data/models/donation_models/donation_history_model.dart';
 import 'package:idonatio/data/models/donation_models/donee_history_datum_model.dart';
 import 'package:idonatio/presentation/journeys/donation_history/donee_detail_history.dart';
 import 'package:idonatio/presentation/reusables.dart';
@@ -138,8 +136,8 @@ class _DonationHistoryDetialsScreenState
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${e.donationType?.type}'),
-                            Text('£${e.amount!.toStringAsFixed(2)}'),
+                            Text('${e.donationType.type}'),
+                            Text('£${e.amount.toStringAsFixed(2)}'),
                           ],
                         ),
                       ),
