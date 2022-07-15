@@ -12,7 +12,7 @@ class LinkModel {
     required this.active,
   });
 
-  final String url;
+  final String? url;
   final String label;
   final bool active;
   factory LinkModel.fromJson(json) => _$LinkModelFromJson(json);
