@@ -24,8 +24,8 @@ class DoneeModel {
     required this.countryId,
     required this.type,
     required this.jobTitle,
-    required this.addressLine1,
-    required this.addressLine2,
+    required this.addressLine_1,
+    required this.addressLine_2,
     required this.city,
     required this.postalCode,
     required this.phoneNumber,
@@ -53,8 +53,8 @@ class DoneeModel {
   final String countryId;
   final String type;
   final String jobTitle;
-  final String? addressLine1;
-  final String? addressLine2;
+  final String? addressLine_1;
+  final String? addressLine_2;
   final String city;
   final String postalCode;
   final String phoneNumber;
@@ -67,7 +67,7 @@ class DoneeModel {
   factory DoneeModel.fromJson(json) => _$DoneeModelFromJson(json);
 
   String get fullAddress => organization == null
-      ? "$addressLine1 $addressLine2"
+      ? "$addressLine_1 $addressLine_2"
       : "${organization!.addressLine_1}" "${organization!.addressLine_2}";
   String get fullName =>
       organization == null ? "$firstName $lastName" : "${organization?.name}";
