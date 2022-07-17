@@ -32,7 +32,7 @@ class DonationDataSources {
   Future<DonationHistoryByDoneeIdModel> getDonationHistoryByDoneeId(
       String token, String? donorId) async {
     final result =
-        await _apiClient.get('donors/donations?donee=$donorId', token: token);
+        await _apiClient.get('donations?donee=$donorId', token: token);
     log(result.toString());
     return DonationHistoryByDoneeIdModel.fromJson(result);
   }
