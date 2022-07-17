@@ -62,7 +62,7 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                           if (state is GetDonationHistoryByDoneeIdSuccess) {
                             return Level2Headline(
                                 text: state.donationHistoryByDoneeIdModel.data
-                                    .first.donee.fullName);
+                                    .data.first.donee.fullName);
                           }
                           if (state is GetDonationHistoryByDoneeIdFailure) {
                             return const Level2Headline(
@@ -89,16 +89,16 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                             child: DonationHistoryListCard(
                               donationHistoryListCardEntity:
                                   DonationHistoryListCardEntity(
-                                amount: doneeData[index].totalPayment,
+                                amount: doneeData.data[index].totalPayment,
                                 donationType:
-                                    doneeData[index].displayDationType,
-                                dontionDate: doneeData[index].createdAt,
-                                name: doneeData[index].donee.fullName,
-                                rank: doneeData[index].rank,
+                                    doneeData.data[index].displayDationType,
+                                dontionDate: doneeData.data[index].createdAt,
+                                name: doneeData.data[index].donee.fullName,
+                                rank: doneeData.data[index].rank,
                               ),
                             ),
                           ),
-                      childCount: doneeData.length),
+                      childCount: doneeData.data.length),
                 );
               }
               return SliverList(
@@ -126,7 +126,7 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
               context.read<GetdoneebycodeCubit>().getDoneeByCode(
                   getDoneeHistoryByIdState is GetDonationHistoryByDoneeIdSuccess
                       ? getDoneeHistoryByIdState.donationHistoryByDoneeIdModel
-                          .data.first.donee.doneeCode
+                          .data.data.first.donee.doneeCode
                       : '');
               context.read<GetPaymentMethodsCubit>().getPaymentMethods();
               Navigator.push(
