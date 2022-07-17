@@ -58,7 +58,7 @@ class DonationHistoryDatumModel {
   final dynamic channel;
   final String stripePaymentMethodId;
   final bool hasRefund;
-  final bool hasClaimedGiftAid;
+  final bool? hasClaimedGiftAid;
   final dynamic giftAidClaimId;
   final String cardLastFourDigits;
   final String cardType;
