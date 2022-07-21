@@ -29,6 +29,7 @@ environment:
 dependencies:
   aligned_dialog: ^0.0.6
   bloc_concurrency: ^0.2.0
+  cached_network_image: ^3.2.1
   cupertino_icons: ^1.0.3
   dart_ipify: ^1.1.1
   dartz: ^0.10.1
