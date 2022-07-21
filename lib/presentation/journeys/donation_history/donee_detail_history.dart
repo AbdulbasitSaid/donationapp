@@ -8,6 +8,7 @@ import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
+import 'package:idonatio/presentation/widgets/donee_logo_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 import 'package:idonatio/presentation/widgets/veiw_all_button_widget.dart';
@@ -15,7 +16,6 @@ import 'package:idonatio/presentation/widgets/veiw_all_button_widget.dart';
 import '../../../data/models/donation_models/donee_history_datum_model.dart';
 import '../../widgets/buttons/logout_button_widget.dart';
 import '../../widgets/donation_summary_widget.dart';
-import '../../widgets/donee_avatar_place_holder.dart';
 import '../../widgets/labels/level_2_heading.dart';
 import '../new_donation/cubit/get_payment_methods_cubit.dart';
 import '../new_donation/cubit/getdoneebycode_cubit.dart';
@@ -230,11 +230,15 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
               ),
               const DonationSummaryWidget()
             ]),
-            const Positioned(
+            Positioned(
                 right: 16,
                 top: 50,
                 child: SizedBox(
-                    height: 72, width: 72, child: DoneeAvatarPlaceHolder())),
+                    height: 72,
+                    width: 72,
+                    child: DoneeLogoWidget(
+                      imageUrl: widget.donationData.donee.imageUrl!,
+                    ))),
             dialog
                 ? BlocListener<SaveDoneeCubit, SaveDoneeState>(
                     listener: (context, state) {
