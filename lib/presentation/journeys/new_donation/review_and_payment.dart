@@ -21,7 +21,7 @@ import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/buttons/logout_button_widget.dart';
-import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
+import 'package:idonatio/presentation/widgets/donee_logo_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
@@ -122,7 +122,9 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const DoneeAvatarPlaceHolder(),
+                              DoneeLogoWidget(
+                                imageUrl: state.doneeResponseData.imageUrl!,
+                              ),
                               const SizedBox(
                                 width: 8,
                               ),
