@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/data/models/donation_models/donee_history_datum_model.dart';
+import 'package:idonatio/presentation/widgets/donee_logo_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 
@@ -63,7 +64,9 @@ class DonationHistoryListCardItem extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const DoneeAvatarPlaceHolder(),
+                    DoneeLogoWidget(
+                      imageUrl: donationData.donee.imageUrl,
+                    ),
                     const SizedBox(
                       width: 16,
                     ),
@@ -81,7 +84,7 @@ class DonationHistoryListCardItem extends StatelessWidget {
                           height: 8,
                         ),
                         Text(
-                          '${donationData.displayDonationType}',
+                          donationData.displayDonationType,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(
