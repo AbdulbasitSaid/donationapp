@@ -9,12 +9,12 @@ import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/donation_summary_widget.dart';
+import 'package:idonatio/presentation/widgets/donee_logo_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_6_headline.dart';
 import 'package:idonatio/presentation/widgets/veiw_all_button_widget.dart';
 
 import '../../../data/models/donation_models/donee_model.dart';
 import '../../widgets/buttons/logout_button_widget.dart';
-import '../../widgets/donee_avatar_place_holder.dart';
 import '../../widgets/labels/level_2_heading.dart';
 import '../../widgets/loaders/primary_app_loader_widget.dart';
 import '../new_donation/cubit/get_payment_methods_cubit.dart';
@@ -247,13 +247,15 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
                   ),
                   const DonationSummaryWidget()
                 ]),
-                const Positioned(
+                Positioned(
                     right: 16,
                     top: 50,
                     child: SizedBox(
                         height: 72,
                         width: 72,
-                        child: DoneeAvatarPlaceHolder())),
+                        child: DoneeLogoWidget(
+                          imageUrl: widget.donationData.imageUrl,
+                        ))),
                 dialog == false
                     ? const SizedBox.shrink()
                     : Positioned(
