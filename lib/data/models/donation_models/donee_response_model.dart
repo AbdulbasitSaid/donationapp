@@ -45,6 +45,7 @@ class Data {
     required this.country,
     required this.organization,
     required this.donationTypes,
+    required this.imageUrl,
   });
   late final String id;
   late final String doneeCode;
@@ -60,6 +61,7 @@ class Data {
   late final String addressLine_1;
   late final String addressLine_2;
   late final String city;
+  late final String? imageUrl;
   late final String postalCode;
   late final String phoneNumber;
   late final String verifiedAt;
