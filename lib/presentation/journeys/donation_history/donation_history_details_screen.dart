@@ -3,7 +3,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:idonatio/data/models/donation_models/donee_history_datum_model.dart';
 import 'package:idonatio/presentation/journeys/donation_history/donee_detail_history.dart';
 import 'package:idonatio/presentation/reusables.dart';
-import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
+import 'package:idonatio/presentation/widgets/donee_logo_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import 'package:intl/intl.dart';
@@ -82,7 +82,9 @@ class _DonationHistoryDetialsScreenState
                                 : const SizedBox.shrink()
                           ],
                         ),
-                        const DoneeAvatarPlaceHolder(),
+                        DoneeLogoWidget(
+                          imageUrl: widget.donationHistoryData.donee.imageUrl,
+                        ),
                       ]),
                 ),
                 Padding(
