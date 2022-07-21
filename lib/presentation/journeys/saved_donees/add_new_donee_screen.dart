@@ -8,6 +8,7 @@ import 'package:idonatio/presentation/journeys/saved_donees/cubit/save_donee_cub
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
+import 'package:idonatio/presentation/widgets/donee_logo_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../widgets/loaders/primary_app_loader_widget.dart';
@@ -64,12 +65,20 @@ class _AddNewDoneeScreenState extends State<AddNewDoneeScreen> {
               ),
               Stack(
                 clipBehavior: Clip.none,
-                children: const [
-                  DoneeCardWidget(),
-                  Positioned(
-                    top: -60,
-                    right: 20,
-                    child: DoneeAvatarPlaceHolder(),
+                children: [
+                  const DoneeCardWidget(),
+                  BlocBuilder<GetdoneebycodeCubit, GetdoneebycodeState>(
+                    builder: (context, state) {
+                      return state is GetdoneebycodeSuccess
+                          ? const Positioned(
+                              top: -60,
+                              right: 20,
+                              child: DoneeLogoWidget(
+                                imageUrl: '',
+                              ),
+                            )
+                          : const DoneeAvatarPlaceHolder();
+                    },
                   )
                 ],
               ),
