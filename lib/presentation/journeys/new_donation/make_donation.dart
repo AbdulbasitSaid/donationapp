@@ -235,6 +235,7 @@ class _MakeDonationScreenState extends State<MakeDonationScreen> {
                                           ...?state
                                               .recentDoneesResponseModel.data
                                               ?.map((e) => DoneeListTile(
+                                                    imageUrl: e.imageUrl,
                                                     key: Key(e.id),
                                                     address: e.fullAddress,
                                                     doneeCode: e.doneeCode,
