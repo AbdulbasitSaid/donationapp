@@ -12,7 +12,7 @@ import 'package:idonatio/presentation/journeys/user/cubit/get_authenticated_user
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
-import 'package:idonatio/presentation/widgets/donee_avatar_place_holder.dart';
+import 'package:idonatio/presentation/widgets/donee_logo_widget.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 
 import '../../widgets/loaders/primary_app_loader_widget.dart';
@@ -79,12 +79,21 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
               ),
               Stack(
                 clipBehavior: Clip.none,
-                children: const [
-                  DoneeCardWidget(),
+                children: [
+                  const DoneeCardWidget(),
                   Positioned(
                     top: -60,
                     right: 20,
-                    child: DoneeAvatarPlaceHolder(),
+                    child:
+                        BlocBuilder<GetdoneebycodeCubit, GetdoneebycodeState>(
+                      builder: (context, state) {
+                        return DoneeLogoWidget(
+                          imageUrl: state is GetdoneebycodeSuccess
+                              ? state.doneeResponseData.imageUrl
+                              : 'Failed to get Donee',
+                        );
+                      },
+                    ),
                   )
                 ],
               ),
