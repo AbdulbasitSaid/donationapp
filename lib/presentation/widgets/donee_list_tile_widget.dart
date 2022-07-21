@@ -7,17 +7,20 @@ import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import '../journeys/new_donation/cubit/get_payment_methods_cubit.dart';
 import '../journeys/new_donation/donation_details.dart';
 import '../router/app_router.dart';
-import 'donee_avatar_place_holder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'donee_logo_widget.dart';
 
 class DoneeListTile extends StatelessWidget {
   final String? name, address;
   final String doneeCode;
+  final String? imageUrl;
   const DoneeListTile({
     Key? key,
     required this.name,
     required this.address,
     required this.doneeCode,
+    required this.imageUrl,
   }) : super(key: key);
 
   @override
@@ -46,9 +49,11 @@ class DoneeListTile extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const DoneeAvatarPlaceHolder(),
+            //
+            DoneeLogoWidget(imageUrl: imageUrl),
+            //
             const SizedBox(
-              width: 8,
+              width: 16,
             ),
             Flexible(
                 child: Column(
