@@ -221,25 +221,33 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                                 height:
                                     MediaQuery.of(context).size.height * .55,
                                 decoration: whiteContainerBackGround(),
-                                child: ListView.builder(
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return index == state.donationHistory.length
-                                        ? const Center(
-                                            child: PrimaryAppLoader())
-                                        : DonationHistoryListCardItem(
-                                            key: Key(state
-                                                .donationHistory[index].id),
-                                            donationData:
-                                                state.donationHistory[index],
-                                            searchTerm: highlightSearch,
-                                          );
+                                child: RefreshIndicator(
+                                  onRefresh: () async {
+                                    context
+                                        .read<DonationHistoryBloc>()
+                                        .add(const DonationHistoryRefreshed());
                                   },
-                                  itemCount: state.hasReachedMax == true
-                                      ? state.donationHistory.length
-                                      : state.donationHistory.length + 1,
-                                  // itemCount: state.donationHistory.length,
-                                  controller: _scrollController,
+                                  child: ListView.builder(
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return index ==
+                                              state.donationHistory.length
+                                          ? const Center(
+                                              child: PrimaryAppLoader())
+                                          : DonationHistoryListCardItem(
+                                              key: Key(state
+                                                  .donationHistory[index].id),
+                                              donationData:
+                                                  state.donationHistory[index],
+                                              searchTerm: highlightSearch,
+                                            );
+                                    },
+                                    itemCount: state.hasReachedMax == true
+                                        ? state.donationHistory.length
+                                        : state.donationHistory.length + 1,
+                                    // itemCount: state.donationHistory.length,
+                                    controller: _scrollController,
+                                  ),
                                 ),
                               )
                             : const SizedBox.shrink();
