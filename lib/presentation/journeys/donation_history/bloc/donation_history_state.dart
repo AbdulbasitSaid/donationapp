@@ -8,6 +8,7 @@ class DonationHistoryState extends Equatable {
     this.message = '',
     this.currentPage = 1,
     this.nextPageUrl,
+    this.searchQuery,
   });
   final DonationHistoryStatus status;
   final List<DonationHistoryDatumModel> donationHistory;
@@ -15,7 +16,7 @@ class DonationHistoryState extends Equatable {
   final String message;
   final int currentPage;
   final String? nextPageUrl;
-
+  final String? searchQuery;
   @override
   List<Object> get props => [
         status,
@@ -26,7 +27,7 @@ class DonationHistoryState extends Equatable {
 
   @override
   String toString() {
-    return 'DonationHistoryState(status: $status, donationHistory: $donationHistory, hasReachedMax: $hasReachedMax, message: $message, currentPage: $currentPage, nextPageUrl: $nextPageUrl)';
+    return 'DonationHistoryState(status: $status, donationHistory: $donationHistory, hasReachedMax: $hasReachedMax, message: $message, currentPage: $currentPage, nextPageUrl: $nextPageUrl, searchQuery: $searchQuery)';
   }
 
   DonationHistoryState copyWith({
@@ -36,6 +37,7 @@ class DonationHistoryState extends Equatable {
     String? message,
     int? currentPage,
     String? nextPageUrl,
+    String? searchQuery,
   }) {
     return DonationHistoryState(
       status: status ?? this.status,
@@ -44,12 +46,14 @@ class DonationHistoryState extends Equatable {
       message: message ?? this.message,
       currentPage: currentPage ?? this.currentPage,
       nextPageUrl: nextPageUrl ?? this.nextPageUrl,
+      searchQuery: searchQuery ?? this.searchQuery,
     );
   }
 }
 
 enum DonationHistoryStatus {
   initial,
+  search,
   success,
   failue,
 }
