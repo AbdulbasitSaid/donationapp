@@ -51,57 +51,59 @@ class DonationHistoryBloc
 
   Future<void> _onDonationHistoryFetched(
       DonationHistoryFetched event, Emitter<DonationHistoryState> emit) async {
-    if (state.hasReachedMax == true) return;
-
-    try {
-      if (state.status == DonationHistoryStatus.initial) {
-        final result = await _donationRepository.getDonationHistory();
-        emit(
-          result.fold(
-            (l) => state.copyWith(
-              status: DonationHistoryStatus.failue,
-              donationHistory: [],
-              message: getErrorMessage(l.appErrorType),
+    if (state.hasReachedMax == true) {
+      return;
+    } else {
+      try {
+        if (state.status == DonationHistoryStatus.initial) {
+          final result = await _donationRepository.getDonationHistory();
+          emit(
+            result.fold(
+              (l) => state.copyWith(
+                status: DonationHistoryStatus.failue,
+                donationHistory: [],
+                message: getErrorMessage(l.appErrorType),
+              ),
+              (r) => state.copyWith(
+                status: DonationHistoryStatus.success,
+                donationHistory: r.data.data,
+                hasReachedMax: false,
+                currentPage: r.data.currentPage,
+                nextPageUrl: r.data.nextPageUrl,
+              ),
             ),
-            (r) => state.copyWith(
-              status: DonationHistoryStatus.success,
-              donationHistory: r.data.data,
-              hasReachedMax: false,
-              currentPage: r.data.currentPage,
-              nextPageUrl: r.data.nextPageUrl,
+          );
+        } else if (state.donationHistory.isEmpty) {
+          emit(state.copyWith(hasReachedMax: true));
+        } else {
+          final result = await _donationRepository.getDonationHistory(
+            page: state.currentPage + 1,
+          );
+          emit(
+            result.fold(
+              (l) => state.copyWith(
+                status: DonationHistoryStatus.failue,
+                donationHistory: [],
+                message: getErrorMessage(l.appErrorType),
+              ),
+              (r) => state.copyWith(
+                status: DonationHistoryStatus.success,
+                donationHistory: List.of(state.donationHistory)
+                  ..addAll(r.data.data),
+                hasReachedMax: r.data.data.isEmpty ? true : false,
+                currentPage: r.data.currentPage,
+                nextPageUrl: r.data.nextPageUrl,
+              ),
             ),
-          ),
-        );
-      } else if (state.nextPageUrl == null) {
-        emit(state.copyWith(hasReachedMax: true));
-      } else {
-        final result = await _donationRepository.getDonationHistory(
-          page: state.currentPage + 1,
-        );
-        emit(
-          result.fold(
-            (l) => state.copyWith(
-              status: DonationHistoryStatus.failue,
-              donationHistory: [],
-              message: getErrorMessage(l.appErrorType),
-            ),
-            (r) => state.copyWith(
-              status: DonationHistoryStatus.success,
-              donationHistory: List.of(state.donationHistory)
-                ..addAll(r.data.data),
-              hasReachedMax: r.data.nextPageUrl == null ? true : false,
-              currentPage: r.data.currentPage,
-              nextPageUrl: r.data.nextPageUrl,
-            ),
-          ),
-        );
+          );
+        }
+      } on Exception {
+        emit(state.copyWith(
+          status: DonationHistoryStatus.failue,
+          message: 'Opps Unexpected error occured',
+          donationHistory: [],
+        ));
       }
-    } on Exception {
-      emit(state.copyWith(
-        status: DonationHistoryStatus.failue,
-        message: 'Opps Unexpected error occured',
-        donationHistory: [],
-      ));
     }
   }
 }
