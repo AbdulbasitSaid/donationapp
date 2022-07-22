@@ -18,7 +18,7 @@ class DonationRepository {
   DonationRepository(this._donationDataSources, this._userLocalDataSource);
 
   Future<Either<AppError, DonationHistoryModel>> getDonationHistory({
-    String? searchQuery,
+    String searchQuery = '',
     int? perPage,
     int? page,
   }) async {
@@ -27,7 +27,7 @@ class DonationRepository {
       final result = await _donationDataSources.getDonationHistory(
         token: user.token,
         page: page,
-        perPage: perPage,
+        searchQuery: searchQuery,
       );
       return Right(result);
     } on BadRequest {
