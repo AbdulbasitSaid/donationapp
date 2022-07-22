@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +22,7 @@ class DonationHistoryScreen extends StatefulWidget {
 
 class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   bool isStartSearch = false;
+  String searchValue = '';
   late TextEditingController _searchController;
   final _scrollController = ScrollController();
 
@@ -33,13 +35,16 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
             800); // set the duration that you want call search() after that.
     setState(() => searchOnStoppedTyping.cancel());
     search(value) {
-      // highlightSearch = value;
-      // if (value.isEmpty) {
-      //   context.read<DonationHistoryBloc>().add(const DonationHistoryFetched());
-      // } else {
-      //   //Todo add search
-      //   // context.read<DonationHistoryBloc>().add(value);
-      // }
+      highlightSearch = value;
+      if (value.isEmpty) {
+        context
+            .read<DonationHistoryBloc>()
+            .add(const DonationHistoryRefreshed());
+      } else {
+        context.read<DonationHistoryBloc>().add(DonationHistorySearched(
+              searchQuery: value,
+            ));
+      }
     }
 
     setState(
@@ -51,15 +56,19 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
     _searchController = TextEditingController();
     searchOnStoppedTyping = Timer(duration, () {});
     _scrollController.addListener(_onScroll);
-
-    // context.read<DonationHistoryBloc>().add(const DonationHistoryFetched());
-
     super.initState();
   }
 
   void _onScroll() {
     if (_isBottom) {
-      context.read<DonationHistoryBloc>().add(const DonationHistoryFetched());
+      log(_searchController.text);
+      isStartSearch == true
+          ? context
+              .read<DonationHistoryBloc>()
+              .add(DonationHistorySearched(searchQuery: _searchController.text))
+          : context
+              .read<DonationHistoryBloc>()
+              .add(const DonationHistoryFetched());
     } else {
       return;
     }
@@ -74,15 +83,13 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
 
   @override
   void dispose() {
+    _searchController.dispose();
+
     _scrollController
       ..removeListener(_onScroll)
       ..dispose();
     super.dispose();
   }
-
-  // Future<void> _refereshHistory() async {
-  //   context.read<DonationHistoryBloc>().add(const DonationHistoryRefreshed());
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -98,115 +105,138 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Flexible(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isStartSearch = !isStartSearch;
-                            });
-                          },
-                          icon: const Icon(Icons.search,
-                              size: 32, color: AppColor.text80Primary),
-                        ),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          isStartSearch == true
+                              ? SizedBox(
+                                  width: MediaQuery.of(context).size.width * .8,
+                                  child: TextField(
+                                    controller: _searchController,
+                                    onChanged: (value) {
+                                      _onChangeHandler(value);
+                                    },
+                                  ))
+                              : const SizedBox.shrink(),
+                          IconButton(
+                            onPressed: () {
+                              context
+                                  .read<DonationHistoryBloc>()
+                                  .add(const DonationHistoryRefreshed());
+
+                              setState(() {
+                                isStartSearch = !isStartSearch;
+                              });
+                            },
+                            icon: const Icon(Icons.search,
+                                size: 32, color: AppColor.text80Primary),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
                     height: 16,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Your donations',
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        const Text(
-                            'A history of donations you’ve made through this app. Select a donation to view more details.'),
-                        const SizedBox(
-                          height: 32,
-                        ),
-                        // empty list
-                        BlocBuilder<DonationHistoryBloc, DonationHistoryState>(
-                          builder: (context, state) {
-                            if (state.status == DonationHistoryStatus.success &&
-                                state.donationHistory.isNotEmpty) {
-                              return const SizedBox.shrink();
-                            } else {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Get started by making a donation.',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(
-                                          fontSize: 14,
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.w400,
+                  isStartSearch == false
+                      ? Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Your donations',
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              const Text(
+                                  'A history of donations you’ve made through this app. Select a donation to view more details.'),
+                              const SizedBox(
+                                height: 32,
+                              ),
+                              // empty list
+                              BlocBuilder<DonationHistoryBloc,
+                                  DonationHistoryState>(
+                                builder: (context, state) {
+                                  if (state.status ==
+                                          DonationHistoryStatus.success &&
+                                      state.donationHistory.isNotEmpty) {
+                                    return const SizedBox.shrink();
+                                  } else {
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Get started by making a donation.',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .copyWith(
+                                                fontSize: 14,
+                                                fontStyle: FontStyle.italic,
+                                                fontWeight: FontWeight.w400,
+                                              ),
                                         ),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  const Text(
-                                    'A list of your past donations will appear here once you make a donation.',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 24,
-                                  ),
-                                  OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                          fixedSize: const Size(180, 48)),
-                                      onPressed: () {
-                                        Navigator.pushAndRemoveUntil(
-                                            context,
-                                            AppRouter.routeToPage(
-                                                const HomeScreen(
-                                              pageIndex: 0,
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        const Text(
+                                          'A list of your past donations will appear here once you make a donation.',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 24,
+                                        ),
+                                        OutlinedButton(
+                                            style: OutlinedButton.styleFrom(
+                                                fixedSize: const Size(180, 48)),
+                                            onPressed: () {
+                                              Navigator.pushAndRemoveUntil(
+                                                  context,
+                                                  AppRouter.routeToPage(
+                                                      const HomeScreen(
+                                                    pageIndex: 0,
+                                                  )),
+                                                  (route) => false);
+                                            },
+                                            child: Row(
+                                              children: [
+                                                const Icon(Icons.add),
+                                                const SizedBox(
+                                                  width: 8,
+                                                ),
+                                                Text(
+                                                  'New Donation'.toUpperCase(),
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ],
                                             )),
-                                            (route) => false);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.add),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            'New Donation'.toUpperCase(),
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ],
-                                      )),
-                                ],
-                              );
-                            }
-                          },
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
+                                      ],
+                                    );
+                                  }
+                                },
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
 // data
-                      ],
-                    ),
-                  ),
+                            ],
+                          ),
+                        )
+                      : const SizedBox.shrink(),
                   BlocBuilder<DonationHistoryBloc, DonationHistoryState>(
                       builder: (context, state) {
                     switch (state.status) {
@@ -239,13 +269,13 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                                                   .donationHistory[index].id),
                                               donationData:
                                                   state.donationHistory[index],
-                                              searchTerm: highlightSearch,
+                                              searchTerm:
+                                                  _searchController.text,
                                             );
                                     },
                                     itemCount: state.hasReachedMax == true
                                         ? state.donationHistory.length
                                         : state.donationHistory.length + 1,
-                                    // itemCount: state.donationHistory.length,
                                     controller: _scrollController,
                                   ),
                                 ),
@@ -253,8 +283,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                             : const SizedBox.shrink();
                       default:
                         return const Center(
-                          child: Text('loading...'),
-                          // child: PrimaryAppLoader(),
+                          child: PrimaryAppLoader(),
                         );
                     }
                   }),
@@ -262,24 +291,6 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class BottomLoader extends StatelessWidget {
-  const BottomLoader({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: SizedBox(
-        height: 24,
-        width: 24,
-        child: CircularProgressIndicator(
-          strokeWidth: 1.5,
-          color: Color(0xff4E4CEC),
         ),
       ),
     );
