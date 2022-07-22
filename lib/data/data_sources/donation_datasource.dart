@@ -15,8 +15,7 @@ class DonationDataSources {
     int? perPage = 15,
     int? page,
   }) async {
-    final result =
-        await _apiClient.get('donations?per_page=5&page=$page', token: token);
+    final result = await _apiClient.get('donations?page=$page', token: token);
     log(result.toString());
     return DonationHistoryModel.fromJson(result);
   }
