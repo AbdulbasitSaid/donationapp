@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +28,7 @@ class DonationHistoryBloc
         transformer: throttleDroppable(throttleDuration));
     on<DonationHistoryRefreshed>(_onDonationHistoryRefereshed,
         transformer: throttleDroppable(throttleDuration));
+    on<DonationHistorySearched>(_onDonationHistorySearched);
   }
 
   Future<void> _onDonationHistoryRefereshed(DonationHistoryRefreshed event,
@@ -104,6 +107,31 @@ class DonationHistoryBloc
           donationHistory: [],
         ));
       }
+    }
+  }
+
+  FutureOr<void> _onDonationHistorySearched(
+      DonationHistorySearched event, Emitter<DonationHistoryState> emit) async {
+    {
+      emit(state.copyWith(status: DonationHistoryStatus.initial));
+      final result = await _donationRepository.getDonationHistory(
+        searchQuery: event.searchQuery,
+      );
+      emit(
+        result.fold(
+          (l) => state.copyWith(
+            status: DonationHistoryStatus.failue,
+            donationHistory: [],
+            message: getErrorMessage(l.appErrorType),
+          ),
+          (r) => state.copyWith(
+            status: DonationHistoryStatus.success,
+            donationHistory: r.data.data,
+            currentPage: r.data.currentPage,
+            nextPageUrl: r.data.nextPageUrl,
+          ),
+        ),
+      );
     }
   }
 }
