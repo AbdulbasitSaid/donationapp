@@ -33,13 +33,13 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
             800); // set the duration that you want call search() after that.
     setState(() => searchOnStoppedTyping.cancel());
     search(value) {
-      highlightSearch = value;
-      if (value.isEmpty) {
-        context.read<DonationHistoryBloc>().add(const DonationHistoryFetched());
-      } else {
-        //Todo add search
-        // context.read<DonationHistoryBloc>().add(value);
-      }
+      // highlightSearch = value;
+      // if (value.isEmpty) {
+      //   context.read<DonationHistoryBloc>().add(const DonationHistoryFetched());
+      // } else {
+      //   //Todo add search
+      //   // context.read<DonationHistoryBloc>().add(value);
+      // }
     }
 
     setState(
@@ -60,6 +60,8 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   void _onScroll() {
     if (_isBottom) {
       context.read<DonationHistoryBloc>().add(const DonationHistoryFetched());
+    } else {
+      return;
     }
   }
 
@@ -72,8 +74,9 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
 
   @override
   void dispose() {
-    _searchController.dispose();
-
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
     super.dispose();
   }
 
@@ -215,13 +218,15 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                       case DonationHistoryStatus.success:
                         return state.donationHistory.isNotEmpty
                             ? Container(
-                                height: MediaQuery.of(context).size.height * .5,
+                                height:
+                                    MediaQuery.of(context).size.height * .55,
                                 decoration: whiteContainerBackGround(),
                                 child: ListView.builder(
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return index >= state.donationHistory.length
-                                        ? const BottomLoader()
+                                    return index == state.donationHistory.length
+                                        ? const Center(
+                                            child: PrimaryAppLoader())
                                         : DonationHistoryListCardItem(
                                             key: Key(state
                                                 .donationHistory[index].id),
@@ -233,13 +238,15 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                                   itemCount: state.hasReachedMax == true
                                       ? state.donationHistory.length
                                       : state.donationHistory.length + 1,
+                                  // itemCount: state.donationHistory.length,
                                   controller: _scrollController,
                                 ),
                               )
                             : const SizedBox.shrink();
                       default:
                         return const Center(
-                          child: PrimaryAppLoader(),
+                          child: Text('loading...'),
+                          // child: PrimaryAppLoader(),
                         );
                     }
                   }),
