@@ -14,8 +14,10 @@ class DonationDataSources {
     required String token,
     int? perPage = 15,
     int? page,
+    String searchQuery = '',
   }) async {
-    final result = await _apiClient.get('donations?page=$page', token: token);
+    final result = await _apiClient
+        .get('donations?page=$page&search=$searchQuery', token: token);
     log(result.toString());
     return DonationHistoryModel.fromJson(result);
   }
