@@ -118,13 +118,16 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                       ?.addressLine_1 ??
                                   'has no address',
                               id: state.doneeResponseData.doneeCode,
-                              name: state.doneeResponseData.organization?.name,
+                              name: state.doneeResponseData.fullName,
+                              imageUrl: state.doneeResponseData.imageUrl,
                             );
                           } else {
                             return DetailCardForIndividualWidget(
                               id: state.doneeResponseData.doneeCode,
                               name: state.doneeResponseData.fullName,
-                              address: state.doneeResponseData.addressLine_1,
+                              address: state.doneeResponseData.fullAddress,
+                                                            imageUrl: state.doneeResponseData.imageUrl,
+
                             );
                           }
                         } else if (state is GetdoneebycodeLoading) {
