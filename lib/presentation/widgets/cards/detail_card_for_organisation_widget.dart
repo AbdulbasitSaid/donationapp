@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
+import 'package:idonatio/presentation/widgets/donee_logo_widget.dart';
 
 import '../../themes/app_color.dart';
-import '../donee_avatar_place_holder.dart';
 
 class DetailCardForOrganisationWidget extends StatelessWidget {
   const DetailCardForOrganisationWidget({
@@ -10,10 +9,12 @@ class DetailCardForOrganisationWidget extends StatelessWidget {
     required this.name,
     this.address,
     required this.id,
+    this.imageUrl,
   }) : super(key: key);
   final String? name;
   final String? address;
   final String id;
+  final String? imageUrl;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +25,9 @@ class DetailCardForOrganisationWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const DoneeAvatarPlaceHolder(),
+          DoneeLogoWidget(
+            imageUrl: imageUrl,
+          ),
           const SizedBox(
             width: 16,
           ),
@@ -76,10 +79,12 @@ class DetailCardForIndividualWidget extends StatelessWidget {
     this.name,
     this.address,
     required this.id,
+    this.imageUrl,
   }) : super(key: key);
   final String? name;
   final String? address;
   final String id;
+  final String? imageUrl;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -90,7 +95,9 @@ class DetailCardForIndividualWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const DoneeAvatarPlaceHolder(),
+          DoneeLogoWidget(
+            imageUrl: imageUrl,
+          ),
           const SizedBox(
             width: 16,
           ),
