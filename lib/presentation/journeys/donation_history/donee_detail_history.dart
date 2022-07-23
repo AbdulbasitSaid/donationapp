@@ -237,7 +237,7 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
                     height: 72,
                     width: 72,
                     child: DoneeLogoWidget(
-                      imageUrl: widget.donationData.donee.imageUrl!,
+                      imageUrl: widget.donationData.donee.imageUrl,
                     ))),
             dialog
                 ? BlocListener<SaveDoneeCubit, SaveDoneeState>(
