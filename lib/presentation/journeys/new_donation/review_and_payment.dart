@@ -123,7 +123,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               DoneeLogoWidget(
-                                imageUrl: state.doneeResponseData.imageUrl!,
+                                imageUrl: state.doneeResponseData.imageUrl,
                               ),
                               const SizedBox(
                                 width: 8,
