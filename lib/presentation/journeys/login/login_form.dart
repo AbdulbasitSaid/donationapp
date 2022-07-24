@@ -10,6 +10,7 @@ import 'package:idonatio/presentation/bloc/loader_cubit/loading_cubit.dart';
 import 'package:idonatio/presentation/bloc/login/login_cubit.dart';
 import 'package:idonatio/presentation/journeys/auth_guard.dart';
 import 'package:idonatio/presentation/journeys/donation_history/bloc/donation_history_bloc.dart';
+import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_aggregation_cubit.dart';
 import 'package:idonatio/presentation/journeys/reset_password/sent_opt_forgot_password_screen.dart';
 import 'package:idonatio/presentation/journeys/user/cubit/user_cubit.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
@@ -86,6 +87,7 @@ class _LoginFormState extends State<LoginForm> {
             context
                 .read<DonationHistoryBloc>()
                 .add(const DonationHistoryFetched());
+            context.read<DonationAggregationCubit>().getDonationAggregate();
             context.read<GetRecentdoneesCubit>().getRecentDonees();
             context.read<GetSavedDoneesCubit>().getSavedDonee();
             Navigator.pushAndRemoveUntil(context,
