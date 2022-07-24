@@ -38,6 +38,7 @@ class DonationHistoryDatumModel {
     required this.rank,
     required this.donationDetails,
     required this.donee,
+    required this.monthRanking,
   });
 
   final String id;
@@ -69,6 +70,7 @@ class DonationHistoryDatumModel {
   final int rank;
   final List<DonationDetailModel> donationDetails;
   final DoneeModel donee;
+  final String monthRanking;
 
   factory DonationHistoryDatumModel.fromJson(json) =>
       _$DonationHistoryDatumModelFromJson(json);
