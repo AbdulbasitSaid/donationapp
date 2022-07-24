@@ -14,6 +14,7 @@ import 'package:idonatio/presentation/widgets/labels/level_4_headline.dart';
 import '../../../di/get_it.dart';
 import '../../../enums.dart';
 import '../../widgets/loaders/primary_app_loader_widget.dart';
+import '../donation_history/cubit/donation_aggregation_cubit.dart';
 import '../saved_donees/cubit/get_saved_donees_cubit.dart';
 import '../saved_donees/cubit/recentdonees_cubit.dart';
 import '../user/cubit/user_cubit.dart';
@@ -50,6 +51,10 @@ class _OnboardingDataPreferencesScreenState
                   context
                       .read<DonationHistoryBloc>()
                       .add(const DonationHistoryFetched());
+                  context
+                      .read<DonationAggregationCubit>()
+                      .getDonationAggregate();
+
                   context.read<GetRecentdoneesCubit>().getRecentDonees();
                   context.read<GetSavedDoneesCubit>().getSavedDonee();
                   Navigator.push(
