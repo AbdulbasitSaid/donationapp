@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:idonatio/data/models/user_models/payment_method_model.dart';
 import 'package:idonatio/presentation/journeys/donation_history/bloc/donation_history_bloc.dart';
+import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_aggregation_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_cart_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/donation_process_cubit.dart';
 import 'package:idonatio/presentation/journeys/new_donation/cubit/get_payment_methods_cubit.dart';
@@ -307,6 +308,9 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                                               .getSavedDonee();
                                           context.read<DonationHistoryBloc>().add(
                                               const DonationHistoryRefreshed());
+                                          context
+                                              .read<DonationAggregationCubit>()
+                                              .getDonationAggregate();
                                           Navigator.push(
                                               context,
                                               AppRouter.routeToPage(
