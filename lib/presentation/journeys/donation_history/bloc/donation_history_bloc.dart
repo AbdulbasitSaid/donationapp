@@ -42,12 +42,12 @@ class DonationHistoryBloc
           message: getErrorMessage(l.appErrorType),
         ),
         (r) => state.copyWith(
-          status: DonationHistoryStatus.success,
-          donationHistory: r.data.data,
-          hasReachedMax: false,
-          currentPage: r.data.currentPage,
-          nextPageUrl: r.data.nextPageUrl,
-        ),
+            status: DonationHistoryStatus.success,
+            donationHistory: r.data.data,
+            hasReachedMax: false,
+            currentPage: r.data.currentPage,
+            nextPageUrl: r.data.nextPageUrl,
+            donationCount: r.data.total),
       ),
     );
   }
@@ -73,6 +73,7 @@ class DonationHistoryBloc
                 hasReachedMax: false,
                 currentPage: r.data.currentPage,
                 nextPageUrl: r.data.nextPageUrl,
+                donationCount: r.data.total,
               ),
             ),
           );
@@ -96,6 +97,7 @@ class DonationHistoryBloc
                 hasReachedMax: r.data.data.isEmpty ? true : false,
                 currentPage: r.data.currentPage,
                 nextPageUrl: r.data.nextPageUrl,
+                donationCount: r.data.total,
               ),
             ),
           );
@@ -129,6 +131,7 @@ class DonationHistoryBloc
             donationHistory: r.data.data,
             currentPage: r.data.currentPage,
             nextPageUrl: r.data.nextPageUrl,
+            donationCount: r.data.total,
           ),
         ),
       );
