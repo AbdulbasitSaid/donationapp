@@ -8,6 +8,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:idonatio/di/get_it.dart' as get_it;
 import 'package:idonatio/presentation/bloc/simple_bloc_observer.dart';
 import 'package:idonatio/presentation/journeys/donation_history/bloc/donation_history_bloc.dart';
+import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_aggregation_cubit.dart';
 
 import 'common/hive_initiator.dart';
 import 'di/get_it.dart';
@@ -202,6 +203,9 @@ void main() async {
                     localDataSource: getItInstance(),
                     refereshTicker: getItInstance(),
                     userRemoteDataSource: getItInstance()),
+              ),
+              BlocProvider(
+                create: (context) => DonationAggregationCubit(getItInstance()),
               ),
             ],
             child: const IdonatioApp(),
