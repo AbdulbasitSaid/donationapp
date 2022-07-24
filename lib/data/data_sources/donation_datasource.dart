@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:idonatio/data/core/api_client.dart';
+import 'package:idonatio/data/models/donation_models/donation_aggregate_model.dart';
 import 'package:idonatio/data/models/donation_models/donation_history_by_donee_id_model.dart';
 import 'package:idonatio/data/models/donation_models/donation_history_model.dart';
 import 'package:idonatio/data/models/donation_summary_model.dart';
@@ -42,5 +43,11 @@ class DonationDataSources {
     final result = await _apiClient.get('donors/fees', token: token);
     log(result.toString());
     return FeesModel.fromJson(result);
+  }
+
+  Future<DonationAggrateModel> getDonationsAggregate(String token) async {
+    final result = await _apiClient.get('donations/aggregate', token: token);
+    log(result.toString());
+    return DonationAggrateModel.fromJson(result);
   }
 }
