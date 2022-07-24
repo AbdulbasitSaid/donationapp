@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/donation_history/bloc/donation_history_bloc.dart';
+import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_aggregation_cubit.dart';
 import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
@@ -62,13 +63,8 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   void _onScroll() {
     if (_isBottom) {
       log(_searchController.text);
-      isStartSearch == true
-          ? context
-              .read<DonationHistoryBloc>()
-              .add(DonationHistorySearched(searchQuery: _searchController.text))
-          : context
-              .read<DonationHistoryBloc>()
-              .add(const DonationHistoryFetched());
+
+      context.read<DonationHistoryBloc>().add(const DonationHistoryFetched());
     } else {
       return;
     }
@@ -157,7 +153,42 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                               const Text(
                                   'A history of donations you’ve made through this app. Select a donation to view more details.'),
                               const SizedBox(
-                                height: 32,
+                                height: 16,
+                              ),
+                              BlocBuilder<DonationAggregationCubit,
+                                  DonationAggregationState>(
+                                builder: (context, state) {
+                                  if (state is DonationAggregationSuccess) {
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            "Total donations made: ${state.donationAggrateModel.data.total}"),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                            "Averrage donations made: ${state.donationAggrateModel.data.average}"),
+                                        const SizedBox(height: 8),
+                                        BlocBuilder<DonationHistoryBloc,
+                                            DonationHistoryState>(
+                                          builder: (context, state) {
+                                            switch (state.status) {
+                                              case DonationHistoryStatus
+                                                  .success:
+                                                return Text(
+                                                    'Your donation count: ${state.donationCount}');
+                                              default:
+                                                return const Text(
+                                                    'loading dontion count');
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                  return const Center(
+                                      child: PrimaryAppLoader());
+                                },
                               ),
                               // empty list
                               BlocBuilder<DonationHistoryBloc,
@@ -256,6 +287,9 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                                     context
                                         .read<DonationHistoryBloc>()
                                         .add(const DonationHistoryRefreshed());
+                                    context
+                                        .read<DonationAggregationCubit>()
+                                        .getDonationAggregate();
                                   },
                                   child: ListView.builder(
                                     itemBuilder:
