@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:idonatio/data/data_sources/donation_datasource.dart';
 import 'package:idonatio/data/data_sources/user_local_datasource.dart';
+import 'package:idonatio/data/models/donation_models/donation_aggregate_model.dart';
 import 'package:idonatio/data/models/donation_models/donation_history_model.dart';
 import 'package:idonatio/data/models/donation_summary_model.dart';
 import 'package:idonatio/domain/entities/app_error.dart';
@@ -99,6 +100,30 @@ class DonationRepository {
     try {
       final user = await _userLocalDataSource.getUser();
       final result = await _donationDataSources.getFees(user.token);
+      return Right(result);
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on SocketException {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on Exception {
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
+    }
+  }
+
+  Future<Either<AppError, DonationAggrateModel>>
+      getDonationAggregation() async {
+    try {
+      final user = await _userLocalDataSource.getUser();
+      final result =
+          await _donationDataSources.getDonationsAggregate(user.token);
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
