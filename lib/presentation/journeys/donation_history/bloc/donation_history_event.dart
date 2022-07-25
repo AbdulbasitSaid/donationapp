@@ -14,10 +14,3 @@ class DonationHistoryFetched extends DonationHistoryEvent {
 class DonationHistoryRefreshed extends DonationHistoryEvent {
   const DonationHistoryRefreshed();
 }
-
-class DonationHistorySearched extends DonationHistoryEvent {
-  final String searchQuery;
-  const DonationHistorySearched({
-    required this.searchQuery,
-  });
-}
