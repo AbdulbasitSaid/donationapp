@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/data/models/donation_models/donee_history_datum_model.dart';
 import 'package:idonatio/presentation/widgets/donee_logo_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:substring_highlight/substring_highlight.dart';
 
 import '../../journeys/donation_history/cubit/donation_history_summary_cubit.dart';
 import '../../journeys/donation_history/donation_history_details_screen.dart';
@@ -12,14 +11,12 @@ import '../../themes/app_color.dart';
 
 class DonationHistoryListCardItem extends StatelessWidget {
   final DonationHistoryDatumModel donationData;
-  final String searchTerm;
 
   final Key firstThisMonthKey;
   final Key earlierMonthKey;
   const DonationHistoryListCardItem({
     Key? key,
     required this.donationData,
-    required this.searchTerm,
     required this.earlierMonthKey,
     required this.firstThisMonthKey,
   }) : super(key: key);
@@ -135,12 +132,11 @@ class DonationHistoryListCardItem extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SubstringHighlight(
-                          text: donationData.donee.fullName,
-                          term: searchTerm,
-                          textStyleHighlight: const TextStyle(
-                              color: AppColor.basePrimary,
-                              fontWeight: FontWeight.bold),
+                        Text(
+                          donationData.donee.fullName,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
                         ),
                         const SizedBox(
                           height: 8,
