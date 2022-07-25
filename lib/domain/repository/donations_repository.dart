@@ -19,7 +19,6 @@ class DonationRepository {
   DonationRepository(this._donationDataSources, this._userLocalDataSource);
 
   Future<Either<AppError, DonationHistoryModel>> getDonationHistory({
-    String searchQuery = '',
     int? perPage,
     int? page,
   }) async {
@@ -28,7 +27,34 @@ class DonationRepository {
       final result = await _donationDataSources.getDonationHistory(
         token: user.token,
         page: page,
-        searchQuery: searchQuery,
+      );
+      return Right(result);
+    } on BadRequest {
+      return const Left(AppError(appErrorType: AppErrorType.badRequest));
+    } on SocketException {
+      return const Left(AppError(appErrorType: AppErrorType.network));
+    } on UnauthorisedException {
+      return const Left(AppError(appErrorType: AppErrorType.unauthorized));
+    } on Forbidden {
+      return const Left(AppError(appErrorType: AppErrorType.forbidden));
+    } on NotFound {
+      return const Left(AppError(appErrorType: AppErrorType.notFound));
+    } on InternalServerError {
+      return const Left(AppError(appErrorType: AppErrorType.serveError));
+    } on Exception {
+      return const Left(AppError(appErrorType: AppErrorType.unExpected));
+    }
+  }
+
+  Future<Either<AppError, DonationHistoryModel>> searchDonationHistory({
+    String searchQuery = '',
+    int? page,
+  }) async {
+    try {
+      final user = await _userLocalDataSource.getUser();
+      final result = await _donationDataSources.getDonationHistory(
+        token: user.token,
+        page: page,
       );
       return Right(result);
     } on BadRequest {
