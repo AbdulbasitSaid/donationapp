@@ -9,16 +9,28 @@ import '../../journeys/donation_history/cubit/donation_history_summary_cubit.dar
 import '../../journeys/donation_history/donation_history_details_screen.dart';
 import '../../router/app_router.dart';
 import '../../themes/app_color.dart';
-import '../donee_avatar_place_holder.dart';
 
 class DonationHistoryListCardItem extends StatelessWidget {
   final DonationHistoryDatumModel donationData;
   final String searchTerm;
+
+  final Key firstThisMonthKey;
+  final Key earlierMonthKey;
   const DonationHistoryListCardItem({
     Key? key,
     required this.donationData,
     required this.searchTerm,
+    required this.earlierMonthKey,
+    required this.firstThisMonthKey,
   }) : super(key: key);
+
+  bool _showEarlierMonth() {
+    return key == earlierMonthKey ? true : false;
+  }
+
+  bool _showThisMonth() {
+    return key == firstThisMonthKey ? true : false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +51,56 @@ class DonationHistoryListCardItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (_showThisMonth())
+              Container(
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(219, 229, 255, 0.6),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.only(bottom: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'This Month',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    Divider(
+                      thickness: 2,
+                    )
+                  ],
+                ),
+              )
+            else if (_showEarlierMonth())
+              Container(
+                decoration: BoxDecoration(
+                    color: const Color.fromRGBO(213, 251, 232, 0.48),
+                    borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.only(bottom: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Earlier',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 24,
+                      ),
+                    ),
+                    Divider(
+                      thickness: 2,
+                    )
+                  ],
+                ),
+              )
+            else
+              const SizedBox.shrink(),
             donationData.rank == 1
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
