@@ -45,9 +45,7 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
       if (value.isEmpty) {
         context.read<GetSavedDoneesCubit>().getSavedDonee();
       } else {
-        context
-            .read<GetSavedDoneesCubit>()
-            .seachSavedDonee(_searchController.text);
+        context.read<GetSavedDoneesCubit>().seachSavedDonee(value);
       }
     }
 
