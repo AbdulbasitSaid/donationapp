@@ -10,5 +10,7 @@ abstract class DonationHistorySearchEvent extends Equatable {
 class DoantionHistorySearched extends DonationHistorySearchEvent {
   final String searchString;
 
-  const DoantionHistorySearched(this.searchString);
+  const DoantionHistorySearched({
+    required this.searchString,
+  });
 }
