@@ -52,10 +52,8 @@ class DonationRepository {
   }) async {
     try {
       final user = await _userLocalDataSource.getUser();
-      final result = await _donationDataSources.getDonationHistory(
-        token: user.token,
-        page: page,
-      );
+      final result = await _donationDataSources.searchDonationHistory(
+          token: user.token, page: page, searchQuery: searchQuery);
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
