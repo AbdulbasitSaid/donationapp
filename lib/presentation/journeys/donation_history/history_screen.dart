@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idonatio/presentation/journeys/donation_history/bloc/donation_history_bloc.dart';
+import 'package:idonatio/presentation/journeys/donation_history/bloc/donation_history_search_bloc.dart';
 import 'package:idonatio/presentation/journeys/donation_history/cubit/donation_aggregation_cubit.dart';
 import 'package:idonatio/presentation/journeys/home.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
@@ -34,22 +35,14 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
     const duration = Duration(
         milliseconds:
             800); // set the duration that you want call search() after that.
-    setState(() => searchOnStoppedTyping.cancel());
-    search(value) {
-      highlightSearch = value;
-      if (value.isEmpty) {
-        context
-            .read<DonationHistoryBloc>()
-            .add(const DonationHistoryRefreshed());
-      } else {
-        context.read<DonationHistoryBloc>().add(DonationHistorySearched(
-              searchQuery: value,
-            ));
-      }
-    }
-
     setState(
-        () => searchOnStoppedTyping = Timer(duration, () => search(value)));
+      () => searchOnStoppedTyping.cancel(),
+    );
+    setState(() => searchOnStoppedTyping = Timer(
+        duration,
+        () => context
+            .read<DonationHistorySearchBloc>()
+            .add(DoantionHistorySearched(searchString: value))));
   }
 
   @override
@@ -261,76 +254,132 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                       ),
                     )
                   : const SizedBox.shrink(),
-              BlocBuilder<DonationHistoryBloc, DonationHistoryState>(
-                  builder: (context, state) {
-                switch (state.status) {
-                  case DonationHistoryStatus.failue:
-                    return AppErrorDialogWidget(
-                      message: state.message,
-                      title: 'Error',
-                    );
-                  case DonationHistoryStatus.success:
-                    return state.donationHistory.isNotEmpty
-                        ? Container(
-                            height: MediaQuery.of(context).size.height * .5,
-                            decoration: whiteContainerBackGround(),
-                            child: RefreshIndicator(
-                              onRefresh: () async {
-                                context
-                                    .read<DonationHistoryBloc>()
-                                    .add(const DonationHistoryRefreshed());
-                                context
-                                    .read<DonationAggregationCubit>()
-                                    .getDonationAggregate();
-                              },
-                              child: ListView.builder(
-                                itemBuilder: (BuildContext context, int index) {
-                           
-                                  return index == state.donationHistory.length
-                                      ? const Center(child: PrimaryAppLoader())
-                                      : DonationHistoryListCardItem(
-                                          firstThisMonthKey: Key(state
-                                              .donationHistory
-                                              .where((element) =>
-                                                  element.monthRanking ==
-                                                  'this-month')
-                                              .first
-                                              .id),
-                                          earlierMonthKey: Key(state
-                                              .donationHistory
-                                              .where((element) =>
-                                                  element.monthRanking ==
-                                                  'earlier')
-                                              .first
-                                              .id),
-                                          key: Key(
-                                              state.donationHistory[index].id),
-                                          donationData:
-                                              state.donationHistory[index],
-                                          searchTerm: _searchController.text,
-                                   
-                                        );
-                                },
-                                itemCount: state.hasReachedMax == true
-                                    ? state.donationHistory.length
-                                    : state.donationHistory.length + 1,
-                                controller: _scrollController,
+              isStartSearch == false
+                  ? DonationHistoryListWidget(
+                      scrollController: _scrollController)
+                  : BlocBuilder<DonationHistorySearchBloc,
+                      DonationHistorySearchState>(
+                      builder: (context, state) {
+                        switch (state.status) {
+                          case DonationHistorySearchedStatus.loading:
+                            return const Center(
+                              child: PrimaryAppLoader(),
+                            );
+                          case DonationHistorySearchedStatus.failue:
+                            return Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: AppErrorDialogWidget(
+                                message: state.message,
+                                title: 'Error searhing for donee',
                               ),
-                            ),
-                          )
-                        : const SizedBox.shrink();
-                  default:
-                    return const Center(
-                      child: PrimaryAppLoader(),
-                    );
-                }
-              }),
+                            );
+                          case DonationHistorySearchedStatus.success:
+                            return Center(
+                              child: Container(
+                                height: MediaQuery.of(context).size.height * .6,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                                child: ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    return Text(state
+                                        .donationHistory[index].donee.fullName);
+                                  },
+                                  itemCount: state.donationHistory.length,
+                                ),
+                              ),
+                            );
+                          default:
+                            return Container(
+                              padding: const EdgeInsets.all(16),
+                              child: const Text('Search by donee name'),
+                            );
+                        }
+                      },
+                    ),
             ],
           ),
         ),
       ),
     );
   }
+}
 
+class DonationHistoryListWidget extends StatelessWidget {
+  const DonationHistoryListWidget({
+    Key? key,
+    required ScrollController scrollController,
+  })  : _scrollController = scrollController,
+        super(key: key);
 
+  final ScrollController _scrollController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<DonationHistoryBloc, DonationHistoryState>(
+        builder: (context, state) {
+      switch (state.status) {
+        case DonationHistoryStatus.failue:
+          return AppErrorDialogWidget(
+            message: state.message,
+            title: 'Error',
+          );
+        case DonationHistoryStatus.success:
+          return state.donationHistory.isNotEmpty
+              ? Container(
+                  height: MediaQuery.of(context).size.height * .5,
+                  decoration: whiteContainerBackGround(),
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      context
+                          .read<DonationHistoryBloc>()
+                          .add(const DonationHistoryRefreshed());
+                      context
+                          .read<DonationAggregationCubit>()
+                          .getDonationAggregate();
+                    },
+                    child: ListView.builder(
+                      itemBuilder: (BuildContext context, int index) {
+                        return index == state.donationHistory.length
+                            ? const Center(child: PrimaryAppLoader())
+                            : DonationHistoryListCardItem(
+                                firstThisMonthKey: Key(state.donationHistory
+                                    .where((element) =>
+                                        element.monthRanking == 'this-month')
+                                    .first
+                                    .id),
+                                earlierMonthKey: state.donationHistory
+                                        .where((element) =>
+                                            element.monthRanking == 'earlier')
+                                        .isNotEmpty
+                                    ? Key(state.donationHistory
+                                        .where((element) =>
+                                            element.monthRanking == 'earlier')
+                                        .first
+                                        .id)
+                                    : Key(state.donationHistory
+                                        .where((element) =>
+                                            element.monthRanking ==
+                                            'this-month')
+                                        .first
+                                        .id),
+                                key: Key(state.donationHistory[index].id),
+                                donationData: state.donationHistory[index],
+                              );
+                      },
+                      itemCount: state.hasReachedMax == true
+                          ? state.donationHistory.length
+                          : state.donationHistory.length + 1,
+                      controller: _scrollController,
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink();
+        default:
+          return const Center(
+            child: PrimaryAppLoader(),
+          );
+      }
+    });
+  }
 }
