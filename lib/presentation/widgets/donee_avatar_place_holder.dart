@@ -11,6 +11,8 @@ class DoneeAvatarPlaceHolder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       clipBehavior: Clip.antiAliasWithSaveLayer,
+      width: 40,
+      height: 40,
       decoration: BoxDecoration(
         border: Border.all(
           width: 4,
