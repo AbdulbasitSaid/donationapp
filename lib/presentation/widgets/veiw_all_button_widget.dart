@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idonatio/presentation/journeys/donation_history/cubit/get_donation_history_by_donee_id_cubit.dart';
 
+import '../journeys/donation_history/bloc/get_donation_history_by_donee_id_bloc.dart';
 import '../journeys/donations_to_donee/donations_to_donee_screen.dart';
 import '../router/app_router.dart';
 
@@ -12,10 +12,10 @@ class ViewAllButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        onPressed: () {
+        onPressed: () async {
           context
-              .read<GetDonationHistoryByDoneeIdCubit>()
-              .getDonationHistorByDoneeId(doneeId);
+              .read<GetDonationHistoryByDoneeIdBloc>()
+              .add(GetDonationHistoryByDoneeIdFetched(id: doneeId));
           Navigator.push(
               context, AppRouter.routeToPage(const DonationsTodoneeScreen()));
         },
