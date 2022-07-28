@@ -75,6 +75,14 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: InkWell(
+          onTap: () => _refereshSavedDonee(),
+          child: const Icon(
+            Icons.refresh,
+            color: AppColor.basePrimary,
+            size: 28,
+          ),
+        ),
         automaticallyImplyLeading: widget.showBackButton,
         actions: [
           widget.showBackButton
@@ -410,16 +418,6 @@ class _SavedDoneeScreenState extends State<SavedDoneeScreen> {
                     ],
                   ),
                 ),
-                Positioned(
-                    left: 16,
-                    child: InkWell(
-                      onTap: () => _refereshSavedDonee(),
-                      child: const Icon(
-                        Icons.refresh,
-                        color: AppColor.basePrimary,
-                        size: 28,
-                      ),
-                    ))
               ],
             ),
           ),
