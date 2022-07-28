@@ -43,7 +43,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
         duration,
         () => context
             .read<DonationHistorySearchBloc>()
-            .add(DoantionHistorySearched(searchString: value))));
+            .add(DonationHistorySearched(searchString: value))));
   }
 
   @override
@@ -66,7 +66,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   void _onSearchScroll() {
     if (_isSearchBottom) {
       context.read<DonationHistorySearchBloc>().add(
-          DoantionHistorySearched(searchString: _searchController.value.text));
+          DonationHistorySearched(searchString: _searchController.value.text));
     } else {
       return;
     }
@@ -131,12 +131,15 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                           setState(() {
                             isStartSearch = !isStartSearch;
                             _searchController.clear();
-                            
+
                             log(isStartSearch.toString());
                           });
                           context
                               .read<DonationHistoryBloc>()
                               .add(const DonationHistoryRefreshed());
+                          context
+                              .read<DonationHistorySearchBloc>()
+                              .add(DonationHistorySearchRefreshed());
                         },
                         icon: const Icon(Icons.search,
                             size: 32, color: AppColor.text80Primary),
@@ -402,7 +405,7 @@ class DonationHistoryListWidget extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return index == state.donationHistory.length
                             ? const Center(child: PrimaryAppLoader())
-                            : DonationHistoryListCardItem(
+                            : DonationHistoryByIdListCardItem(
                                 firstThisMonthKey: Key(state.donationHistory
                                     .where((element) =>
                                         element.monthRanking == 'this-month')
