@@ -7,10 +7,12 @@ abstract class DonationHistorySearchEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class DoantionHistorySearched extends DonationHistorySearchEvent {
+class   DonationHistorySearched extends DonationHistorySearchEvent {
   final String searchString;
 
-  const DoantionHistorySearched({
+  const DonationHistorySearched({
     required this.searchString,
   });
 }
+
+class DonationHistorySearchRefreshed extends DonationHistorySearchEvent {}

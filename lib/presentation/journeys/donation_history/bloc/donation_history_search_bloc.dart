@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,11 +24,25 @@ class DonationHistorySearchBloc
   final DonationRepository _donationRepository;
   DonationHistorySearchBloc(this._donationRepository)
       : super(const DonationHistorySearchState()) {
-    on<DoantionHistorySearched>(_onDonationHistorySearched,
+    on<DonationHistorySearched>(_onDonationHistorySearched,
         transformer: throttleDroppable(throttleDuration));
+    on<DonationHistorySearchRefreshed>(_onDonationHistoryRefreshed);
   }
 
-  Future<void> _onDonationHistorySearched(DoantionHistorySearched event,
+  FutureOr<void> _onDonationHistoryRefreshed(
+      DonationHistorySearchRefreshed event, emit) {
+    emit(state.copyWith(
+      status: DonationHistorySearchedStatus.initial,
+      donationHistory: [],
+      donationCount: 0,
+      currentPage: null,
+      searchQuery: '',
+      message: '',
+      hasReachedMax: false,
+    ));
+  }
+
+  Future<void> _onDonationHistorySearched(DonationHistorySearched event,
       Emitter<DonationHistorySearchState> emit) async {
     try {
       if (state.status == DonationHistorySearchedStatus.initial ||
