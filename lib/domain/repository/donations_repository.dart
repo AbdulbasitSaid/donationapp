@@ -97,11 +97,15 @@ class DonationRepository {
   }
 
   Future<Either<AppError, DonationHistoryByDoneeIdModel>>
-      getDonationHistoryByDoneeId({required String doneeId}) async {
+      getDonationHistoryByDoneeId(
+          {required String doneeId, required int page}) async {
     try {
       final user = await _userLocalDataSource.getUser();
       final result = await _donationDataSources.getDonationHistoryByDoneeId(
-          user.token, doneeId);
+        user.token,
+        doneeId,
+        page: page,
+      );
       return Right(result);
     } on BadRequest {
       return const Left(AppError(appErrorType: AppErrorType.badRequest));
