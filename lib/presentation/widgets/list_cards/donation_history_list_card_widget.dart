@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:idonatio/presentation/widgets/donee_logo_widget.dart';
 import 'package:intl/intl.dart';
 
 import '../../themes/app_color.dart';
-import '../donee_avatar_place_holder.dart';
 
 class DonationHistoryListCard extends StatelessWidget {
   final DonationHistoryListCardEntity donationHistoryListCardEntity;
@@ -40,7 +40,9 @@ class DonationHistoryListCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const DoneeAvatarPlaceHolder(),
+                DoneeLogoWidget(
+                  imageUrl: donationHistoryListCardEntity.imgUrl,
+                ),
                 const SizedBox(
                   width: 16,
                 ),
@@ -88,11 +90,13 @@ class DonationHistoryListCardEntity {
   final double amount;
   final DateTime dontionDate;
   final int rank;
+  final String? imgUrl;
   DonationHistoryListCardEntity({
     required this.name,
     required this.donationType,
     required this.amount,
     required this.dontionDate,
     required this.rank,
+    required this.imgUrl,
   });
 }
