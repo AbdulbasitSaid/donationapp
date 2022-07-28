@@ -14,12 +14,15 @@ class DoneeLogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: imageUrl ?? '',
-      width: 40,
-      height: 40,
-      placeholder: (context, url) => const PrimaryAppLoader(),
-      errorWidget: (context, url, error) => const DoneeAvatarPlaceHolder(),
-    );
+    return imageUrl == null
+        ? const DoneeAvatarPlaceHolder()
+        : CachedNetworkImage(
+            imageUrl: imageUrl!,
+            width: 40,
+            height: 40,
+            placeholder: (context, url) => const PrimaryAppLoader(),
+            errorWidget: (context, url, error) =>
+                const DoneeAvatarPlaceHolder(),
+          );
   }
 }
