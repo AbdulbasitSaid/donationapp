@@ -1,3 +1,4 @@
+import 'package:idonatio/data/models/donation_models/donee_history_datum_model.dart';
 import 'package:idonatio/data/models/donation_models/donee_model.dart';
 import 'package:idonatio/data/models/donation_models/link_model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -46,17 +47,17 @@ class DonationHistoryByDoneeIdData {
   });
 
   int currentPage;
-  List<DonationHistoryByDoneeIdDatum> data;
+  List<DonationHistoryDatumModel> data;
   String firstPageUrl;
-  int from;
-  int lastPage;
-  String lastPageUrl;
+  int? from;
+  int? lastPage;
+  String? lastPageUrl;
   List<LinkModel> links;
   String? nextPageUrl;
   String path;
   int perPage;
   dynamic prevPageUrl;
-  int to;
+  int? to;
   int total;
 
   factory DonationHistoryByDoneeIdData.fromJson(json) =>
@@ -69,84 +70,6 @@ class DonationHistoryByDoneeIdData {
   explicitToJson: true,
   fieldRename: FieldRename.snake,
 )
-class DonationHistoryByDoneeIdDatum {
-  DonationHistoryByDoneeIdDatum({
-    required this.id,
-    required this.donationCode,
-    required this.donorId,
-    required this.doneeId,
-    required this.paidTransactionFee,
-    required this.idonatioTransactionFee,
-    required this.stripeTransactionFee,
-    required this.donationMethod,
-    required this.stripePaymentIntentId,
-    this.type,
-    required this.donationLocation,
-    required this.currency,
-    required this.isAnonymous,
-    required this.applyGiftAidToDonation,
-    required this.isPlateDonation,
-    this.channel,
-    required this.stripePaymentMethodId,
-    required this.hasRefund,
-    required this.hasClaimedGiftAid,
-    required this.giftAidClaimId,
-    required this.cardLastFourDigits,
-    required this.cardType,
-    required this.expiryMonth,
-    required this.expiryYear,
-    this.note,
-    required this.createdAt,
-    required this.rank,
-    required this.donationDetails,
-    required this.donee,
-  });
-
-  String id;
-  String donationCode;
-  String donorId;
-  String doneeId;
-  bool paidTransactionFee;
-  double idonatioTransactionFee;
-  double stripeTransactionFee;
-  String donationMethod;
-  String stripePaymentIntentId;
-  dynamic type;
-  String donationLocation;
-  String currency;
-  bool isAnonymous;
-  bool applyGiftAidToDonation;
-  bool isPlateDonation;
-  dynamic channel;
-  String stripePaymentMethodId;
-  bool hasRefund;
-  bool? hasClaimedGiftAid;
-  dynamic giftAidClaimId;
-  String cardLastFourDigits;
-  String cardType;
-  String expiryMonth;
-  String expiryYear;
-  dynamic note;
-  DateTime createdAt;
-  int rank;
-  List<DonationDetail> donationDetails;
-  DoneeModel donee;
-
-  factory DonationHistoryByDoneeIdDatum.fromJson(json) =>
-      _$DonationHistoryByDoneeIdDatumFromJson(json);
-
-  double get totalPayment => donationDetails
-      .map((e) => e.amount)
-      .toList()
-      .reduce((value, element) => value + element);
-
-  String get displayDationType => donationDetails.length > 1
-      ? 'Multiple Donation Types'
-      : donationDetails.first.donationType.type;
-
-  Map<String, dynamic> toJson() => _$DonationHistoryByDoneeIdDatumToJson(this);
-}
-
 @JsonSerializable(
   explicitToJson: true,
   fieldRename: FieldRename.snake,
