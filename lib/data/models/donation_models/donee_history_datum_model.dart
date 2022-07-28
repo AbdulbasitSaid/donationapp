@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:idonatio/data/models/donation_models/donation_detail_model.dart';
 import 'package:idonatio/data/models/donation_models/donee_model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -7,8 +8,8 @@ part 'donee_history_datum_model.g.dart';
   fieldRename: FieldRename.snake,
   explicitToJson: true,
 )
-class DonationHistoryDatumModel {
-  DonationHistoryDatumModel({
+class DonationHistoryDatumModel extends Equatable {
+  const DonationHistoryDatumModel({
     required this.id,
     required this.donationCode,
     required this.donorId,
@@ -71,6 +72,39 @@ class DonationHistoryDatumModel {
   final List<DonationDetailModel> donationDetails;
   final DoneeModel donee;
   final String monthRanking;
+  @override
+  List<Object?> get props => [
+        id,
+        donationCode,
+        donorId,
+        doneeId,
+        paidTransactionFee,
+        idonatioTransactionFee,
+        stripeTransactionFee,
+        donationMethod,
+        stripePaymentIntentId,
+        type,
+        donationLocation,
+        currency,
+        isAnonymous,
+        applyGiftAidToDonation,
+        isPlateDonation,
+        channel,
+        stripePaymentMethodId,
+        hasRefund,
+        hasClaimedGiftAid,
+        giftAidClaimId,
+        cardLastFourDigits,
+        cardType,
+        expiryMonth,
+        expiryYear,
+        note,
+        createdAt,
+        rank,
+        donationDetails,
+        donee,
+        monthRanking,
+      ];
 
   factory DonationHistoryDatumModel.fromJson(json) =>
       _$DonationHistoryDatumModelFromJson(json);
