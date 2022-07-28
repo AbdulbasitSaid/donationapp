@@ -19,8 +19,8 @@ import 'presentation/bloc/login/login_cubit.dart';
 import 'presentation/bloc/server_timer_bloc.dart';
 import 'presentation/bloc/register/register_cubit.dart';
 import 'presentation/bloc/registration_steps/cubit/registration_steps_cubit.dart';
+import 'presentation/journeys/donation_history/bloc/get_donation_history_by_donee_id_bloc.dart';
 import 'presentation/journeys/donation_history/cubit/donation_history_summary_cubit.dart';
-import 'presentation/journeys/donation_history/cubit/get_donation_history_by_donee_id_cubit.dart';
 import 'presentation/journeys/email_verification/cubit/verification_cubit.dart';
 import 'presentation/journeys/i_donation_app.dart';
 import 'presentation/journeys/manage_account/cubit/change_password_cubit.dart';
@@ -164,7 +164,7 @@ void main() async {
               ),
               BlocProvider(
                 create: (context) =>
-                    GetDonationHistoryByDoneeIdCubit(getItInstance()),
+                    GetDonationHistoryByDoneeIdBloc(getItInstance()),
               ),
               BlocProvider(
                 create: (context) => ResendOtpCubit(getItInstance()),
