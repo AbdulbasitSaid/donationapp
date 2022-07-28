@@ -26,8 +26,9 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
   bool isStartSearch = false;
   String searchValue = '';
   late TextEditingController _searchController;
-  final _scrollController = ScrollController();
 
+  final _scrollController = ScrollController();
+  final _searchScrollController = ScrollController();
   late Timer searchOnStoppedTyping;
   static const duration = Duration(milliseconds: 800);
   String highlightSearch = '';
@@ -50,14 +51,22 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
     _searchController = TextEditingController();
     searchOnStoppedTyping = Timer(duration, () {});
     _scrollController.addListener(_onScroll);
+    _searchScrollController.addListener(_onSearchScroll);
     super.initState();
   }
 
   void _onScroll() {
     if (_isBottom) {
-      log(_searchController.text);
-
       context.read<DonationHistoryBloc>().add(const DonationHistoryFetched());
+    } else {
+      return;
+    }
+  }
+
+  void _onSearchScroll() {
+    if (_isSearchBottom) {
+      context.read<DonationHistorySearchBloc>().add(
+          DoantionHistorySearched(searchString: _searchController.value.text));
     } else {
       return;
     }
@@ -70,9 +79,19 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
     return currentScroll >= (maxScroll);
   }
 
+  bool get _isSearchBottom {
+    if (!_searchScrollController.hasClients) return false;
+    final maxScroll = _searchScrollController.position.maxScrollExtent;
+    final currentScroll = _searchScrollController.offset;
+    return currentScroll >= (maxScroll);
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
+    _searchScrollController
+      ..removeListener(_onSearchScroll)
+      ..dispose();
 
     _scrollController
       ..removeListener(_onScroll)
@@ -111,6 +130,8 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                         onPressed: () {
                           setState(() {
                             isStartSearch = !isStartSearch;
+                            _searchController.clear();
+                            
                             log(isStartSearch.toString());
                           });
                           context
@@ -257,50 +278,89 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
               isStartSearch == false
                   ? DonationHistoryListWidget(
                       scrollController: _scrollController)
-                  : BlocBuilder<DonationHistorySearchBloc,
-                      DonationHistorySearchState>(
-                      builder: (context, state) {
-                        switch (state.status) {
-                          case DonationHistorySearchedStatus.loading:
-                            return const Center(
-                              child: PrimaryAppLoader(),
-                            );
-                          case DonationHistorySearchedStatus.failue:
-                            return Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: AppErrorDialogWidget(
-                                message: state.message,
-                                title: 'Error searhing for donee',
-                              ),
-                            );
-                          case DonationHistorySearchedStatus.success:
-                            return Center(
-                              child: Container(
-                                height: MediaQuery.of(context).size.height * .6,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                ),
-                                child: ListView.builder(
-                                  itemBuilder: (context, index) {
-                                    return Text(state
-                                        .donationHistory[index].donee.fullName);
-                                  },
-                                  itemCount: state.donationHistory.length,
-                                ),
-                              ),
-                            );
-                          default:
-                            return Container(
-                              padding: const EdgeInsets.all(16),
-                              child: const Text('Search by donee name'),
-                            );
-                        }
-                      },
+                  : DonationHistorySearchListWidget(
+                      seachScrollController: _searchScrollController,
+                      highlightString: _searchController.value.text,
                     ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class DonationHistorySearchListWidget extends StatelessWidget {
+  const DonationHistorySearchListWidget({
+    Key? key,
+    required this.seachScrollController,
+    required this.highlightString,
+  }) : super(key: key);
+  final ScrollController seachScrollController;
+  final String highlightString;
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<DonationHistorySearchBloc, DonationHistorySearchState>(
+      builder: (context, state) {
+        switch (state.status) {
+          case DonationHistorySearchedStatus.loading:
+            return const Center(
+              child: PrimaryAppLoader(),
+            );
+          case DonationHistorySearchedStatus.failue:
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: AppErrorDialogWidget(
+                message: state.message,
+                title: 'Error searhing for donee',
+              ),
+            );
+          case DonationHistorySearchedStatus.success:
+            return state.donationHistory.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'No results found.',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: AppColor.text80Primary),
+                        ),
+                        Text('Please try a different search term.'),
+                      ],
+                    ),
+                  )
+                : Container(
+                    height: MediaQuery.of(context).size.height * .7,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: ListView.builder(
+                      controller: seachScrollController,
+                      itemBuilder: (context, index) {
+                        return index == state.donationHistory.length
+                            ? const Center(child: PrimaryAppLoader())
+                            : DonationHistorySearchListCardItem(
+                                donationData: state.donationHistory[index],
+                                key: Key(state.donationHistory[index].id),
+                                highlightString: highlightString,
+                              );
+                      },
+                      itemCount: state.hasReachedMax == true
+                          ? state.donationHistory.length
+                          : state.donationHistory.length + 1,
+                    ),
+                  );
+          default:
+            return Container(
+              padding: const EdgeInsets.all(16),
+              child: const Text('Search by donee name'),
+            );
+        }
+      },
     );
   }
 }
