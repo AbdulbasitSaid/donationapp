@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idonatio/presentation/journeys/donation_history/cubit/get_donation_history_by_donee_id_cubit.dart';
 import 'package:idonatio/presentation/reusables.dart';
 import 'package:idonatio/presentation/router/app_router.dart';
 import 'package:idonatio/presentation/widgets/labels/level_2_heading.dart';
 import 'package:idonatio/presentation/widgets/loaders/primary_app_loader_widget.dart';
 
 import '../../widgets/buttons/logout_button_widget.dart';
-import '../../widgets/list_cards/donation_history_list_card_widget.dart';
+import '../../widgets/input_fields/donation_history_list_card_item.dart';
+import '../donation_history/bloc/get_donation_history_by_donee_id_bloc.dart';
 import '../new_donation/cubit/get_payment_methods_cubit.dart';
 import '../new_donation/cubit/getdoneebycode_cubit.dart';
 import '../new_donation/donation_details.dart';
@@ -23,6 +23,39 @@ class DonationsTodoneeScreen extends StatefulWidget {
 }
 
 class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    _scrollController.addListener(_onScroll);
+    super.initState();
+  }
+
+  void _onScroll() {
+    if (_isBottom) {
+      context
+          .read<GetDonationHistoryByDoneeIdBloc>()
+          .add(const GetDonationHistoryByDoneeIdFetched(id: ''));
+    } else {
+      return;
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * .9);
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,58 +89,102 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                             .caption!
                             .copyWith(fontSize: 10),
                       ),
-                      BlocBuilder<GetDonationHistoryByDoneeIdCubit,
+                      BlocBuilder<GetDonationHistoryByDoneeIdBloc,
                           GetDonationHistoryByDoneeIdState>(
                         builder: (context, state) {
-                          if (state is GetDonationHistoryByDoneeIdSuccess) {
-                            return Level2Headline(
-                                text: state.donationHistoryByDoneeIdModel.data
-                                    .data.first.donee.fullName);
+                          switch (state.status) {
+                            case GetDonationHistoryByDoneeIdStatus.failue:
+                              return const Level2Headline(
+                                  text: 'Failed to get donee');
+                            case GetDonationHistoryByDoneeIdStatus.loading:
+                              return const Level2Headline(text: 'Loading...');
+                            case GetDonationHistoryByDoneeIdStatus.success:
+                              return Level2Headline(
+                                text:
+                                    state.donationHistory.first.donee.fullName,
+                              );
+                            default:
+                              return const Level2Headline(text: 'Loading...');
                           }
-                          if (state is GetDonationHistoryByDoneeIdFailure) {
-                            return const Level2Headline(
-                                text: 'Failed to get donee');
-                          } else {}
-                          return const Level2Headline(text: 'Loading...');
                         },
                       )
                     ]),
               ),
             ),
           ),
-          BlocConsumer<GetDonationHistoryByDoneeIdCubit,
+          BlocConsumer<GetDonationHistoryByDoneeIdBloc,
               GetDonationHistoryByDoneeIdState>(
             listener: (context, state) => {},
             builder: (context, state) {
-              if (state is GetDonationHistoryByDoneeIdSuccess) {
-                final doneeData = state.donationHistoryByDoneeIdModel.data;
+              if (state.status == GetDonationHistoryByDoneeIdStatus.success) {
                 return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      (context, index) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 16.0, horizontal: 16),
-                            child: DonationHistoryListCard(
-                              donationHistoryListCardEntity:
-                                  DonationHistoryListCardEntity(
-                                amount: doneeData.data[index].totalPayment,
-                                donationType:
-                                    doneeData.data[index].displayDationType,
-                                dontionDate: doneeData.data[index].createdAt,
-                                name: doneeData.data[index].donee.fullName,
-                                rank: doneeData.data[index].rank,
-                              ),
-                            ),
-                          ),
-                      childCount: doneeData.data.length),
+                  delegate: SliverChildListDelegate([
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * .7,
+                      child: ListView.builder(
+                        itemBuilder: (BuildContext context, int index) {
+                          return index == state.donationHistory.length
+                              ? const Center(child: PrimaryAppLoader())
+                              : DonationHistoryByIdListCardItem(
+                                  firstThisMonthKey: Key(state.donationHistory
+                                      .where((element) =>
+                                          element.monthRanking == 'this-month')
+                                      .first
+                                      .id),
+                                  earlierMonthKey: state.donationHistory
+                                          .where((element) =>
+                                              element.monthRanking == 'earlier')
+                                          .isNotEmpty
+                                      ? Key(state.donationHistory
+                                          .where((element) =>
+                                              element.monthRanking == 'earlier')
+                                          .first
+                                          .id)
+                                      : Key(state.donationHistory
+                                          .where((element) =>
+                                              element.monthRanking ==
+                                              'this-month')
+                                          .first
+                                          .id),
+                                  key: Key(state.donationHistory[index].id),
+                                  donationData: state.donationHistory[index],
+                                );
+                        },
+                        itemCount: state.hasReachedMax == true
+                            ? state.donationHistory.length
+                            : state.donationHistory.length + 1,
+                        controller: _scrollController,
+                      ),
+                    ),
+                  ]),
+                );
+              } else if (state.status ==
+                  GetDonationHistoryByDoneeIdStatus.initial) {
+                return SliverList(
+                  delegate: SliverChildListDelegate([
+                    const Center(
+                      child: PrimaryAppLoader(),
+                    )
+                  ]),
+                );
+              } else if (state.status ==
+                  GetDonationHistoryByDoneeIdStatus.initial) {
+                return SliverList(
+                  delegate: SliverChildListDelegate([
+                    const Center(
+                      child: PrimaryAppLoader(),
+                    )
+                  ]),
+                );
+              } else {
+                return SliverList(
+                  delegate: SliverChildListDelegate([
+                    const Center(
+                      child: Text(' error'),
+                    )
+                  ]),
                 );
               }
-              return SliverList(
-                delegate: SliverChildListDelegate([
-                  const Center(
-                    child: PrimaryAppLoader(),
-                  )
-                ]),
-              );
             },
           )
         ],
@@ -120,13 +197,14 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
           final authenticatedUserState =
               context.watch<GetAuthenticatedUserCubit>().state;
           final getDoneeHistoryByIdState =
-              context.watch<GetDonationHistoryByDoneeIdCubit>().state;
+              context.watch<GetDonationHistoryByDoneeIdBloc>().state;
           return FloatingActionButton.extended(
             onPressed: () {
               context.read<GetdoneebycodeCubit>().getDoneeByCode(
-                  getDoneeHistoryByIdState is GetDonationHistoryByDoneeIdSuccess
-                      ? getDoneeHistoryByIdState.donationHistoryByDoneeIdModel
-                          .data.data.first.donee.doneeCode
+                  getDoneeHistoryByIdState.status ==
+                          GetDonationHistoryByDoneeIdStatus.success
+                      ? getDoneeHistoryByIdState
+                          .donationHistory.first.donee.doneeCode
                       : '');
               context.read<GetPaymentMethodsCubit>().getPaymentMethods();
               Navigator.push(
