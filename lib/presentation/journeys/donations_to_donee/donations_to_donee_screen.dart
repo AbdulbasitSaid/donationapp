@@ -45,7 +45,7 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
     if (!_scrollController.hasClients) return false;
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * .9);
+    return currentScroll >= (maxScroll);
   }
 
   @override
@@ -168,7 +168,7 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                   ]),
                 );
               } else if (state.status ==
-                  GetDonationHistoryByDoneeIdStatus.initial) {
+                  GetDonationHistoryByDoneeIdStatus.loading) {
                 return SliverList(
                   delegate: SliverChildListDelegate([
                     const Center(
@@ -180,7 +180,7 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                 return SliverList(
                   delegate: SliverChildListDelegate([
                     const Center(
-                      child: Text(' error'),
+                      child: Text(' Loading.'),
                     )
                   ]),
                 );
@@ -213,9 +213,9 @@ class _DonationsTodoneeScreenState extends State<DonationsTodoneeScreen> {
                     isEnableGiftAid:
                         authenticatedUserState is GetAuthenticatedUserSuccess
                             ? authenticatedUserState.getAuthenticatedUserModel
-                                .data.user.donor.giftAidEnabled
+                                .data.user.donor!.giftAidEnabled
                             : userState is Authenticated
-                                ? userState.userData.user.donor.giftAidEnabled
+                                ? userState.userData.user.donor!.giftAidEnabled
                                 : false,
                   )));
             },
