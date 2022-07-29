@@ -314,9 +314,9 @@ class _DoneeDetailHistoryState extends State<DoneeDetailHistory> {
                     isEnableGiftAid:
                         authenticatedUserState is GetAuthenticatedUserSuccess
                             ? authenticatedUserState.getAuthenticatedUserModel
-                                .data.user.donor.giftAidEnabled
+                                .data.user.donor!.giftAidEnabled
                             : userState is Authenticated
-                                ? userState.userData.user.donor.giftAidEnabled
+                                ? userState.userData.user.donor!.giftAidEnabled
                                 : false,
                   )));
             },
