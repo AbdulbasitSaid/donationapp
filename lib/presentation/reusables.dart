@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:idonatio/presentation/themes/app_color.dart';
 import 'package:intl/intl.dart';
@@ -23,8 +22,7 @@ String getCurrencySymbol(String code, BuildContext context) {
   return format.currencySymbol;
 }
 
-String 
-getErrorMessage(AppErrorType appErrorType) {
+String getErrorMessage(AppErrorType appErrorType) {
   switch (appErrorType) {
     case AppErrorType.unProcessableEntity:
       return 'The request is unprocessable, often due to invalid parameters.';
@@ -44,44 +42,9 @@ getErrorMessage(AppErrorType appErrorType) {
       return 'Server not available at the moment please try again!! later';
     case AppErrorType.unExpected:
       return 'Unexpected error.';
+    case AppErrorType.notADonorException:
+      return 'Only donors can signin on this app';
     default:
       return 'Opps something went wrong';
   }
 }
-
-
-///
-/// idonation plus amount before Stripe charges
-///
-
-//
-// Future<DeviceInfoModel> getIosInfo(
-//     DeviceInfoPlugin deviceInfoPlugin, NetworkInfo networkInfo) async {
-//   final iosInfo = await deviceInfoPlugin.iosInfo;
-//   final String ipInfo = await Ipify.ipv64();
-//   log(iosInfo.toString());
-//   return DeviceInfoModel(
-//       platform: 'mobile',
-//       deviceUid: iosInfo.identifierForVendor,
-//       os: 'ios',
-//       osVersion: iosInfo.systemVersion,
-//       model: iosInfo.systemName,
-//       ipAddress: ipInfo,
-//       screenResolution: '1080p');
-//   // final ios
-// }
-
-// Future<DeviceInfoModel> getAndroidInfo(
-//     DeviceInfoPlugin deviceInfoPlugin, NetworkInfo networkInfo) async {
-//   final androidInfo = await deviceInfoPlugin.androidInfo;
-//   final String ipInfo = await Ipify.ipv64();
-//   return DeviceInfoModel(
-//       platform: 'mobile',
-//       deviceUid: androidInfo.id,
-//       os: 'android',
-//       osVersion: androidInfo.version.baseOS,
-//       model: androidInfo.model,
-//       ipAddress: ipInfo,
-//       screenResolution: androidInfo.display);
-  // final ios
-
