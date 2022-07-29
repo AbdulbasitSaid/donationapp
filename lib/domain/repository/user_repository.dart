@@ -30,7 +30,9 @@ class UserRepository {
       final data = response.data;
       final user = response.data.user;
       final donor = response.data.user.donor;
-
+      if (user.signupType != 'donor') {
+        throw NotADonorException();
+      }
       await _userLocalDataSource
           .saveUserData(data.copyWith(user: user.copyWith(donor: donor)));
       isRememberMe
@@ -51,6 +53,9 @@ class UserRepository {
       return const Left(AppError(appErrorType: AppErrorType.serveError));
     } on ServerNotAvailableError {
       return const Left(AppError(appErrorType: AppErrorType.serverNotAvailble));
+    } on NotADonorException {
+      return const Left(
+          AppError(appErrorType: AppErrorType.notADonorException));
     } on Exception {
       log('e');
       return const Left(AppError(appErrorType: AppErrorType.unExpected));
@@ -181,7 +186,7 @@ class UserRepository {
       await _userLocalDataSource.updateUserData(
         user.copyWith(
           user: user.user.copyWith(
-            donor: user.user.donor.copyWith(
+            donor: user.user.donor!.copyWith(
               isOnboarded: response.data.isOnboarded,
               giftAidEnabled: response.data.giftAidEnabled,
               paymentMethod: response.data.paymentMethod,
