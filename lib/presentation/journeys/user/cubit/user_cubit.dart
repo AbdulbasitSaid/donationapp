@@ -52,7 +52,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void _checkOnboardingStatus(UserData user) {
-    if (user.user.donor.isOnboarded) {
+    if (user.user.donor!.isOnboarded) {
       emit(Authenticated(user));
     } else {
       log(user.toString());
