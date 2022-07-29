@@ -1,5 +1,4 @@
 import 'package:idonatio/data/models/donation_models/donee_history_datum_model.dart';
-import 'package:idonatio/data/models/donation_models/donee_model.dart';
 import 'package:idonatio/data/models/donation_models/link_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 

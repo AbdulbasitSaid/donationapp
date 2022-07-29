@@ -15,7 +15,9 @@ class UserModel extends HiveObject {
   @HiveField(3)
   final DateTime? emailVerifiedAt;
   @HiveField(4)
-  final DonorModel donor;
+  final String signupType;
+  @HiveField(5)
+  final DonorModel? donor;
   //
   UserModel({
     required this.id,
@@ -23,16 +25,19 @@ class UserModel extends HiveObject {
     required this.isActive,
     required this.emailVerifiedAt,
     required this.donor,
+    required this.signupType,
   });
 
   factory UserModel.fromJson(Map<dynamic, dynamic> json) => UserModel(
         id: json["id"],
         email: json["email"],
         isActive: json["is_active"],
+        signupType: json['signup_type'],
         emailVerifiedAt: json["email_verified_at"] == null
             ? null
             : DateTime.parse(json["email_verified_at"]),
-        donor: DonorModel.fromJson(json["donor"]),
+        donor:
+            json["donor"] == null ? null : DonorModel.fromJson(json["donor"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -40,7 +45,8 @@ class UserModel extends HiveObject {
         "email": email,
         "is_active": isActive,
         "email_verified_at": emailVerifiedAt?.toIso8601String(),
-        "donor": donor.toJson(),
+        'singup_type': signupType,
+        "donor": donor!.toJson(),
       };
 
   @override
@@ -52,6 +58,7 @@ class UserModel extends HiveObject {
         other.email == email &&
         other.isActive == isActive &&
         other.emailVerifiedAt == emailVerifiedAt &&
+        other.signupType == signupType &&
         other.donor == donor;
   }
 
@@ -61,16 +68,21 @@ class UserModel extends HiveObject {
         email.hashCode ^
         isActive.hashCode ^
         emailVerifiedAt.hashCode ^
+        signupType.hashCode ^
         donor.hashCode;
   }
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, isActive: $isActive, emailVerifiedAt: $emailVerifiedAt, donor: $donor)';
+    return 'UserModel(id: $id, email: $email, isActive: $isActive, emailVerifiedAt: $emailVerifiedAt, donor: $donor , signUpType: $signupType)';
   }
 
   bool get alwaysDonateAnonymosly {
-    return donor.shareBasicInfomation == true ? false : true;
+    return donor == null
+        ? false
+        : donor!.shareBasicInfomation == true
+            ? false
+            : true;
   }
 
   UserModel copyWith({
@@ -79,6 +91,7 @@ class UserModel extends HiveObject {
     bool? isActive,
     DateTime? emailVerifiedAt,
     DonorModel? donor,
+    String? signupType,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -86,6 +99,7 @@ class UserModel extends HiveObject {
       isActive: isActive ?? this.isActive,
       emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
       donor: donor ?? this.donor,
+      signupType: signupType ?? this.signupType,
     );
   }
 }

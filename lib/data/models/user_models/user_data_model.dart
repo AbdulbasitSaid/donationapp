@@ -18,6 +18,8 @@ class UserData extends HiveObject {
   final UserModel user;
   @HiveField(5)
   final String? stripeCustomerId;
+  @HiveField(6)
+  final String? singUpType;
   //
   UserData({
     required this.token,
@@ -26,16 +28,17 @@ class UserData extends HiveObject {
     required this.isDeviceSaved,
     required this.user,
     required this.stripeCustomerId,
+    required this.singUpType,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
-        token: json["token"],
-        tokenType: json["token_type"],
-        expiresIn: json["expires_in"],
-        isDeviceSaved: json["is_device_saved"],
-        user: UserModel.fromJson(json["user"]),
-        stripeCustomerId: json['stripe_customer_id'],
-      );
+      token: json["token"],
+      tokenType: json["token_type"],
+      expiresIn: json["expires_in"],
+      isDeviceSaved: json["is_device_saved"],
+      user: UserModel.fromJson(json["user"]),
+      stripeCustomerId: json['stripe_customer_id'],
+      singUpType: json["signup_type"] as String?);
 
   Map<String, dynamic> toJson() => {
         "token": token,
@@ -44,6 +47,7 @@ class UserData extends HiveObject {
         "is_device_saved": isDeviceSaved,
         "stripe_customer_id": stripeCustomerId,
         "user": user.toJson(),
+        'signup_type': singUpType,
       };
 
   @override
@@ -56,6 +60,7 @@ class UserData extends HiveObject {
         other.expiresIn == expiresIn &&
         other.isDeviceSaved == isDeviceSaved &&
         other.user == user &&
+        other.singUpType == singUpType &&
         other.stripeCustomerId == stripeCustomerId;
   }
 
@@ -66,12 +71,13 @@ class UserData extends HiveObject {
         expiresIn.hashCode ^
         isDeviceSaved.hashCode ^
         user.hashCode ^
+        singUpType.hashCode ^
         stripeCustomerId.hashCode;
   }
 
   @override
   String toString() {
-    return 'UserData(token: $token, tokenType: $tokenType, expiresIn: $expiresIn, isDeviceSaved: $isDeviceSaved, user: $user, stripeCustomerId: $stripeCustomerId)';
+    return 'UserData(token: $token, tokenType: $tokenType, expiresIn: $expiresIn, isDeviceSaved: $isDeviceSaved, user: $user, stripeCustomerId: $stripeCustomerId singUpType: $singUpType)';
   }
 
   UserData copyWith({
@@ -81,6 +87,7 @@ class UserData extends HiveObject {
     bool? isDeviceSaved,
     UserModel? user,
     String? stripeCustomerId,
+    String? singUpType,
   }) {
     return UserData(
       token: token ?? this.token,
@@ -89,6 +96,7 @@ class UserData extends HiveObject {
       isDeviceSaved: isDeviceSaved ?? this.isDeviceSaved,
       user: user ?? this.user,
       stripeCustomerId: stripeCustomerId ?? this.stripeCustomerId,
+      singUpType: singUpType ?? this.singUpType,
     );
   }
 }
