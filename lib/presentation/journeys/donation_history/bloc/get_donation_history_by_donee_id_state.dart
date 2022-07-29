@@ -6,7 +6,7 @@ class GetDonationHistoryByDoneeIdState extends Equatable {
   final bool hasReachedMax;
   final String message;
   final int currentPage;
-  final String nextPageUrl;
+  final String? nextPageUrl;
   final int donationCount;
   final String doneeId;
 
@@ -28,7 +28,6 @@ class GetDonationHistoryByDoneeIdState extends Equatable {
         hasReachedMax,
         message,
         currentPage,
-        nextPageUrl,
         donationCount,
       ];
 
