@@ -501,14 +501,14 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                                                     .getAuthenticatedUserModel
                                                                     .data
                                                                     .user
-                                                                    .donor
+                                                                    .donor!
                                                                     .giftAidEnabled
                                                                 : userState
                                                                         is Authenticated
                                                                     ? userState
                                                                         .userData
                                                                         .user
-                                                                        .donor
+                                                                        .donor!
                                                                         .giftAidEnabled
                                                                     : false,
                                                             stripeConnectedAccountId: getDoneeByCodeState
@@ -552,7 +552,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                                                     .getAuthenticatedUserModel
                                                                     .data
                                                                     .user
-                                                                    .donor
+                                                                    .donor!
                                                                     .giftAidEnabled ==
                                                                 true
                                                             ? const ReviewAndPayment()
@@ -560,7 +560,7 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                                                             .getAuthenticatedUserModel
                                                                             .data
                                                                             .user
-                                                                            .donor
+                                                                            .donor!
                                                                             .giftAidEnabled ==
                                                                         false &&
                                                                     donationProcessState
@@ -573,11 +573,11 @@ class _DonationDetialsScreenState extends State<DonationDetialsScreen> {
                                                             ? AppRouter.routeToPage(userState
                                                                         .userData
                                                                         .user
-                                                                        .donor
+                                                                        .donor!
                                                                         .giftAidEnabled ==
                                                                     true
                                                                 ? const ReviewAndPayment()
-                                                                : userState.userData.user.donor.giftAidEnabled ==
+                                                                : userState.userData.user.donor!.giftAidEnabled ==
                                                                             false &&
                                                                         donationProcessState.applyGiftAidToDonation ==
                                                                             false
