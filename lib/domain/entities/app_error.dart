@@ -20,4 +20,5 @@ enum AppErrorType {
   notFound,
   serveError,
   serverNotAvailble,
+  notADonorException,
 }
