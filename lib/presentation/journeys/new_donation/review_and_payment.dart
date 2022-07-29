@@ -85,7 +85,7 @@ class _ReviewAndPaymentState extends State<ReviewAndPayment> {
                             AppRouter.routeToPage(DonationDetialsScreen(
                               isEnableGiftAid: donorState is Authenticated
                                   ? donorState
-                                      .userData.user.donor.giftAidEnabled
+                                      .userData.user.donor!.giftAidEnabled
                                   : false,
                             )),
                           );
