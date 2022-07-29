@@ -62,6 +62,7 @@ class UserLocalDataSource {
             tokenType: '',
             expiresIn: 0,
             isDeviceSaved: false,
+            singUpType: '',
             user: UserModel(
                 donor: DonorModel(
                   address: '',
@@ -83,6 +84,7 @@ class UserLocalDataSource {
                   shareBasicInfomation: false,
                 ),
                 email: '',
+                signupType: '',
                 emailVerifiedAt: DateTime.now(),
                 id: '',
                 isActive: false),
