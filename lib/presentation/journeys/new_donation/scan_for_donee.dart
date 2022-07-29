@@ -53,7 +53,7 @@ class _ScanForDoneeScreenState extends State<ScanForDoneeScreen> {
                     Navigator.push(
                       context,
                       AppRouter.routeToPage(DonationDetialsScreen(
-                        isEnableGiftAid: user.giftAidEnabled,
+                        isEnableGiftAid: user!.giftAidEnabled,
                       )),
                       // (route) => true,
                     );
