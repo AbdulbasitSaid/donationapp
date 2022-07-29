@@ -72,7 +72,7 @@ class _AddDoneeByIdScreenState extends State<AddDoneeByIdScreen> {
                         Navigator.push(
                             context,
                             AppRouter.routeToPage(DonationDetialsScreen(
-                              isEnableGiftAid: user!.donor.giftAidEnabled,
+                              isEnableGiftAid: user!.donor!.giftAidEnabled,
                             )));
                       } else {
                         Navigator.push(
