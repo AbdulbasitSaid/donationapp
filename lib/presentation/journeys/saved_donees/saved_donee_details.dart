@@ -369,7 +369,7 @@ class _SavedDoneeDetailsState extends State<SavedDoneeDetails> {
                   context,
                   AppRouter.routeToPage(DonationDetialsScreen(
                     isEnableGiftAid: userState is Authenticated
-                        ? userState.userData.user.donor.giftAidEnabled
+                        ? userState.userData.user.donor!.giftAidEnabled
                         : false,
                   )));
             },
