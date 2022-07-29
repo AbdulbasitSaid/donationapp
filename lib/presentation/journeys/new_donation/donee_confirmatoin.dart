@@ -192,10 +192,10 @@ class _DoneeConfirmationScreenState extends State<DoneeConfirmationScreen> {
                                               .getAuthenticatedUserModel
                                               .data
                                               .user
-                                              .donor
+                                              .donor!
                                               .giftAidEnabled
                                           : donorState is Authenticated
-                                              ? donorState.userData.user.donor
+                                              ? donorState.userData.user.donor!
                                                   .giftAidEnabled
                                               : false,
                                     )));
