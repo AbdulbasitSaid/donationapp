@@ -50,6 +50,7 @@ class RegisterCubit extends Cubit<RegisterState> {
           isDeviceSaved: r.data.isDeviceSaved,
           user: r.data.user,
           stripeCustomerId: r.data.stripeCustomerId,
+          singUpType: r.data.singUpType,
         ));
         return RegisterSuccess();
       }),
