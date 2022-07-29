@@ -76,7 +76,7 @@ class OnboardingScreen extends StatelessWidget {
               Flexible(
                 child: Level1Headline(
                   text:
-                      'Welcome, ${localUserObject.user.donor.firstName} ${localUserObject.user.donor.lastName}!',
+                      'Welcome, ${localUserObject.user.donor!.firstName} ${localUserObject.user.donor!.lastName}!',
                 ),
               ),
               const SizedBox(
