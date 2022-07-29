@@ -13,3 +13,5 @@ class InternalServerError implements Exception {}
 class ServerNotAvailableError implements Exception {}
 
 class NetworkError implements Exception {}
+
+class NotADonorException implements Exception {}
