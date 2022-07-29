@@ -36,8 +36,8 @@ class Data {
     required this.average,
   });
 
-  final String total;
-  final String average;
+  final String? total;
+  final String? average;
   factory Data.fromJson(json) => _$DataFromJson(json);
 
   @override
